@@ -90,6 +90,8 @@ for metric in lmetrics:
 			query = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool),('Status','0')])
 			select = db.select(metric, query, as_float=True)
 			mean, error = get_stats(select)
+			print "%6.1f [%6.1f]" % (mean, error)
+			print "%6.1f [%6.1f]" % (mean, error)
 			tools['mean'].append(mean)
 			tools['error'].append(error)
 		planners[planner] = tools
