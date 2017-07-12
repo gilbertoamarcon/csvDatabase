@@ -1,60 +1,99 @@
+#!/usr/bin/python
+import os
+import statistics as stat
 from CsvDatabase import *
+from StatsFilter import *
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 
-def splot(q,xlabel,ylabel,title=''):
-	labels = db.select(xlabel,q)
-	aux = db.select(ylabel,q)
-	values = []
-	for e in aux:
-		values.append(float(e))
-	y_pos = np.arange(len(labels))
-	plt.barh(y_pos, values, align='center', alpha=0.5)
-	plt.yticks(y_pos, labels)
-	plt.ylabel(xlabel)
-	plt.xlabel(ylabel)
-	plt.title(title) 
+# Parameters
+C				= ['b','g','r','y','c','m']
+BAR_FILL		= 0.75
+FONT_SIZE		= 8
+FONT_FAMILY		= 'serif'
+VBAR			= True
+DOMAIN			= 'blocks_world'
+
+# Labels
+lmetrics	= ['Makespan (s)', 'Actions', 'Proc. Time (s)', 'Memory (GB)']
+lplanners	= ['tfd/downward', 'colin2']
+ltools		= ['CFP', 'CoalitionAssistance']
+
+def generate_plot(metrics,ltools):
+	plt.figure(1)
+	matplotlib.rcParams.update({'font.size': FONT_SIZE})
+	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
+	if VBAR:
+		subplot_pfix = 100 + 10*len(metrics)
+	else:
+		subplot_pfix = 10 + 100*len(metrics)
+	numbars = len(ltools)
+	bar_origin = ((1-BAR_FILL)/2)*np.ones(numbars) + np.asarray(range(numbars))
+
+	# For each metric
+	for m, metric in enumerate(metrics):
+		planners = metrics[metric]
+		lplanners = [p for p in planners]
+		bar_width = BAR_FILL/len(lplanners)
+
+		plt.subplot(subplot_pfix+m)
+		plt.title(metric) 
+
+		# For each planner
+		for p, planner in enumerate(planners):
+			tools = planners[planner]
+
+			shift_pos = bar_origin+bar_width*p
+			if VBAR:
+				plt.bar(shift_pos, tools['mean'], bar_width, color=C[p], yerr=tools['error'], ecolor='k')
+			else:
+				plt.barh(shift_pos, tools['mean'], bar_width, color=C[p], xerr=tools['error'], ecolor='k')
+		
+		# Legend and ticks
+		plt.legend(lplanners)
+		if VBAR:
+			plt.xticks(bar_origin+BAR_FILL/2, ltools)
+			plt.xlim([0, numbars])
+		else:
+			plt.yticks(bar_origin+BAR_FILL/2, ltools)
+			plt.ylim([0, numbars]) 
+
+	# plt.savefig(title+".svg")
 	plt.show()
 
+def get_stats(sample):
+	mean = stat.mean(sample)
+	error = stat.stdev(sample)/len(sample)**0.5
+	return mean, error
 
-def dplot(d,xlabel,ylabel,title=''):
-	c = ['b','g','r','y','c','m']
-	s = (2.0/3)
-	w = s/len(d)
-	for n,i in enumerate(d):
-		labels = db.select(xlabel,d[i])
-		y_pos = np.arange(len(labels))
-		values = []
-		for e in db.select(ylabel,d[i]):
-			values.append(float(e))
-		shift_pos = y_pos+w*n-(s/4)
-		plt.barh(shift_pos, values, w, align='center', alpha=0.5, color=c[n], label=i)
-	plt.ylabel(xlabel)
-	plt.xlabel(ylabel)
-	plt.yticks(y_pos, labels)
-	plt.legend()	 
-	plt.tight_layout()
-	plt.title(title) 
-	plt.show()
+# Gathering data
+os.system("./gather_data.sh")
 
-db = CsvDatabase('stats.csv')
-print db.get_header()
+# Filtering CSV file
+StatsFilter.filter("stats.csv","stats_filtered.csv")
 
-xlabel = 'Tool'
-ylabel = 'Makespan (s)'
-for i in (range(0,3)):
-	q = {}
-	q['popf2'] = db.query([('Planner','popf2'),('Domain','push'),('Problem',str(i))])
-	q['tfd'] = db.query([('Planner','tfd'),('Domain','push'),('Problem',str(i))])
-	# q['colin'] = db.query([('Planner','colin'),('Domain','push'),('Problem',str(i))])
-	# q['itsat'] = db.query([('Planner','itsat'),('Domain','push'),('Problem',str(i))])
-	dplot(q,xlabel=xlabel,ylabel=ylabel,title=i)
+# Creating database
+db = CsvDatabase('stats_filtered.csv')
 
-# xlabel = 'Domain'
-# ylabel = 'Makespan (s)'
-# for i in ['popf2', 'tfd', 'itsat', 'colin']:
-# 	q = {}
-# 	q['0'] = db.query([('Planner',i),('Tool','CFP'),('Problem',str(0))])
-# 	q['1'] = db.query([('Planner',i),('Tool','CFP'),('Problem',str(1))])
-# 	q['2'] = db.query([('Planner',i),('Tool','CFP'),('Problem',str(2))])
-# 	dplot(q,xlabel=xlabel,ylabel=ylabel,title=i)
+# For each metric
+metrics = {}
+for metric in lmetrics:
+
+	# For each planner
+	planners = {}
+	for planner in lplanners:
+		tools = {}
+		tools['mean'] = []
+		tools['error'] = []
+		for tool in ltools:
+			query = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool),('Status','0')])
+			select = db.select(metric, query, as_float=True)
+			mean, error = get_stats(select)
+			tools['mean'].append(mean)
+			tools['error'].append(error)
+		planners[planner] = tools
+	metrics[metric] = planners
+
+generate_plot(metrics,ltools)
+

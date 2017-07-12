@@ -30,13 +30,18 @@ class CsvDatabase:
 		else:
 			return self.query(select[1:],q)
 
-	def select(self,key,data=None):
+	def select(self,key,data=None,as_integer=False,as_float=False):
 		if data is None:
 			data = self.data
 		key = ''.join(c for c in key.split(" ") if c.isalnum())
 		ret_val = []
 		for d in data:
-			ret_val.append(d._asdict()[key])
+			e = d._asdict()[key]
+			if as_integer:
+				e = int(e)
+			if as_float:
+				e = float(e)
+			ret_val.append(e)
 		return ret_val
 
 	def get_data(self):
