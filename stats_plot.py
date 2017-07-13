@@ -23,7 +23,7 @@ FIG_SIZE		= (4, 4)
 LEGEND			= False
 
 # Labels
-lmetrics	= ['Plan Length - Makespan (s)', 'Plan Actions', 'Processing Time (s)', 'Memory Usage (GB)']
+lmetrics	= ['Plan Length - Makespan (s)', 'Plan Actions', 'Processing Time (s)', 'Memory Usage (GB)', 'Success Rate']
 lplanners	= ['tfd/downward', 'colin2']
 ltools		= ['CFP', 'CoalitionAssistance']
 
