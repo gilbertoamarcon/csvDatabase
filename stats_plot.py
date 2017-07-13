@@ -4,6 +4,7 @@ import sys
 import statistics as stat
 from CsvDatabase import *
 from StatsFilter import *
+from collections import OrderedDict
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
@@ -60,7 +61,7 @@ def generate_table(metrics, ltools, separator=None):
 	
 	# Getting column widths
 	if separator is None:
-		col_widths = {}
+		col_widths = OrderedDict()
 		for j in range(len(table[0])):
 			col_width = 0
 			for e in table:
@@ -142,13 +143,13 @@ StatsFilter.filter(RAW_STATS,FILTERED_STATS,header)
 db = CsvDatabase(FILTERED_STATS)
 
 # For each metric
-metrics = {}
+metrics = OrderedDict()
 for metric in lmetrics:
 
 	# For each planner
-	planners = {}
+	planners = OrderedDict()
 	for planner in lplanners:
-		tools = {}
+		tools = OrderedDict()
 		tools['mean'] = []
 		tools['error'] = []
 		for tool in ltools:
