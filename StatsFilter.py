@@ -15,7 +15,7 @@ class StatsFilter:
 	def process(raw):
 
 		ret_val = []
-		ret_val.append(['Domain','Problem','CFA','Planner','Tool','Makespan (s)','Actions','Proc. Time (s)','Memory (GB)','Status'])
+		ret_val.append(['Domain','Problem','CFA','Planner','Tool','Plan Length - Makespan (s)','Plan Actions','Processing Time (s)','Memory Usage (GB)','Status'])
 
 		# File parsing
 		for row in raw:
@@ -69,6 +69,6 @@ class StatsFilter:
 	# Wrapper function for the end user
 	@staticmethod
 	def filter(fname_in, fname_out, delimiter_in=' ', delimiter_out=',', quotechar='"'):
-		raw = StatsFilter.file_in("stats.csv", delimiter=delimiter_in)
+		raw = StatsFilter.file_in(fname_in, delimiter=delimiter_in)
 		filtered = StatsFilter.process(raw)
-		StatsFilter.file_out(filtered, "stats_filtered.csv", delimiter=delimiter_out)
+		StatsFilter.file_out(filtered,fname_out, delimiter=delimiter_out)

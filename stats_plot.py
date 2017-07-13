@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import os
+import sys
 import statistics as stat
 from CsvDatabase import *
 from StatsFilter import *
@@ -9,19 +10,43 @@ import matplotlib.pyplot as plt
 
 # Parameters
 C				= ['b','g','r','y','c','m']
-BAR_FILL		= 0.75
+BAR_FILL		= 0.60
 FONT_SIZE		= 8
 FONT_FAMILY		= 'serif'
-VBAR			= True
+VBAR			= False
+SHOW_PLOT		= False
 DOMAIN			= 'blocks_world'
+PSPACING		= 21
+CSPACING		= 1
+PLOT_NAME		= "plot"
+FIG_SIZE		= (4, 4)
+LEGEND			= False
 
 # Labels
-lmetrics	= ['Makespan (s)', 'Actions', 'Proc. Time (s)', 'Memory (GB)']
+lmetrics	= ['Plan Length - Makespan (s)', 'Plan Actions', 'Processing Time (s)', 'Memory Usage (GB)']
 lplanners	= ['tfd/downward', 'colin2']
 ltools		= ['CFP', 'CoalitionAssistance']
 
+# Neat Names
+NPLANNERS = {'tfd/downward': 'TFD', 'colin2': 'COLIN2'}
+
+def generate_table(metrics, ltools):
+	sys.stdout.write("% *s" % (PSPACING,"Planner"))
+	for t in ltools:
+		sys.stdout.write("% *s" % (PSPACING,t))
+	print ""
+	for metric in metrics:
+		print "%s: " % metric
+		planners = metrics[metric]
+		for planner in planners:
+			tools = planners[planner]
+			sys.stdout.write("% *s" % (PSPACING,planner))
+			for tool in tools['mean']:
+				sys.stdout.write(" %*.*f" % (PSPACING-1,CSPACING,tool))
+			print ""
+
 def generate_plot(metrics,ltools):
-	plt.figure(1)
+	plt.figure(figsize=FIG_SIZE)
 	matplotlib.rcParams.update({'font.size': FONT_SIZE})
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
 	if VBAR:
@@ -34,10 +59,14 @@ def generate_plot(metrics,ltools):
 	# For each metric
 	for m, metric in enumerate(metrics):
 		planners = metrics[metric]
-		lplanners = [p for p in planners]
+		lplanners = []
+		for p in planners:
+			lplanners.append(NPLANNERS[p])
 		bar_width = BAR_FILL/len(lplanners)
 
-		plt.subplot(subplot_pfix+m)
+		ax = plt.subplot(subplot_pfix+m+1)
+		ax.xaxis.grid(True, which='major')
+		ax.set_axisbelow(True)
 		plt.title(metric) 
 
 		# For each planner
@@ -49,9 +78,7 @@ def generate_plot(metrics,ltools):
 				plt.bar(shift_pos, tools['mean'], bar_width, color=C[p], yerr=tools['error'], ecolor='k')
 			else:
 				plt.barh(shift_pos, tools['mean'], bar_width, color=C[p], xerr=tools['error'], ecolor='k')
-		
-		# Legend and ticks
-		plt.legend(lplanners)
+
 		if VBAR:
 			plt.xticks(bar_origin+BAR_FILL/2, ltools)
 			plt.xlim([0, numbars])
@@ -59,8 +86,13 @@ def generate_plot(metrics,ltools):
 			plt.yticks(bar_origin+BAR_FILL/2, ltools)
 			plt.ylim([0, numbars]) 
 
-	# plt.savefig(title+".svg")
-	plt.show()
+
+	# Legend and ticks
+	plt.tight_layout()
+	plt.legend(lplanners, loc='lower center', bbox_to_anchor=(0.5,-1.0), ncol=2)
+	plt.savefig(PLOT_NAME+".svg", bbox_inches='tight')
+	if SHOW_PLOT:
+		plt.show()
 
 def get_stats(sample):
 	mean = stat.mean(sample)
@@ -71,10 +103,10 @@ def get_stats(sample):
 os.system("./gather_data.sh")
 
 # Filtering CSV file
-StatsFilter.filter("stats.csv","stats_filtered.csv")
+StatsFilter.filter("csv/stats.csv","csv/stats_filtered.csv")
 
 # Creating database
-db = CsvDatabase('stats_filtered.csv')
+db = CsvDatabase('csv/stats_filtered.csv')
 
 # For each metric
 metrics = {}
@@ -90,12 +122,11 @@ for metric in lmetrics:
 			query = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool),('Status','0')])
 			select = db.select(metric, query, as_float=True)
 			mean, error = get_stats(select)
-			print "%6.1f [%6.1f]" % (mean, error)
-			print "%6.1f [%6.1f]" % (mean, error)
 			tools['mean'].append(mean)
 			tools['error'].append(error)
 		planners[planner] = tools
 	metrics[metric] = planners
 
+generate_table(metrics,ltools)
 generate_plot(metrics,ltools)
 
