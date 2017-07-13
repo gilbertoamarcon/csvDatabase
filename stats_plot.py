@@ -19,11 +19,11 @@ DOMAIN			= 'blocks_world'
 PSPACING		= 21
 CSPACING		= 1
 PLOT_NAME		= "plot"
-FIG_SIZE		= (4, 4)
+FIG_SIZE		= (4, 5)
 LEGEND			= False
 
 # Labels
-lmetrics	= ['Plan Length - Makespan (s)', 'Plan Actions', 'Processing Time (s)', 'Memory Usage (GB)', 'Success Rate']
+lmetrics	= ['Plan Length - Makespan (s)', 'Number of Actions', 'Processing Time (s)', 'Memory Usage (GB)', 'Success Rate (%)']
 lplanners	= ['tfd/downward', 'colin2']
 ltools		= ['CFP', 'CoalitionAssistance']
 
@@ -120,10 +120,14 @@ for metric in lmetrics:
 		tools['error'] = []
 		for tool in ltools:
 			query = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool),('Status','0')])
-			select = db.select(metric, query, as_float=True)
-			mean, error = get_stats(select)
-			tools['mean'].append(mean)
-			tools['error'].append(error)
+			if metric == lmetrics[-1:][0]:
+				tools['mean'].append(len(query))
+				tools['error'].append(0)
+			else:
+				select = db.select(metric, query, as_float=True)
+				mean, error = get_stats(select)
+				tools['mean'].append(mean)
+				tools['error'].append(error)
 		planners[planner] = tools
 	metrics[metric] = planners
 

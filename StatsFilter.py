@@ -15,7 +15,7 @@ class StatsFilter:
 	def process(raw):
 
 		ret_val = []
-		ret_val.append(['Domain','Problem','CFA','Planner','Tool','Plan Length - Makespan (s)','Plan Actions','Processing Time (s)','Memory Usage (GB)','Status'])
+		ret_val.append(['Domain','Problem','CFA','Planner','Tool','Plan Length - Makespan (s)','Number of Actions','Processing Time (s)','Memory Usage (GB)','Status'])
 
 		# File parsing
 		for row in raw:
