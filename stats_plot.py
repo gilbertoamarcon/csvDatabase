@@ -10,7 +10,15 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 # Parameters
-C				= ['b','g','r','y','c','m']
+C	= [
+		(0.000, 0.447, 0.741),
+		(0.850, 0.325, 0.098),
+		(0.929, 0.694, 0.125),
+		(0.494, 0.184, 0.556),
+		(0.466, 0.674, 0.188),
+		(0.301, 0.745, 0.933),
+		(0.635, 0.078, 0.184),
+	]
 BAR_FILL		= 0.60
 FONT_SIZE		= 8
 FONT_FAMILY		= 'serif'
