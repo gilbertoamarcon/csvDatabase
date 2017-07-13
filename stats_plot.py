@@ -155,7 +155,8 @@ for metric in lmetrics:
 		for tool in ltools:
 			query = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool),('Success Rate (%)','0')])
 			if metric == lmetrics[-1:][0]:
-				tools['mean'].append(len(query))
+				query_all = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool)])
+				tools['mean'].append(100*len(query)/len(query_all))
 				tools['error'].append(0)
 			else:
 				select = db.select(metric, query, as_float=True)
