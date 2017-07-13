@@ -16,34 +16,67 @@ FONT_FAMILY		= 'serif'
 VBAR			= False
 SHOW_PLOT		= False
 DOMAIN			= 'blocks_world'
-PSPACING		= 21
+COL_PAD			= 5
 CSPACING		= 1
-PLOT_NAME		= "plot"
-FIG_SIZE		= (4, 5)
+FIG_SIZE		= (4, 6)
 LEGEND			= False
 
+# File names
+GATHER_DATA_SCRIPT	= "./gather_data.sh"
+RAW_STATS			= "csv/stats.csv"
+FILTERED_STATS		= "csv/stats_filtered.csv"
+TABLE_OUT			= "csv/table.csv"
+PLOT_NAME			= "plot.svg"
+
+
 # Labels
-lmetrics	= ['Plan Length - Makespan (s)', 'Number of Actions', 'Processing Time (s)', 'Memory Usage (GB)', 'Success Rate (%)']
+
+header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (s)','Number of Actions','Processing Time (s)','Memory Usage (GB)','Success Rate (%)']
+lmetrics	= header[-5:]
 lplanners	= ['tfd/downward', 'colin2']
-ltools		= ['CFP', 'CoalitionAssistance']
+ltools		= ['CFP', 'CoalitionAssistance', 'CoalitionSimilarity']
 
 # Neat Names
 NPLANNERS = {'tfd/downward': 'TFD', 'colin2': 'COLIN2'}
 
-def generate_table(metrics, ltools):
-	sys.stdout.write("% *s" % (PSPACING,"Planner"))
-	for t in ltools:
-		sys.stdout.write("% *s" % (PSPACING,t))
-	print ""
+def generate_table(metrics, ltools, separator=None):
+
+	# Assembling table
+	table = []
+	trow = []
+
+	# Header
+	for h in ["Metric", "Planner"] + ltools:
+		trow.append(h)
+	table.append(trow)
+
+	# Body
 	for metric in metrics:
-		print "%s: " % metric
-		planners = metrics[metric]
-		for planner in planners:
-			tools = planners[planner]
-			sys.stdout.write("% *s" % (PSPACING,planner))
-			for tool in tools['mean']:
-				sys.stdout.write(" %*.*f" % (PSPACING-1,CSPACING,tool))
-			print ""
+		for planner in metrics[metric]:
+			trow = []
+			for r in ["\"%s\""%metric, NPLANNERS[planner]] + ["%.*f"%(CSPACING,v) for v in metrics[metric][planner]['mean']]:
+				trow.append(r)
+			table.append(trow)
+	
+	# Getting column widths
+	if separator is None:
+		col_widths = {}
+		for j in range(len(table[0])):
+			col_width = 0
+			for e in table:
+				col_width = max(len(e[j]),col_width)
+			col_widths[j] = col_width+COL_PAD
+
+	# Lists to string
+	ret_var = ""
+	for i in range(len(table)):
+		for j in range(len(table[0])):
+			if separator is None:
+				ret_var += "% *s" % (col_widths[j],table[i][j])
+			else:
+				ret_var += "%s%s" % (table[i][j],separator)
+		ret_var += "\n"
+	return ret_var
 
 def generate_plot(metrics,ltools):
 	plt.figure(figsize=FIG_SIZE)
@@ -90,7 +123,7 @@ def generate_plot(metrics,ltools):
 	# Legend and ticks
 	plt.tight_layout()
 	plt.legend(lplanners, loc='lower center', bbox_to_anchor=(0.5,-1.0), ncol=2)
-	plt.savefig(PLOT_NAME+".svg", bbox_inches='tight')
+	plt.savefig(PLOT_NAME, bbox_inches='tight')
 	if SHOW_PLOT:
 		plt.show()
 
@@ -100,13 +133,13 @@ def get_stats(sample):
 	return mean, error
 
 # Gathering data
-os.system("./gather_data.sh")
+os.system(GATHER_DATA_SCRIPT)
 
 # Filtering CSV file
-StatsFilter.filter("csv/stats.csv","csv/stats_filtered.csv")
+StatsFilter.filter(RAW_STATS,FILTERED_STATS,header)
 
 # Creating database
-db = CsvDatabase('csv/stats_filtered.csv')
+db = CsvDatabase(FILTERED_STATS)
 
 # For each metric
 metrics = {}
@@ -119,7 +152,7 @@ for metric in lmetrics:
 		tools['mean'] = []
 		tools['error'] = []
 		for tool in ltools:
-			query = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool),('Status','0')])
+			query = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool),('Success Rate (%)','0')])
 			if metric == lmetrics[-1:][0]:
 				tools['mean'].append(len(query))
 				tools['error'].append(0)
@@ -131,6 +164,10 @@ for metric in lmetrics:
 		planners[planner] = tools
 	metrics[metric] = planners
 
-generate_table(metrics,ltools)
+
+# Generating outputs
+with open(TABLE_OUT, 'wb') as f:
+	f.write(generate_table(metrics,ltools,","))
+print generate_table(metrics,ltools)
 generate_plot(metrics,ltools)
 

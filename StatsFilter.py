@@ -5,17 +5,16 @@ class StatsFilter:
 
 	# File input
 	@staticmethod
-	def file_in(filename, delimiter=' ', quotechar='"'):
+	def __file_in(filename, delimiter=' ', quotechar='"'):
 		with open(filename, 'rb') as f:
 			ret_val = list(csv.reader(f, delimiter=delimiter, quotechar=quotechar))
 		return ret_val
 
 	# Filtering
 	@staticmethod
-	def process(raw):
-
+	def __process(raw,header):
 		ret_val = []
-		ret_val.append(['Domain','Problem','CFA','Planner','Tool','Plan Length - Makespan (s)','Number of Actions','Processing Time (s)','Memory Usage (GB)','Status'])
+		ret_val.append(header)
 
 		# File parsing
 		for row in raw:
@@ -60,7 +59,7 @@ class StatsFilter:
 
 	# File output
 	@staticmethod
-	def file_out(data, filename, delimiter=',', quotechar='"'):
+	def __file_out(data, filename, delimiter=',', quotechar='"'):
 		with open(filename, 'wb') as f:
 			wr = csv.writer(f, delimiter=delimiter, quotechar=quotechar)
 			for row in data:
@@ -68,7 +67,7 @@ class StatsFilter:
 
 	# Wrapper function for the end user
 	@staticmethod
-	def filter(fname_in, fname_out, delimiter_in=' ', delimiter_out=',', quotechar='"'):
-		raw = StatsFilter.file_in(fname_in, delimiter=delimiter_in)
-		filtered = StatsFilter.process(raw)
-		StatsFilter.file_out(filtered,fname_out, delimiter=delimiter_out)
+	def filter(fname_in, fname_out, header, delimiter_in=' ', delimiter_out=',', quotechar='"'):
+		raw = StatsFilter.__file_in(fname_in, delimiter=delimiter_in)
+		filtered = StatsFilter.__process(raw,header)
+		StatsFilter.__file_out(filtered,fname_out, delimiter=delimiter_out)

@@ -1,5 +1,6 @@
 from collections import namedtuple
 import csv
+import re
 
 class CsvDatabase:
 
@@ -11,20 +12,24 @@ class CsvDatabase:
 
 		# self.header parsing
 		self.header = raw[0]
-		for e in range(0,len(self.header)):
-			self.header[e] = ''.join(c for c in self.header[e].split(" ") if c.isalnum())
+		for e in range(len(self.header)):
+			self.header[e] = self.__filter_key(self.header[e])
 		Entry = namedtuple("Entry", self.header)
 
 		# Data parsing
 		self.data = map(Entry._make, raw[1:])
 
-	def query_r(self,key,value,data=None):
+	def __filter_key(self,key):
+		return re.sub(r'\W+', '', key)
+
+	def __query_r(self,key,value,data=None):
 		if data is None:
 			data = self.data
+		key = self.__filter_key(key)
 		return [entry for entry in data if entry._asdict()[key]==value]
 
 	def query(self,select,data=None):
-		q = self.query_r(select[0][0],select[0][1],data)
+		q = self.__query_r(select[0][0],select[0][1],data)
 		if len(select) == 1:
 			return q
 		else:
@@ -33,7 +38,7 @@ class CsvDatabase:
 	def select(self,key,data=None,as_integer=False,as_float=False):
 		if data is None:
 			data = self.data
-		key = ''.join(c for c in key.split(" ") if c.isalnum())
+		key = self.__filter_key(key)
 		ret_val = []
 		for d in data:
 			e = d._asdict()[key]
