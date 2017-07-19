@@ -27,7 +27,7 @@ SHOW_PLOT		= False
 DOMAIN			= 'blocks_world'
 COL_PAD			= 5
 CSPACING		= 1
-FIG_SIZE		= (4, 6)
+FIG_SIZE		= (4, 10)
 LEGEND			= False
 
 # File names
@@ -35,7 +35,7 @@ GATHER_DATA_SCRIPT	= "./gather_data.sh"
 RAW_STATS			= "csv/stats.csv"
 FILTERED_STATS		= "csv/stats_filtered.csv"
 TABLE_OUT			= "csv/table.csv"
-PLOT_NAME			= "plot.svg"
+PLOT_NAME			= "plot.pdf"
 
 
 # Labels
@@ -43,7 +43,7 @@ PLOT_NAME			= "plot.svg"
 header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (s)','Number of Actions','Processing Time (s)','Memory Usage (GB)','Success Rate (%)']
 lmetrics	= header[-5:]
 lplanners	= ['tfd/downward', 'colin2']
-ltools		= ['CFP', 'CoalitionAssistance', 'CoalitionSimilarity']
+ltools		= ['CFP', 'CoalitionAssistance', 'CoalitionSimilarity', 'Object', 'ObjectTime', 'ActionObject']
 
 # Neat Names
 NPLANNERS = {'tfd/downward': 'TFD', 'colin2': 'COLIN2'}
@@ -109,7 +109,7 @@ def generate_plot(metrics,ltools):
 		ax = plt.subplot(subplot_pfix+m+1)
 		ax.xaxis.grid(True, which='major')
 		ax.set_axisbelow(True)
-		plt.title(metric) 
+		# plt.title(metric) 
 
 		# For each planner
 		for p, planner in enumerate(planners):
@@ -122,16 +122,18 @@ def generate_plot(metrics,ltools):
 				plt.barh(shift_pos, tools['mean'], bar_width, color=C[p], xerr=tools['error'], ecolor='k')
 
 		if VBAR:
+			plt.ylabel(metric)
 			plt.xticks(bar_origin+BAR_FILL/2, ltools)
 			plt.xlim([0, numbars])
 		else:
+			plt.xlabel(metric)
 			plt.yticks(bar_origin+BAR_FILL/2, ltools)
 			plt.ylim([0, numbars]) 
 
 
 	# Legend and ticks
 	plt.tight_layout()
-	plt.legend(lplanners, loc='lower center', bbox_to_anchor=(0.5,-1.0), ncol=2)
+	plt.legend(lplanners, loc='lower center', bbox_to_anchor=(0.5,-0.5), ncol=2)
 	plt.savefig(PLOT_NAME, bbox_inches='tight')
 	if SHOW_PLOT:
 		plt.show()
