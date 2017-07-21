@@ -19,15 +19,22 @@ C	= [
 		(0.301, 0.745, 0.933),
 		(0.635, 0.078, 0.184),
 	]
+S	= [
+		(0.929, 0.694, 0.125),
+		(0.850, 0.325, 0.098),
+		(0.000, 0.447, 0.741),
+		(0.929, 0.894, 0.325),
+		(0.950, 0.525, 0.298),
+		(0.301, 0.745, 0.933),
+	]
 BAR_FILL		= 0.60
 FONT_SIZE		= 8
 FONT_FAMILY		= 'serif'
-VBAR			= False
 SHOW_PLOT		= False
 DOMAIN			= 'blocks_world'
 COL_PAD			= 5
 CSPACING		= 1
-FIG_SIZE		= (4, 10)
+FIG_SIZE		= (4, 12)
 LEGEND			= False
 
 # File names
@@ -35,15 +42,15 @@ GATHER_DATA_SCRIPT	= "./gather_data.sh"
 RAW_STATS			= "csv/stats.csv"
 FILTERED_STATS		= "csv/stats_filtered.csv"
 TABLE_OUT			= "csv/table.csv"
-PLOT_NAME			= "plot.pdf"
+PLOT_NAME			= "plot.svg"
 
 
 # Labels
 
-header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (s)','Number of Actions','Processing Time (s)','Memory Usage (GB)','Success Rate (%)']
+header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (s)','Number of Actions','Processing Time (s)','Memory Usage (GB)','Planning Results (%)']
 lmetrics	= header[-5:]
 lplanners	= ['tfd/downward', 'colin2']
-ltools		= ['CFP', 'CoalitionAssistance', 'CoalitionSimilarity', 'Object', 'ObjectTime', 'ActionObject']
+ltools		= ['CFP', 'CoalitionAssistance', 'CoalitionSimilarity', 'Object', 'ObjectTime', 'ActionObject', 'ActionObjectTime']
 
 # Neat Names
 NPLANNERS = {'tfd/downward': 'TFD', 'colin2': 'COLIN2'}
@@ -91,10 +98,7 @@ def generate_plot(metrics,ltools):
 	plt.figure(figsize=FIG_SIZE)
 	matplotlib.rcParams.update({'font.size': FONT_SIZE})
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
-	if VBAR:
-		subplot_pfix = 100 + 10*len(metrics)
-	else:
-		subplot_pfix = 10 + 100*len(metrics)
+	subplot_pfix = 10 + 100*len(metrics)
 	numbars = len(ltools)
 	bar_origin = ((1-BAR_FILL)/2)*np.ones(numbars) + np.asarray(range(numbars))
 
@@ -116,24 +120,32 @@ def generate_plot(metrics,ltools):
 			tools = planners[planner]
 
 			shift_pos = bar_origin+bar_width*p
-			if VBAR:
-				plt.bar(shift_pos, tools['mean'], bar_width, color=C[p], yerr=tools['error'], ecolor='k')
-			else:
+			if m < len(metrics)-1:
 				plt.barh(shift_pos, tools['mean'], bar_width, color=C[p], xerr=tools['error'], ecolor='k')
+			else:
+				label_succ = []
+				for lp in lplanners:
+					label_succ.append(lp+" "+"Time Fail")
+					label_succ.append(lp+" "+"Mem Fail")
+					label_succ.append(lp+" "+"Success")
+				success = np.array(tools['success'])
+				mem = np.array(tools['mem'])
+				time = np.array(tools['time'])
+				plt.barh(shift_pos, success+mem+time, bar_width, color=S[3*p+0])
+				plt.barh(shift_pos, success+mem, bar_width, color=S[3*p+1])
+				plt.barh(shift_pos, success, bar_width, color=S[3*p+2])
+				plt.legend(label_succ, loc='lower center', bbox_to_anchor=(0.5,-0.7), ncol=2)
 
-		if VBAR:
-			plt.ylabel(metric)
-			plt.xticks(bar_origin+BAR_FILL/2, ltools)
-			plt.xlim([0, numbars])
-		else:
-			plt.xlabel(metric)
-			plt.yticks(bar_origin+BAR_FILL/2, ltools)
-			plt.ylim([0, numbars]) 
+		plt.xlabel(metric)
+		plt.yticks(bar_origin+BAR_FILL/2, ltools)
+		plt.ylim([0, numbars]) 
+
+		if m == 0:
+			plt.legend(lplanners, loc='lower center', bbox_to_anchor=(0.5,1.0), ncol=2)
 
 
 	# Legend and ticks
 	plt.tight_layout()
-	plt.legend(lplanners, loc='lower center', bbox_to_anchor=(0.5,-0.5), ncol=2)
 	plt.savefig(PLOT_NAME, bbox_inches='tight')
 	if SHOW_PLOT:
 		plt.show()
@@ -161,12 +173,30 @@ for metric in lmetrics:
 	for planner in lplanners:
 		tools = OrderedDict()
 		tools['mean'] = []
+		tools['success'] = []
+		tools['mem'] = []
+		tools['time'] = []
 		tools['error'] = []
 		for tool in ltools:
-			query = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool),('Success Rate (%)','0')])
+			# query = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool)])
+			query = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool),('Planning Results (%)','0')])
 			if metric == lmetrics[-1:][0]:
 				query_all = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool)])
-				tools['mean'].append(100*len(query)/len(query_all))
+				success = db.select('Planning Results (%)', query_all, as_integer=True)
+				time = db.select('Processing Time (s)', query_all, as_integer=True)
+				n = len(query_all)
+				time_count = 0
+				mem_count = 0
+				for i in range(0,n):
+					if success[i]!= 0:
+						if time[i] < 3600:
+							mem_count += 1
+						else:
+							time_count += 1
+				tools['success'].append(100.0*len(query)/n)
+				tools['mem'].append(100.0*mem_count/n)
+				tools['time'].append(100.0*time_count/n)
+				tools['mean'].append(0)
 				tools['error'].append(0)
 			else:
 				select = db.select(metric, query, as_float=True)
