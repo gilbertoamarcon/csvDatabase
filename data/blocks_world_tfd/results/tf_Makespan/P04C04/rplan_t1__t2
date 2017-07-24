@@ -1,0 +1,34 @@
+1
+(move-down arm0)
+(move-down arm1)
+(move-down arm4)
+(move-up arm1)
+(move-up arm3)
+(move-up arm4)
+(pick-single-block-on-block arm4 block11 block10 encompass)
+(pick-single-block-on-block arm4 block5 block4 friction)
+2.001
+(place-single-block-on-table arm4 block5)
+3.001
+(pick-double-block-on-block arm3 arm1 block10 block9 friction)
+(pick-double-block-on-block arm3 arm1 block4 block3 encompass)
+(pick-double-block-on-block arm4 arm1 block14 block13 friction)
+(pick-double-block-on-block arm4 arm1 block2 block1 suction)
+(pick-double-block-on-block arm4 arm1 block8 block7 friction)
+3.002
+4.002
+(pick-single-block-on-block arm0 block1 block0 encompass)
+(pick-single-block-on-block arm0 block13 block12 friction)
+5.002
+(place-double-block-on-block arm3 arm1 block10 block8)
+(place-double-block-on-block arm4 arm1 block8 block5)
+5.003
+(place-single-block-on-block arm0 block1 block12)
+6.003
+(pick-double-block-on-table arm1 arm0 block12 encompass)
+6.004
+7.003
+7.004
+7.005
+8.004
+(place-double-block-on-block arm1 arm0 block12 block3)

@@ -1,0 +1,1971 @@
+Parsing...
+Contains quantified condition(s): False
+Instantiating...
+Duplicate arguments: Adding equality conditions.
+Trivial rules: Converted to facts.
+Starting instantiation [192 rules]...
+Finding invariants...
+Finding invariants... 18 initial candidates
+[0.010s CPU, 0.007s wall-clock]
+Checking invariant weight... [0.000s CPU, 0.000s wall-clock]
+Instantiating groups...
+Choosing groups...
+324 uncovered facts (before using the results from the invariant synthesis)
+324 uncovered facts
+Building translation key...
+Building STRIPS to SAS dictionary...
+Translating task...
+Processing axioms...
+Found 0 axioms that are always true and 0 that are always false
+constrained 136 conditions
+Writing output...
+Done!
+contains_quantified_conditions: 0
+Building causal graph...
+The causal graph is not acyclic.
+variable var15 is not necessary!
+variable var16 is not necessary!
+variable var17 is not necessary!
+variable var18 is not necessary!
+variable var19 is not necessary!
+variable var20 is not necessary!
+variable var21 is not necessary!
+variable var22 is not necessary!
+variable var23 is not necessary!
+variable var24 is not necessary!
+variable var25 is not necessary!
+variable var26 is not necessary!
+variable var27 is not necessary!
+variable var28 is not necessary!
+variable var29 is not necessary!
+variable var30 is not necessary!
+variable var31 is not necessary!
+variable var32 is not necessary!
+variable var33 is not necessary!
+variable var356 is not necessary!
+variable var357 is not necessary!
+variable var358 is not necessary!
+variable var359 is not necessary!
+variable var360 is not necessary!
+variable var361 is not necessary!
+variable var362 is not necessary!
+variable var363 is not necessary!
+variable var364 is not necessary!
+variable var366 is not necessary!
+variable var367 is not necessary!
+variable var368 is not necessary!
+variable var369 is not necessary!
+513 variables of 545 necessary
+1502 of 1502 operators necessary.
+0 of 0 Axiom_relational rules necessary.
+182 of 195 Axiom_functional rules necessary.
+Building domain transition graphs...
+solveable in poly time 0
+Building successor generator...
+all_operator_indices.size(): 1502
+Writing output...
+printing SG 
+513
+done
+
+Failed to match magic word 'begin_variables'.
+Got ''.
+
+Planner Paramters:
+Anytime Search: Disabled
+Timeout if plan was found: 0 seconds (no timeout)
+Timeout while no plan was found: 0 seconds (no timeout)
+Greedy Search: Disabled
+Verbose: Enabled
+Lazy Heuristic Evaluation: Enabled
+Use caching in heuristic.
+Cyclic CG heuristic: Enabled 	Preferred Operators: Enabled
+Makespan heuristic: Disabled 	Preferred Operators: Disabled
+No Heuristic: Disabled
+Cg Heuristic Zero Cost Waiting Transitions: Enabled
+Cg Heuristic Fire Waiting Transitions Only If Local Problems Matches State: Disabled
+PrefOpsOrderedMode: Enabled with 1 goals
+PrefOpsCheapestMode: Enabled with 1 goals
+PrefOpsMostExpensiveMode: Disabled with 1000 goals
+PrefOpsRandMode: Disabled with 1000 goals
+PrefOpsConcurrentMode: Disabled
+Reset after solution was found: Enabled
+Reward only preferred operators queue: Disabled
+GValues by: Timestamp
+Queue management mode: Priority based
+Known by logical state only filtering: Disabled
+use_subgoals_to_break_makespan_ties: Disabled
+Reschedule plans: Disabled
+Epsilonize internally: Enabled
+Epsilonize externally: Disabled
+Keep original plans: Enabled
+Plan name: "/home/gil/Documents/prob/iter_plan"
+Plan monitor file: "" (no monitoring)
+Monitoring verify timestamps: Disabled
+
+Parsing...
+Contains quantified condition(s): False
+Instantiating...
+Duplicate arguments: Adding equality conditions.
+Trivial rules: Converted to facts.
+Starting instantiation [192 rules]...
+Finding invariants...
+Finding invariants... 18 initial candidates
+[0.010s CPU, 0.009s wall-clock]
+Checking invariant weight... [0.000s CPU, 0.000s wall-clock]
+Contains universal conditions: 0
+Giving prior boost to open list 0
+INIT
+Open list sizes (priorities): 0 (-5000),  0 (0),  0 (0),  0 (0), 
+Initializing cyclic causal graph heuristic...done.
+Best heuristic values of queues: 34/-1/-1/-1 [expanded 1 state(s)]
+Best heuristic values of queues: 25.98/-1/-1/-1 [expanded 3 state(s)]
+Best heuristic values of queues: 24.98/-1/-1/-1 [expanded 36 state(s)]
+Best heuristic values of queues: 23.98/-1/-1/-1 [expanded 48 state(s)]
+Instantiating groups...
+Choosing groups...
+324 uncovered facts (before using the results from the invariant synthesis)
+324 uncovered facts
+Building translation key...
+Building STRIPS to SAS dictionary...
+Translating task...
+Processing axioms...
+Found 0 axioms that are always true and 0 that are always false
+constrained 136 conditions
+Writing output...
+Done!
+Best heuristic values of queues: 22.98/-1/-1/-1 [expanded 205 state(s)]
+Best heuristic values of queues: 22/-1/-1/-1 [expanded 206 state(s)]
+Best heuristic values of queues: 20.98/-1/-1/-1 [expanded 276 state(s)]
+Best heuristic values of queues: 20/-1/-1/-1 [expanded 492 state(s)]
+Best heuristic values of queues: 19.98/-1/-1/-1 [expanded 1735 state(s)]
+Best heuristic values of queues: 18.98/-1/-1/-1 [expanded 4847 state(s)]
+Best heuristic values of queues: 18/-1/-1/-1 [expanded 4848 state(s)]
+
+Search Time: 10 sec.
+Expanded Nodes: 5743 state(s).
+Rate: 574.3 Nodes/s (over 10.0s) 574.3 Nodes/s (total average)
+Generated Nodes: 63352 state(s).
+Rate: 6335.2 Nodes/s (over 10.0s) 6335.2 Nodes/s (total average)
+Overall branching factor by list sizes: 11.0312
+Averaged overall branching factor: Mean 11.03 Std: 4.49 (Num: 5743)
+Branching factors by open list:
+Open List 0: Mean 2.02 Std: 1.15 (Num: 5743)
+Open List 1: Mean 1.74 Std: 0.88 (Num: 5743)
+Open List 2: Mean 3.49 Std: 1.62 (Num: 5743)
+Open List 3: Mean 3.79 Std: 1.74 (Num: 5743)
+OpenList sizes: 2623 9990 20025 21748
+Heuristic Computations (per heuristic): 8761 Total: 8761
+Number of cache hits in heuristic (per heuristic): 4349 Total: 4349
+Best heuristic values of queues: [0: 18] [1: -1] [2: -1] [3: -1]
+
+No progress since 7579, now at 12579
+RESET!
+Giving prior boost to open list 1
+Open list sizes (priorities): 0 (0),  0 (-5000),  0 (0),  0 (0), 
+Best heuristic values of queues: 34.98/-1/-1/-1 [expanded 1 state(s)]
+Best heuristic values of queues: 34.98/35.98/-1/-1 [expanded 2 state(s)]
+Best heuristic values of queues: 34.98/25.98/-1/-1 [expanded 3 state(s)]
+Best heuristic values of queues: 34.98/24.98/-1/-1 [expanded 36 state(s)]
+Best heuristic values of queues: 34.98/23.98/-1/-1 [expanded 47 state(s)]
+Best heuristic values of queues: 34.98/23/-1/-1 [expanded 619 state(s)]
+Best heuristic values of queues: 34.98/22.98/-1/-1 [expanded 653 state(s)]
+Best heuristic values of queues: 34.98/21.98/-1/-1 [expanded 675 state(s)]
+Best heuristic values of queues: 34.98/20.98/-1/-1 [expanded 676 state(s)]
+Best heuristic values of queues: 34.98/19.98/-1/-1 [expanded 787 state(s)]
+Best heuristic values of queues: 34.98/18.98/-1/-1 [expanded 1656 state(s)]
+Best heuristic values of queues: 34.98/16/-1/-1 [expanded 2006 state(s)]
+
+Search Time: 20 sec.
+Expanded Nodes: 12337 state(s).
+Rate: 659.4 Nodes/s (over 10.0s) 616.9 Nodes/s (total average)
+Generated Nodes: 136437 state(s).
+Rate: 7308.5 Nodes/s (over 10.0s) 6821.9 Nodes/s (total average)
+Overall branching factor by list sizes: 11.0592
+Averaged overall branching factor: Mean 11.06 Std: 4.58 (Num: 12337)
+Branching factors by open list:
+Open List 0: Mean 2.10 Std: 1.21 (Num: 12337)
+Open List 1: Mean 1.85 Std: 0.95 (Num: 12337)
+Open List 2: Mean 3.44 Std: 1.63 (Num: 12337)
+Open List 3: Mean 3.67 Std: 1.76 (Num: 12337)
+OpenList sizes: 9728 1938 14879 15739
+Heuristic Computations (per heuristic): 18909 Total: 18909
+Number of cache hits in heuristic (per heuristic): 10520 Total: 10520
+Best heuristic values of queues: [0: 34.98] [1: 16] [2: -1] [3: -1]
+
+No progress since 3010, now at 8010
+RESET!
+Giving prior boost to open list 2
+Open list sizes (priorities): 0 (0),  0 (0),  0 (-5000),  0 (0), 
+Best heuristic values of queues: -1/34.98/-1/-1 [expanded 1 state(s)]
+Best heuristic values of queues: -1/34.98/35.98/-1 [expanded 2 state(s)]
+Best heuristic values of queues: -1/34.98/34.98/-1 [expanded 3 state(s)]
+Best heuristic values of queues: -1/34.98/32.98/-1 [expanded 4 state(s)]
+Best heuristic values of queues: -1/34.98/32/-1 [expanded 5 state(s)]
+Best heuristic values of queues: -1/34.98/29.98/-1 [expanded 8 state(s)]
+Best heuristic values of queues: -1/34.98/28.98/-1 [expanded 24 state(s)]
+Best heuristic values of queues: -1/34.98/28/-1 [expanded 27 state(s)]
+Best heuristic values of queues: -1/34.98/26/-1 [expanded 29 state(s)]
+Best heuristic values of queues: -1/34.98/25.98/-1 [expanded 31 state(s)]
+Best heuristic values of queues: -1/34.98/22.98/-1 [expanded 39 state(s)]
+Best heuristic values of queues: -1/34.98/19/-1 [expanded 40 state(s)]
+Best heuristic values of queues: -1/34.98/18.98/-1 [expanded 176 state(s)]
+Best heuristic values of queues: -1/34.98/16/-1 [expanded 177 state(s)]
+Best heuristic values of queues: -1/34.98/14/-1 [expanded 1062 state(s)]
+Best heuristic values of queues: -1/34.98/13.98/-1 [expanded 1063 state(s)]
+Best heuristic values of queues: -1/34.98/13/-1 [expanded 1068 state(s)]
+Best heuristic values of queues: -1/34.98/12.98/-1 [expanded 1070 state(s)]
+Best heuristic values of queues: -1/34.98/11/-1 [expanded 1087 state(s)]
+Best heuristic values of queues: -1/34.98/9/-1 [expanded 1095 state(s)]
+Best heuristic values of queues: -1/34.98/8.98/-1 [expanded 1166 state(s)]
+Best heuristic values of queues: -1/34.98/8/-1 [expanded 1210 state(s)]
+Best heuristic values of queues: -1/34.98/7.98/-1 [expanded 1234 state(s)]
+Best heuristic values of queues: -1/34.98/6.98/-1 [expanded 1310 state(s)]
+Best heuristic values of queues: -1/34.98/6/-1 [expanded 1314 state(s)]
+Best heuristic values of queues: -1/34.98/5.98/-1 [expanded 4107 state(s)]
+Best heuristic values of queues: -1/34.98/4/-1 [expanded 4108 state(s)]
+
+Search Time: 30 sec.
+Expanded Nodes: 18417 state(s).
+Rate: 608.0 Nodes/s (over 10.0s) 613.9 Nodes/s (total average)
+Generated Nodes: 191824 state(s).
+Rate: 5538.7 Nodes/s (over 10.0s) 6394.1 Nodes/s (total average)
+Overall branching factor by list sizes: 10.4156
+Averaged overall branching factor: Mean 10.42 Std: 4.57 (Num: 18417)
+Branching factors by open list:
+Open List 0: Mean 1.97 Std: 1.14 (Num: 18417)
+Open List 1: Mean 1.75 Std: 0.89 (Num: 18417)
+Open List 2: Mean 3.17 Std: 1.68 (Num: 18417)
+Open List 3: Mean 3.52 Std: 1.77 (Num: 18417)
+OpenList sizes: 8731 7927 5823 16938
+Heuristic Computations (per heuristic): 27574 Total: 27574
+Number of cache hits in heuristic (per heuristic): 15056 Total: 15056
+Best heuristic values of queues: [0: -1] [1: 34.98] [2: 4] [3: -1]
+
+No progress since 5839, now at 10839
+RESET!
+Giving prior boost to open list 3
+Open list sizes (priorities): 0 (0),  0 (0),  0 (0),  0 (-5000), 
+Best heuristic values of queues: -1/-1/34/-1 [expanded 1 state(s)]
+Best heuristic values of queues: -1/-1/34/31.98 [expanded 2 state(s)]
+Best heuristic values of queues: -1/-1/34/26.98 [expanded 4 state(s)]
+Best heuristic values of queues: -1/-1/34/26 [expanded 13 state(s)]
+Best heuristic values of queues: -1/-1/34/25.98 [expanded 524 state(s)]
+Best heuristic values of queues: -1/-1/34/25 [expanded 547 state(s)]
+Best heuristic values of queues: -1/-1/34/24.98 [expanded 556 state(s)]
+Best heuristic values of queues: -1/-1/34/23 [expanded 578 state(s)]
+Best heuristic values of queues: -1/-1/34/22.98 [expanded 582 state(s)]
+
+Search Time: 40 sec.
+Expanded Nodes: 24386 state(s).
+Rate: 596.9 Nodes/s (over 10.0s) 609.6 Nodes/s (total average)
+Generated Nodes: 245946 state(s).
+Rate: 5412.2 Nodes/s (over 10.0s) 6148.6 Nodes/s (total average)
+Overall branching factor by list sizes: 10.0855
+Averaged overall branching factor: Mean 10.09 Std: 4.54 (Num: 24386)
+Branching factors by open list:
+Open List 0: Mean 1.91 Std: 1.07 (Num: 24386)
+Open List 1: Mean 1.71 Std: 0.85 (Num: 24386)
+Open List 2: Mean 3.07 Std: 1.69 (Num: 24386)
+Open List 3: Mean 3.39 Std: 1.80 (Num: 24386)
+OpenList sizes: 6429 6379 11737 5632
+Heuristic Computations (per heuristic): 36001 Total: 36001
+Number of cache hits in heuristic (per heuristic): 19340 Total: 19340
+Best heuristic values of queues: [0: -1] [1: -1] [2: 34] [3: 22.98]
+
+No progress since 766, now at 5766
+RESET!
+Switching to round robin mode. 
+Open list sizes (priorities): 0 (0),  0 (0),  0 (0),  0 (0), 
+Best heuristic values of queues: -1/-1/-1/34.98 [expanded 1 state(s)]
+Best heuristic values of queues: 35.98/-1/-1/34.98 [expanded 2 state(s)]
+Best heuristic values of queues: 35.98/-1/-1/31.98 [expanded 3 state(s)]
+Best heuristic values of queues: 34.98/-1/-1/31.98 [expanded 4 state(s)]
+Best heuristic values of queues: 34.98/-1/27.98/31.98 [expanded 7 state(s)]
+Best heuristic values of queues: 34.98/-1/27.98/29.98 [expanded 8 state(s)]
+Best heuristic values of queues: 27/-1/27.98/29.98 [expanded 9 state(s)]
+Best heuristic values of queues: 25.98/-1/27.98/29.98 [expanded 11 state(s)]
+Best heuristic values of queues: 25.98/32/27.98/29.98 [expanded 17 state(s)]
+Best heuristic values of queues: 25.98/32/25.98/29.98 [expanded 18 state(s)]
+Best heuristic values of queues: 25.98/32/25.98/25.98 [expanded 22 state(s)]
+Best heuristic values of queues: 25.98/31.98/25.98/25.98 [expanded 34 state(s)]
+Best heuristic values of queues: 25.98/26.98/25.98/25.98 [expanded 43 state(s)]
+Best heuristic values of queues: 24/26.98/25.98/25.98 [expanded 52 state(s)]
+Best heuristic values of queues: 24/23.98/25.98/25.98 [expanded 53 state(s)]
+Best heuristic values of queues: 24/23.98/25.98/23.98 [expanded 55 state(s)]
+Best heuristic values of queues: 24/23.98/25.98/22.98 [expanded 80 state(s)]
+Best heuristic values of queues: 22/23.98/25.98/22.98 [expanded 84 state(s)]
+Best heuristic values of queues: 22/23.98/24.98/22.98 [expanded 86 state(s)]
+Best heuristic values of queues: 21/23.98/24.98/22.98 [expanded 95 state(s)]
+Best heuristic values of queues: 21/21.98/24.98/22.98 [expanded 101 state(s)]
+Best heuristic values of queues: 21/21.98/24.98/21.98 [expanded 109 state(s)]
+Best heuristic values of queues: 20.98/21.98/24.98/21.98 [expanded 131 state(s)]
+Best heuristic values of queues: 20.98/21.98/24.98/20.98 [expanded 133 state(s)]
+Best heuristic values of queues: 20.98/20/24.98/20.98 [expanded 135 state(s)]
+Best heuristic values of queues: 20.98/20/20.98/20.98 [expanded 136 state(s)]
+Best heuristic values of queues: 20.98/20/19.98/20.98 [expanded 167 state(s)]
+Best heuristic values of queues: 20.98/20/19.98/19.98 [expanded 172 state(s)]
+Best heuristic values of queues: 19.98/20/19.98/19.98 [expanded 200 state(s)]
+Best heuristic values of queues: 19.98/19.98/19.98/19.98 [expanded 237 state(s)]
+Best heuristic values of queues: 19.98/17.98/19.98/19.98 [expanded 292 state(s)]
+Best heuristic values of queues: 19.98/17.98/16.98/19.98 [expanded 293 state(s)]
+Best heuristic values of queues: 19.98/17.98/16.98/16.98 [expanded 294 state(s)]
+Best heuristic values of queues: 16.98/17.98/16.98/16.98 [expanded 295 state(s)]
+Best heuristic values of queues: 16.98/16.98/16.98/16.98 [expanded 310 state(s)]
+Best heuristic values of queues: 16.98/16.98/14.98/16.98 [expanded 314 state(s)]
+Best heuristic values of queues: 15/16.98/14.98/16.98 [expanded 319 state(s)]
+Best heuristic values of queues: 14.98/16.98/14.98/16.98 [expanded 320 state(s)]
+Best heuristic values of queues: 14.98/16.98/14.98/14.98 [expanded 326 state(s)]
+Best heuristic values of queues: 14.98/16.98/12.98/14.98 [expanded 341 state(s)]
+Best heuristic values of queues: 12/16.98/12.98/14.98 [expanded 350 state(s)]
+Best heuristic values of queues: 12/14.98/12.98/14.98 [expanded 351 state(s)]
+Best heuristic values of queues: 12/14.98/12.98/13.98 [expanded 369 state(s)]
+Best heuristic values of queues: 12/13/12.98/13.98 [expanded 374 state(s)]
+Best heuristic values of queues: 12/13/12.98/12 [expanded 382 state(s)]
+Best heuristic values of queues: 12/10.98/12.98/12 [expanded 406 state(s)]
+Best heuristic values of queues: 12/10.98/11.98/12 [expanded 407 state(s)]
+Best heuristic values of queues: 9/10.98/11.98/12 [expanded 412 state(s)]
+Best heuristic values of queues: 9/9.98/11.98/12 [expanded 413 state(s)]
+Best heuristic values of queues: 9/9.98/9.98/12 [expanded 414 state(s)]
+Best heuristic values of queues: 9/9.98/9.98/9.98 [expanded 415 state(s)]
+Best heuristic values of queues: 9/9/9.98/9.98 [expanded 417 state(s)]
+Best heuristic values of queues: 9/9/8.98/9.98 [expanded 418 state(s)]
+Best heuristic values of queues: 8.98/9/8.98/9.98 [expanded 423 state(s)]
+Best heuristic values of queues: 8.98/9/8.98/8.98 [expanded 437 state(s)]
+Best heuristic values of queues: 8.98/7.98/8.98/8.98 [expanded 449 state(s)]
+Best heuristic values of queues: 8.98/7.98/6.98/8.98 [expanded 450 state(s)]
+Best heuristic values of queues: 8/7.98/6.98/8.98 [expanded 454 state(s)]
+Best heuristic values of queues: 8/7.98/6.98/7.98 [expanded 458 state(s)]
+Best heuristic values of queues: 7/7.98/6.98/7.98 [expanded 459 state(s)]
+Best heuristic values of queues: 7/6.98/6.98/7.98 [expanded 524 state(s)]
+Best heuristic values of queues: 6.98/6.98/6.98/7.98 [expanded 528 state(s)]
+Best heuristic values of queues: 6.98/6.98/6.98/6.98 [expanded 821 state(s)]
+Best heuristic values of queues: 6.98/6/6.98/6.98 [expanded 910 state(s)]
+Best heuristic values of queues: 6/6/6.98/6.98 [expanded 1043 state(s)]
+Best heuristic values of queues: 6/6/6/6.98 [expanded 1217 state(s)]
+
+Search Time: 50 sec.
+Expanded Nodes: 29426 state(s).
+Rate: 504.0 Nodes/s (over 10.0s) 588.5 Nodes/s (total average)
+Generated Nodes: 285816 state(s).
+Rate: 3987.0 Nodes/s (over 10.0s) 5716.3 Nodes/s (total average)
+Overall branching factor by list sizes: 9.71304
+Averaged overall branching factor: Mean 9.71 Std: 4.54 (Num: 29426)
+Branching factors by open list:
+Open List 0: Mean 1.82 Std: 1.04 (Num: 29426)
+Open List 1: Mean 1.66 Std: 0.83 (Num: 29426)
+Open List 2: Mean 2.89 Std: 1.68 (Num: 29426)
+Open List 3: Mean 3.33 Std: 1.87 (Num: 29426)
+OpenList sizes: 3134 3080 5833 11123
+Heuristic Computations (per heuristic): 49556 Total: 49556
+Number of cache hits in heuristic (per heuristic): 28387 Total: 28387
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6.98]
+
+Best heuristic values of queues: 6/6/6/6 [expanded 7543 state(s)]
+
+Search Time: 60 sec.
+Expanded Nodes: 34868 state(s).
+Rate: 544.2 Nodes/s (over 10.0s) 581.1 Nodes/s (total average)
+Generated Nodes: 324184 state(s).
+Rate: 3836.8 Nodes/s (over 10.0s) 5403.1 Nodes/s (total average)
+Overall branching factor by list sizes: 9.29746
+Averaged overall branching factor: Mean 9.30 Std: 4.52 (Num: 34868)
+Branching factors by open list:
+Open List 0: Mean 1.75 Std: 1.00 (Num: 34868)
+Open List 1: Mean 1.61 Std: 0.81 (Num: 34868)
+Open List 2: Mean 2.71 Std: 1.65 (Num: 34868)
+Open List 3: Mean 3.22 Std: 1.90 (Num: 34868)
+OpenList sizes: 5061 4995 9794 19904
+Heuristic Computations (per heuristic): 69014 Total: 69014
+Number of cache hits in heuristic (per heuristic): 43010 Total: 43010
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 70 sec.
+Expanded Nodes: 40699 state(s).
+Rate: 583.1 Nodes/s (over 10.0s) 581.4 Nodes/s (total average)
+Generated Nodes: 364926 state(s).
+Rate: 4074.2 Nodes/s (over 10.0s) 5213.2 Nodes/s (total average)
+Overall branching factor by list sizes: 8.96646
+Averaged overall branching factor: Mean 8.97 Std: 4.49 (Num: 40699)
+Branching factors by open list:
+Open List 0: Mean 1.69 Std: 0.97 (Num: 40699)
+Open List 1: Mean 1.58 Std: 0.80 (Num: 40699)
+Open List 2: Mean 2.57 Std: 1.62 (Num: 40699)
+Open List 3: Mean 3.13 Std: 1.92 (Num: 40699)
+OpenList sizes: 6920 6837 13702 28676
+Heuristic Computations (per heuristic): 90436 Total: 90436
+Number of cache hits in heuristic (per heuristic): 59612 Total: 59612
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 80 sec.
+Expanded Nodes: 46221 state(s).
+Rate: 552.2 Nodes/s (over 10.0s) 577.8 Nodes/s (total average)
+Generated Nodes: 401580 state(s).
+Rate: 3665.4 Nodes/s (over 10.0s) 5019.8 Nodes/s (total average)
+Overall branching factor by list sizes: 8.68826
+Averaged overall branching factor: Mean 8.69 Std: 4.44 (Num: 46221)
+Branching factors by open list:
+Open List 0: Mean 1.64 Std: 0.94 (Num: 46221)
+Open List 1: Mean 1.54 Std: 0.78 (Num: 46221)
+Open List 2: Mean 2.46 Std: 1.59 (Num: 46221)
+Open List 3: Mean 3.05 Std: 1.93 (Num: 46221)
+OpenList sizes: 7807 7702 16549 36223
+Heuristic Computations (per heuristic): 112372 Total: 112372
+Number of cache hits in heuristic (per heuristic): 77093 Total: 77093
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 90 sec.
+Expanded Nodes: 51841 state(s).
+Rate: 562.0 Nodes/s (over 10.0s) 576.0 Nodes/s (total average)
+Generated Nodes: 442826 state(s).
+Rate: 4124.6 Nodes/s (over 10.0s) 4920.3 Nodes/s (total average)
+Overall branching factor by list sizes: 8.542
+Averaged overall branching factor: Mean 8.54 Std: 4.39 (Num: 51841)
+Branching factors by open list:
+Open List 0: Mean 1.62 Std: 0.92 (Num: 51841)
+Open List 1: Mean 1.52 Std: 0.77 (Num: 51841)
+Open List 2: Mean 2.38 Std: 1.55 (Num: 51841)
+Open List 3: Mean 3.02 Std: 1.93 (Num: 51841)
+OpenList sizes: 9900 9783 20892 45956
+Heuristic Computations (per heuristic): 132642 Total: 132642
+Number of cache hits in heuristic (per heuristic): 92703 Total: 92703
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 100 sec.
+Expanded Nodes: 57573 state(s).
+Rate: 573.2 Nodes/s (over 10.0s) 575.7 Nodes/s (total average)
+Generated Nodes: 485140 state(s).
+Rate: 4231.4 Nodes/s (over 10.0s) 4851.4 Nodes/s (total average)
+Overall branching factor by list sizes: 8.42652
+Averaged overall branching factor: Mean 8.43 Std: 4.34 (Num: 57573)
+Branching factors by open list:
+Open List 0: Mean 1.60 Std: 0.90 (Num: 57573)
+Open List 1: Mean 1.52 Std: 0.77 (Num: 57573)
+Open List 2: Mean 2.33 Std: 1.52 (Num: 57573)
+Open List 3: Mean 2.98 Std: 1.93 (Num: 57573)
+OpenList sizes: 12743 12601 25995 55891
+Heuristic Computations (per heuristic): 151270 Total: 151270
+Number of cache hits in heuristic (per heuristic): 106436 Total: 106436
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 110 sec.
+Expanded Nodes: 63237 state(s).
+Rate: 566.4 Nodes/s (over 10.0s) 574.9 Nodes/s (total average)
+Generated Nodes: 523094 state(s).
+Rate: 3795.4 Nodes/s (over 10.0s) 4755.4 Nodes/s (total average)
+Overall branching factor by list sizes: 8.27196
+Averaged overall branching factor: Mean 8.27 Std: 4.30 (Num: 63237)
+Branching factors by open list:
+Open List 0: Mean 1.58 Std: 0.88 (Num: 63237)
+Open List 1: Mean 1.50 Std: 0.76 (Num: 63237)
+Open List 2: Mean 2.27 Std: 1.49 (Num: 63237)
+Open List 3: Mean 2.93 Std: 1.93 (Num: 63237)
+OpenList sizes: 13812 13665 28865 63018
+Heuristic Computations (per heuristic): 174259 Total: 174259
+Number of cache hits in heuristic (per heuristic): 124603 Total: 124603
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 120 sec.
+Expanded Nodes: 68263 state(s).
+Rate: 502.6 Nodes/s (over 10.0s) 568.9 Nodes/s (total average)
+Generated Nodes: 557198 state(s).
+Rate: 3410.4 Nodes/s (over 10.0s) 4643.3 Nodes/s (total average)
+Overall branching factor by list sizes: 8.16252
+Averaged overall branching factor: Mean 8.16 Std: 4.27 (Num: 68263)
+Branching factors by open list:
+Open List 0: Mean 1.56 Std: 0.87 (Num: 68263)
+Open List 1: Mean 1.49 Std: 0.75 (Num: 68263)
+Open List 2: Mean 2.22 Std: 1.47 (Num: 68263)
+Open List 3: Mean 2.90 Std: 1.93 (Num: 68263)
+OpenList sizes: 14720 14545 31457 69870
+Heuristic Computations (per heuristic): 194486 Total: 194486
+Number of cache hits in heuristic (per heuristic): 140763 Total: 140763
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 130 sec.
+Expanded Nodes: 73401 state(s).
+Rate: 513.8 Nodes/s (over 10.0s) 564.6 Nodes/s (total average)
+Generated Nodes: 590325 state(s).
+Rate: 3312.7 Nodes/s (over 10.0s) 4541.0 Nodes/s (total average)
+Overall branching factor by list sizes: 8.04247
+Averaged overall branching factor: Mean 8.04 Std: 4.23 (Num: 73401)
+Branching factors by open list:
+Open List 0: Mean 1.54 Std: 0.85 (Num: 73401)
+Open List 1: Mean 1.47 Std: 0.74 (Num: 73401)
+Open List 2: Mean 2.17 Std: 1.45 (Num: 73401)
+Open List 3: Mean 2.86 Std: 1.92 (Num: 73401)
+OpenList sizes: 15338 15152 33296 75606
+Heuristic Computations (per heuristic): 215708 Total: 215708
+Number of cache hits in heuristic (per heuristic): 157366 Total: 157366
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 140 sec.
+Expanded Nodes: 78650 state(s).
+Rate: 524.9 Nodes/s (over 10.0s) 561.8 Nodes/s (total average)
+Generated Nodes: 623982 state(s).
+Rate: 3365.7 Nodes/s (over 10.0s) 4457.0 Nodes/s (total average)
+Overall branching factor by list sizes: 7.93366
+Averaged overall branching factor: Mean 7.93 Std: 4.19 (Num: 78650)
+Branching factors by open list:
+Open List 0: Mean 1.52 Std: 0.84 (Num: 78650)
+Open List 1: Mean 1.46 Std: 0.73 (Num: 78650)
+Open List 2: Mean 2.13 Std: 1.43 (Num: 78650)
+Open List 3: Mean 2.82 Std: 1.92 (Num: 78650)
+OpenList sizes: 16189 15983 35686 82154
+Heuristic Computations (per heuristic): 235957 Total: 235957
+Number of cache hits in heuristic (per heuristic): 173017 Total: 173017
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 150 sec.
+Expanded Nodes: 93680 state(s).
+Rate: 1503.0 Nodes/s (over 10.0s) 624.5 Nodes/s (total average)
+Generated Nodes: 725997 state(s).
+Rate: 10201.5 Nodes/s (over 10.0s) 4840.0 Nodes/s (total average)
+Overall branching factor by list sizes: 7.74975
+Averaged overall branching factor: Mean 7.75 Std: 4.13 (Num: 93680)
+Branching factors by open list:
+Open List 0: Mean 1.49 Std: 0.82 (Num: 93680)
+Open List 1: Mean 1.44 Std: 0.72 (Num: 93680)
+Open List 2: Mean 2.05 Std: 1.38 (Num: 93680)
+Open List 3: Mean 2.77 Std: 1.92 (Num: 93680)
+OpenList sizes: 20646 20338 44798 104230
+Heuristic Computations (per heuristic): 291581 Total: 291581
+Number of cache hits in heuristic (per heuristic): 226270 Total: 226270
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 160 sec.
+Expanded Nodes: 104677 state(s).
+Rate: 1099.7 Nodes/s (over 10.0s) 654.2 Nodes/s (total average)
+Generated Nodes: 802933 state(s).
+Rate: 7693.6 Nodes/s (over 10.0s) 5018.3 Nodes/s (total average)
+Overall branching factor by list sizes: 7.67058
+Averaged overall branching factor: Mean 7.67 Std: 4.09 (Num: 104677)
+Branching factors by open list:
+Open List 0: Mean 1.47 Std: 0.80 (Num: 104677)
+Open List 1: Mean 1.42 Std: 0.71 (Num: 104677)
+Open List 2: Mean 2.02 Std: 1.36 (Num: 104677)
+Open List 3: Mean 2.76 Std: 1.93 (Num: 104677)
+OpenList sizes: 23831 23459 52784 122405
+Heuristic Computations (per heuristic): 332239 Total: 332239
+Number of cache hits in heuristic (per heuristic): 263423 Total: 263423
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 170 sec.
+Expanded Nodes: 112260 state(s).
+Rate: 758.3 Nodes/s (over 10.0s) 660.4 Nodes/s (total average)
+Generated Nodes: 855318 state(s).
+Rate: 5238.5 Nodes/s (over 10.0s) 5031.3 Nodes/s (total average)
+Overall branching factor by list sizes: 7.61908
+Averaged overall branching factor: Mean 7.62 Std: 4.07 (Num: 112260)
+Branching factors by open list:
+Open List 0: Mean 1.46 Std: 0.79 (Num: 112260)
+Open List 1: Mean 1.41 Std: 0.70 (Num: 112260)
+Open List 2: Mean 2.00 Std: 1.35 (Num: 112260)
+Open List 3: Mean 2.75 Std: 1.93 (Num: 112260)
+OpenList sizes: 26025 25613 57976 134551
+Heuristic Computations (per heuristic): 360178 Total: 360178
+Number of cache hits in heuristic (per heuristic): 287846 Total: 287846
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 180 sec.
+Expanded Nodes: 118641 state(s).
+Rate: 638.1 Nodes/s (over 10.0s) 659.1 Nodes/s (total average)
+Generated Nodes: 899292 state(s).
+Rate: 4397.4 Nodes/s (over 10.0s) 4996.1 Nodes/s (total average)
+Overall branching factor by list sizes: 7.57994
+Averaged overall branching factor: Mean 7.58 Std: 4.06 (Num: 118641)
+Branching factors by open list:
+Open List 0: Mean 1.45 Std: 0.78 (Num: 118641)
+Open List 1: Mean 1.41 Std: 0.69 (Num: 118641)
+Open List 2: Mean 1.98 Std: 1.34 (Num: 118641)
+Open List 3: Mean 2.74 Std: 1.94 (Num: 118641)
+OpenList sizes: 27363 26902 61750 144500
+Heuristic Computations (per heuristic): 385122 Total: 385122
+Number of cache hits in heuristic (per heuristic): 309171 Total: 309171
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 190 sec.
+Expanded Nodes: 125832 state(s).
+Rate: 719.1 Nodes/s (over 10.0s) 662.3 Nodes/s (total average)
+Generated Nodes: 946957 state(s).
+Rate: 4766.5 Nodes/s (over 10.0s) 4984.0 Nodes/s (total average)
+Overall branching factor by list sizes: 7.52557
+Averaged overall branching factor: Mean 7.53 Std: 4.03 (Num: 125832)
+Branching factors by open list:
+Open List 0: Mean 1.44 Std: 0.77 (Num: 125832)
+Open List 1: Mean 1.40 Std: 0.69 (Num: 125832)
+Open List 2: Mean 1.96 Std: 1.32 (Num: 125832)
+Open List 3: Mean 2.72 Std: 1.93 (Num: 125832)
+OpenList sizes: 29257 28762 65706 153478
+Heuristic Computations (per heuristic): 412709 Total: 412709
+Number of cache hits in heuristic (per heuristic): 332423 Total: 332423
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 200 sec.
+Expanded Nodes: 133061 state(s).
+Rate: 722.9 Nodes/s (over 10.0s) 665.3 Nodes/s (total average)
+Generated Nodes: 993425 state(s).
+Rate: 4646.8 Nodes/s (over 10.0s) 4967.1 Nodes/s (total average)
+Overall branching factor by list sizes: 7.46594
+Averaged overall branching factor: Mean 7.47 Std: 4.01 (Num: 133061)
+Branching factors by open list:
+Open List 0: Mean 1.44 Std: 0.76 (Num: 133061)
+Open List 1: Mean 1.40 Std: 0.69 (Num: 133061)
+Open List 2: Mean 1.94 Std: 1.31 (Num: 133061)
+Open List 3: Mean 2.69 Std: 1.92 (Num: 133061)
+OpenList sizes: 30408 29875 68829 161347
+Heuristic Computations (per heuristic): 442432 Total: 442432
+Number of cache hits in heuristic (per heuristic): 358302 Total: 358302
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 210 sec.
+Expanded Nodes: 142708 state(s).
+Rate: 964.7 Nodes/s (over 10.0s) 679.6 Nodes/s (total average)
+Generated Nodes: 1056217 state(s).
+Rate: 6279.2 Nodes/s (over 10.0s) 5029.6 Nodes/s (total average)
+Overall branching factor by list sizes: 7.40125
+Averaged overall branching factor: Mean 7.40 Std: 3.98 (Num: 142708)
+Branching factors by open list:
+Open List 0: Mean 1.42 Std: 0.75 (Num: 142708)
+Open List 1: Mean 1.39 Std: 0.68 (Num: 142708)
+Open List 2: Mean 1.92 Std: 1.29 (Num: 142708)
+Open List 3: Mean 2.67 Std: 1.92 (Num: 142708)
+OpenList sizes: 31759 31190 73452 172890
+Heuristic Computations (per heuristic): 481834 Total: 481834
+Number of cache hits in heuristic (per heuristic): 393938 Total: 393938
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 220 sec.
+Expanded Nodes: 150869 state(s).
+Rate: 816.1 Nodes/s (over 10.0s) 685.8 Nodes/s (total average)
+Generated Nodes: 1111345 state(s).
+Rate: 5512.8 Nodes/s (over 10.0s) 5051.6 Nodes/s (total average)
+Overall branching factor by list sizes: 7.36629
+Averaged overall branching factor: Mean 7.37 Std: 3.96 (Num: 150869)
+Branching factors by open list:
+Open List 0: Mean 1.42 Std: 0.75 (Num: 150869)
+Open List 1: Mean 1.38 Std: 0.68 (Num: 150869)
+Open List 2: Mean 1.90 Std: 1.28 (Num: 150869)
+Open List 3: Mean 2.66 Std: 1.91 (Num: 150869)
+OpenList sizes: 33223 32594 77756 184113
+Heuristic Computations (per heuristic): 514833 Total: 514833
+Number of cache hits in heuristic (per heuristic): 423048 Total: 423048
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 230 sec.
+Expanded Nodes: 160512 state(s).
+Rate: 964.3 Nodes/s (over 10.0s) 697.9 Nodes/s (total average)
+Generated Nodes: 1173530 state(s).
+Rate: 6218.5 Nodes/s (over 10.0s) 5102.3 Nodes/s (total average)
+Overall branching factor by list sizes: 7.31117
+Averaged overall branching factor: Mean 7.31 Std: 3.93 (Num: 160512)
+Branching factors by open list:
+Open List 0: Mean 1.41 Std: 0.74 (Num: 160512)
+Open List 1: Mean 1.37 Std: 0.67 (Num: 160512)
+Open List 2: Mean 1.89 Std: 1.27 (Num: 160512)
+Open List 3: Mean 2.64 Std: 1.91 (Num: 160512)
+OpenList sizes: 33720 33092 82215 195685
+Heuristic Computations (per heuristic): 555799 Total: 555799
+Number of cache hits in heuristic (per heuristic): 460685 Total: 460685
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 240 sec.
+Expanded Nodes: 173247 state(s).
+Rate: 1273.5 Nodes/s (over 10.0s) 721.9 Nodes/s (total average)
+Generated Nodes: 1256273 state(s).
+Rate: 8274.3 Nodes/s (over 10.0s) 5234.5 Nodes/s (total average)
+Overall branching factor by list sizes: 7.25134
+Averaged overall branching factor: Mean 7.25 Std: 3.90 (Num: 173247)
+Branching factors by open list:
+Open List 0: Mean 1.40 Std: 0.72 (Num: 173247)
+Open List 1: Mean 1.36 Std: 0.66 (Num: 173247)
+Open List 2: Mean 1.87 Std: 1.26 (Num: 173247)
+Open List 3: Mean 2.62 Std: 1.90 (Num: 173247)
+OpenList sizes: 35754 35084 89285 211873
+Heuristic Computations (per heuristic): 607223 Total: 607223
+Number of cache hits in heuristic (per heuristic): 509100 Total: 509100
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 250 sec.
+Expanded Nodes: 183005 state(s).
+Rate: 975.8 Nodes/s (over 10.0s) 732.0 Nodes/s (total average)
+Generated Nodes: 1317169 state(s).
+Rate: 6089.6 Nodes/s (over 10.0s) 5268.7 Nodes/s (total average)
+Overall branching factor by list sizes: 7.19745
+Averaged overall branching factor: Mean 7.20 Std: 3.87 (Num: 183005)
+Branching factors by open list:
+Open List 0: Mean 1.39 Std: 0.71 (Num: 183005)
+Open List 1: Mean 1.36 Std: 0.65 (Num: 183005)
+Open List 2: Mean 1.86 Std: 1.24 (Num: 183005)
+Open List 3: Mean 2.60 Std: 1.90 (Num: 183005)
+OpenList sizes: 36459 35789 93758 222573
+Heuristic Computations (per heuristic): 648213 Total: 648213
+Number of cache hits in heuristic (per heuristic): 546326 Total: 546326
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 260 sec.
+Expanded Nodes: 194875 state(s).
+Rate: 1187.0 Nodes/s (over 10.0s) 749.5 Nodes/s (total average)
+Generated Nodes: 1394300 state(s).
+Rate: 7713.1 Nodes/s (over 10.0s) 5362.7 Nodes/s (total average)
+Overall branching factor by list sizes: 7.15484
+Averaged overall branching factor: Mean 7.15 Std: 3.85 (Num: 194875)
+Branching factors by open list:
+Open List 0: Mean 1.38 Std: 0.71 (Num: 194875)
+Open List 1: Mean 1.35 Std: 0.65 (Num: 194875)
+Open List 2: Mean 1.84 Std: 1.23 (Num: 194875)
+Open List 3: Mean 2.58 Std: 1.89 (Num: 194875)
+OpenList sizes: 37114 36426 98008 235498
+Heuristic Computations (per heuristic): 700222 Total: 700222
+Number of cache hits in heuristic (per heuristic): 595027 Total: 595027
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 270 sec.
+Expanded Nodes: 201964 state(s).
+Rate: 708.9 Nodes/s (over 10.0s) 748.0 Nodes/s (total average)
+Generated Nodes: 1441637 state(s).
+Rate: 4733.7 Nodes/s (over 10.0s) 5339.4 Nodes/s (total average)
+Overall branching factor by list sizes: 7.13809
+Averaged overall branching factor: Mean 7.14 Std: 3.84 (Num: 201964)
+Branching factors by open list:
+Open List 0: Mean 1.38 Std: 0.71 (Num: 201964)
+Open List 1: Mean 1.35 Std: 0.65 (Num: 201964)
+Open List 2: Mean 1.83 Std: 1.23 (Num: 201964)
+Open List 3: Mean 2.58 Std: 1.89 (Num: 201964)
+OpenList sizes: 34738 34043 97544 241062
+Heuristic Computations (per heuristic): 739480 Total: 739480
+Number of cache hits in heuristic (per heuristic): 630154 Total: 630154
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 280 sec.
+Expanded Nodes: 210492 state(s).
+Rate: 852.8 Nodes/s (over 10.0s) 751.8 Nodes/s (total average)
+Generated Nodes: 1497607 state(s).
+Rate: 5597.0 Nodes/s (over 10.0s) 5348.6 Nodes/s (total average)
+Overall branching factor by list sizes: 7.11479
+Averaged overall branching factor: Mean 7.11 Std: 3.82 (Num: 210492)
+Branching factors by open list:
+Open List 0: Mean 1.37 Std: 0.70 (Num: 210492)
+Open List 1: Mean 1.35 Std: 0.64 (Num: 210492)
+Open List 2: Mean 1.82 Std: 1.22 (Num: 210492)
+Open List 3: Mean 2.57 Std: 1.89 (Num: 210492)
+OpenList sizes: 35208 34477 101376 252028
+Heuristic Computations (per heuristic): 775865 Total: 775865
+Number of cache hits in heuristic (per heuristic): 662495 Total: 662495
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 290 sec.
+Expanded Nodes: 217972 state(s).
+Rate: 748.0 Nodes/s (over 10.0s) 751.6 Nodes/s (total average)
+Generated Nodes: 1551422 state(s).
+Rate: 5381.5 Nodes/s (over 10.0s) 5349.7 Nodes/s (total average)
+Overall branching factor by list sizes: 7.11753
+Averaged overall branching factor: Mean 7.12 Std: 3.82 (Num: 217972)
+Branching factors by open list:
+Open List 0: Mean 1.37 Std: 0.70 (Num: 217972)
+Open List 1: Mean 1.35 Std: 0.64 (Num: 217972)
+Open List 2: Mean 1.82 Std: 1.21 (Num: 217972)
+Open List 3: Mean 2.58 Std: 1.89 (Num: 217972)
+OpenList sizes: 35203 34414 104011 263460
+Heuristic Computations (per heuristic): 809179 Total: 809179
+Number of cache hits in heuristic (per heuristic): 691882 Total: 691882
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 300 sec.
+Expanded Nodes: 221623 state(s).
+Rate: 365.1 Nodes/s (over 10.0s) 738.7 Nodes/s (total average)
+Generated Nodes: 1575281 state(s).
+Rate: 2385.9 Nodes/s (over 10.0s) 5250.9 Nodes/s (total average)
+Overall branching factor by list sizes: 7.10793
+Averaged overall branching factor: Mean 7.11 Std: 3.81 (Num: 221623)
+Branching factors by open list:
+Open List 0: Mean 1.37 Std: 0.70 (Num: 221623)
+Open List 1: Mean 1.34 Std: 0.64 (Num: 221623)
+Open List 2: Mean 1.81 Std: 1.21 (Num: 221623)
+Open List 3: Mean 2.58 Std: 1.89 (Num: 221623)
+OpenList sizes: 35767 34977 105949 268198
+Heuristic Computations (per heuristic): 823810 Total: 823810
+Number of cache hits in heuristic (per heuristic): 703720 Total: 703720
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 310 sec.
+Expanded Nodes: 225588 state(s).
+Rate: 396.5 Nodes/s (over 10.0s) 727.7 Nodes/s (total average)
+Generated Nodes: 1602693 state(s).
+Rate: 2741.2 Nodes/s (over 10.0s) 5170.0 Nodes/s (total average)
+Overall branching factor by list sizes: 7.10451
+Averaged overall branching factor: Mean 7.10 Std: 3.81 (Num: 225588)
+Branching factors by open list:
+Open List 0: Mean 1.37 Std: 0.69 (Num: 225588)
+Open List 1: Mean 1.34 Std: 0.64 (Num: 225588)
+Open List 2: Mean 1.81 Std: 1.21 (Num: 225588)
+Open List 3: Mean 2.58 Std: 1.89 (Num: 225588)
+OpenList sizes: 34913 34087 106662 272929
+Heuristic Computations (per heuristic): 844000 Total: 844000
+Number of cache hits in heuristic (per heuristic): 721148 Total: 721148
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 320 sec.
+Expanded Nodes: 235485 state(s).
+Rate: 989.7 Nodes/s (over 10.0s) 735.9 Nodes/s (total average)
+Generated Nodes: 1669509 state(s).
+Rate: 6681.6 Nodes/s (over 10.0s) 5217.2 Nodes/s (total average)
+Overall branching factor by list sizes: 7.08966
+Averaged overall branching factor: Mean 7.09 Std: 3.80 (Num: 235485)
+Branching factors by open list:
+Open List 0: Mean 1.36 Std: 0.69 (Num: 235485)
+Open List 1: Mean 1.34 Std: 0.64 (Num: 235485)
+Open List 2: Mean 1.81 Std: 1.20 (Num: 235485)
+Open List 3: Mean 2.58 Std: 1.89 (Num: 235485)
+OpenList sizes: 37344 36392 112600 287523
+Heuristic Computations (per heuristic): 881733 Total: 881733
+Number of cache hits in heuristic (per heuristic): 755504 Total: 755504
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 330 sec.
+Expanded Nodes: 240812 state(s).
+Rate: 532.7 Nodes/s (over 10.0s) 729.7 Nodes/s (total average)
+Generated Nodes: 1704219 state(s).
+Rate: 3471.0 Nodes/s (over 10.0s) 5164.3 Nodes/s (total average)
+Overall branching factor by list sizes: 7.07697
+Averaged overall branching factor: Mean 7.08 Std: 3.79 (Num: 240812)
+Branching factors by open list:
+Open List 0: Mean 1.36 Std: 0.69 (Num: 240812)
+Open List 1: Mean 1.34 Std: 0.64 (Num: 240812)
+Open List 2: Mean 1.80 Std: 1.20 (Num: 240812)
+Open List 3: Mean 2.58 Std: 1.89 (Num: 240812)
+OpenList sizes: 38103 37109 115420 294391
+Heuristic Computations (per heuristic): 903707 Total: 903707
+Number of cache hits in heuristic (per heuristic): 773157 Total: 773157
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 340 sec.
+Expanded Nodes: 246022 state(s).
+Rate: 521.0 Nodes/s (over 10.0s) 723.6 Nodes/s (total average)
+Generated Nodes: 1738695 state(s).
+Rate: 3447.6 Nodes/s (over 10.0s) 5113.8 Nodes/s (total average)
+Overall branching factor by list sizes: 7.06723
+Averaged overall branching factor: Mean 7.07 Std: 3.79 (Num: 246022)
+Branching factors by open list:
+Open List 0: Mean 1.36 Std: 0.69 (Num: 246022)
+Open List 1: Mean 1.34 Std: 0.64 (Num: 246022)
+Open List 2: Mean 1.80 Std: 1.19 (Num: 246022)
+Open List 3: Mean 2.57 Std: 1.89 (Num: 246022)
+OpenList sizes: 38855 37839 117380 300696
+Heuristic Computations (per heuristic): 925647 Total: 925647
+Number of cache hits in heuristic (per heuristic): 790186 Total: 790186
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 350 sec.
+Expanded Nodes: 252252 state(s).
+Rate: 623.0 Nodes/s (over 10.0s) 720.7 Nodes/s (total average)
+Generated Nodes: 1780167 state(s).
+Rate: 4147.2 Nodes/s (over 10.0s) 5086.2 Nodes/s (total average)
+Overall branching factor by list sizes: 7.0571
+Averaged overall branching factor: Mean 7.06 Std: 3.78 (Num: 252252)
+Branching factors by open list:
+Open List 0: Mean 1.36 Std: 0.69 (Num: 252252)
+Open List 1: Mean 1.34 Std: 0.64 (Num: 252252)
+Open List 2: Mean 1.79 Std: 1.19 (Num: 252252)
+Open List 3: Mean 2.57 Std: 1.89 (Num: 252252)
+OpenList sizes: 39492 38433 120507 309187
+Heuristic Computations (per heuristic): 951857 Total: 951857
+Number of cache hits in heuristic (per heuristic): 811895 Total: 811895
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 360 sec.
+Expanded Nodes: 260522 state(s).
+Rate: 827.0 Nodes/s (over 10.0s) 723.7 Nodes/s (total average)
+Generated Nodes: 1837530 state(s).
+Rate: 5736.3 Nodes/s (over 10.0s) 5104.2 Nodes/s (total average)
+Overall branching factor by list sizes: 7.05326
+Averaged overall branching factor: Mean 7.05 Std: 3.78 (Num: 260522)
+Branching factors by open list:
+Open List 0: Mean 1.36 Std: 0.68 (Num: 260522)
+Open List 1: Mean 1.33 Std: 0.63 (Num: 260522)
+Open List 2: Mean 1.79 Std: 1.19 (Num: 260522)
+Open List 3: Mean 2.57 Std: 1.89 (Num: 260522)
+OpenList sizes: 40070 38943 124400 320252
+Heuristic Computations (per heuristic): 988356 Total: 988356
+Number of cache hits in heuristic (per heuristic): 844392 Total: 844392
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 370 sec.
+Expanded Nodes: 266515 state(s).
+Rate: 599.3 Nodes/s (over 10.0s) 720.3 Nodes/s (total average)
+Generated Nodes: 1879025 state(s).
+Rate: 4149.5 Nodes/s (over 10.0s) 5078.4 Nodes/s (total average)
+Overall branching factor by list sizes: 7.05035
+Averaged overall branching factor: Mean 7.05 Std: 3.77 (Num: 266515)
+Branching factors by open list:
+Open List 0: Mean 1.36 Std: 0.68 (Num: 266515)
+Open List 1: Mean 1.33 Std: 0.63 (Num: 266515)
+Open List 2: Mean 1.79 Std: 1.19 (Num: 266515)
+Open List 3: Mean 2.57 Std: 1.89 (Num: 266515)
+OpenList sizes: 41808 40558 128918 329351
+Heuristic Computations (per heuristic): 1010622 Total: 1010622
+Number of cache hits in heuristic (per heuristic): 862082 Total: 862082
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 380 sec.
+Expanded Nodes: 270885 state(s).
+Rate: 437.0 Nodes/s (over 10.0s) 712.9 Nodes/s (total average)
+Generated Nodes: 1910733 state(s).
+Rate: 3170.8 Nodes/s (over 10.0s) 5028.2 Nodes/s (total average)
+Overall branching factor by list sizes: 7.05367
+Averaged overall branching factor: Mean 7.05 Std: 3.77 (Num: 270885)
+Branching factors by open list:
+Open List 0: Mean 1.36 Std: 0.68 (Num: 270885)
+Open List 1: Mean 1.33 Std: 0.63 (Num: 270885)
+Open List 2: Mean 1.79 Std: 1.19 (Num: 270885)
+Open List 3: Mean 2.57 Std: 1.89 (Num: 270885)
+OpenList sizes: 43776 42437 133090 336891
+Heuristic Computations (per heuristic): 1024878 Total: 1024878
+Number of cache hits in heuristic (per heuristic): 872757 Total: 872757
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 390 sec.
+Expanded Nodes: 274908 state(s).
+Rate: 402.3 Nodes/s (over 10.0s) 704.9 Nodes/s (total average)
+Generated Nodes: 1941436 state(s).
+Rate: 3070.3 Nodes/s (over 10.0s) 4978.0 Nodes/s (total average)
+Overall branching factor by list sizes: 7.06213
+Averaged overall branching factor: Mean 7.06 Std: 3.77 (Num: 274908)
+Branching factors by open list:
+Open List 0: Mean 1.36 Std: 0.68 (Num: 274908)
+Open List 1: Mean 1.34 Std: 0.63 (Num: 274908)
+Open List 2: Mean 1.79 Std: 1.19 (Num: 274908)
+Open List 3: Mean 2.58 Std: 1.89 (Num: 274908)
+OpenList sizes: 46089 44730 136877 344564
+Heuristic Computations (per heuristic): 1036824 Total: 1036824
+Number of cache hits in heuristic (per heuristic): 880847 Total: 880847
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 400 sec.
+Expanded Nodes: 280294 state(s).
+Rate: 538.6 Nodes/s (over 10.0s) 700.7 Nodes/s (total average)
+Generated Nodes: 1984345 state(s).
+Rate: 4290.9 Nodes/s (over 10.0s) 4960.9 Nodes/s (total average)
+Overall branching factor by list sizes: 7.07951
+Averaged overall branching factor: Mean 7.08 Std: 3.77 (Num: 280294)
+Branching factors by open list:
+Open List 0: Mean 1.36 Std: 0.68 (Num: 280294)
+Open List 1: Mean 1.34 Std: 0.64 (Num: 280294)
+Open List 2: Mean 1.79 Std: 1.18 (Num: 280294)
+Open List 3: Mean 2.58 Std: 1.88 (Num: 280294)
+OpenList sizes: 49670 48308 142253 355480
+Heuristic Computations (per heuristic): 1052207 Total: 1052207
+Number of cache hits in heuristic (per heuristic): 891286 Total: 891286
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 410 sec.
+Expanded Nodes: 285617 state(s).
+Rate: 532.3 Nodes/s (over 10.0s) 696.6 Nodes/s (total average)
+Generated Nodes: 2024119 state(s).
+Rate: 3977.4 Nodes/s (over 10.0s) 4936.9 Nodes/s (total average)
+Overall branching factor by list sizes: 7.08683
+Averaged overall branching factor: Mean 7.09 Std: 3.76 (Num: 285617)
+Branching factors by open list:
+Open List 0: Mean 1.36 Std: 0.69 (Num: 285617)
+Open List 1: Mean 1.34 Std: 0.64 (Num: 285617)
+Open List 2: Mean 1.79 Std: 1.18 (Num: 285617)
+Open List 3: Mean 2.59 Std: 1.88 (Num: 285617)
+OpenList sizes: 52341 50980 146792 364948
+Heuristic Computations (per heuristic): 1069543 Total: 1069543
+Number of cache hits in heuristic (per heuristic): 904010 Total: 904010
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 420 sec.
+Expanded Nodes: 291377 state(s).
+Rate: 576.0 Nodes/s (over 10.0s) 693.8 Nodes/s (total average)
+Generated Nodes: 2063046 state(s).
+Rate: 3892.7 Nodes/s (over 10.0s) 4912.0 Nodes/s (total average)
+Overall branching factor by list sizes: 7.08033
+Averaged overall branching factor: Mean 7.08 Std: 3.76 (Num: 291377)
+Branching factors by open list:
+Open List 0: Mean 1.36 Std: 0.68 (Num: 291377)
+Open List 1: Mean 1.34 Std: 0.64 (Num: 291377)
+Open List 2: Mean 1.79 Std: 1.18 (Num: 291377)
+Open List 3: Mean 2.58 Std: 1.88 (Num: 291377)
+OpenList sizes: 53280 51877 149749 373003
+Heuristic Computations (per heuristic): 1092643 Total: 1092643
+Number of cache hits in heuristic (per heuristic): 922454 Total: 922454
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 430 sec.
+Expanded Nodes: 297406 state(s).
+Rate: 602.9 Nodes/s (over 10.0s) 691.6 Nodes/s (total average)
+Generated Nodes: 2105400 state(s).
+Rate: 4235.4 Nodes/s (over 10.0s) 4896.3 Nodes/s (total average)
+Overall branching factor by list sizes: 7.07921
+Averaged overall branching factor: Mean 7.08 Std: 3.75 (Num: 297406)
+Branching factors by open list:
+Open List 0: Mean 1.36 Std: 0.68 (Num: 297406)
+Open List 1: Mean 1.34 Std: 0.64 (Num: 297406)
+Open List 2: Mean 1.79 Std: 1.17 (Num: 297406)
+Open List 3: Mean 2.59 Std: 1.88 (Num: 297406)
+OpenList sizes: 54792 53306 153754 382717
+Heuristic Computations (per heuristic): 1115302 Total: 1115302
+Number of cache hits in heuristic (per heuristic): 940537 Total: 940537
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 440 sec.
+Expanded Nodes: 303920 state(s).
+Rate: 651.4 Nodes/s (over 10.0s) 690.7 Nodes/s (total average)
+Generated Nodes: 2151022 state(s).
+Rate: 4562.2 Nodes/s (over 10.0s) 4888.7 Nodes/s (total average)
+Overall branching factor by list sizes: 7.07759
+Averaged overall branching factor: Mean 7.08 Std: 3.75 (Num: 303920)
+Branching factors by open list:
+Open List 0: Mean 1.36 Std: 0.68 (Num: 303920)
+Open List 1: Mean 1.34 Std: 0.64 (Num: 303920)
+Open List 2: Mean 1.79 Std: 1.17 (Num: 303920)
+Open List 3: Mean 2.59 Std: 1.88 (Num: 303920)
+OpenList sizes: 56419 54894 157468 392863
+Heuristic Computations (per heuristic): 1139999 Total: 1139999
+Number of cache hits in heuristic (per heuristic): 960740 Total: 960740
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 450 sec.
+Expanded Nodes: 310105 state(s).
+Rate: 618.5 Nodes/s (over 10.0s) 689.1 Nodes/s (total average)
+Generated Nodes: 2193260 state(s).
+Rate: 4223.8 Nodes/s (over 10.0s) 4873.9 Nodes/s (total average)
+Overall branching factor by list sizes: 7.07264
+Averaged overall branching factor: Mean 7.07 Std: 3.74 (Num: 310105)
+Branching factors by open list:
+Open List 0: Mean 1.36 Std: 0.68 (Num: 310105)
+Open List 1: Mean 1.34 Std: 0.64 (Num: 310105)
+Open List 2: Mean 1.79 Std: 1.17 (Num: 310105)
+Open List 3: Mean 2.59 Std: 1.88 (Num: 310105)
+OpenList sizes: 57843 56267 161133 402295
+Heuristic Computations (per heuristic): 1163290 Total: 1163290
+Number of cache hits in heuristic (per heuristic): 979415 Total: 979415
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 460 sec.
+Expanded Nodes: 316364 state(s).
+Rate: 625.9 Nodes/s (over 10.0s) 687.7 Nodes/s (total average)
+Generated Nodes: 2235808 state(s).
+Rate: 4254.8 Nodes/s (over 10.0s) 4860.5 Nodes/s (total average)
+Overall branching factor by list sizes: 7.0672
+Averaged overall branching factor: Mean 7.07 Std: 3.74 (Num: 316364)
+Branching factors by open list:
+Open List 0: Mean 1.36 Std: 0.68 (Num: 316364)
+Open List 1: Mean 1.34 Std: 0.63 (Num: 316364)
+Open List 2: Mean 1.78 Std: 1.17 (Num: 316364)
+Open List 3: Mean 2.59 Std: 1.88 (Num: 316364)
+OpenList sizes: 58542 56899 164296 410960
+Heuristic Computations (per heuristic): 1188885 Total: 1188885
+Number of cache hits in heuristic (per heuristic): 1000467 Total: 1000467
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 470 sec.
+Expanded Nodes: 322640 state(s).
+Rate: 627.6 Nodes/s (over 10.0s) 686.5 Nodes/s (total average)
+Generated Nodes: 2277708 state(s).
+Rate: 4190.0 Nodes/s (over 10.0s) 4846.2 Nodes/s (total average)
+Overall branching factor by list sizes: 7.0596
+Averaged overall branching factor: Mean 7.06 Std: 3.73 (Num: 322640)
+Branching factors by open list:
+Open List 0: Mean 1.36 Std: 0.67 (Num: 322640)
+Open List 1: Mean 1.34 Std: 0.63 (Num: 322640)
+Open List 2: Mean 1.78 Std: 1.16 (Num: 322640)
+Open List 3: Mean 2.59 Std: 1.88 (Num: 322640)
+OpenList sizes: 59197 57548 167081 419432
+Heuristic Computations (per heuristic): 1214667 Total: 1214667
+Number of cache hits in heuristic (per heuristic): 1021781 Total: 1021781
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 480 sec.
+Expanded Nodes: 328838 state(s).
+Rate: 619.8 Nodes/s (over 10.0s) 685.1 Nodes/s (total average)
+Generated Nodes: 2319583 state(s).
+Rate: 4187.5 Nodes/s (over 10.0s) 4832.5 Nodes/s (total average)
+Overall branching factor by list sizes: 7.05388
+Averaged overall branching factor: Mean 7.05 Std: 3.73 (Num: 328838)
+Branching factors by open list:
+Open List 0: Mean 1.36 Std: 0.67 (Num: 328838)
+Open List 1: Mean 1.34 Std: 0.63 (Num: 328838)
+Open List 2: Mean 1.78 Std: 1.16 (Num: 328838)
+Open List 3: Mean 2.58 Std: 1.88 (Num: 328838)
+OpenList sizes: 60539 58770 170676 427884
+Heuristic Computations (per heuristic): 1239092 Total: 1239092
+Number of cache hits in heuristic (per heuristic): 1041520 Total: 1041520
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 490 sec.
+Expanded Nodes: 335018 state(s).
+Rate: 618.0 Nodes/s (over 10.0s) 683.7 Nodes/s (total average)
+Generated Nodes: 2359829 state(s).
+Rate: 4024.6 Nodes/s (over 10.0s) 4816.0 Nodes/s (total average)
+Overall branching factor by list sizes: 7.04389
+Averaged overall branching factor: Mean 7.04 Std: 3.73 (Num: 335018)
+Branching factors by open list:
+Open List 0: Mean 1.35 Std: 0.67 (Num: 335018)
+Open List 1: Mean 1.33 Std: 0.63 (Num: 335018)
+Open List 2: Mean 1.78 Std: 1.16 (Num: 335018)
+Open List 3: Mean 2.58 Std: 1.87 (Num: 335018)
+OpenList sizes: 61074 59206 173609 435246
+Heuristic Computations (per heuristic): 1265290 Total: 1265290
+Number of cache hits in heuristic (per heuristic): 1063269 Total: 1063269
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 500 sec.
+Expanded Nodes: 340705 state(s).
+Rate: 568.7 Nodes/s (over 10.0s) 681.4 Nodes/s (total average)
+Generated Nodes: 2397233 state(s).
+Rate: 3740.4 Nodes/s (over 10.0s) 4794.5 Nodes/s (total average)
+Overall branching factor by list sizes: 7.0361
+Averaged overall branching factor: Mean 7.04 Std: 3.72 (Num: 340705)
+Branching factors by open list:
+Open List 0: Mean 1.35 Std: 0.67 (Num: 340705)
+Open List 1: Mean 1.33 Std: 0.63 (Num: 340705)
+Open List 2: Mean 1.77 Std: 1.16 (Num: 340705)
+Open List 3: Mean 2.58 Std: 1.87 (Num: 340705)
+OpenList sizes: 61979 60003 176722 442792
+Heuristic Computations (per heuristic): 1288125 Total: 1288125
+Number of cache hits in heuristic (per heuristic): 1081474 Total: 1081474
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 510 sec.
+Expanded Nodes: 346189 state(s).
+Rate: 548.4 Nodes/s (over 10.0s) 678.8 Nodes/s (total average)
+Generated Nodes: 2433949 state(s).
+Rate: 3671.6 Nodes/s (over 10.0s) 4772.4 Nodes/s (total average)
+Overall branching factor by list sizes: 7.03069
+Averaged overall branching factor: Mean 7.03 Std: 3.72 (Num: 346189)
+Branching factors by open list:
+Open List 0: Mean 1.35 Std: 0.67 (Num: 346189)
+Open List 1: Mean 1.33 Std: 0.63 (Num: 346189)
+Open List 2: Mean 1.77 Std: 1.16 (Num: 346189)
+Open List 3: Mean 2.58 Std: 1.87 (Num: 346189)
+OpenList sizes: 62846 60795 179664 450627
+Heuristic Computations (per heuristic): 1310267 Total: 1310267
+Number of cache hits in heuristic (per heuristic): 1099283 Total: 1099283
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 520 sec.
+Expanded Nodes: 352484 state(s).
+Rate: 629.5 Nodes/s (over 10.0s) 677.9 Nodes/s (total average)
+Generated Nodes: 2475811 state(s).
+Rate: 4186.2 Nodes/s (over 10.0s) 4761.2 Nodes/s (total average)
+Overall branching factor by list sizes: 7.0239
+Averaged overall branching factor: Mean 7.02 Std: 3.72 (Num: 352484)
+Branching factors by open list:
+Open List 0: Mean 1.35 Std: 0.67 (Num: 352484)
+Open List 1: Mean 1.33 Std: 0.63 (Num: 352484)
+Open List 2: Mean 1.77 Std: 1.16 (Num: 352484)
+Open List 3: Mean 2.57 Std: 1.87 (Num: 352484)
+OpenList sizes: 64233 61990 182955 458800
+Heuristic Computations (per heuristic): 1335225 Total: 1335225
+Number of cache hits in heuristic (per heuristic): 1119822 Total: 1119822
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 530 sec.
+Expanded Nodes: 372932 state(s).
+Rate: 2044.8 Nodes/s (over 10.0s) 703.6 Nodes/s (total average)
+Generated Nodes: 2606217 state(s).
+Rate: 13040.6 Nodes/s (over 10.0s) 4917.4 Nodes/s (total average)
+Overall branching factor by list sizes: 6.98845
+Averaged overall branching factor: Mean 6.99 Std: 3.70 (Num: 372932)
+Branching factors by open list:
+Open List 0: Mean 1.35 Std: 0.66 (Num: 372932)
+Open List 1: Mean 1.33 Std: 0.62 (Num: 372932)
+Open List 2: Mean 1.76 Std: 1.15 (Num: 372932)
+Open List 3: Mean 2.56 Std: 1.87 (Num: 372932)
+OpenList sizes: 66439 64157 191582 482609
+Heuristic Computations (per heuristic): 1420995 Total: 1420995
+Number of cache hits in heuristic (per heuristic): 1204555 Total: 1204555
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 540 sec.
+Expanded Nodes: 387400 state(s).
+Rate: 1446.8 Nodes/s (over 10.0s) 717.4 Nodes/s (total average)
+Generated Nodes: 2701976 state(s).
+Rate: 9575.9 Nodes/s (over 10.0s) 5003.7 Nodes/s (total average)
+Overall branching factor by list sizes: 6.97464
+Averaged overall branching factor: Mean 6.97 Std: 3.69 (Num: 387400)
+Branching factors by open list:
+Open List 0: Mean 1.34 Std: 0.66 (Num: 387400)
+Open List 1: Mean 1.32 Std: 0.62 (Num: 387400)
+Open List 2: Mean 1.75 Std: 1.14 (Num: 387400)
+Open List 3: Mean 2.56 Std: 1.87 (Num: 387400)
+OpenList sizes: 69323 66958 199997 503233
+Heuristic Computations (per heuristic): 1477212 Total: 1477212
+Number of cache hits in heuristic (per heuristic): 1258587 Total: 1258587
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 550 sec.
+Expanded Nodes: 409192 state(s).
+Rate: 2179.2 Nodes/s (over 10.0s) 744.0 Nodes/s (total average)
+Generated Nodes: 2839197 state(s).
+Rate: 13722.1 Nodes/s (over 10.0s) 5162.2 Nodes/s (total average)
+Overall branching factor by list sizes: 6.93854
+Averaged overall branching factor: Mean 6.94 Std: 3.67 (Num: 409192)
+Branching factors by open list:
+Open List 0: Mean 1.34 Std: 0.65 (Num: 409192)
+Open List 1: Mean 1.32 Std: 0.62 (Num: 409192)
+Open List 2: Mean 1.74 Std: 1.14 (Num: 409192)
+Open List 3: Mean 2.54 Std: 1.86 (Num: 409192)
+OpenList sizes: 71156 68599 208857 527565
+Heuristic Computations (per heuristic): 1570321 Total: 1570321
+Number of cache hits in heuristic (per heuristic): 1351379 Total: 1351379
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 560 sec.
+Expanded Nodes: 413978 state(s).
+Rate: 478.6 Nodes/s (over 10.0s) 739.2 Nodes/s (total average)
+Generated Nodes: 2870914 state(s).
+Rate: 3171.7 Nodes/s (over 10.0s) 5126.6 Nodes/s (total average)
+Overall branching factor by list sizes: 6.93494
+Averaged overall branching factor: Mean 6.93 Std: 3.67 (Num: 413978)
+Branching factors by open list:
+Open List 0: Mean 1.34 Std: 0.65 (Num: 413978)
+Open List 1: Mean 1.32 Std: 0.62 (Num: 413978)
+Open List 2: Mean 1.74 Std: 1.14 (Num: 413978)
+Open List 3: Mean 2.54 Std: 1.86 (Num: 413978)
+OpenList sizes: 72418 69878 211543 534057
+Heuristic Computations (per heuristic): 1588358 Total: 1588358
+Number of cache hits in heuristic (per heuristic): 1367041 Total: 1367041
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 570 sec.
+Expanded Nodes: 421519 state(s).
+Rate: 754.1 Nodes/s (over 10.0s) 739.5 Nodes/s (total average)
+Generated Nodes: 2920431 state(s).
+Rate: 4951.7 Nodes/s (over 10.0s) 5123.6 Nodes/s (total average)
+Overall branching factor by list sizes: 6.92835
+Averaged overall branching factor: Mean 6.93 Std: 3.66 (Num: 421519)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.65 (Num: 421519)
+Open List 1: Mean 1.32 Std: 0.62 (Num: 421519)
+Open List 2: Mean 1.74 Std: 1.13 (Num: 421519)
+Open List 3: Mean 2.54 Std: 1.86 (Num: 421519)
+OpenList sizes: 73660 71070 215515 543627
+Heuristic Computations (per heuristic): 1619048 Total: 1619048
+Number of cache hits in heuristic (per heuristic): 1395840 Total: 1395840
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 580 sec.
+Expanded Nodes: 432968 state(s).
+Rate: 1144.9 Nodes/s (over 10.0s) 746.5 Nodes/s (total average)
+Generated Nodes: 2994480 state(s).
+Rate: 7404.9 Nodes/s (over 10.0s) 5162.9 Nodes/s (total average)
+Overall branching factor by list sizes: 6.91617
+Averaged overall branching factor: Mean 6.92 Std: 3.66 (Num: 432968)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.65 (Num: 432968)
+Open List 1: Mean 1.32 Std: 0.61 (Num: 432968)
+Open List 2: Mean 1.74 Std: 1.13 (Num: 432968)
+Open List 3: Mean 2.53 Std: 1.86 (Num: 432968)
+OpenList sizes: 75359 72520 221473 557737
+Heuristic Computations (per heuristic): 1665851 Total: 1665851
+Number of cache hits in heuristic (per heuristic): 1441205 Total: 1441205
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 590 sec.
+Expanded Nodes: 443218 state(s).
+Rate: 1025.0 Nodes/s (over 10.0s) 751.2 Nodes/s (total average)
+Generated Nodes: 3059717 state(s).
+Rate: 6523.7 Nodes/s (over 10.0s) 5186.0 Nodes/s (total average)
+Overall branching factor by list sizes: 6.90341
+Averaged overall branching factor: Mean 6.90 Std: 3.65 (Num: 443218)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.65 (Num: 443218)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 443218)
+Open List 2: Mean 1.73 Std: 1.13 (Num: 443218)
+Open List 3: Mean 2.53 Std: 1.86 (Num: 443218)
+OpenList sizes: 76628 73677 226207 569767
+Heuristic Computations (per heuristic): 1708174 Total: 1708174
+Number of cache hits in heuristic (per heuristic): 1480603 Total: 1480603
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 600 sec.
+Expanded Nodes: 450706 state(s).
+Rate: 748.8 Nodes/s (over 10.0s) 751.2 Nodes/s (total average)
+Generated Nodes: 3107921 state(s).
+Rate: 4820.4 Nodes/s (over 10.0s) 5179.9 Nodes/s (total average)
+Overall branching factor by list sizes: 6.89567
+Averaged overall branching factor: Mean 6.90 Std: 3.65 (Num: 450706)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.65 (Num: 450706)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 450706)
+Open List 2: Mean 1.73 Std: 1.13 (Num: 450706)
+Open List 3: Mean 2.52 Std: 1.86 (Num: 450706)
+OpenList sizes: 77312 74312 229129 578550
+Heuristic Computations (per heuristic): 1739366 Total: 1739366
+Number of cache hits in heuristic (per heuristic): 1507656 Total: 1507656
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 610 sec.
+Expanded Nodes: 458283 state(s).
+Rate: 757.7 Nodes/s (over 10.0s) 751.3 Nodes/s (total average)
+Generated Nodes: 3157782 state(s).
+Rate: 4986.1 Nodes/s (over 10.0s) 5176.7 Nodes/s (total average)
+Overall branching factor by list sizes: 6.89046
+Averaged overall branching factor: Mean 6.89 Std: 3.64 (Num: 458283)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.65 (Num: 458283)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 458283)
+Open List 2: Mean 1.73 Std: 1.13 (Num: 458283)
+Open List 3: Mean 2.52 Std: 1.85 (Num: 458283)
+OpenList sizes: 78259 75190 232451 588144
+Heuristic Computations (per heuristic): 1770548 Total: 1770548
+Number of cache hits in heuristic (per heuristic): 1534710 Total: 1534710
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 620 sec.
+Expanded Nodes: 464021 state(s).
+Rate: 573.8 Nodes/s (over 10.0s) 748.4 Nodes/s (total average)
+Generated Nodes: 3196430 state(s).
+Rate: 3864.8 Nodes/s (over 10.0s) 5155.5 Nodes/s (total average)
+Overall branching factor by list sizes: 6.88855
+Averaged overall branching factor: Mean 6.89 Std: 3.64 (Num: 464021)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.65 (Num: 464021)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 464021)
+Open List 2: Mean 1.73 Std: 1.13 (Num: 464021)
+Open List 3: Mean 2.52 Std: 1.85 (Num: 464021)
+OpenList sizes: 78310 75190 234131 594967
+Heuristic Computations (per heuristic): 1796117 Total: 1796117
+Number of cache hits in heuristic (per heuristic): 1555754 Total: 1555754
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 630 sec.
+Expanded Nodes: 470380 state(s).
+Rate: 635.9 Nodes/s (over 10.0s) 746.6 Nodes/s (total average)
+Generated Nodes: 3237933 state(s).
+Rate: 4150.3 Nodes/s (over 10.0s) 5139.6 Nodes/s (total average)
+Overall branching factor by list sizes: 6.88365
+Averaged overall branching factor: Mean 6.88 Std: 3.64 (Num: 470380)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.65 (Num: 470380)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 470380)
+Open List 2: Mean 1.72 Std: 1.12 (Num: 470380)
+Open List 3: Mean 2.52 Std: 1.85 (Num: 470380)
+OpenList sizes: 78444 75280 236081 602110
+Heuristic Computations (per heuristic): 1823963 Total: 1823963
+Number of cache hits in heuristic (per heuristic): 1579117 Total: 1579117
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 640 sec.
+Expanded Nodes: 477365 state(s).
+Rate: 698.5 Nodes/s (over 10.0s) 745.9 Nodes/s (total average)
+Generated Nodes: 3283679 state(s).
+Rate: 4574.6 Nodes/s (over 10.0s) 5130.7 Nodes/s (total average)
+Overall branching factor by list sizes: 6.87876
+Averaged overall branching factor: Mean 6.88 Std: 3.64 (Num: 477365)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.65 (Num: 477365)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 477365)
+Open List 2: Mean 1.72 Std: 1.12 (Num: 477365)
+Open List 3: Mean 2.52 Std: 1.85 (Num: 477365)
+OpenList sizes: 79273 75989 239010 610449
+Heuristic Computations (per heuristic): 1852849 Total: 1852849
+Number of cache hits in heuristic (per heuristic): 1603729 Total: 1603729
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 650 sec.
+Expanded Nodes: 485533 state(s).
+Rate: 816.8 Nodes/s (over 10.0s) 747.0 Nodes/s (total average)
+Generated Nodes: 3336901 state(s).
+Rate: 5322.2 Nodes/s (over 10.0s) 5133.7 Nodes/s (total average)
+Overall branching factor by list sizes: 6.87266
+Averaged overall branching factor: Mean 6.87 Std: 3.63 (Num: 485533)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.64 (Num: 485533)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 485533)
+Open List 2: Mean 1.72 Std: 1.12 (Num: 485533)
+Open List 3: Mean 2.51 Std: 1.85 (Num: 485533)
+OpenList sizes: 79272 75915 241141 619139
+Heuristic Computations (per heuristic): 1889637 Total: 1889637
+Number of cache hits in heuristic (per heuristic): 1636529 Total: 1636529
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 660 sec.
+Expanded Nodes: 491363 state(s).
+Rate: 583.0 Nodes/s (over 10.0s) 744.5 Nodes/s (total average)
+Generated Nodes: 3375107 state(s).
+Rate: 3820.6 Nodes/s (over 10.0s) 5113.8 Nodes/s (total average)
+Overall branching factor by list sizes: 6.86887
+Averaged overall branching factor: Mean 6.87 Std: 3.63 (Num: 491363)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.64 (Num: 491363)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 491363)
+Open List 2: Mean 1.72 Std: 1.12 (Num: 491363)
+Open List 3: Mean 2.51 Std: 1.85 (Num: 491363)
+OpenList sizes: 79178 75781 242729 625714
+Heuristic Computations (per heuristic): 1915597 Total: 1915597
+Number of cache hits in heuristic (per heuristic): 1658856 Total: 1658856
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 670 sec.
+Expanded Nodes: 498351 state(s).
+Rate: 698.8 Nodes/s (over 10.0s) 743.8 Nodes/s (total average)
+Generated Nodes: 3421679 state(s).
+Rate: 4657.2 Nodes/s (over 10.0s) 5107.0 Nodes/s (total average)
+Overall branching factor by list sizes: 6.866
+Averaged overall branching factor: Mean 6.87 Std: 3.63 (Num: 498351)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.64 (Num: 498351)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 498351)
+Open List 2: Mean 1.72 Std: 1.12 (Num: 498351)
+Open List 3: Mean 2.51 Std: 1.85 (Num: 498351)
+OpenList sizes: 79534 76052 244961 633645
+Heuristic Computations (per heuristic): 1945873 Total: 1945873
+Number of cache hits in heuristic (per heuristic): 1684890 Total: 1684890
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 680 sec.
+Expanded Nodes: 504614 state(s).
+Rate: 626.3 Nodes/s (over 10.0s) 742.1 Nodes/s (total average)
+Generated Nodes: 3461981 state(s).
+Rate: 4030.2 Nodes/s (over 10.0s) 5091.1 Nodes/s (total average)
+Overall branching factor by list sizes: 6.86065
+Averaged overall branching factor: Mean 6.86 Std: 3.62 (Num: 504614)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.64 (Num: 504614)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 504614)
+Open List 2: Mean 1.71 Std: 1.12 (Num: 504614)
+Open List 3: Mean 2.51 Std: 1.84 (Num: 504614)
+OpenList sizes: 80317 76807 247536 640523
+Heuristic Computations (per heuristic): 1971457 Total: 1971457
+Number of cache hits in heuristic (per heuristic): 1705940 Total: 1705940
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 690 sec.
+Expanded Nodes: 511655 state(s).
+Rate: 704.1 Nodes/s (over 10.0s) 741.5 Nodes/s (total average)
+Generated Nodes: 3506327 state(s).
+Rate: 4434.6 Nodes/s (over 10.0s) 5081.6 Nodes/s (total average)
+Overall branching factor by list sizes: 6.85291
+Averaged overall branching factor: Mean 6.85 Std: 3.62 (Num: 511655)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.64 (Num: 511655)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 511655)
+Open List 2: Mean 1.71 Std: 1.11 (Num: 511655)
+Open List 3: Mean 2.50 Std: 1.84 (Num: 511655)
+OpenList sizes: 80837 77270 250069 647595
+Heuristic Computations (per heuristic): 2001494 Total: 2001494
+Number of cache hits in heuristic (per heuristic): 1731619 Total: 1731619
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 700 sec.
+Expanded Nodes: 519377 state(s).
+Rate: 772.2 Nodes/s (over 10.0s) 742.0 Nodes/s (total average)
+Generated Nodes: 3556046 state(s).
+Rate: 4971.9 Nodes/s (over 10.0s) 5080.1 Nodes/s (total average)
+Overall branching factor by list sizes: 6.84675
+Averaged overall branching factor: Mean 6.85 Std: 3.62 (Num: 519377)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.64 (Num: 519377)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 519377)
+Open List 2: Mean 1.71 Std: 1.11 (Num: 519377)
+Open List 3: Mean 2.50 Std: 1.84 (Num: 519377)
+OpenList sizes: 80815 77176 252004 655849
+Heuristic Computations (per heuristic): 2035945 Total: 2035945
+Number of cache hits in heuristic (per heuristic): 1761998 Total: 1761998
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 710 sec.
+Expanded Nodes: 527254 state(s).
+Rate: 787.7 Nodes/s (over 10.0s) 742.6 Nodes/s (total average)
+Generated Nodes: 3608043 state(s).
+Rate: 5199.7 Nodes/s (over 10.0s) 5081.8 Nodes/s (total average)
+Overall branching factor by list sizes: 6.84308
+Averaged overall branching factor: Mean 6.84 Std: 3.62 (Num: 527254)
+Branching factors by open list:
+Open List 0: Mean 1.32 Std: 0.64 (Num: 527254)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 527254)
+Open List 2: Mean 1.71 Std: 1.11 (Num: 527254)
+Open List 3: Mean 2.50 Std: 1.84 (Num: 527254)
+OpenList sizes: 81564 77781 255365 666190
+Heuristic Computations (per heuristic): 2068848 Total: 2068848
+Number of cache hits in heuristic (per heuristic): 1790895 Total: 1790895
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 720 sec.
+Expanded Nodes: 534495 state(s).
+Rate: 724.1 Nodes/s (over 10.0s) 742.4 Nodes/s (total average)
+Generated Nodes: 3658559 state(s).
+Rate: 5051.6 Nodes/s (over 10.0s) 5081.3 Nodes/s (total average)
+Overall branching factor by list sizes: 6.84489
+Averaged overall branching factor: Mean 6.84 Std: 3.62 (Num: 534495)
+Branching factors by open list:
+Open List 0: Mean 1.32 Std: 0.64 (Num: 534495)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 534495)
+Open List 2: Mean 1.71 Std: 1.11 (Num: 534495)
+Open List 3: Mean 2.50 Std: 1.84 (Num: 534495)
+OpenList sizes: 83661 79572 260692 678320
+Heuristic Computations (per heuristic): 2095926 Total: 2095926
+Number of cache hits in heuristic (per heuristic): 1813916 Total: 1813916
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 730 sec.
+Expanded Nodes: 539546 state(s).
+Rate: 505.1 Nodes/s (over 10.0s) 739.1 Nodes/s (total average)
+Generated Nodes: 3692566 state(s).
+Rate: 3400.7 Nodes/s (over 10.0s) 5058.3 Nodes/s (total average)
+Overall branching factor by list sizes: 6.84384
+Averaged overall branching factor: Mean 6.84 Std: 3.61 (Num: 539546)
+Branching factors by open list:
+Open List 0: Mean 1.32 Std: 0.64 (Num: 539546)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 539546)
+Open List 2: Mean 1.71 Std: 1.11 (Num: 539546)
+Open List 3: Mean 2.51 Std: 1.84 (Num: 539546)
+OpenList sizes: 84350 80062 263192 685508
+Heuristic Computations (per heuristic): 2116396 Total: 2116396
+Number of cache hits in heuristic (per heuristic): 1831293 Total: 1831293
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 740 sec.
+Expanded Nodes: 543769 state(s).
+Rate: 422.3 Nodes/s (over 10.0s) 734.8 Nodes/s (total average)
+Generated Nodes: 3720237 state(s).
+Rate: 2767.1 Nodes/s (over 10.0s) 5027.3 Nodes/s (total average)
+Overall branching factor by list sizes: 6.84158
+Averaged overall branching factor: Mean 6.84 Std: 3.61 (Num: 543769)
+Branching factors by open list:
+Open List 0: Mean 1.32 Std: 0.64 (Num: 543769)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 543769)
+Open List 2: Mean 1.71 Std: 1.11 (Num: 543769)
+Open List 3: Mean 2.50 Std: 1.84 (Num: 543769)
+OpenList sizes: 84522 80193 264778 690818
+Heuristic Computations (per heuristic): 2134008 Total: 2134008
+Number of cache hits in heuristic (per heuristic): 1846462 Total: 1846462
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 750 sec.
+Expanded Nodes: 547116 state(s).
+Rate: 334.7 Nodes/s (over 10.0s) 729.5 Nodes/s (total average)
+Generated Nodes: 3742100 state(s).
+Rate: 2186.3 Nodes/s (over 10.0s) 4989.5 Nodes/s (total average)
+Overall branching factor by list sizes: 6.83968
+Averaged overall branching factor: Mean 6.84 Std: 3.61 (Num: 547116)
+Branching factors by open list:
+Open List 0: Mean 1.32 Std: 0.64 (Num: 547116)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 547116)
+Open List 2: Mean 1.71 Std: 1.11 (Num: 547116)
+Open List 3: Mean 2.50 Std: 1.84 (Num: 547116)
+OpenList sizes: 84717 80332 266279 694893
+Heuristic Computations (per heuristic): 2147808 Total: 2147808
+Number of cache hits in heuristic (per heuristic): 1857904 Total: 1857904
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+
+Search Time: 760 sec.
+Expanded Nodes: 552697 state(s).
+Rate: 558.1 Nodes/s (over 10.0s) 727.2 Nodes/s (total average)
+Generated Nodes: 3779979 state(s).
+Rate: 3787.9 Nodes/s (over 10.0s) 4973.7 Nodes/s (total average)
+Overall branching factor by list sizes: 6.83915
+Averaged overall branching factor: Mean 6.84 Std: 3.61 (Num: 552697)
+Branching factors by open list:
+Open List 0: Mean 1.32 Std: 0.64 (Num: 552697)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 552697)
+Open List 2: Mean 1.71 Std: 1.11 (Num: 552697)
+Open List 3: Mean 2.51 Std: 1.84 (Num: 552697)
+OpenList sizes: 84601 80208 267971 702077
+Heuristic Computations (per heuristic): 2171762 Total: 2171762
+Number of cache hits in heuristic (per heuristic): 1878166 Total: 1878166
+Best heuristic values of queues: [0: 6] [1: 6] [2: 6] [3: 6]
+
+Best heuristic values of queues: 6/5.98/6/6 [expanded 528885 state(s)]
+Best heuristic values of queues: 6/4/6/6 [expanded 528905 state(s)]
+Best heuristic values of queues: 6/4/4.98/6 [expanded 528906 state(s)]
+Best heuristic values of queues: 6/4/4.98/5.98 [expanded 528907 state(s)]
+Best heuristic values of queues: 5/4/4.98/5.98 [expanded 528911 state(s)]
+Best heuristic values of queues: 5/4/4.98/4.98 [expanded 528913 state(s)]
+Best heuristic values of queues: 4.98/4/4.98/4.98 [expanded 528914 state(s)]
+Best heuristic values of queues: 4/4/4.98/4.98 [expanded 528925 state(s)]
+
+Search Time: 770 sec.
+Expanded Nodes: 560570 state(s).
+Rate: 787.3 Nodes/s (over 10.0s) 728.0 Nodes/s (total average)
+Generated Nodes: 3834291 state(s).
+Rate: 5431.2 Nodes/s (over 10.0s) 4979.6 Nodes/s (total average)
+Overall branching factor by list sizes: 6.83999
+Averaged overall branching factor: Mean 6.84 Std: 3.61 (Num: 560570)
+Branching factors by open list:
+Open List 0: Mean 1.32 Std: 0.64 (Num: 560570)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 560570)
+Open List 2: Mean 1.71 Std: 1.11 (Num: 560570)
+Open List 3: Mean 2.51 Std: 1.84 (Num: 560570)
+OpenList sizes: 86047 81538 271723 713225
+Heuristic Computations (per heuristic): 2203029 Total: 2203029
+Number of cache hits in heuristic (per heuristic): 1905307 Total: 1905307
+Best heuristic values of queues: [0: 4] [1: 4] [2: 4.98] [3: 4.98]
+
+
+Search Time: 780 sec.
+Expanded Nodes: 569162 state(s).
+Rate: 859.2 Nodes/s (over 10.0s) 729.7 Nodes/s (total average)
+Generated Nodes: 3890852 state(s).
+Rate: 5656.1 Nodes/s (over 10.0s) 4988.3 Nodes/s (total average)
+Overall branching factor by list sizes: 6.83611
+Averaged overall branching factor: Mean 6.84 Std: 3.60 (Num: 569162)
+Branching factors by open list:
+Open List 0: Mean 1.32 Std: 0.64 (Num: 569162)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 569162)
+Open List 2: Mean 1.70 Std: 1.11 (Num: 569162)
+Open List 3: Mean 2.51 Std: 1.84 (Num: 569162)
+OpenList sizes: 86550 81871 275169 723620
+Heuristic Computations (per heuristic): 2239262 Total: 2239262
+Number of cache hits in heuristic (per heuristic): 1937614 Total: 1937614
+Best heuristic values of queues: [0: 4] [1: 4] [2: 4.98] [3: 4.98]
+
+
+Search Time: 790 sec.
+Expanded Nodes: 577546 state(s).
+Rate: 838.4 Nodes/s (over 10.0s) 731.1 Nodes/s (total average)
+Generated Nodes: 3947144 state(s).
+Rate: 5629.2 Nodes/s (over 10.0s) 4996.4 Nodes/s (total average)
+Overall branching factor by list sizes: 6.83434
+Averaged overall branching factor: Mean 6.83 Std: 3.60 (Num: 577546)
+Branching factors by open list:
+Open List 0: Mean 1.32 Std: 0.64 (Num: 577546)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 577546)
+Open List 2: Mean 1.70 Std: 1.11 (Num: 577546)
+Open List 3: Mean 2.50 Std: 1.84 (Num: 577546)
+OpenList sizes: 88228 83065 280262 733723
+Heuristic Computations (per heuristic): 2272472 Total: 2272472
+Number of cache hits in heuristic (per heuristic): 1966679 Total: 1966679
+Best heuristic values of queues: [0: 4] [1: 4] [2: 4.98] [3: 4.98]
+
+Best heuristic values of queues: 4/4/4.98/4 [expanded 555895 state(s)]
+Best heuristic values of queues: 4/4/4/4 [expanded 559743 state(s)]
+
+Search Time: 800 sec.
+Expanded Nodes: 585057 state(s).
+Rate: 751.1 Nodes/s (over 10.0s) 731.3 Nodes/s (total average)
+Generated Nodes: 4000731 state(s).
+Rate: 5358.7 Nodes/s (over 10.0s) 5000.9 Nodes/s (total average)
+Overall branching factor by list sizes: 6.83819
+Averaged overall branching factor: Mean 6.84 Std: 3.61 (Num: 585057)
+Branching factors by open list:
+Open List 0: Mean 1.32 Std: 0.64 (Num: 585057)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 585057)
+Open List 2: Mean 1.70 Std: 1.10 (Num: 585057)
+Open List 3: Mean 2.50 Std: 1.84 (Num: 585057)
+OpenList sizes: 90968 85383 283947 745455
+Heuristic Computations (per heuristic): 2301026 Total: 2301026
+Number of cache hits in heuristic (per heuristic): 1990452 Total: 1990452
+Best heuristic values of queues: [0: 4] [1: 4] [2: 4] [3: 4]
+
+
+Search Time: 810 sec.
+Expanded Nodes: 590648 state(s).
+Rate: 559.1 Nodes/s (over 10.0s) 729.2 Nodes/s (total average)
+Generated Nodes: 4043194 state(s).
+Rate: 4246.3 Nodes/s (over 10.0s) 4991.6 Nodes/s (total average)
+Overall branching factor by list sizes: 6.84535
+Averaged overall branching factor: Mean 6.85 Std: 3.61 (Num: 590648)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.64 (Num: 590648)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 590648)
+Open List 2: Mean 1.70 Std: 1.10 (Num: 590648)
+Open List 3: Mean 2.51 Std: 1.85 (Num: 590648)
+OpenList sizes: 93599 87637 286988 756928
+Heuristic Computations (per heuristic): 2320364 Total: 2320364
+Number of cache hits in heuristic (per heuristic): 2004738 Total: 2004738
+Best heuristic values of queues: [0: 4] [1: 4] [2: 4] [3: 4]
+
+
+Search Time: 820 sec.
+Expanded Nodes: 596099 state(s).
+Rate: 545.1 Nodes/s (over 10.0s) 727.0 Nodes/s (total average)
+Generated Nodes: 4080317 state(s).
+Rate: 3712.3 Nodes/s (over 10.0s) 4976.0 Nodes/s (total average)
+Overall branching factor by list sizes: 6.84503
+Averaged overall branching factor: Mean 6.85 Std: 3.62 (Num: 596099)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.64 (Num: 596099)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 596099)
+Open List 2: Mean 1.70 Std: 1.10 (Num: 596099)
+Open List 3: Mean 2.51 Std: 1.85 (Num: 596099)
+OpenList sizes: 94416 87952 288259 764627
+Heuristic Computations (per heuristic): 2344264 Total: 2344264
+Number of cache hits in heuristic (per heuristic): 2023501 Total: 2023501
+Best heuristic values of queues: [0: 4] [1: 4] [2: 4] [3: 4]
+
+
+Search Time: 830 sec.
+Expanded Nodes: 601701 state(s).
+Rate: 560.2 Nodes/s (over 10.0s) 724.9 Nodes/s (total average)
+Generated Nodes: 4117315 state(s).
+Rate: 3699.8 Nodes/s (over 10.0s) 4960.6 Nodes/s (total average)
+Overall branching factor by list sizes: 6.84279
+Averaged overall branching factor: Mean 6.84 Std: 3.62 (Num: 601701)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.65 (Num: 601701)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 601701)
+Open List 2: Mean 1.70 Std: 1.10 (Num: 601701)
+Open List 3: Mean 2.51 Std: 1.85 (Num: 601701)
+OpenList sizes: 94890 88104 289259 771952
+Heuristic Computations (per heuristic): 2368551 Total: 2368551
+Number of cache hits in heuristic (per heuristic): 2042745 Total: 2042745
+Best heuristic values of queues: [0: 4] [1: 4] [2: 4] [3: 4]
+
+
+Search Time: 840 sec.
+Expanded Nodes: 607528 state(s).
+Rate: 582.7 Nodes/s (over 10.0s) 723.2 Nodes/s (total average)
+Generated Nodes: 4161620 state(s).
+Rate: 4430.5 Nodes/s (over 10.0s) 4954.3 Nodes/s (total average)
+Overall branching factor by list sizes: 6.85009
+Averaged overall branching factor: Mean 6.85 Std: 3.62 (Num: 607528)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.65 (Num: 607528)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 607528)
+Open List 2: Mean 1.70 Std: 1.10 (Num: 607528)
+Open List 3: Mean 2.52 Std: 1.86 (Num: 607528)
+OpenList sizes: 97349 90098 292416 783743
+Heuristic Computations (per heuristic): 2390134 Total: 2390134
+Number of cache hits in heuristic (per heuristic): 2059348 Total: 2059348
+Best heuristic values of queues: [0: 4] [1: 4] [2: 4] [3: 4]
+
+
+Search Time: 850 sec.
+Expanded Nodes: 614780 state(s).
+Rate: 725.2 Nodes/s (over 10.0s) 723.3 Nodes/s (total average)
+Generated Nodes: 4212586 state(s).
+Rate: 5096.6 Nodes/s (over 10.0s) 4956.0 Nodes/s (total average)
+Overall branching factor by list sizes: 6.85218
+Averaged overall branching factor: Mean 6.85 Std: 3.62 (Num: 614780)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.65 (Num: 614780)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 614780)
+Open List 2: Mean 1.69 Std: 1.10 (Num: 614780)
+Open List 3: Mean 2.52 Std: 1.86 (Num: 614780)
+OpenList sizes: 99344 91707 295340 795596
+Heuristic Computations (per heuristic): 2418224 Total: 2418224
+Number of cache hits in heuristic (per heuristic): 2082733 Total: 2082733
+Best heuristic values of queues: [0: 4] [1: 4] [2: 4] [3: 4]
+
+
+Search Time: 860 sec.
+Expanded Nodes: 624049 state(s).
+Rate: 926.9 Nodes/s (over 10.0s) 725.6 Nodes/s (total average)
+Generated Nodes: 4276379 state(s).
+Rate: 6379.3 Nodes/s (over 10.0s) 4972.5 Nodes/s (total average)
+Overall branching factor by list sizes: 6.85263
+Averaged overall branching factor: Mean 6.85 Std: 3.62 (Num: 624049)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.65 (Num: 624049)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 624049)
+Open List 2: Mean 1.69 Std: 1.09 (Num: 624049)
+Open List 3: Mean 2.52 Std: 1.86 (Num: 624049)
+OpenList sizes: 100768 92830 298476 809023
+Heuristic Computations (per heuristic): 2455940 Total: 2455940
+Number of cache hits in heuristic (per heuristic): 2116540 Total: 2116540
+Best heuristic values of queues: [0: 4] [1: 4] [2: 4] [3: 4]
+
+
+Search Time: 870 sec.
+Expanded Nodes: 631161 state(s).
+Rate: 711.2 Nodes/s (over 10.0s) 725.5 Nodes/s (total average)
+Generated Nodes: 4326501 state(s).
+Rate: 5012.2 Nodes/s (over 10.0s) 4973.0 Nodes/s (total average)
+Overall branching factor by list sizes: 6.85483
+Averaged overall branching factor: Mean 6.85 Std: 3.62 (Num: 631161)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.65 (Num: 631161)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 631161)
+Open List 2: Mean 1.69 Std: 1.09 (Num: 631161)
+Open List 3: Mean 2.53 Std: 1.86 (Num: 631161)
+OpenList sizes: 101646 93497 300601 819608
+Heuristic Computations (per heuristic): 2486126 Total: 2486126
+Number of cache hits in heuristic (per heuristic): 2142417 Total: 2142417
+Best heuristic values of queues: [0: 4] [1: 4] [2: 4] [3: 4]
+
+
+Search Time: 880 sec.
+Expanded Nodes: 637668 state(s).
+Rate: 650.7 Nodes/s (over 10.0s) 724.6 Nodes/s (total average)
+Generated Nodes: 4372322 state(s).
+Rate: 4582.1 Nodes/s (over 10.0s) 4968.5 Nodes/s (total average)
+Overall branching factor by list sizes: 6.85674
+Averaged overall branching factor: Mean 6.86 Std: 3.62 (Num: 637668)
+Branching factors by open list:
+Open List 0: Mean 1.33 Std: 0.65 (Num: 637668)
+Open List 1: Mean 1.31 Std: 0.61 (Num: 637668)
+Open List 2: Mean 1.69 Std: 1.09 (Num: 637668)
+Open List 3: Mean 2.53 Std: 1.86 (Num: 637668)
+OpenList sizes: 102621 94281 302655 828559
+Heuristic Computations (per heuristic): 2514053 Total: 2514053
+Number of cache hits in heuristic (per heuristic): 2165817 Total: 2165817
+Best heuristic values of queues: [0: 4] [1: 4] [2: 4] [3: 4]
+
+Best heuristic values of queues: 2.98/4/4/4 [expanded 616585 state(s)]
+Best heuristic values of queues: 2.98/3/4/4 [expanded 616586 state(s)]
+Best heuristic values of queues: 2.98/3/3.98/4 [expanded 616587 state(s)]
+Best heuristic values of queues: 2.98/1/3.98/4 [expanded 616590 state(s)]
+Best heuristic values of queues: 2.98/1/1.88/4 [expanded 616591 state(s)]
+Best heuristic values of queues: 2.98/1/1.88/3.98 [expanded 616592 state(s)]
+Best heuristic values of queues: 2.98/1/1.88/1.98 [expanded 616593 state(s)]
+Best heuristic values of queues: 2.98/1/0/1.98 [expanded 616594 state(s)]
+New solution has been found.
+
+Found new plan:
+0.00000000: (move-down arm6) [1.00000000]
+0.01000000: (pick-single-block-on-block arm2 block5 block4 encompass) [1.00000000]
+1.02000000: (move-up-with-single-block arm2 block5) [1.00000000]
+1.03000000: (move-down arm6) [1.00000000]
+1.04000000: (move-up arm4) [1.00000000]
+2.05000000: (pick-single-block-on-block arm4 block14 block13 suction) [1.00000000]
+3.06000000: (move-up-with-single-block arm2 block5) [1.00000000]
+3.07000000: (place-single-block-on-block arm4 block14 block13) [1.00000000]
+3.08000000: (pick-single-block-on-block arm6 block4 block3 magnetic) [1.00000000]
+4.09000000: (move-down-with-single-block arm2 block5) [1.00000000]
+4.10000000: (pick-single-block-on-block arm4 block14 block13 suction) [1.00000000]
+4.11000000: (move-down-with-single-block arm6 block4) [1.00000000]
+5.12000000: (move-down-with-single-block arm4 block14) [1.00000000]
+5.13000000: (move-down-with-single-block arm2 block5) [1.00000000]
+6.14000000: (place-single-block-on-table arm6 block4) [1.00000000]
+6.15000000: (move-down-with-single-block arm2 block5) [1.00000000]
+7.16000000: (place-single-block-on-block arm2 block5 block3) [1.00000000]
+8.17000000: (pick-single-block-on-block arm2 block13 block12 friction) [1.00000000]
+8.18000000: (place-single-block-on-block arm4 block14 block4) [1.00000000]
+9.19000000: (place-single-block-on-block arm2 block13 block12) [1.00000000]
+10.20000000: (move-up arm4) [1.00000000]
+11.21000000: (pick-single-block-on-block arm4 block2 block1 friction) [1.00000000]
+11.22000000: (move-up arm6) [1.00000000]
+12.23000000: (place-single-block-on-block arm4 block2 block14) [1.00000000]
+12.24000000: (move-up arm6) [1.00000000]
+13.25000000: (move-up arm6) [1.00000000]
+13.26000000: (move-down arm2) [1.00000000]
+13.27000000: (move-down arm4) [1.00000000]
+14.28000000: (pick-single-block-on-block arm4 block13 block12 friction) [1.00000000]
+15.29000000: (move-down-with-single-block arm4 block13) [1.00000000]
+15.30000000: (move-up arm6) [1.00000000]
+15.31000000: (pick-single-block-on-table arm2 block12 friction) [1.00000000]
+16.32000000: (place-single-block-on-table arm4 block13) [1.00000000]
+16.33000000: (move-up-with-single-block arm2 block12) [1.00000000]
+17.34000000: (move-up-with-single-block arm2 block12) [1.00000000]
+17.35000000: (move-down arm6) [1.00000000]
+18.36000000: (move-up arm4) [1.00000000]
+18.37000000: (place-single-block-on-block arm2 block12 block1) [1.00000000]
+19.38000000: (move-down arm2) [1.00000000]
+20.39000000: (move-down arm6) [1.00000000]
+20.40000000: (move-down arm2) [1.00000000]
+20.41000000: (pick-single-block-on-block arm4 block5 block3 encompass) [1.00000000]
+21.42000000: (move-up arm6) [1.00000000]
+21.43000000: (pick-single-block-on-table arm2 block3 encompass) [1.00000000]
+22.44000000: (move-up-with-single-block arm2 block3) [1.00000000]
+23.45000000: (place-single-block-on-block arm2 block3 block13) [1.00000000]
+23.46000000: (move-up-with-single-block arm4 block5) [1.00000000]
+24.47000000: (place-single-block-on-block arm4 block5 block3) [1.00000000]
+Solution with original makespan 25.47 found (ignoring no-moving-targets-rule).
+Plan length: 48 step(s).
+Makespan   : 25.47
+Makespan   : 25.47
+Search time: 881.32 seconds - Walltime: 884.503 seconds
+Total time: 881.44 seconds - Walltime: 884.628 seconds
+
+Planner Paramters:
+Anytime Search: Disabled
+Timeout if plan was found: 0 seconds (no timeout)
+Timeout while no plan was found: 0 seconds (no timeout)
+Greedy Search: Disabled
+Verbose: Enabled
+Lazy Heuristic Evaluation: Enabled
+Use caching in heuristic.
+Cyclic CG heuristic: Enabled 	Preferred Operators: Enabled
+Makespan heuristic: Disabled 	Preferred Operators: Disabled
+No Heuristic: Disabled
+Cg Heuristic Zero Cost Waiting Transitions: Enabled
+Cg Heuristic Fire Waiting Transitions Only If Local Problems Matches State: Disabled
+PrefOpsOrderedMode: Enabled with 1 goals
+PrefOpsCheapestMode: Enabled with 1 goals
+PrefOpsMostExpensiveMode: Disabled with 1000 goals
+PrefOpsRandMode: Disabled with 1000 goals
+PrefOpsConcurrentMode: Disabled
+Reset after solution was found: Enabled
+Reward only preferred operators queue: Disabled
+GValues by: Timestamp
+Queue management mode: Priority based
+Known by logical state only filtering: Disabled
+use_subgoals_to_break_makespan_ties: Disabled
+Reschedule plans: Disabled
+Epsilonize internally: Enabled
+Epsilonize externally: Disabled
+Keep original plans: Enabled
+Plan name: "/home/gil/Documents/prob/iter_plan"
+Plan monitor file: "" (no monitoring)
+Monitoring verify timestamps: Disabled
+
+Failed to match magic word 'begin_variables'.
+Got ''.
+('/home/gil/dev/tfd/downward/translate/translate.py', '/home/gil/Documents/prob/domain.pddl', '/home/gil/Documents/prob/iter_prob_filtered.pddl') {}
+('/home/gil/dev/tfd/downward/preprocess/preprocess',) {'stdin': <open file 'output.sas', mode 'r' at 0x7fe80c0959c0>}
+('/home/gil/dev/tfd/downward/search/search', 'y+Y+e+O+1+C+1+b', 'p', '/home/gil/Documents/prob/iter_plan', 'F', '/home/gil/Documents/prob/res/planning_t0__t4') {'stdin': <open file 'output', mode 'r' at 0x7fe80c0959c0>}

@@ -1,0 +1,65 @@
+Number of literals: 139
+Constructing lookup tables: [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+Have identified that smaller values of (num_on_table) are preferable
+Seeing if there's a goal limit
+Seeing if there's a goal limit
+Seeing if there's a goal limit
+((block_height block1) += 1.000) affects one of the variables
+Seeing if there's a goal limit
+((block_height block1) += 1.000) affects one of the variables
+((block_height block1) += -1.000) affects one of the variables
+Seeing if there's a goal limit
+Seeing if there's a goal limit
+Seeing if there's a goal limit
+((block_height block3) += 1.000) affects one of the variables
+Seeing if there's a goal limit
+((block_height block3) += 1.000) affects one of the variables
+((block_height block3) += -1.000) affects one of the variables
+Seeing if there's a goal limit
+((block_height block4) += 1.000) affects one of the variables
+Seeing if there's a goal limit
+((block_height block4) += 1.000) affects one of the variables
+((block_height block4) += -1.000) affects one of the variables
+Seeing if there's a goal limit
+((block_height block5) += 1.000) affects one of the variables
+Seeing if there's a goal limit
+((block_height block5) += 1.000) affects one of the variables
+((block_height block5) += -1.000) affects one of the variables
+Seeing if there's a goal limit
+((block_height block6) += 1.000) affects one of the variables
+Seeing if there's a goal limit
+((block_height block6) += 1.000) affects one of the variables
+((block_height block6) += -1.000) affects one of the variables
+Seeing if there's a goal limit
+((block_height block8) += 1.000) affects one of the variables
+Seeing if there's a goal limit
+((block_height block8) += 1.000) affects one of the variables
+((block_height block8) += -1.000) affects one of the variables
+Seeing if there's a goal limit
+Seeing if there's a goal limit
+Recognised a monotonic-change-induced limit on -1.000*var0(block_height block0)
+- Must be >= 0.000
+Recognised a monotonic-change-induced limit on var0(block_height block0)
+- Must be >= 0.000
+Recognised a monotonic-change-induced limit on -1.000*var9(block_height block9)
+- Must be >= -2.000
+Recognised a monotonic-change-induced limit on var9(block_height block9)
+- Must be >= 2.000
+Recognised a monotonic-change-induced limit on -1.000*var11(block_height block11)
+- Must be >= -1.000
+Recognised a monotonic-change-induced limit on var11(block_height block11)
+- Must be >= 1.000
+[01;34mFor limits: literal goal index 0, fact (on_block block11 block1), is static or a precondition[00m
+[01;34mFor limits: literal goal index 1, fact (on_block block3 block4), is static or a precondition[00m
+[01;34mFor limits: literal goal index 2, fact (on_block block4 block8), is static or a precondition[00m
+[01;34mFor limits: literal goal index 3, fact (on_block block5 block0), is static or a precondition[00m
+[01;34mFor limits: literal goal index 4, fact (on_block block6 block11), is static or a precondition[00m
+[01;34mFor limits: literal goal index 5, fact (on_block block9 block5), is static or a precondition[00m
+[01;34mFor limits: literal goal index 6, fact (on_table block0), is static or a precondition[00m
+[01;34mFor limits: literal goal index 7, fact (on_table block1), is static or a precondition[00m
+[01;34mFor limits: literal goal index 8, fact (on_table block8), is static or a precondition[00m
+87% of the ground temporal actions in this problem are compression-safe
+Initial heuristic = -1.000
+;; Problem unsolvable!
+; Time 0.03

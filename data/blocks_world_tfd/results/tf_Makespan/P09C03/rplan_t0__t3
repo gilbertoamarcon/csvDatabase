@@ -1,0 +1,14 @@
+1
+(move-down arm0)
+(pick-single-block-on-block arm0 block2 block1 magnetic)
+(pick-single-block-on-block arm0 block5 block4 encompass)
+2
+(pick-double-block-on-block arm1 arm0 block11 block10 magnetic)
+2.001
+(pick-single-block-on-block arm0 block1 block0 encompass)
+(pick-single-block-on-block arm0 block4 block3 magnetic)
+3.001
+3.002
+(move-up-with-single-block arm0 block1)
+(place-single-block-on-block arm0 block1 block10)
+(place-single-block-on-block arm0 block4 block0)

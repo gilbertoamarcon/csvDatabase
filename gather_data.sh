@@ -1,4 +1,4 @@
 #!/bin/bash
 printf "" > csv/stats.csv
-ssh ovunc 'cat ~/Documents/stats.csv' >> csv/stats.csv
-ssh deskhp 'cat ~/Documents/stats.csv' >> csv/stats.csv
+cat data/blocks_world_colin2/stats.csv >> csv/stats.csv
+cat data/blocks_world_tfd/stats.csv >> csv/stats.csv

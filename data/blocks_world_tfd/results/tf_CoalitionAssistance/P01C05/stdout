@@ -1,0 +1,67 @@
+[3gH    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H   
+-------------------------------------
+Coalition Formation
+Coalition-Task Pairs:
+	t0  (and (on_table block5) (on_block block1 block5) (on_block block3 block1) ): arm0 arm1 arm2 arm3
+	t1  (and (on_table block10) (on_block block4 block10) (on_block block0 block4) ): arm0 arm1 arm2 arm3
+	t2  (and (on_table block6) (on_block block8 block6) (on_block block7 block8) ): arm0 arm1 arm2 arm3
+	t3  (and (on_table block11) (on_block block9 block11) (on_block block2 block9) ): arm0 arm1 arm2 arm3
+-------------------------------------
+
+-------------------------------------
+Task Fusion
+
+Agent Capabilities:
+	arm0: < 1 1 >
+	arm1: < 1 1 >
+	arm2: < 1 1 1 >
+	arm3: < 1 1 >
+Coalitions Capabilities:
+	t0: < 2 1 2 > arm0 arm1 arm2 arm3
+	t1: < 2 1 2 > arm0 arm1 arm2 arm3
+	t2: < 2 2 2 > arm0 arm1 arm2 arm3
+	t3: < 1 1 2 > arm0 arm1 arm2 arm3
+
+
+Agent Capabilities:
+	arm0: < 1 1 >
+	arm1: < 1 1 >
+	arm2: < 1 1 1 >
+	arm3: < 1 1 >
+Coalitions Capabilities:
+	t0__t3: < 1 2 1 2 > arm0 arm1 arm2 arm3
+	t1: < 2 1 2 > arm0 arm1 arm2 arm3
+	t2: < 2 2 2 > arm0 arm1 arm2 arm3
+
+Coalition-Task Pairs:
+	t0__t3  (and (on_table block5) (on_block block1 block5) (on_block block3 block1) )(and (on_table block11) (on_block block9 block11) (on_block block2 block9) ): arm0 arm1 arm2 arm3
+	t1  (and (on_table block10) (on_block block4 block10) (on_block block0 block4) ): arm0 arm1 arm2 arm3
+	t2  (and (on_table block6) (on_block block8 block6) (on_block block7 block8) ): arm0 arm1 arm2 arm3
+-------------------------------------
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for t0__t3
+Planning resources:  85 MB 8.991 s
+Merging resources:  11 MB 0.293 s
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for t1
+Planning resources:  9 MB 0.817 s
+Merging resources:  11 MB 0.651 s
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for t2
+Planning resources:  32 MB 2.566 s
+Merging resources:  12 MB 0.963 s
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+-------------------------------------
+Processing time: 16 s
+Memory usage: 160 MB
+Makespan: 47.530 s
+Number of actions: 60
+Exit value: 0
+-------------------------------------
+

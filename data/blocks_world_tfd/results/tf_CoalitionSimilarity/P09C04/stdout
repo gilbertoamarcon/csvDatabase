@@ -1,0 +1,66 @@
+[3gH    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H  
+-------------------------------------
+Coalition Formation
+Coalition-Task Pairs:
+	t0  (and (on_table block9) (= (block_height block9) 0) (on_block block10 block9) (= (block_height block10) 1) (on_block block1 block10) (= (block_height block1) 2) ): arm0 arm1 arm2 arm3 arm4
+	t1  (and (on_table block8) (= (block_height block8) 0) (on_block block7 block8) (= (block_height block7) 1) (on_block block6 block7) (= (block_height block6) 2) ): arm3 arm4
+	t2  (and (on_table block11) (= (block_height block11) 0) (on_block block3 block11) (= (block_height block3) 1) (on_block block2 block3) (= (block_height block2) 2) ): arm0 arm1 arm2 arm3 arm4
+	t3  (and (on_table block0) (= (block_height block0) 0) (on_block block4 block0) (= (block_height block4) 1) (on_block block5 block4) (= (block_height block5) 2) ): arm0 arm1 arm2
+-------------------------------------
+
+-------------------------------------
+Task Fusion
+
+Agent Capabilities:
+	arm0: < 1 1 >
+	arm1: < 1 1 1 >
+	arm2: < 1 >
+	arm3: < 1 1 1 >
+	arm4: < 1 1 1 >
+Coalitions Capabilities:
+	t0: < 1 1 2 > arm0 arm1 arm2 arm3 arm4
+	t1: < 2 1 > arm3 arm4
+	t2: < 2 2 > arm0 arm1 arm2 arm3 arm4
+	t3: < 1 1 1 > arm0 arm1 arm2
+
+
+Agent Capabilities:
+	arm0: < 1 1 >
+	arm1: < 1 1 1 >
+	arm2: < 1 >
+	arm3: < 1 1 1 >
+	arm4: < 1 1 1 >
+Coalitions Capabilities:
+	t0__t2: < 2 1 2 > arm0 arm1 arm2 arm3 arm4
+	t1: < 2 1 > arm3 arm4
+	t3: < 1 1 1 > arm0 arm1 arm2
+
+Coalition-Task Pairs:
+	t0__t2  (and (on_table block9) (= (block_height block9) 0) (on_block block10 block9) (= (block_height block10) 1) (on_block block1 block10) (= (block_height block1) 2) )(and (on_table block11) (= (block_height block11) 0) (on_block block3 block11) (= (block_height block3) 1) (on_block block2 block3) (= (block_height block2) 2) ): arm0 arm1 arm2 arm3 arm4
+	t1  (and (on_table block8) (= (block_height block8) 0) (on_block block7 block8) (= (block_height block7) 1) (on_block block6 block7) (= (block_height block6) 2) ): arm3 arm4
+	t3  (and (on_table block0) (= (block_height block0) 0) (on_block block4 block0) (= (block_height block4) 1) (on_block block5 block4) (= (block_height block5) 2) ): arm0 arm1 arm2
+-------------------------------------
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for t0__t2
+Planning resources:  183 MB 16.343 s
+Merging resources:  10 MB 0.306 s
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for t1
+Planning resources:  221 MB 12.107 s
+Merging resources:  13 MB 1.292 s
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for t3
+
+-------------------------------------
+Processing time: 32 s
+Memory usage: 427 MB
+Makespan: -1 s
+Number of actions: -1
+Exit value: 1
+-------------------------------------
+

@@ -1,0 +1,15 @@
+1
+(move-down arm2)
+2
+(pick-double-block-on-block arm6 arm2 block14 block13 friction)
+(pick-double-block-on-block arm6 arm2 block2 block1 suction)
+(pick-double-block-on-block arm6 arm2 block8 block7 friction)
+2.001
+3.001
+(pick-single-block-on-block arm2 block13 block12 friction)
+(pick-single-block-on-block arm2 block7 block6 friction)
+3.002
+4.001
+(place-double-block-on-block arm6 arm2 block2 block13)
+4.002
+(place-single-block-on-block arm2 block13 block6)

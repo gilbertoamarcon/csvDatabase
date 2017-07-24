@@ -1,0 +1,43 @@
+Number of literals: 209
+Constructing lookup tables: [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+Have identified that smaller values of (num_on_table) are preferable
+Seeing if there's a goal limit
+((block_height block0) += 1.000) affects one of the variables
+Seeing if there's a goal limit
+((block_height block0) += 1.000) affects one of the variables
+((block_height block0) += -1.000) affects one of the variables
+Seeing if there's a goal limit
+((block_height block1) += 1.000) affects one of the variables
+Seeing if there's a goal limit
+((block_height block1) += 1.000) affects one of the variables
+((block_height block1) += -1.000) affects one of the variables
+Seeing if there's a goal limit
+((block_height block11) += 1.000) affects one of the variables
+Seeing if there's a goal limit
+((block_height block11) += 1.000) affects one of the variables
+((block_height block11) += -1.000) affects one of the variables
+Seeing if there's a goal limit
+((block_height block5) += 1.000) affects one of the variables
+Seeing if there's a goal limit
+((block_height block5) += 1.000) affects one of the variables
+((block_height block5) += -1.000) affects one of the variables
+Seeing if there's a goal limit
+((block_height block6) += 1.000) affects one of the variables
+Seeing if there's a goal limit
+((block_height block6) += 1.000) affects one of the variables
+((block_height block6) += -1.000) affects one of the variables
+Seeing if there's a goal limit
+((block_height block9) += 1.000) affects one of the variables
+Seeing if there's a goal limit
+((block_height block9) += 1.000) affects one of the variables
+((block_height block9) += -1.000) affects one of the variables
+[01;34mNo analytic limits found, not considering limit effects of goal-only operators[00m
+Not looking for earlier-is-better time-dependent rewards: no goal limits
+87% of the ground temporal actions in this problem are compression-safe
+Initial heuristic = 50.000
+
+Resorting to best-first search
+b (49.000 | 1.000)b (48.000 | 1.002)b (47.000 | 1.002)b (46.000 | 2.001)b (45.000 | 2.001)b (44.000 | 2.003)b (42.000 | 4.003)b (41.000 | 5.007)b (40.000 | 9.007)b (39.000 | 11.009)b (38.000 | 11.009)b (37.000 | 11.011)b (36.000 | 11.011)b (35.000 | 12.011)b (35.000 | 12.010)b (34.000 | 13.012)b (33.000 | 13.014)b (32.000 | 15.018)b (32.000 | 14.017)b (31.000 | 14.018)b (30.000 | 15.018)b (28.000 | 21.024)b (27.000 | 21.024)b (26.000 | 21.024)b (25.000 | 22.025)b (24.000 | 23.026)b (23.000 | 23.027)b (22.000 | 26.031)b (21.000 | 27.032)b (20.000 | 27.032)b (18.000 | 28.033)b (17.000 | 32.038)b (16.000 | 36.042)b (15.000 | 39.045)b (13.000 | 41.046)b (13.000 | 40.046)b (12.000 | 42.047)b (12.000 | 41.046)b (11.000 | 42.048)b (7.000 | 43.050)b (6.000 | 43.050)b (4.000 | 44.051)b (1.000 | 45.052);;;; Solution Found
+; States evaluated: 181267
+; Cost: 46.053

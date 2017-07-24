@@ -1,8 +1,8 @@
 #!/bin/bash
 
 domain="blocks_world"
-probdir="${HOME}/Documents/results/$domain"
-tools=(CoalitionAssistance CoalitionSimilarity Object ObjectTime ActionObject)
+probdir="data/blocks_world_colin2/results/"
+tools=(CoalitionAssistance CoalitionSimilarity Object ObjectTime ActionObject ActionObjectTime Makespan IdleTime)
 
 probs=$(echo P{01..10}C{01..10})
 

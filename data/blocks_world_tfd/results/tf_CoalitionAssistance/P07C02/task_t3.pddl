@@ -1,0 +1,5 @@
+(and
+      (on_table block12)
+      (on_block block6 block12)
+      (on_block block5 block6)
+    )

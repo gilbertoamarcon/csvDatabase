@@ -1,0 +1,15 @@
+1
+(move-up arm0)
+2.001
+(pick-single-block-on-block arm0 block5 block4 friction)
+(pick-single-block-on-block arm0 block8 block7 encompass)
+3.002
+(move-down-with-single-block arm0 block8)
+(pick-single-block-on-block arm0 block4 block3 suction)
+(place-single-block-on-table arm0 block8)
+4.003
+(pick-single-block-on-table arm0 block3 encompass)
+(place-single-block-on-block arm0 block4 block8)
+5.004
+(move-up-with-single-block arm0 block3)
+(place-single-block-on-block arm0 block3 block4)

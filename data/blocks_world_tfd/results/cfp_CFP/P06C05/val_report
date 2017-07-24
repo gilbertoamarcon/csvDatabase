@@ -1,0 +1,1854 @@
+Type-checking move-up
+...action passes type checking.
+Type-checking move-down
+...action passes type checking.
+Type-checking move-up-with-single-block
+...action passes type checking.
+Type-checking move-down-with-single-block
+...action passes type checking.
+Type-checking move-up-with-double-block
+...action passes type checking.
+Type-checking move-down-with-double-block
+...action passes type checking.
+Type-checking pick-single-block-on-block
+...action passes type checking.
+Type-checking pick-single-block-on-table
+...action passes type checking.
+Type-checking place-single-block-on-block
+...action passes type checking.
+Type-checking place-single-block-on-table
+...action passes type checking.
+Type-checking pick-double-block-on-block
+...action passes type checking.
+Type-checking pick-double-block-on-table
+...action passes type checking.
+Type-checking place-double-block-on-block
+...action passes type checking.
+Type-checking place-double-block-on-table
+...action passes type checking.
+Checking plan: /home/gil/Documents/prob/solution
+Plan to validate:
+
+Plan size: 171
+0:
+(pick-single-block-on-block arm1 block5 block4 friction) - start
+ 
+0.01:
+(move-down arm0) - start
+ 
+0.02:
+Invariant for (move-down arm0)
+ 
+0.02:
+(move-up arm3) - start
+ 
+0.03:
+Invariant for (move-down arm0)
+Invariant for (move-up arm3)
+ 
+0.03:
+(move-down arm2) - start
+ 
+1:
+Invariant for (move-down arm0)
+Invariant for (move-up arm3)
+Invariant for (move-down arm2)
+ 
+1:
+(pick-single-block-on-block arm1 block5 block4 friction) - end
+ 
+1.01:
+Invariant for (move-down arm0)
+Invariant for (move-up arm3)
+Invariant for (move-down arm2)
+ 
+1.01:
+(move-down arm0) - end
+ 
+1.02:
+Invariant for (move-up arm3)
+Invariant for (move-down arm2)
+ 
+1.02:
+(move-up arm3) - end
+ 
+1.03:
+Invariant for (move-down arm2)
+ 
+1.03:
+(move-down arm2) - end
+ 
+1.04:
+(move-up arm0) - start
+ 
+1.05:
+Invariant for (move-up arm0)
+ 
+1.05:
+(move-down-with-single-block arm1 block5) - start
+ 
+2.04:
+Invariant for (move-up arm0)
+Invariant for (move-down-with-single-block arm1 block5)
+ 
+2.04:
+(move-up arm0) - end
+ 
+2.05:
+Invariant for (move-down-with-single-block arm1 block5)
+ 
+2.05:
+(move-down-with-single-block arm1 block5) - end
+ 
+2.06:
+(move-up arm0) - start
+ 
+2.07:
+Invariant for (move-up arm0)
+ 
+2.07:
+(pick-single-block-on-block arm2 block4 block3 suction) - start
+ 
+3.06:
+Invariant for (move-up arm0)
+ 
+3.06:
+(move-up arm0) - end
+ 
+3.07:
+(pick-single-block-on-block arm2 block4 block3 suction) - end
+ 
+3.08:
+(move-down-with-single-block arm2 block4) - start
+ 
+3.09:
+Invariant for (move-down-with-single-block arm2 block4)
+ 
+3.09:
+(place-single-block-on-block arm1 block5 block3) - start
+ 
+4.08:
+Invariant for (move-down-with-single-block arm2 block4)
+ 
+4.08:
+(move-down-with-single-block arm2 block4) - end
+ 
+4.09:
+(place-single-block-on-block arm1 block5 block3) - end
+ 
+4.1:
+(pick-double-block-on-block arm3 arm0 block11 block10 magnetic) - start
+ 
+4.11:
+(place-single-block-on-table arm2 block4) - start
+ 
+5.11:
+(place-single-block-on-table arm2 block4) - end
+ 
+5.12:
+(move-up arm2) - start
+ 
+6.1:
+Invariant for (move-up arm2)
+ 
+6.1:
+(pick-double-block-on-block arm3 arm0 block11 block10 magnetic) - end
+ 
+6.12:
+Invariant for (move-up arm2)
+ 
+6.12:
+(move-up arm2) - end
+ 
+6.13:
+(pick-single-block-on-block arm1 block10 block9 friction) - start
+ 
+6.14:
+(move-down arm2) - start
+ 
+7.13:
+Invariant for (move-down arm2)
+ 
+7.13:
+(pick-single-block-on-block arm1 block10 block9 friction) - end
+ 
+7.14:
+Invariant for (move-down arm2)
+ 
+7.14:
+(move-down arm2) - end
+ 
+7.15:
+(pick-single-block-on-table arm2 block9 magnetic) - start
+ 
+7.16:
+(place-single-block-on-block arm1 block10 block4) - start
+ 
+8.15:
+(pick-single-block-on-table arm2 block9 magnetic) - end
+ 
+8.16:
+(place-single-block-on-block arm1 block10 block4) - end
+ 
+8.17:
+(move-up-with-single-block arm2 block9) - start
+ 
+8.18:
+Invariant for (move-up-with-single-block arm2 block9)
+ 
+8.18:
+(pick-single-block-on-block arm1 block5 block3 friction) - start
+ 
+8.19:
+Invariant for (move-up-with-single-block arm2 block9)
+ 
+8.19:
+(place-double-block-on-block arm3 arm0 block11 block10) - start
+ 
+9.17:
+Invariant for (move-up-with-single-block arm2 block9)
+ 
+9.17:
+(move-up-with-single-block arm2 block9) - end
+ 
+9.18:
+(pick-single-block-on-block arm1 block5 block3 friction) - end
+ 
+10.19:
+(place-double-block-on-block arm3 arm0 block11 block10) - end
+ 
+10.2:
+(move-up-with-single-block arm2 block9) - start
+ 
+10.21:
+Invariant for (move-up-with-single-block arm2 block9)
+ 
+10.21:
+(place-single-block-on-block arm1 block5 block3) - start
+ 
+10.22:
+Invariant for (move-up-with-single-block arm2 block9)
+ 
+10.22:
+(move-down arm0) - start
+ 
+10.23:
+Invariant for (move-up-with-single-block arm2 block9)
+Invariant for (move-down arm0)
+ 
+10.23:
+(pick-single-block-on-block arm3 block2 block1 encompass) - start
+ 
+11.2:
+Invariant for (move-up-with-single-block arm2 block9)
+Invariant for (move-down arm0)
+ 
+11.2:
+(move-up-with-single-block arm2 block9) - end
+ 
+11.21:
+Invariant for (move-down arm0)
+ 
+11.21:
+(place-single-block-on-block arm1 block5 block3) - end
+ 
+11.22:
+Invariant for (move-down arm0)
+ 
+11.22:
+(move-down arm0) - end
+ 
+11.23:
+(pick-single-block-on-block arm3 block2 block1 encompass) - end
+(move-down-with-single-block arm3 block2) - start
+ 
+11.24:
+Invariant for (move-down-with-single-block arm3 block2)
+ 
+11.24:
+(pick-single-block-on-block arm1 block1 block0 suction) - start
+ 
+11.25:
+Invariant for (move-down-with-single-block arm3 block2)
+ 
+11.25:
+(pick-single-block-on-block arm0 block5 block3 friction) - start
+ 
+12.23:
+Invariant for (move-down-with-single-block arm3 block2)
+ 
+12.23:
+(move-down-with-single-block arm3 block2) - end
+ 
+12.24:
+(pick-single-block-on-block arm1 block1 block0 suction) - end
+ 
+12.25:
+(pick-single-block-on-block arm0 block5 block3 friction) - end
+ 
+12.26:
+(place-single-block-on-block arm0 block5 block0) - start
+ 
+13.26:
+(place-single-block-on-block arm0 block5 block0) - end
+(move-down arm0) - start
+ 
+13.27:
+Invariant for (move-down arm0)
+ 
+13.27:
+(place-single-block-on-block arm2 block9 block5) - start
+ 
+14.26:
+Invariant for (move-down arm0)
+ 
+14.26:
+(move-down arm0) - end
+ 
+14.27:
+(place-single-block-on-block arm2 block9 block5) - end
+(place-single-block-on-block arm3 block2 block3) - start
+ 
+14.28:
+(pick-single-block-on-block arm2 block8 block7 encompass) - start
+ 
+14.29:
+(move-up arm0) - start
+ 
+14.3:
+Invariant for (move-up arm0)
+ 
+14.3:
+(move-down-with-single-block arm1 block1) - start
+ 
+15.27:
+Invariant for (move-up arm0)
+Invariant for (move-down-with-single-block arm1 block1)
+ 
+15.27:
+(place-single-block-on-block arm3 block2 block3) - end
+ 
+15.28:
+Invariant for (move-up arm0)
+Invariant for (move-down-with-single-block arm1 block1)
+ 
+15.28:
+(pick-single-block-on-block arm2 block8 block7 encompass) - end
+ 
+15.29:
+Invariant for (move-up arm0)
+Invariant for (move-down-with-single-block arm1 block1)
+ 
+15.29:
+(move-up arm0) - end
+ 
+15.3:
+Invariant for (move-down-with-single-block arm1 block1)
+ 
+15.3:
+(move-down-with-single-block arm1 block1) - end
+ 
+15.31:
+(move-down-with-single-block arm2 block8) - start
+ 
+15.32:
+Invariant for (move-down-with-single-block arm2 block8)
+ 
+15.32:
+(place-single-block-on-table arm1 block1) - start
+ 
+16.31:
+Invariant for (move-down-with-single-block arm2 block8)
+ 
+16.31:
+(move-down-with-single-block arm2 block8) - end
+ 
+16.32:
+(place-single-block-on-table arm1 block1) - end
+ 
+16.33:
+(place-single-block-on-block arm2 block8 block1) - start
+ 
+17.33:
+(place-single-block-on-block arm2 block8 block1) - end
+ 
+17.34:
+(pick-double-block-on-block arm3 arm2 block7 block6 encompass) - start
+ 
+17.35:
+(move-up arm0) - start
+ 
+18.35:
+Invariant for (move-up arm0)
+ 
+18.35:
+(move-up arm0) - end
+ 
+19.34:
+(pick-double-block-on-block arm3 arm2 block7 block6 encompass) - end
+ 
+19.35:
+(move-up-with-double-block arm3 arm2 block7) - start
+ 
+20.35:
+Invariant for (move-up-with-double-block arm3 arm2 block7)
+ 
+20.35:
+(move-up-with-double-block arm3 arm2 block7) - end
+ 
+20.36:
+(place-double-block-on-block arm3 arm2 block7 block2) - start
+ 
+20.37:
+(pick-single-block-on-table arm1 block6 friction) - start
+ 
+21.37:
+(pick-single-block-on-table arm1 block6 friction) - end
+ 
+22.36:
+(place-double-block-on-block arm3 arm2 block7 block2) - end
+ 
+22.37:
+(pick-double-block-on-block arm2 arm0 block11 block10 magnetic) - start
+ 
+22.38:
+(move-down arm3) - start
+ 
+22.39:
+Invariant for (move-down arm3)
+ 
+22.39:
+(move-up-with-single-block arm1 block6) - start
+ 
+23.38:
+Invariant for (move-down arm3)
+Invariant for (move-up-with-single-block arm1 block6)
+ 
+23.38:
+(move-down arm3) - end
+ 
+23.39:
+Invariant for (move-up-with-single-block arm1 block6)
+ 
+23.39:
+(move-up-with-single-block arm1 block6) - end
+ 
+23.4:
+(move-up-with-single-block arm1 block6) - start
+ 
+24.37:
+Invariant for (move-up-with-single-block arm1 block6)
+ 
+24.37:
+(pick-double-block-on-block arm2 arm0 block11 block10 magnetic) - end
+ 
+24.4:
+Invariant for (move-up-with-single-block arm1 block6)
+ 
+24.4:
+(move-up-with-single-block arm1 block6) - end
+ 
+24.41:
+(move-down-with-double-block arm2 arm0 block11) - start
+ 
+24.42:
+Invariant for (move-down-with-double-block arm2 arm0 block11)
+ 
+24.42:
+(pick-single-block-on-block arm3 block8 block1 encompass) - start
+ 
+25.41:
+Invariant for (move-down-with-double-block arm2 arm0 block11)
+ 
+25.41:
+(move-down-with-double-block arm2 arm0 block11) - end
+ 
+25.42:
+(pick-single-block-on-block arm3 block8 block1 encompass) - end
+ 
+25.43:
+(place-double-block-on-block arm2 arm0 block11 block1) - start
+ 
+27.43:
+(place-double-block-on-block arm2 arm0 block11 block1) - end
+(move-up arm0) - start
+ 
+27.44:
+Invariant for (move-up arm0)
+ 
+27.44:
+(move-down-with-single-block arm3 block8) - start
+(place-single-block-on-block arm1 block6 block11) - start
+ 
+28.43:
+Invariant for (move-up arm0)
+Invariant for (move-down-with-single-block arm3 block8)
+ 
+28.43:
+(move-up arm0) - end
+ 
+28.44:
+Invariant for (move-down-with-single-block arm3 block8)
+ 
+28.44:
+(move-down-with-single-block arm3 block8) - end
+(place-single-block-on-block arm1 block6 block11) - end
+ 
+28.45:
+(move-down arm0) - start
+ 
+29.45:
+Invariant for (move-down arm0)
+ 
+29.45:
+(move-down arm0) - end
+ 
+29.46:
+(pick-single-block-on-block arm0 block10 block4 friction) - start
+ 
+29.47:
+(pick-single-block-on-block arm1 block6 block11 friction) - start
+ 
+29.48:
+(place-single-block-on-table arm3 block8) - start
+ 
+29.49:
+(move-up arm2) - start
+ 
+30.46:
+Invariant for (move-up arm2)
+ 
+30.46:
+(pick-single-block-on-block arm0 block10 block4 friction) - end
+ 
+30.47:
+Invariant for (move-up arm2)
+ 
+30.47:
+(pick-single-block-on-block arm1 block6 block11 friction) - end
+ 
+30.48:
+Invariant for (move-up arm2)
+ 
+30.48:
+(place-single-block-on-table arm3 block8) - end
+ 
+30.49:
+Invariant for (move-up arm2)
+ 
+30.49:
+(move-up arm2) - end
+ 
+30.5:
+(move-up-with-single-block arm0 block10) - start
+ 
+30.51:
+Invariant for (move-up-with-single-block arm0 block10)
+ 
+30.51:
+(place-single-block-on-block arm1 block6 block11) - start
+ 
+30.52:
+Invariant for (move-up-with-single-block arm0 block10)
+ 
+30.52:
+(move-down arm2) - start
+ 
+31.5:
+Invariant for (move-up-with-single-block arm0 block10)
+Invariant for (move-down arm2)
+ 
+31.5:
+(move-up-with-single-block arm0 block10) - end
+ 
+31.51:
+Invariant for (move-down arm2)
+ 
+31.51:
+(place-single-block-on-block arm1 block6 block11) - end
+ 
+31.52:
+Invariant for (move-down arm2)
+ 
+31.52:
+(move-down arm2) - end
+ 
+31.53:
+(move-down-with-single-block arm0 block10) - start
+ 
+31.54:
+Invariant for (move-down-with-single-block arm0 block10)
+ 
+31.54:
+(move-down arm1) - start
+ 
+31.55:
+Invariant for (move-down-with-single-block arm0 block10)
+Invariant for (move-down arm1)
+ 
+31.55:
+(move-up arm3) - start
+ 
+32.53:
+Invariant for (move-down-with-single-block arm0 block10)
+Invariant for (move-down arm1)
+Invariant for (move-up arm3)
+ 
+32.53:
+(move-down-with-single-block arm0 block10) - end
+ 
+32.54:
+Invariant for (move-down arm1)
+Invariant for (move-up arm3)
+ 
+32.54:
+(move-down arm1) - end
+ 
+32.55:
+Invariant for (move-up arm3)
+ 
+32.55:
+(move-up arm3) - end
+ 
+32.56:
+(move-down arm1) - start
+ 
+32.57:
+Invariant for (move-down arm1)
+ 
+32.57:
+(move-up arm3) - start
+ 
+33.56:
+Invariant for (move-down arm1)
+Invariant for (move-up arm3)
+ 
+33.56:
+(move-down arm1) - end
+ 
+33.57:
+Invariant for (move-up arm3)
+ 
+33.57:
+(move-up arm3) - end
+ 
+33.58:
+(pick-single-block-on-table arm1 block4 suction) - start
+ 
+33.59:
+(place-single-block-on-block arm0 block10 block8) - start
+ 
+34.58:
+(pick-single-block-on-table arm1 block4 suction) - end
+ 
+34.59:
+(place-single-block-on-block arm0 block10 block8) - end
+ 
+34.6:
+(move-up arm2) - start
+ 
+34.61:
+Invariant for (move-up arm2)
+ 
+34.61:
+(pick-single-block-on-block arm0 block10 block8 friction) - start
+ 
+34.62:
+Invariant for (move-up arm2)
+ 
+34.62:
+(move-up-with-single-block arm1 block4) - start
+ 
+35.6:
+Invariant for (move-up arm2)
+Invariant for (move-up-with-single-block arm1 block4)
+ 
+35.6:
+(move-up arm2) - end
+ 
+35.61:
+Invariant for (move-up-with-single-block arm1 block4)
+ 
+35.61:
+(pick-single-block-on-block arm0 block10 block8 friction) - end
+ 
+35.62:
+Invariant for (move-up-with-single-block arm1 block4)
+ 
+35.62:
+(move-up-with-single-block arm1 block4) - end
+ 
+35.63:
+(move-down-with-single-block arm0 block10) - start
+ 
+35.64:
+Invariant for (move-down-with-single-block arm0 block10)
+ 
+35.64:
+(place-single-block-on-block arm1 block4 block8) - start
+ 
+35.65:
+Invariant for (move-down-with-single-block arm0 block10)
+ 
+35.65:
+(pick-double-block-on-block arm3 arm2 block7 block2 encompass) - start
+ 
+36.63:
+Invariant for (move-down-with-single-block arm0 block10)
+ 
+36.63:
+(move-down-with-single-block arm0 block10) - end
+ 
+36.64:
+(place-single-block-on-block arm1 block4 block8) - end
+ 
+36.65:
+(place-single-block-on-table arm0 block10) - start
+ 
+36.66:
+(move-up arm1) - start
+ 
+37.65:
+Invariant for (move-up arm1)
+ 
+37.65:
+(pick-double-block-on-block arm3 arm2 block7 block2 encompass) - end
+(place-single-block-on-table arm0 block10) - end
+ 
+37.66:
+Invariant for (move-up arm1)
+ 
+37.66:
+(move-up arm1) - end
+ 
+37.67:
+(move-down-with-double-block arm3 arm2 block7) - start
+ 
+38.67:
+Invariant for (move-down-with-double-block arm3 arm2 block7)
+ 
+38.67:
+(move-down-with-double-block arm3 arm2 block7) - end
+ 
+38.68:
+(place-double-block-on-block arm3 arm2 block7 block10) - start
+ 
+38.69:
+(move-up arm0) - start
+ 
+38.7:
+Invariant for (move-up arm0)
+ 
+38.7:
+(move-up arm1) - start
+ 
+39.69:
+Invariant for (move-up arm0)
+Invariant for (move-up arm1)
+ 
+39.69:
+(move-up arm0) - end
+ 
+39.7:
+Invariant for (move-up arm1)
+ 
+39.7:
+(move-up arm1) - end
+ 
+40.68:
+(place-double-block-on-block arm3 arm2 block7 block10) - end
+ 
+40.69:
+(pick-single-block-on-block arm3 block2 block3 encompass) - start
+ 
+40.7:
+(move-down arm0) - start
+ 
+40.71:
+Invariant for (move-down arm0)
+ 
+40.71:
+(move-down arm1) - start
+ 
+40.72:
+Invariant for (move-down arm0)
+Invariant for (move-down arm1)
+ 
+40.72:
+(move-down arm2) - start
+ 
+41.69:
+Invariant for (move-down arm0)
+Invariant for (move-down arm1)
+Invariant for (move-down arm2)
+ 
+41.69:
+(pick-single-block-on-block arm3 block2 block3 encompass) - end
+ 
+41.7:
+Invariant for (move-down arm0)
+Invariant for (move-down arm1)
+Invariant for (move-down arm2)
+ 
+41.7:
+(move-down arm0) - end
+ 
+41.71:
+Invariant for (move-down arm1)
+Invariant for (move-down arm2)
+ 
+41.71:
+(move-down arm1) - end
+ 
+41.72:
+Invariant for (move-down arm2)
+ 
+41.72:
+(move-down arm2) - end
+ 
+41.73:
+(pick-single-block-on-table arm2 block3 encompass) - start
+ 
+42.73:
+(pick-single-block-on-table arm2 block3 encompass) - end
+ 
+42.74:
+(move-up-with-single-block arm2 block3) - start
+ 
+42.75:
+Invariant for (move-up-with-single-block arm2 block3)
+ 
+42.75:
+(move-up-with-single-block arm3 block2) - start
+ 
+43.74:
+Invariant for (move-up-with-single-block arm2 block3)
+Invariant for (move-up-with-single-block arm3 block2)
+ 
+43.74:
+(move-up-with-single-block arm2 block3) - end
+ 
+43.75:
+Invariant for (move-up-with-single-block arm3 block2)
+ 
+43.75:
+(move-up-with-single-block arm3 block2) - end
+ 
+43.751:
+(place-single-block-on-block arm3 block2 block7) - start
+ 
+43.76:
+(move-up-with-single-block arm2 block3) - start
+ 
+44.751:
+Invariant for (move-up-with-single-block arm2 block3)
+ 
+44.751:
+(place-single-block-on-block arm3 block2 block7) - end
+ 
+44.76:
+Invariant for (move-up-with-single-block arm2 block3)
+ 
+44.76:
+(move-up-with-single-block arm2 block3) - end
+ 
+44.77:
+(place-single-block-on-block arm2 block3 block4) - start
+ 
+45.77:
+(place-single-block-on-block arm2 block3 block4) - end
+ 
+
+Plan Validation details
+-----------------------
+
+Checking next happening (time 0)
+Deleting (empty arm1)
+Deleting (clear block5)
+Deleting (on_block block5 block4)
+
+Checking next happening (time 0.01)
+Deleting (not_moving arm0)
+
+Checking next happening (time 0.02)
+
+Checking next happening (time 0.02)
+Deleting (not_moving arm3)
+
+Checking next happening (time 0.03)
+
+Checking next happening (time 0.03)
+Deleting (not_moving arm2)
+
+Checking next happening (time 1)
+
+Checking next happening (time 1)
+Adding (clear block4)
+Adding (holding_single arm1 block5)
+
+Checking next happening (time 1.01)
+
+Checking next happening (time 1.01)
+Adding (not_moving arm0)
+Updating (arm_height arm0) (1) by 1 decrease
+
+Checking next happening (time 1.02)
+
+Checking next happening (time 1.02)
+Adding (not_moving arm3)
+Updating (arm_height arm3) (1) by 1 increase
+
+Checking next happening (time 1.03)
+
+Checking next happening (time 1.03)
+Adding (not_moving arm2)
+Updating (arm_height arm2) (2) by 1 decrease
+
+Checking next happening (time 1.04)
+Deleting (not_moving arm0)
+
+Checking next happening (time 1.05)
+
+Checking next happening (time 1.05)
+Deleting (not_moving arm1)
+
+Checking next happening (time 2.04)
+
+Checking next happening (time 2.04)
+Adding (not_moving arm0)
+Updating (arm_height arm0) (0) by 1 increase
+
+Checking next happening (time 2.05)
+
+Checking next happening (time 2.05)
+Adding (not_moving arm1)
+Updating (arm_height arm1) (2) by 1 decrease
+Updating (block_height block5) (2) by 1 decrease
+
+Checking next happening (time 2.06)
+Deleting (not_moving arm0)
+
+Checking next happening (time 2.07)
+
+Checking next happening (time 2.07)
+Deleting (empty arm2)
+Deleting (clear block4)
+Deleting (on_block block4 block3)
+
+Checking next happening (time 3.06)
+
+Checking next happening (time 3.06)
+Adding (not_moving arm0)
+Updating (arm_height arm0) (1) by 1 increase
+
+Checking next happening (time 3.07)
+Adding (clear block3)
+Adding (holding_single arm2 block4)
+
+Checking next happening (time 3.08)
+Deleting (not_moving arm2)
+
+Checking next happening (time 3.09)
+
+Checking next happening (time 3.09)
+Deleting (clear block3)
+Deleting (holding_single arm1 block5)
+
+Checking next happening (time 4.08)
+
+Checking next happening (time 4.08)
+Adding (not_moving arm2)
+Updating (arm_height arm2) (1) by 1 decrease
+Updating (block_height block4) (1) by 1 decrease
+
+Checking next happening (time 4.09)
+Adding (clear block5)
+Adding (on_block block5 block3)
+Adding (empty arm1)
+
+Checking next happening (time 4.1)
+Deleting (empty arm3)
+Deleting (empty arm0)
+Deleting (clear block11)
+Deleting (on_block block11 block10)
+
+Checking next happening (time 4.11)
+Deleting (holding_single arm2 block4)
+Updating (num_on_table) (4) by 1 increase
+
+Checking next happening (time 5.11)
+Adding (clear block4)
+Adding (empty arm2)
+Adding (on_table block4)
+
+Checking next happening (time 5.12)
+Deleting (not_moving arm2)
+
+Checking next happening (time 6.1)
+
+Checking next happening (time 6.1)
+Adding (clear block10)
+Adding (holding_double arm3 arm0 block11)
+
+Checking next happening (time 6.12)
+
+Checking next happening (time 6.12)
+Adding (not_moving arm2)
+Updating (arm_height arm2) (0) by 1 increase
+
+Checking next happening (time 6.13)
+Deleting (empty arm1)
+Deleting (clear block10)
+Deleting (on_block block10 block9)
+
+Checking next happening (time 6.14)
+Deleting (not_moving arm2)
+
+Checking next happening (time 7.13)
+
+Checking next happening (time 7.13)
+Adding (clear block9)
+Adding (holding_single arm1 block10)
+
+Checking next happening (time 7.14)
+
+Checking next happening (time 7.14)
+Adding (not_moving arm2)
+Updating (arm_height arm2) (1) by 1 decrease
+
+Checking next happening (time 7.15)
+Deleting (empty arm2)
+Deleting (clear block9)
+
+Checking next happening (time 7.16)
+Deleting (clear block4)
+Deleting (holding_single arm1 block10)
+
+Checking next happening (time 8.15)
+Deleting (on_table block9)
+Adding (holding_single arm2 block9)
+Updating (num_on_table) (5) by 1 decrease
+
+Checking next happening (time 8.16)
+Adding (clear block10)
+Adding (on_block block10 block4)
+Adding (empty arm1)
+
+Checking next happening (time 8.17)
+Deleting (not_moving arm2)
+
+Checking next happening (time 8.18)
+
+Checking next happening (time 8.18)
+Deleting (empty arm1)
+Deleting (clear block5)
+Deleting (on_block block5 block3)
+
+Checking next happening (time 8.19)
+
+Checking next happening (time 8.19)
+Deleting (clear block10)
+Deleting (holding_double arm3 arm0 block11)
+
+Checking next happening (time 9.17)
+
+Checking next happening (time 9.17)
+Adding (not_moving arm2)
+Updating (arm_height arm2) (0) by 1 increase
+Updating (block_height block9) (0) by 1 increase
+
+Checking next happening (time 9.18)
+Adding (clear block3)
+Adding (holding_single arm1 block5)
+
+Checking next happening (time 10.19)
+Adding (clear block11)
+Adding (on_block block11 block10)
+Adding (empty arm3)
+Adding (empty arm0)
+
+Checking next happening (time 10.2)
+Deleting (not_moving arm2)
+
+Checking next happening (time 10.21)
+
+Checking next happening (time 10.21)
+Deleting (clear block3)
+Deleting (holding_single arm1 block5)
+
+Checking next happening (time 10.22)
+
+Checking next happening (time 10.22)
+Deleting (not_moving arm0)
+
+Checking next happening (time 10.23)
+
+Checking next happening (time 10.23)
+Deleting (empty arm3)
+Deleting (clear block2)
+Deleting (on_block block2 block1)
+
+Checking next happening (time 11.2)
+
+Checking next happening (time 11.2)
+Adding (not_moving arm2)
+Updating (arm_height arm2) (1) by 1 increase
+Updating (block_height block9) (1) by 1 increase
+
+Checking next happening (time 11.21)
+
+Checking next happening (time 11.21)
+Adding (clear block5)
+Adding (on_block block5 block3)
+Adding (empty arm1)
+
+Checking next happening (time 11.22)
+
+Checking next happening (time 11.22)
+Adding (not_moving arm0)
+Updating (arm_height arm0) (2) by 1 decrease
+
+Checking next happening (time 11.23)
+Deleting (not_moving arm3)
+Adding (clear block1)
+Adding (holding_single arm3 block2)
+
+Checking next happening (time 11.24)
+
+Checking next happening (time 11.24)
+Deleting (empty arm1)
+Deleting (clear block1)
+Deleting (on_block block1 block0)
+
+Checking next happening (time 11.25)
+
+Checking next happening (time 11.25)
+Deleting (empty arm0)
+Deleting (clear block5)
+Deleting (on_block block5 block3)
+
+Checking next happening (time 12.23)
+
+Checking next happening (time 12.23)
+Adding (not_moving arm3)
+Updating (arm_height arm3) (2) by 1 decrease
+Updating (block_height block2) (2) by 1 decrease
+
+Checking next happening (time 12.24)
+Adding (clear block0)
+Adding (holding_single arm1 block1)
+
+Checking next happening (time 12.25)
+Adding (clear block3)
+Adding (holding_single arm0 block5)
+
+Checking next happening (time 12.26)
+Deleting (clear block0)
+Deleting (holding_single arm0 block5)
+
+Checking next happening (time 13.26)
+Deleting (not_moving arm0)
+Adding (clear block5)
+Adding (on_block block5 block0)
+Adding (empty arm0)
+
+Checking next happening (time 13.27)
+
+Checking next happening (time 13.27)
+Deleting (clear block5)
+Deleting (holding_single arm2 block9)
+
+Checking next happening (time 14.26)
+
+Checking next happening (time 14.26)
+Adding (not_moving arm0)
+Updating (arm_height arm0) (1) by 1 decrease
+
+Checking next happening (time 14.27)
+Deleting (clear block3)
+Deleting (holding_single arm3 block2)
+Adding (clear block9)
+Adding (on_block block9 block5)
+Adding (empty arm2)
+
+Checking next happening (time 14.28)
+Deleting (empty arm2)
+Deleting (clear block8)
+Deleting (on_block block8 block7)
+
+Checking next happening (time 14.29)
+Deleting (not_moving arm0)
+
+Checking next happening (time 14.3)
+
+Checking next happening (time 14.3)
+Deleting (not_moving arm1)
+
+Checking next happening (time 15.27)
+
+Checking next happening (time 15.27)
+Adding (clear block2)
+Adding (on_block block2 block3)
+Adding (empty arm3)
+
+Checking next happening (time 15.28)
+
+Checking next happening (time 15.28)
+Adding (clear block7)
+Adding (holding_single arm2 block8)
+
+Checking next happening (time 15.29)
+
+Checking next happening (time 15.29)
+Adding (not_moving arm0)
+Updating (arm_height arm0) (0) by 1 increase
+
+Checking next happening (time 15.3)
+
+Checking next happening (time 15.3)
+Adding (not_moving arm1)
+Updating (arm_height arm1) (1) by 1 decrease
+Updating (block_height block1) (1) by 1 decrease
+
+Checking next happening (time 15.31)
+Deleting (not_moving arm2)
+
+Checking next happening (time 15.32)
+
+Checking next happening (time 15.32)
+Deleting (holding_single arm1 block1)
+Updating (num_on_table) (4) by 1 increase
+
+Checking next happening (time 16.31)
+
+Checking next happening (time 16.31)
+Adding (not_moving arm2)
+Updating (arm_height arm2) (2) by 1 decrease
+Updating (block_height block8) (2) by 1 decrease
+
+Checking next happening (time 16.32)
+Adding (clear block1)
+Adding (empty arm1)
+Adding (on_table block1)
+
+Checking next happening (time 16.33)
+Deleting (clear block1)
+Deleting (holding_single arm2 block8)
+
+Checking next happening (time 17.33)
+Adding (clear block8)
+Adding (on_block block8 block1)
+Adding (empty arm2)
+
+Checking next happening (time 17.34)
+Deleting (empty arm3)
+Deleting (empty arm2)
+Deleting (clear block7)
+Deleting (on_block block7 block6)
+
+Checking next happening (time 17.35)
+Deleting (not_moving arm0)
+
+Checking next happening (time 18.35)
+
+Checking next happening (time 18.35)
+Adding (not_moving arm0)
+Updating (arm_height arm0) (1) by 1 increase
+
+Checking next happening (time 19.34)
+Adding (clear block6)
+Adding (holding_double arm3 arm2 block7)
+
+Checking next happening (time 19.35)
+Deleting (not_moving arm3)
+Deleting (not_moving arm2)
+
+Checking next happening (time 20.35)
+
+Checking next happening (time 20.35)
+Adding (not_moving arm3)
+Adding (not_moving arm2)
+Updating (arm_height arm3) (1) by 1 increase
+Updating (arm_height arm2) (1) by 1 increase
+Updating (block_height block7) (1) by 1 increase
+
+Checking next happening (time 20.36)
+Deleting (clear block2)
+Deleting (holding_double arm3 arm2 block7)
+
+Checking next happening (time 20.37)
+Deleting (empty arm1)
+Deleting (clear block6)
+
+Checking next happening (time 21.37)
+Deleting (on_table block6)
+Adding (holding_single arm1 block6)
+Updating (num_on_table) (5) by 1 decrease
+
+Checking next happening (time 22.36)
+Adding (clear block7)
+Adding (on_block block7 block2)
+Adding (empty arm3)
+Adding (empty arm2)
+
+Checking next happening (time 22.37)
+Deleting (empty arm2)
+Deleting (empty arm0)
+Deleting (clear block11)
+Deleting (on_block block11 block10)
+
+Checking next happening (time 22.38)
+Deleting (not_moving arm3)
+
+Checking next happening (time 22.39)
+
+Checking next happening (time 22.39)
+Deleting (not_moving arm1)
+
+Checking next happening (time 23.38)
+
+Checking next happening (time 23.38)
+Adding (not_moving arm3)
+Updating (arm_height arm3) (2) by 1 decrease
+
+Checking next happening (time 23.39)
+
+Checking next happening (time 23.39)
+Adding (not_moving arm1)
+Updating (arm_height arm1) (0) by 1 increase
+Updating (block_height block6) (0) by 1 increase
+
+Checking next happening (time 23.4)
+Deleting (not_moving arm1)
+
+Checking next happening (time 24.37)
+
+Checking next happening (time 24.37)
+Adding (clear block10)
+Adding (holding_double arm2 arm0 block11)
+
+Checking next happening (time 24.4)
+
+Checking next happening (time 24.4)
+Adding (not_moving arm1)
+Updating (arm_height arm1) (1) by 1 increase
+Updating (block_height block6) (1) by 1 increase
+
+Checking next happening (time 24.41)
+Deleting (not_moving arm2)
+Deleting (not_moving arm0)
+
+Checking next happening (time 24.42)
+
+Checking next happening (time 24.42)
+Deleting (empty arm3)
+Deleting (clear block8)
+Deleting (on_block block8 block1)
+
+Checking next happening (time 25.41)
+
+Checking next happening (time 25.41)
+Adding (not_moving arm2)
+Adding (not_moving arm0)
+Updating (arm_height arm2) (2) by 1 decrease
+Updating (arm_height arm0) (2) by 1 decrease
+Updating (block_height block11) (2) by 1 decrease
+
+Checking next happening (time 25.42)
+Adding (clear block1)
+Adding (holding_single arm3 block8)
+
+Checking next happening (time 25.43)
+Deleting (clear block1)
+Deleting (holding_double arm2 arm0 block11)
+
+Checking next happening (time 27.43)
+Deleting (not_moving arm0)
+Adding (clear block11)
+Adding (on_block block11 block1)
+Adding (empty arm2)
+Adding (empty arm0)
+
+Checking next happening (time 27.44)
+
+Checking next happening (time 27.44)
+Deleting (not_moving arm3)
+Deleting (clear block11)
+Deleting (holding_single arm1 block6)
+
+Checking next happening (time 28.43)
+
+Checking next happening (time 28.43)
+Adding (not_moving arm0)
+Updating (arm_height arm0) (1) by 1 increase
+
+Checking next happening (time 28.44)
+
+Checking next happening (time 28.44)
+Adding (not_moving arm3)
+Adding (clear block6)
+Adding (on_block block6 block11)
+Adding (empty arm1)
+Updating (arm_height arm3) (1) by 1 decrease
+Updating (block_height block8) (1) by 1 decrease
+
+Checking next happening (time 28.45)
+Deleting (not_moving arm0)
+
+Checking next happening (time 29.45)
+
+Checking next happening (time 29.45)
+Adding (not_moving arm0)
+Updating (arm_height arm0) (2) by 1 decrease
+
+Checking next happening (time 29.46)
+Deleting (empty arm0)
+Deleting (clear block10)
+Deleting (on_block block10 block4)
+
+Checking next happening (time 29.47)
+Deleting (empty arm1)
+Deleting (clear block6)
+Deleting (on_block block6 block11)
+
+Checking next happening (time 29.48)
+Deleting (holding_single arm3 block8)
+Updating (num_on_table) (4) by 1 increase
+
+Checking next happening (time 29.49)
+Deleting (not_moving arm2)
+
+Checking next happening (time 30.46)
+
+Checking next happening (time 30.46)
+Adding (clear block4)
+Adding (holding_single arm0 block10)
+
+Checking next happening (time 30.47)
+
+Checking next happening (time 30.47)
+Adding (clear block11)
+Adding (holding_single arm1 block6)
+
+Checking next happening (time 30.48)
+
+Checking next happening (time 30.48)
+Adding (clear block8)
+Adding (empty arm3)
+Adding (on_table block8)
+
+Checking next happening (time 30.49)
+
+Checking next happening (time 30.49)
+Adding (not_moving arm2)
+Updating (arm_height arm2) (1) by 1 increase
+
+Checking next happening (time 30.5)
+Deleting (not_moving arm0)
+
+Checking next happening (time 30.51)
+
+Checking next happening (time 30.51)
+Deleting (clear block11)
+Deleting (holding_single arm1 block6)
+
+Checking next happening (time 30.52)
+
+Checking next happening (time 30.52)
+Deleting (not_moving arm2)
+
+Checking next happening (time 31.5)
+
+Checking next happening (time 31.5)
+Adding (not_moving arm0)
+Updating (arm_height arm0) (1) by 1 increase
+Updating (block_height block10) (1) by 1 increase
+
+Checking next happening (time 31.51)
+
+Checking next happening (time 31.51)
+Adding (clear block6)
+Adding (on_block block6 block11)
+Adding (empty arm1)
+
+Checking next happening (time 31.52)
+
+Checking next happening (time 31.52)
+Adding (not_moving arm2)
+Updating (arm_height arm2) (2) by 1 decrease
+
+Checking next happening (time 31.53)
+Deleting (not_moving arm0)
+
+Checking next happening (time 31.54)
+
+Checking next happening (time 31.54)
+Deleting (not_moving arm1)
+
+Checking next happening (time 31.55)
+
+Checking next happening (time 31.55)
+Deleting (not_moving arm3)
+
+Checking next happening (time 32.53)
+
+Checking next happening (time 32.53)
+Adding (not_moving arm0)
+Updating (arm_height arm0) (2) by 1 decrease
+Updating (block_height block10) (2) by 1 decrease
+
+Checking next happening (time 32.54)
+
+Checking next happening (time 32.54)
+Adding (not_moving arm1)
+Updating (arm_height arm1) (2) by 1 decrease
+
+Checking next happening (time 32.55)
+
+Checking next happening (time 32.55)
+Adding (not_moving arm3)
+Updating (arm_height arm3) (0) by 1 increase
+
+Checking next happening (time 32.56)
+Deleting (not_moving arm1)
+
+Checking next happening (time 32.57)
+
+Checking next happening (time 32.57)
+Deleting (not_moving arm3)
+
+Checking next happening (time 33.56)
+
+Checking next happening (time 33.56)
+Adding (not_moving arm1)
+Updating (arm_height arm1) (1) by 1 decrease
+
+Checking next happening (time 33.57)
+
+Checking next happening (time 33.57)
+Adding (not_moving arm3)
+Updating (arm_height arm3) (1) by 1 increase
+
+Checking next happening (time 33.58)
+Deleting (empty arm1)
+Deleting (clear block4)
+
+Checking next happening (time 33.59)
+Deleting (clear block8)
+Deleting (holding_single arm0 block10)
+
+Checking next happening (time 34.58)
+Deleting (on_table block4)
+Adding (holding_single arm1 block4)
+Updating (num_on_table) (5) by 1 decrease
+
+Checking next happening (time 34.59)
+Adding (clear block10)
+Adding (on_block block10 block8)
+Adding (empty arm0)
+
+Checking next happening (time 34.6)
+Deleting (not_moving arm2)
+
+Checking next happening (time 34.61)
+
+Checking next happening (time 34.61)
+Deleting (empty arm0)
+Deleting (clear block10)
+Deleting (on_block block10 block8)
+
+Checking next happening (time 34.62)
+
+Checking next happening (time 34.62)
+Deleting (not_moving arm1)
+
+Checking next happening (time 35.6)
+
+Checking next happening (time 35.6)
+Adding (not_moving arm2)
+Updating (arm_height arm2) (1) by 1 increase
+
+Checking next happening (time 35.61)
+
+Checking next happening (time 35.61)
+Adding (clear block8)
+Adding (holding_single arm0 block10)
+
+Checking next happening (time 35.62)
+
+Checking next happening (time 35.62)
+Adding (not_moving arm1)
+Updating (arm_height arm1) (0) by 1 increase
+Updating (block_height block4) (0) by 1 increase
+
+Checking next happening (time 35.63)
+Deleting (not_moving arm0)
+
+Checking next happening (time 35.64)
+
+Checking next happening (time 35.64)
+Deleting (clear block8)
+Deleting (holding_single arm1 block4)
+
+Checking next happening (time 35.65)
+
+Checking next happening (time 35.65)
+Deleting (empty arm3)
+Deleting (empty arm2)
+Deleting (clear block7)
+Deleting (on_block block7 block2)
+
+Checking next happening (time 36.63)
+
+Checking next happening (time 36.63)
+Adding (not_moving arm0)
+Updating (arm_height arm0) (1) by 1 decrease
+Updating (block_height block10) (1) by 1 decrease
+
+Checking next happening (time 36.64)
+Adding (clear block4)
+Adding (on_block block4 block8)
+Adding (empty arm1)
+
+Checking next happening (time 36.65)
+Deleting (holding_single arm0 block10)
+Updating (num_on_table) (4) by 1 increase
+
+Checking next happening (time 36.66)
+Deleting (not_moving arm1)
+
+Checking next happening (time 37.65)
+
+Checking next happening (time 37.65)
+Adding (clear block2)
+Adding (holding_double arm3 arm2 block7)
+Adding (clear block10)
+Adding (empty arm0)
+Adding (on_table block10)
+
+Checking next happening (time 37.66)
+
+Checking next happening (time 37.66)
+Adding (not_moving arm1)
+Updating (arm_height arm1) (1) by 1 increase
+
+Checking next happening (time 37.67)
+Deleting (not_moving arm3)
+Deleting (not_moving arm2)
+
+Checking next happening (time 38.67)
+
+Checking next happening (time 38.67)
+Adding (not_moving arm3)
+Adding (not_moving arm2)
+Updating (arm_height arm3) (2) by 1 decrease
+Updating (arm_height arm2) (2) by 1 decrease
+Updating (block_height block7) (2) by 1 decrease
+
+Checking next happening (time 38.68)
+Deleting (clear block10)
+Deleting (holding_double arm3 arm2 block7)
+
+Checking next happening (time 38.69)
+Deleting (not_moving arm0)
+
+Checking next happening (time 38.7)
+
+Checking next happening (time 38.7)
+Deleting (not_moving arm1)
+
+Checking next happening (time 39.69)
+
+Checking next happening (time 39.69)
+Adding (not_moving arm0)
+Updating (arm_height arm0) (0) by 1 increase
+
+Checking next happening (time 39.7)
+
+Checking next happening (time 39.7)
+Adding (not_moving arm1)
+Updating (arm_height arm1) (2) by 1 increase
+
+Checking next happening (time 40.68)
+Adding (clear block7)
+Adding (on_block block7 block10)
+Adding (empty arm3)
+Adding (empty arm2)
+
+Checking next happening (time 40.69)
+Deleting (empty arm3)
+Deleting (clear block2)
+Deleting (on_block block2 block3)
+
+Checking next happening (time 40.7)
+Deleting (not_moving arm0)
+
+Checking next happening (time 40.71)
+
+Checking next happening (time 40.71)
+Deleting (not_moving arm1)
+
+Checking next happening (time 40.72)
+
+Checking next happening (time 40.72)
+Deleting (not_moving arm2)
+
+Checking next happening (time 41.69)
+
+Checking next happening (time 41.69)
+Adding (clear block3)
+Adding (holding_single arm3 block2)
+
+Checking next happening (time 41.7)
+
+Checking next happening (time 41.7)
+Adding (not_moving arm0)
+Updating (arm_height arm0) (1) by 1 decrease
+
+Checking next happening (time 41.71)
+
+Checking next happening (time 41.71)
+Adding (not_moving arm1)
+Updating (arm_height arm1) (3) by 1 decrease
+
+Checking next happening (time 41.72)
+
+Checking next happening (time 41.72)
+Adding (not_moving arm2)
+Updating (arm_height arm2) (1) by 1 decrease
+
+Checking next happening (time 41.73)
+Deleting (empty arm2)
+Deleting (clear block3)
+
+Checking next happening (time 42.73)
+Deleting (on_table block3)
+Adding (holding_single arm2 block3)
+Updating (num_on_table) (5) by 1 decrease
+
+Checking next happening (time 42.74)
+Deleting (not_moving arm2)
+
+Checking next happening (time 42.75)
+
+Checking next happening (time 42.75)
+Deleting (not_moving arm3)
+
+Checking next happening (time 43.74)
+
+Checking next happening (time 43.74)
+Adding (not_moving arm2)
+Updating (arm_height arm2) (0) by 1 increase
+Updating (block_height block3) (0) by 1 increase
+
+Checking next happening (time 43.75)
+
+Checking next happening (time 43.75)
+Adding (not_moving arm3)
+Updating (arm_height arm3) (1) by 1 increase
+Updating (block_height block2) (1) by 1 increase
+
+Checking next happening (time 43.751)
+Deleting (clear block7)
+Deleting (holding_single arm3 block2)
+
+Checking next happening (time 43.76)
+Deleting (not_moving arm2)
+
+Checking next happening (time 44.751)
+
+Checking next happening (time 44.751)
+Adding (clear block2)
+Adding (on_block block2 block7)
+Adding (empty arm3)
+
+Checking next happening (time 44.76)
+
+Checking next happening (time 44.76)
+Adding (not_moving arm2)
+Updating (arm_height arm2) (1) by 1 increase
+Updating (block_height block3) (1) by 1 increase
+
+Checking next happening (time 44.77)
+Deleting (clear block4)
+Deleting (holding_single arm2 block3)
+
+Checking next happening (time 45.77)
+Adding (clear block3)
+Adding (on_block block3 block4)
+Adding (empty arm2)
+Plan executed successfully - checking goal
+Plan valid
+Final value: 89
+(empty arm1)
+(requires block5 friction)
+(has_effector arm1 friction)
+(empty arm0)
+(not_moving arm0)
+(empty arm3)
+(not_moving arm3)
+(empty arm2)
+(not_moving arm2)
+(not_moving arm1)
+(requires block4 suction)
+(has_effector arm2 suction)
+(clear block3)
+(requires block11 magnetic)
+(has_effector arm3 magnetic)
+(has_effector arm0 magnetic)
+(requires block10 friction)
+(clear block9)
+(requires block9 magnetic)
+(has_effector arm2 magnetic)
+(clear block2)
+(requires block2 encompass)
+(has_effector arm3 encompass)
+(requires block1 suction)
+(has_effector arm1 suction)
+(has_effector arm0 friction)
+(requires block8 encompass)
+(has_effector arm2 encompass)
+(requires block7 encompass)
+(clear block6)
+(requires block6 friction)
+(requires block0 friction)
+(on_block block6 block11)
+(requires block3 encompass)
+(on_table block0)
+(on_block block4 block8)
+(on_block block5 block0)
+(on_table block1)
+(on_block block9 block5)
+(on_block block2 block7)
+(on_block block3 block4)
+(on_block block7 block10)
+(on_table block10)
+(on_table block8)
+(on_block block11 block1)
+(block_height block1) = 0
+(block_height block0) = 0
+(block_height block7) = 1
+(block_height block2) = 2
+(block_height block3) = 2
+(block_height block4) = 1
+(block_height block5) = 1
+(block_height block6) = 2
+(block_height block8) = 0
+(block_height block9) = 2
+(block_height block10) = 0
+(block_height block11) = 1
+(max_on_table) = 5
+(num_on_table) = 4
+(arm_height arm0) = 0
+(arm_id arm0) = 0
+(arm_height arm1) = 2
+(arm_id arm1) = 1
+(arm_height arm2) = 2
+(arm_id arm2) = 2
+(arm_height arm3) = 2
+(arm_id arm3) = 3
+
+Successful plans:
+Value: 89
+ /home/gil/Documents/prob/solution 
+
