@@ -42,7 +42,7 @@ GATHER_DATA_SCRIPT	= "./gather_data.sh"
 RAW_STATS			= "csv/stats.csv"
 FILTERED_STATS		= "csv/stats_filtered.csv"
 TABLE_OUT			= "csv/table.csv"
-PLOT_NAME			= "plot.svg"
+PLOT_NAME			= "plot.pdf"
 
 
 # Labels
