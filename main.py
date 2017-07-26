@@ -50,7 +50,7 @@ PLOT_NAME			= "plot.pdf"
 header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (s)','Number of Actions','Processing Time (s)','Memory Usage (GB)','Planning Results (%)']
 lmetrics	= header[-5:]
 lplanners	= ['tfd/downward', 'colin2']
-ltools		= ['CFP', 'CoalitionAssistance', 'CoalitionSimilarity', 'Object', 'ObjectTime', 'ActionObject', 'ActionObjectTime', 'Makespan', 'IdleTime']
+ltools		= ['CFP', 'CoalitionAssistance', 'CoalitionSimilarity', 'Object', 'ObjectTime', 'ActionObject', 'ActionObjectTime', 'Makespan', 'IdleTime', 'PA']
 
 # Neat Names
 NPLANNERS = {'tfd/downward': 'TFD', 'colin2': 'COLIN2'}
