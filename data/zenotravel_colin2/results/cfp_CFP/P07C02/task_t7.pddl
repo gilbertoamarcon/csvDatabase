@@ -1,0 +1,10 @@
+(and
+      (transportable_at_city pass_24 syr)
+      (transportable_at_city pass_25 syr)
+      (transportable_at_city pass_26 syr)
+      (transportable_at_city pass_27 syr)
+      (transportable_at_city cargo_23 syr)
+      (transportable_at_city cargo_24 syr)
+      (transportable_at_city cargo_25 syr)
+      (transportable_at_city cargo_26 syr)
+    )

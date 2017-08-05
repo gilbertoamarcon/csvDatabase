@@ -1,0 +1,57 @@
+<problem>
+  <resource id="1" name="small_pass_den"/>
+  <resource id="2" name="small_cargo_lax"/>
+  <resource id="3" name="small_cargo_ord"/>
+  <resource id="4" name="small_pass_dfw"/>
+  <resource id="5" name="large_cargo"/>
+  <resource id="6" name="large_pass"/>
+  <resource id="7" name="small_pass_jfk"/>
+  <resource id="8" name="small_pass_sea"/>
+  <resource id="9" name="small_cargo_atl"/>
+  <resource id="10" name="small_cargo_dfw"/>
+  <resource id="11" name="small_pass_atl"/>
+  <resource id="12" name="small_cargo_jfk"/>
+  <resource id="13" name="small_cargo_sea"/>
+  <resource id="14" name="small_pass_lax"/>
+  <resource id="15" name="small_cargo_den"/>
+  <resource id="16" name="small_pass_ord"/>
+  <robot id="1" name="large2" services="" minresources="5:8,6:8" maxresources="5:8,6:8"/>
+  <robot id="2" name="small2" services="" minresources="9:4,11:4" maxresources="9:4,11:4"/>
+  <robot id="3" name="large1" services="" minresources="5:8,6:8" maxresources="5:8,6:8"/>
+  <robot id="4" name="small1" services="" minresources="9:4,11:4" maxresources="9:4,11:4"/>
+  <robot id="5" name="large0" services="" minresources="5:8,6:8" maxresources="5:8,6:8"/>
+  <robot id="6" name="small0" services="" minresources="9:4,11:4" maxresources="9:4,11:4"/>
+  <robot id="7" name="small6" services="" minresources="12:4,7:4" maxresources="12:4,7:4"/>
+  <robot id="8" name="small5" services="" minresources="10:4,4:4" maxresources="10:4,4:4"/>
+  <robot id="9" name="small4" services="" minresources="10:4,4:4" maxresources="10:4,4:4"/>
+  <robot id="10" name="small3" services="" minresources="1:4,15:4" maxresources="1:4,15:4"/>
+  <robot id="11" name="large4" services="" minresources="5:8,6:8" maxresources="5:8,6:8"/>
+  <robot id="12" name="large3" services="" minresources="5:8,6:8" maxresources="5:8,6:8"/>
+  <robot id="13" name="small10" services="" minresources="2:4,14:4" maxresources="2:4,14:4"/>
+  <robot id="14" name="small11" services="" minresources="2:4,14:4" maxresources="2:4,14:4"/>
+  <robot id="15" name="small9" services="" minresources="2:4,14:4" maxresources="2:4,14:4"/>
+  <robot id="16" name="small8" services="" minresources="12:4,7:4" maxresources="12:4,7:4"/>
+  <robot id="17" name="small7" services="" minresources="12:4,7:4" maxresources="12:4,7:4"/>
+  <robot id="18" name="small14" services="" minresources="13:4,8:4" maxresources="13:4,8:4"/>
+  <robot id="19" name="small15" services="" minresources="13:4,8:4" maxresources="13:4,8:4"/>
+  <robot id="20" name="small12" services="" minresources="3:4,16:4" maxresources="3:4,16:4"/>
+  <robot id="21" name="small13" services="" minresources="13:4,8:4" maxresources="13:4,8:4"/>
+  <task id="1" name="t0" services="" resources="1:4,5:4,15:4,6:4" utility="10" length="3.0" deadline="20000.0" discovered="1" arrival="1" discoveredUponCompletion="" prereqs="" startingcoords="0,0,0" endingcoords="0,0,0" type="3"/>
+  <task id="2" name="t1" services="" resources="12:3,5:3,6:4,7:4" utility="10" length="3.0" deadline="20000.0" discovered="1" arrival="1" discoveredUponCompletion="" prereqs="" startingcoords="0,0,0" endingcoords="0,0,0" type="3"/>
+  <task id="3" name="t2" services="" resources="2:3,14:3,5:3,6:3" utility="10" length="3.0" deadline="20000.0" discovered="1" arrival="1" discoveredUponCompletion="" prereqs="" startingcoords="0,0,0" endingcoords="0,0,0" type="3"/>
+  <task id="4" name="t3" services="" resources="3:3,5:3,16:3,6:3" utility="10" length="3.0" deadline="20000.0" discovered="1" arrival="1" discoveredUponCompletion="" prereqs="" startingcoords="0,0,0" endingcoords="0,0,0" type="3"/>
+  <task id="5" name="t4" services="" resources="3:4,5:4,16:3,6:3" utility="10" length="3.0" deadline="20000.0" discovered="1" arrival="1" discoveredUponCompletion="" prereqs="" startingcoords="0,0,0" endingcoords="0,0,0" type="3"/>
+  <task id="6" name="t5" services="" resources="9:3,11:4,5:3,6:4" utility="10" length="3.0" deadline="20000.0" discovered="1" arrival="1" discoveredUponCompletion="" prereqs="" startingcoords="0,0,0" endingcoords="0,0,0" type="3"/>
+  <task id="7" name="t6" services="" resources="12:3,5:3,6:3,7:3" utility="10" length="3.0" deadline="20000.0" discovered="1" arrival="1" discoveredUponCompletion="" prereqs="" startingcoords="0,0,0" endingcoords="0,0,0" type="3"/>
+  <task id="8" name="t7" services="" resources="12:4,7:4" utility="10" length="0.0" deadline="20000.0" discovered="1" arrival="1" discoveredUponCompletion="" prereqs="" startingcoords="0,0,0" endingcoords="0,0,0" type="3"/>
+  <task id="9" name="t8" services="" resources="10:3,4:4,5:3,6:4" utility="10" length="3.0" deadline="20000.0" discovered="1" arrival="1" discoveredUponCompletion="" prereqs="" startingcoords="0,0,0" endingcoords="0,0,0" type="3"/>
+  <task id="10" name="t9" services="" resources="10:3,4:3,5:3,6:3" utility="10" length="3.0" deadline="20000.0" discovered="1" arrival="1" discoveredUponCompletion="" prereqs="" startingcoords="0,0,0" endingcoords="0,0,0" type="3"/>
+  <task id="11" name="t10" services="" resources="5:3,6:3" utility="10" length="2.0" deadline="20000.0" discovered="1" arrival="1" discoveredUponCompletion="" prereqs="" startingcoords="0,0,0" endingcoords="0,0,0" type="3"/>
+  <task id="12" name="t11" services="" resources="5:3,6:4" utility="10" length="2.0" deadline="20000.0" discovered="1" arrival="1" discoveredUponCompletion="" prereqs="" startingcoords="0,0,0" endingcoords="0,0,0" type="3"/>
+  <task id="13" name="t12" services="" resources="1:3,5:4,15:4,6:3" utility="10" length="3.0" deadline="20000.0" discovered="1" arrival="1" discoveredUponCompletion="" prereqs="" startingcoords="0,0,0" endingcoords="0,0,0" type="3"/>
+  <task id="14" name="t13" services="" resources="9:4,11:4" utility="10" length="1.0" deadline="20000.0" discovered="1" arrival="1" discoveredUponCompletion="" prereqs="" startingcoords="0,0,0" endingcoords="0,0,0" type="3"/>
+  <task id="15" name="t14" services="" resources="9:3,11:3,5:3,6:3" utility="10" length="3.0" deadline="20000.0" discovered="1" arrival="1" discoveredUponCompletion="" prereqs="" startingcoords="0,0,0" endingcoords="0,0,0" type="3"/>
+  <task id="16" name="t15" services="" resources="3:4,5:4,16:4,6:4" utility="10" length="3.0" deadline="20000.0" discovered="1" arrival="1" discoveredUponCompletion="" prereqs="" startingcoords="0,0,0" endingcoords="0,0,0" type="3"/>
+  <task id="17" name="t16" services="" resources="5:3,6:4" utility="10" length="2.0" deadline="20000.0" discovered="1" arrival="1" discoveredUponCompletion="" prereqs="" startingcoords="0,0,0" endingcoords="0,0,0" type="3"/>
+  <task id="18" name="t17" services="" resources="2:3,14:4,5:3,6:4" utility="10" length="3.0" deadline="20000.0" discovered="1" arrival="1" discoveredUponCompletion="" prereqs="" startingcoords="0,0,0" endingcoords="0,0,0" type="3"/>
+</problem>

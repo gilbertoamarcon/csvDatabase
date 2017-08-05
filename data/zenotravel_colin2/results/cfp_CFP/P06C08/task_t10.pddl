@@ -1,0 +1,10 @@
+(and
+      (transportable_at_city pass_36 jfk)
+      (transportable_at_city pass_37 jfk)
+      (transportable_at_city pass_38 jfk)
+      (transportable_at_city pass_39 jfk)
+      (transportable_at_city cargo_34 jfk)
+      (transportable_at_city cargo_35 jfk)
+      (transportable_at_city cargo_36 jfk)
+      (transportable_at_city cargo_37 jfk)
+    )

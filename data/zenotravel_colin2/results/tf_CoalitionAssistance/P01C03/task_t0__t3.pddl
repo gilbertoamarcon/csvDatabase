@@ -1,0 +1,17 @@
+(and
+      (transportable_at_city pass_0 dfw)
+      (transportable_at_city pass_1 dfw)
+      (transportable_at_city pass_2 dfw)
+      (transportable_at_city cargo_0 dfw)
+      (transportable_at_city cargo_1 dfw)
+      (transportable_at_city cargo_2 dfw)
+      (transportable_at_city cargo_3 dfw)
+    )(and
+      (transportable_at_city pass_10 bna)
+      (transportable_at_city pass_11 bna)
+      (transportable_at_city pass_12 bna)
+      (transportable_at_city pass_13 bna)
+      (transportable_at_city cargo_10 bna)
+      (transportable_at_city cargo_11 bna)
+      (transportable_at_city cargo_12 bna)
+    )

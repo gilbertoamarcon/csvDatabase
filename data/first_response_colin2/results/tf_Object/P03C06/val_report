@@ -1,0 +1,1067 @@
+Type-checking change-battery
+...action passes type checking.
+Type-checking quad-move
+...action passes type checking.
+Type-checking ground-move
+...action passes type checking.
+Type-checking human-move
+...action passes type checking.
+Type-checking guide-victim
+...action passes type checking.
+Type-checking guide-victim-to-hospital
+...action passes type checking.
+Type-checking clear-road
+...action passes type checking.
+Type-checking seal-leak
+...action passes type checking.
+Type-checking triage
+...action passes type checking.
+Type-checking load-victim
+...action passes type checking.
+Type-checking unload-victim-at-hospital
+...action passes type checking.
+Type-checking clear-pawn
+...action passes type checking.
+Type-checking clear-pharmacy
+...action passes type checking.
+Type-checking drop-weapons
+...action passes type checking.
+Type-checking drop-drugs
+...action passes type checking.
+Checking plan: /home/gil/Documents/prob/solution
+Plan to validate:
+
+Plan size: 44
+0:
+(human-move firefighter_1 wpt_04 wpt_09) - start
+(human-move ems_0 wpt_02 wpt_01) - start
+(human-move police_0 wpt_03 wpt_02) - start
+(human-move firefighter_0 wpt_04 wpt_05) - start
+ 
+1:
+Invariant for (human-move firefighter_1 wpt_04 wpt_09)
+Invariant for (human-move ems_0 wpt_02 wpt_01)
+Invariant for (human-move police_0 wpt_03 wpt_02)
+Invariant for (human-move firefighter_0 wpt_04 wpt_05)
+ 
+1:
+(human-move firefighter_1 wpt_04 wpt_09) - end
+(human-move ems_0 wpt_02 wpt_01) - end
+(human-move police_0 wpt_03 wpt_02) - end
+(human-move firefighter_0 wpt_04 wpt_05) - end
+ 
+1.001:
+(triage ems_0 victim_0 wpt_01) - start
+(human-move firefighter_1 wpt_09 wpt_13) - start
+(human-move police_0 wpt_02 wpt_01) - start
+(human-move firefighter_0 wpt_05 wpt_01) - start
+ 
+1.002:
+Invariant for (triage ems_0 victim_0 wpt_01)
+Invariant for (human-move firefighter_1 wpt_09 wpt_13)
+Invariant for (human-move police_0 wpt_02 wpt_01)
+Invariant for (human-move firefighter_0 wpt_05 wpt_01)
+ 
+1.002:
+(change-battery policebot_0 battery_charger_2 wpt_03) - start
+ 
+2.001:
+Invariant for (triage ems_0 victim_0 wpt_01)
+Invariant for (human-move firefighter_1 wpt_09 wpt_13)
+Invariant for (human-move police_0 wpt_02 wpt_01)
+Invariant for (human-move firefighter_0 wpt_05 wpt_01)
+Invariant for (change-battery policebot_0 battery_charger_2 wpt_03)
+ 
+2.001:
+(human-move firefighter_1 wpt_09 wpt_13) - end
+(human-move police_0 wpt_02 wpt_01) - end
+(human-move firefighter_0 wpt_05 wpt_01) - end
+ 
+2.002:
+Invariant for (triage ems_0 victim_0 wpt_01)
+Invariant for (change-battery policebot_0 battery_charger_2 wpt_03)
+ 
+2.002:
+(human-move firefighter_1 wpt_13 wpt_17) - start
+(seal-leak firefighter_0 wpt_01) - start
+ 
+3.001:
+Invariant for (triage ems_0 victim_0 wpt_01)
+Invariant for (change-battery policebot_0 battery_charger_2 wpt_03)
+Invariant for (human-move firefighter_1 wpt_13 wpt_17)
+Invariant for (seal-leak firefighter_0 wpt_01)
+ 
+3.001:
+(triage ems_0 victim_0 wpt_01) - end
+ 
+3.002:
+Invariant for (change-battery policebot_0 battery_charger_2 wpt_03)
+Invariant for (human-move firefighter_1 wpt_13 wpt_17)
+Invariant for (seal-leak firefighter_0 wpt_01)
+ 
+3.002:
+(change-battery policebot_0 battery_charger_2 wpt_03) - end
+(human-move firefighter_1 wpt_13 wpt_17) - end
+(change-battery emsbot_0 battery_charger_0 wpt_02) - start
+ 
+3.003:
+Invariant for (seal-leak firefighter_0 wpt_01)
+Invariant for (change-battery emsbot_0 battery_charger_0 wpt_02)
+ 
+3.003:
+(ground-move policebot_0 wpt_03 wpt_02) - start
+(human-move firefighter_1 wpt_17 wpt_16) - start
+ 
+4.003:
+Invariant for (seal-leak firefighter_0 wpt_01)
+Invariant for (change-battery emsbot_0 battery_charger_0 wpt_02)
+Invariant for (ground-move policebot_0 wpt_03 wpt_02)
+Invariant for (human-move firefighter_1 wpt_17 wpt_16)
+ 
+4.003:
+Update of continuously changing Primitive Numerical Expressions
+ 
+4.003:
+(ground-move policebot_0 wpt_03 wpt_02) - end
+(human-move firefighter_1 wpt_17 wpt_16) - end
+ 
+4.004:
+Invariant for (seal-leak firefighter_0 wpt_01)
+Invariant for (change-battery emsbot_0 battery_charger_0 wpt_02)
+ 
+4.004:
+(seal-leak firefighter_1 wpt_16) - start
+(ground-move policebot_0 wpt_02 wpt_01) - start
+ 
+5.002:
+Invariant for (seal-leak firefighter_0 wpt_01)
+Invariant for (change-battery emsbot_0 battery_charger_0 wpt_02)
+Invariant for (seal-leak firefighter_1 wpt_16)
+Invariant for (ground-move policebot_0 wpt_02 wpt_01)
+ 
+5.002:
+Update of continuously changing Primitive Numerical Expressions
+ 
+5.002:
+(seal-leak firefighter_0 wpt_01) - end
+(change-battery emsbot_0 battery_charger_0 wpt_02) - end
+ 
+5.003:
+Invariant for (seal-leak firefighter_1 wpt_16)
+Invariant for (ground-move policebot_0 wpt_02 wpt_01)
+ 
+5.003:
+Update of continuously changing Primitive Numerical Expressions
+ 
+5.003:
+(change-battery firebot_0 battery_charger_1 wpt_04) - start
+(ground-move emsbot_0 wpt_02 wpt_01) - start
+ 
+5.004:
+Invariant for (seal-leak firefighter_1 wpt_16)
+Invariant for (ground-move policebot_0 wpt_02 wpt_01)
+Invariant for (change-battery firebot_0 battery_charger_1 wpt_04)
+Invariant for (ground-move emsbot_0 wpt_02 wpt_01)
+ 
+5.004:
+Update of continuously changing Primitive Numerical Expressions
+ 
+5.004:
+(ground-move policebot_0 wpt_02 wpt_01) - end
+ 
+5.005:
+Invariant for (seal-leak firefighter_1 wpt_16)
+Invariant for (change-battery firebot_0 battery_charger_1 wpt_04)
+Invariant for (ground-move emsbot_0 wpt_02 wpt_01)
+ 
+5.005:
+Update of continuously changing Primitive Numerical Expressions
+ 
+5.005:
+(clear-pawn police_0 policebot_0 weapons_0 wpt_01) - start
+ 
+6.003:
+Invariant for (seal-leak firefighter_1 wpt_16)
+Invariant for (change-battery firebot_0 battery_charger_1 wpt_04)
+Invariant for (ground-move emsbot_0 wpt_02 wpt_01)
+Invariant for (clear-pawn police_0 policebot_0 weapons_0 wpt_01)
+ 
+6.003:
+Update of continuously changing Primitive Numerical Expressions
+ 
+6.003:
+(ground-move emsbot_0 wpt_02 wpt_01) - end
+ 
+6.004:
+Invariant for (seal-leak firefighter_1 wpt_16)
+Invariant for (change-battery firebot_0 battery_charger_1 wpt_04)
+Invariant for (clear-pawn police_0 policebot_0 weapons_0 wpt_01)
+ 
+6.004:
+Update of continuously changing Primitive Numerical Expressions
+ 
+6.004:
+(load-victim ems_0 emsbot_0 victim_0 wpt_01) - start
+ 
+7.003:
+Invariant for (seal-leak firefighter_1 wpt_16)
+Invariant for (change-battery firebot_0 battery_charger_1 wpt_04)
+Invariant for (clear-pawn police_0 policebot_0 weapons_0 wpt_01)
+Invariant for (load-victim ems_0 emsbot_0 victim_0 wpt_01)
+ 
+7.003:
+Update of continuously changing Primitive Numerical Expressions
+ 
+7.003:
+(change-battery firebot_0 battery_charger_1 wpt_04) - end
+ 
+7.004:
+Invariant for (seal-leak firefighter_1 wpt_16)
+Invariant for (clear-pawn police_0 policebot_0 weapons_0 wpt_01)
+Invariant for (load-victim ems_0 emsbot_0 victim_0 wpt_01)
+ 
+7.004:
+Update of continuously changing Primitive Numerical Expressions
+ 
+7.004:
+(seal-leak firefighter_1 wpt_16) - end
+(ground-move firebot_0 wpt_04 wpt_05) - start
+ 
+8.004:
+Invariant for (clear-pawn police_0 policebot_0 weapons_0 wpt_01)
+Invariant for (load-victim ems_0 emsbot_0 victim_0 wpt_01)
+Invariant for (ground-move firebot_0 wpt_04 wpt_05)
+ 
+8.004:
+Update of continuously changing Primitive Numerical Expressions
+ 
+8.004:
+(load-victim ems_0 emsbot_0 victim_0 wpt_01) - end
+(ground-move firebot_0 wpt_04 wpt_05) - end
+ 
+8.005:
+Invariant for (clear-pawn police_0 policebot_0 weapons_0 wpt_01)
+ 
+8.005:
+Update of continuously changing Primitive Numerical Expressions
+ 
+8.005:
+(ground-move firebot_0 wpt_05 wpt_06) - start
+(ground-move emsbot_0 wpt_01 wpt_02) - start
+ 
+9.005:
+Invariant for (clear-pawn police_0 policebot_0 weapons_0 wpt_01)
+Invariant for (ground-move firebot_0 wpt_05 wpt_06)
+Invariant for (ground-move emsbot_0 wpt_01 wpt_02)
+ 
+9.005:
+Update of continuously changing Primitive Numerical Expressions
+ 
+9.005:
+(ground-move firebot_0 wpt_05 wpt_06) - end
+(ground-move emsbot_0 wpt_01 wpt_02) - end
+ 
+9.006:
+Invariant for (clear-pawn police_0 policebot_0 weapons_0 wpt_01)
+ 
+9.006:
+Update of continuously changing Primitive Numerical Expressions
+ 
+9.006:
+(ground-move firebot_0 wpt_06 wpt_07) - start
+(unload-victim-at-hospital emsbot_0 victim_0 wpt_02 hospital_0) - start
+ 
+10.005:
+Invariant for (clear-pawn police_0 policebot_0 weapons_0 wpt_01)
+Invariant for (ground-move firebot_0 wpt_06 wpt_07)
+Invariant for (unload-victim-at-hospital emsbot_0 victim_0 wpt_02 hospital_0)
+ 
+10.005:
+Update of continuously changing Primitive Numerical Expressions
+ 
+10.005:
+(clear-pawn police_0 policebot_0 weapons_0 wpt_01) - end
+ 
+10.006:
+Invariant for (ground-move firebot_0 wpt_06 wpt_07)
+Invariant for (unload-victim-at-hospital emsbot_0 victim_0 wpt_02 hospital_0)
+ 
+10.006:
+Update of continuously changing Primitive Numerical Expressions
+ 
+10.006:
+(ground-move firebot_0 wpt_06 wpt_07) - end
+(ground-move policebot_0 wpt_01 wpt_02) - start
+ 
+10.007:
+Invariant for (unload-victim-at-hospital emsbot_0 victim_0 wpt_02 hospital_0)
+Invariant for (ground-move policebot_0 wpt_01 wpt_02)
+ 
+10.007:
+Update of continuously changing Primitive Numerical Expressions
+ 
+10.007:
+(clear-road firebot_0 wpt_07 wpt_03) - start
+ 
+11.006:
+Invariant for (unload-victim-at-hospital emsbot_0 victim_0 wpt_02 hospital_0)
+Invariant for (ground-move policebot_0 wpt_01 wpt_02)
+Invariant for (clear-road firebot_0 wpt_07 wpt_03)
+ 
+11.006:
+Update of continuously changing Primitive Numerical Expressions
+ 
+11.006:
+(unload-victim-at-hospital emsbot_0 victim_0 wpt_02 hospital_0) - end
+(ground-move policebot_0 wpt_01 wpt_02) - end
+ 
+11.007:
+Invariant for (clear-road firebot_0 wpt_07 wpt_03)
+ 
+11.007:
+Update of continuously changing Primitive Numerical Expressions
+ 
+11.007:
+(ground-move emsbot_0 wpt_02 wpt_01) - start
+(ground-move policebot_0 wpt_02 wpt_03) - start
+ 
+12.007:
+Invariant for (clear-road firebot_0 wpt_07 wpt_03)
+Invariant for (ground-move emsbot_0 wpt_02 wpt_01)
+Invariant for (ground-move policebot_0 wpt_02 wpt_03)
+ 
+12.007:
+Update of continuously changing Primitive Numerical Expressions
+ 
+12.007:
+(clear-road firebot_0 wpt_07 wpt_03) - end
+(ground-move emsbot_0 wpt_02 wpt_01) - end
+(ground-move policebot_0 wpt_02 wpt_03) - end
+ 
+12.008:
+(drop-weapons policebot_0 weapons_0 police_base_0 wpt_03) - start
+(clear-pharmacy ems_0 emsbot_0 drugs_0 wpt_01) - start
+ 
+13.008:
+Invariant for (drop-weapons policebot_0 weapons_0 police_base_0 wpt_03)
+Invariant for (clear-pharmacy ems_0 emsbot_0 drugs_0 wpt_01)
+ 
+13.008:
+Update of continuously changing Primitive Numerical Expressions
+ 
+13.008:
+(drop-weapons policebot_0 weapons_0 police_base_0 wpt_03) - end
+ 
+14.004:
+Invariant for (clear-pharmacy ems_0 emsbot_0 drugs_0 wpt_01)
+ 
+14.004:
+Update of continuously changing Primitive Numerical Expressions
+ 
+14.004:
+(human-move ems_2 wpt_02 wpt_06) - start
+ 
+15.004:
+Invariant for (clear-pharmacy ems_0 emsbot_0 drugs_0 wpt_01)
+Invariant for (human-move ems_2 wpt_02 wpt_06)
+ 
+15.004:
+Update of continuously changing Primitive Numerical Expressions
+ 
+15.004:
+(human-move ems_2 wpt_02 wpt_06) - end
+ 
+15.005:
+Invariant for (clear-pharmacy ems_0 emsbot_0 drugs_0 wpt_01)
+ 
+15.005:
+Update of continuously changing Primitive Numerical Expressions
+ 
+15.005:
+(human-move ems_2 wpt_06 wpt_05) - start
+ 
+16.005:
+Invariant for (clear-pharmacy ems_0 emsbot_0 drugs_0 wpt_01)
+Invariant for (human-move ems_2 wpt_06 wpt_05)
+ 
+16.005:
+Update of continuously changing Primitive Numerical Expressions
+ 
+16.005:
+(human-move ems_2 wpt_06 wpt_05) - end
+ 
+16.006:
+Invariant for (clear-pharmacy ems_0 emsbot_0 drugs_0 wpt_01)
+ 
+16.006:
+Update of continuously changing Primitive Numerical Expressions
+ 
+16.006:
+(human-move ems_2 wpt_05 wpt_09) - start
+ 
+17.006:
+Invariant for (clear-pharmacy ems_0 emsbot_0 drugs_0 wpt_01)
+Invariant for (human-move ems_2 wpt_05 wpt_09)
+ 
+17.006:
+Update of continuously changing Primitive Numerical Expressions
+ 
+17.006:
+(human-move ems_2 wpt_05 wpt_09) - end
+ 
+17.007:
+Invariant for (clear-pharmacy ems_0 emsbot_0 drugs_0 wpt_01)
+ 
+17.007:
+Update of continuously changing Primitive Numerical Expressions
+ 
+17.007:
+(human-move ems_2 wpt_09 wpt_08) - start
+ 
+17.008:
+Invariant for (clear-pharmacy ems_0 emsbot_0 drugs_0 wpt_01)
+Invariant for (human-move ems_2 wpt_09 wpt_08)
+ 
+17.008:
+Update of continuously changing Primitive Numerical Expressions
+ 
+17.008:
+(clear-pharmacy ems_0 emsbot_0 drugs_0 wpt_01) - end
+ 
+17.009:
+Invariant for (human-move ems_2 wpt_09 wpt_08)
+ 
+17.009:
+(ground-move emsbot_0 wpt_01 wpt_02) - start
+ 
+18.007:
+Invariant for (human-move ems_2 wpt_09 wpt_08)
+Invariant for (ground-move emsbot_0 wpt_01 wpt_02)
+ 
+18.007:
+Update of continuously changing Primitive Numerical Expressions
+ 
+18.007:
+(human-move ems_2 wpt_09 wpt_08) - end
+ 
+18.009:
+Invariant for (ground-move emsbot_0 wpt_01 wpt_02)
+ 
+18.009:
+Update of continuously changing Primitive Numerical Expressions
+ 
+18.009:
+(ground-move emsbot_0 wpt_01 wpt_02) - end
+ 
+18.01:
+(drop-drugs emsbot_0 drugs_0 hospital_0 wpt_02) - start
+ 
+19.01:
+Invariant for (drop-drugs emsbot_0 drugs_0 hospital_0 wpt_02)
+ 
+19.01:
+Update of continuously changing Primitive Numerical Expressions
+ 
+19.01:
+(drop-drugs emsbot_0 drugs_0 hospital_0 wpt_02) - end
+ 
+
+Plan Validation details
+-----------------------
+
+Checking next happening (time 0)
+Deleting (idle firefighter_1)
+Deleting (agent_at firefighter_1 wpt_04)
+Deleting (idle ems_0)
+Deleting (agent_at ems_0 wpt_02)
+Deleting (idle police_0)
+Deleting (agent_at police_0 wpt_03)
+Deleting (idle firefighter_0)
+Deleting (agent_at firefighter_0 wpt_04)
+
+Checking next happening (time 1)
+
+Checking next happening (time 1)
+Adding (agent_at firefighter_1 wpt_09)
+Adding (idle firefighter_1)
+Adding (agent_at ems_0 wpt_01)
+Adding (idle ems_0)
+Adding (agent_at police_0 wpt_02)
+Adding (idle police_0)
+Adding (agent_at firefighter_0 wpt_05)
+Adding (idle firefighter_0)
+
+Checking next happening (time 1.001)
+Deleting (idle firefighter_1)
+Deleting (agent_at firefighter_1 wpt_09)
+Deleting (idle police_0)
+Deleting (agent_at police_0 wpt_02)
+Deleting (idle firefighter_0)
+Deleting (agent_at firefighter_0 wpt_05)
+
+Checking next happening (time 1.002)
+
+Checking next happening (time 1.002)
+Updating (power policebot_0) (0) by 0 assignment
+
+Checking next happening (time 2.001)
+
+Checking next happening (time 2.001)
+Adding (agent_at firefighter_1 wpt_13)
+Adding (idle firefighter_1)
+Adding (agent_at police_0 wpt_01)
+Adding (idle police_0)
+Adding (agent_at firefighter_0 wpt_01)
+Adding (idle firefighter_0)
+
+Checking next happening (time 2.002)
+
+Checking next happening (time 2.002)
+Deleting (idle firefighter_1)
+Deleting (agent_at firefighter_1 wpt_13)
+
+Checking next happening (time 3.001)
+
+Checking next happening (time 3.001)
+Updating (victim_state victim_0) (0) by 2 assignment
+
+Checking next happening (time 3.002)
+
+Checking next happening (time 3.002)
+Adding (agent_at firefighter_1 wpt_17)
+Adding (idle firefighter_1)
+Updating (power policebot_0) (0) by 35 assignment
+Updating (power emsbot_0) (0) by 0 assignment
+
+Checking next happening (time 3.003)
+
+Checking next happening (time 3.003)
+Deleting (idle policebot_0)
+Deleting (agent_at policebot_0 wpt_03)
+Deleting (idle firefighter_1)
+Deleting (agent_at firefighter_1 wpt_17)
+
+Checking next happening (time 4.003)
+
+Checking next happening (time 4.003)
+Updating (power policebot_0) (35) by 34 assignment
+
+Checking next happening (time 4.003)
+Adding (agent_at policebot_0 wpt_02)
+Adding (idle policebot_0)
+Adding (agent_at firefighter_1 wpt_16)
+Adding (idle firefighter_1)
+
+Checking next happening (time 4.004)
+
+Checking next happening (time 4.004)
+Deleting (idle policebot_0)
+Deleting (agent_at policebot_0 wpt_02)
+
+Checking next happening (time 5.002)
+
+Checking next happening (time 5.002)
+Updating (power policebot_0) (34) by 33.002 assignment
+
+Checking next happening (time 5.002)
+Adding (gas_clear wpt_01)
+Updating (power emsbot_0) (0) by 35 assignment
+
+Checking next happening (time 5.003)
+
+Checking next happening (time 5.003)
+Updating (power policebot_0) (33.002) by 33.001 assignment
+
+Checking next happening (time 5.003)
+Deleting (idle emsbot_0)
+Deleting (agent_at emsbot_0 wpt_02)
+Updating (power firebot_0) (0) by 0 assignment
+
+Checking next happening (time 5.004)
+
+Checking next happening (time 5.004)
+Updating (power emsbot_0) (35) by 34.999 assignment
+Updating (power policebot_0) (33.001) by 33 assignment
+
+Checking next happening (time 5.004)
+Adding (agent_at policebot_0 wpt_01)
+Adding (idle policebot_0)
+
+Checking next happening (time 5.005)
+
+Checking next happening (time 5.005)
+Updating (power emsbot_0) (34.999) by 34.998 assignment
+
+Checking next happening (time 5.005)
+Deleting (empty policebot_0)
+
+Checking next happening (time 6.003)
+
+Checking next happening (time 6.003)
+Updating (power emsbot_0) (34.998) by 34 assignment
+Updating (power policebot_0) (33) by 32.002 assignment
+
+Checking next happening (time 6.003)
+Adding (agent_at emsbot_0 wpt_01)
+Adding (idle emsbot_0)
+
+Checking next happening (time 6.004)
+
+Checking next happening (time 6.004)
+Updating (power policebot_0) (32.002) by 32.001 assignment
+
+Checking next happening (time 6.004)
+Deleting (located_at victim_0 wpt_01)
+Deleting (empty emsbot_0)
+
+Checking next happening (time 7.003)
+
+Checking next happening (time 7.003)
+Updating (power emsbot_0) (34) by 33.001 assignment
+Updating (power policebot_0) (32.001) by 31.002 assignment
+
+Checking next happening (time 7.003)
+Updating (power firebot_0) (0) by 35 assignment
+
+Checking next happening (time 7.004)
+
+Checking next happening (time 7.004)
+Updating (power emsbot_0) (33.001) by 33 assignment
+Updating (power policebot_0) (31.002) by 31.001 assignment
+
+Checking next happening (time 7.004)
+Deleting (idle firebot_0)
+Deleting (agent_at firebot_0 wpt_04)
+Adding (gas_clear wpt_16)
+
+Checking next happening (time 8.004)
+
+Checking next happening (time 8.004)
+Updating (power emsbot_0) (33) by 32 assignment
+Updating (power firebot_0) (35) by 34 assignment
+Updating (power policebot_0) (31.001) by 30.001 assignment
+
+Checking next happening (time 8.004)
+Adding (carrying_victim emsbot_0 victim_0)
+Adding (agent_at firebot_0 wpt_05)
+Adding (idle firebot_0)
+
+Checking next happening (time 8.005)
+
+Checking next happening (time 8.005)
+Updating (power policebot_0) (30.001) by 30 assignment
+
+Checking next happening (time 8.005)
+Deleting (idle firebot_0)
+Deleting (agent_at firebot_0 wpt_05)
+Deleting (idle emsbot_0)
+Deleting (agent_at emsbot_0 wpt_01)
+
+Checking next happening (time 9.005)
+
+Checking next happening (time 9.005)
+Updating (power emsbot_0) (32) by 31 assignment
+Updating (power firebot_0) (34) by 33 assignment
+Updating (power policebot_0) (30) by 29 assignment
+
+Checking next happening (time 9.005)
+Adding (agent_at firebot_0 wpt_06)
+Adding (idle firebot_0)
+Adding (agent_at emsbot_0 wpt_02)
+Adding (idle emsbot_0)
+
+Checking next happening (time 9.006)
+
+Checking next happening (time 9.006)
+Updating (power policebot_0) (29) by 28.999 assignment
+
+Checking next happening (time 9.006)
+Deleting (idle firebot_0)
+Deleting (agent_at firebot_0 wpt_06)
+Deleting (carrying_victim emsbot_0 victim_0)
+
+Checking next happening (time 10.005)
+
+Checking next happening (time 10.005)
+Updating (power emsbot_0) (31) by 30.001 assignment
+Updating (power firebot_0) (33) by 32.001 assignment
+Updating (power policebot_0) (28.999) by 28 assignment
+
+Checking next happening (time 10.005)
+Adding (carrying_weapons policebot_0 weapons_0)
+
+Checking next happening (time 10.006)
+
+Checking next happening (time 10.006)
+Updating (power emsbot_0) (30.001) by 30 assignment
+Updating (power firebot_0) (32.001) by 32 assignment
+
+Checking next happening (time 10.006)
+Deleting (idle policebot_0)
+Deleting (agent_at policebot_0 wpt_01)
+Adding (agent_at firebot_0 wpt_07)
+Adding (idle firebot_0)
+
+Checking next happening (time 10.007)
+
+Checking next happening (time 10.007)
+Updating (power emsbot_0) (30) by 29.999 assignment
+Updating (power policebot_0) (28) by 27.999 assignment
+
+Checking next happening (time 10.007)
+
+Checking next happening (time 11.006)
+
+Checking next happening (time 11.006)
+Updating (power emsbot_0) (29.999) by 29 assignment
+Updating (power firebot_0) (32) by 31.001 assignment
+Updating (power policebot_0) (27.999) by 27 assignment
+
+Checking next happening (time 11.006)
+Adding (victim_at_hosp victim_0 hospital_0)
+Adding (empty emsbot_0)
+Adding (agent_at policebot_0 wpt_02)
+Adding (idle policebot_0)
+
+Checking next happening (time 11.007)
+
+Checking next happening (time 11.007)
+Updating (power firebot_0) (31.001) by 31 assignment
+
+Checking next happening (time 11.007)
+Deleting (idle emsbot_0)
+Deleting (agent_at emsbot_0 wpt_02)
+Deleting (idle policebot_0)
+Deleting (agent_at policebot_0 wpt_02)
+
+Checking next happening (time 12.007)
+
+Checking next happening (time 12.007)
+Updating (power emsbot_0) (29) by 28 assignment
+Updating (power firebot_0) (31) by 30 assignment
+Updating (power policebot_0) (27) by 26 assignment
+
+Checking next happening (time 12.007)
+Adding (clear wpt_07 wpt_03)
+Adding (clear wpt_03 wpt_07)
+Adding (agent_at emsbot_0 wpt_01)
+Adding (idle emsbot_0)
+Adding (agent_at policebot_0 wpt_03)
+Adding (idle policebot_0)
+
+Checking next happening (time 12.008)
+Deleting (carrying_weapons policebot_0 weapons_0)
+Deleting (empty emsbot_0)
+
+Checking next happening (time 13.008)
+
+Checking next happening (time 13.008)
+Updating (power emsbot_0) (28) by 27 assignment
+Updating (power policebot_0) (26) by 25 assignment
+
+Checking next happening (time 13.008)
+Adding (empty policebot_0)
+Adding (weapons_stored weapons_0 police_base_0)
+
+Checking next happening (time 14.004)
+
+Checking next happening (time 14.004)
+Updating (power emsbot_0) (27) by 26.004 assignment
+
+Checking next happening (time 14.004)
+Deleting (idle ems_2)
+Deleting (agent_at ems_2 wpt_02)
+
+Checking next happening (time 15.004)
+
+Checking next happening (time 15.004)
+Updating (power emsbot_0) (26.004) by 25.004 assignment
+
+Checking next happening (time 15.004)
+Adding (agent_at ems_2 wpt_06)
+Adding (idle ems_2)
+
+Checking next happening (time 15.005)
+
+Checking next happening (time 15.005)
+Updating (power emsbot_0) (25.004) by 25.003 assignment
+
+Checking next happening (time 15.005)
+Deleting (idle ems_2)
+Deleting (agent_at ems_2 wpt_06)
+
+Checking next happening (time 16.005)
+
+Checking next happening (time 16.005)
+Updating (power emsbot_0) (25.003) by 24.003 assignment
+
+Checking next happening (time 16.005)
+Adding (agent_at ems_2 wpt_05)
+Adding (idle ems_2)
+
+Checking next happening (time 16.006)
+
+Checking next happening (time 16.006)
+Updating (power emsbot_0) (24.003) by 24.002 assignment
+
+Checking next happening (time 16.006)
+Deleting (idle ems_2)
+Deleting (agent_at ems_2 wpt_05)
+
+Checking next happening (time 17.006)
+
+Checking next happening (time 17.006)
+Updating (power emsbot_0) (24.002) by 23.002 assignment
+
+Checking next happening (time 17.006)
+Adding (agent_at ems_2 wpt_09)
+Adding (idle ems_2)
+
+Checking next happening (time 17.007)
+
+Checking next happening (time 17.007)
+Updating (power emsbot_0) (23.002) by 23.001 assignment
+
+Checking next happening (time 17.007)
+Deleting (idle ems_2)
+Deleting (agent_at ems_2 wpt_09)
+
+Checking next happening (time 17.008)
+
+Checking next happening (time 17.008)
+Updating (power emsbot_0) (23.001) by 23 assignment
+
+Checking next happening (time 17.008)
+Adding (carrying_drugs emsbot_0 drugs_0)
+
+Checking next happening (time 17.009)
+
+Checking next happening (time 17.009)
+Deleting (idle emsbot_0)
+Deleting (agent_at emsbot_0 wpt_01)
+
+Checking next happening (time 18.007)
+
+Checking next happening (time 18.007)
+Updating (power emsbot_0) (23) by 22.002 assignment
+
+Checking next happening (time 18.007)
+Adding (agent_at ems_2 wpt_08)
+Adding (idle ems_2)
+
+Checking next happening (time 18.009)
+
+Checking next happening (time 18.009)
+Updating (power emsbot_0) (22.002) by 22 assignment
+
+Checking next happening (time 18.009)
+Adding (agent_at emsbot_0 wpt_02)
+Adding (idle emsbot_0)
+
+Checking next happening (time 18.01)
+Deleting (carrying_drugs emsbot_0 drugs_0)
+
+Checking next happening (time 19.01)
+
+Checking next happening (time 19.01)
+Updating (power emsbot_0) (22) by 21 assignment
+
+Checking next happening (time 19.01)
+Adding (empty emsbot_0)
+Adding (drugs_stored drugs_0 hospital_0)
+Plan executed successfully - checking goal
+Plan valid
+Final value: 37
+(road wpt_04 wpt_09)
+(clear wpt_04 wpt_09)
+(idle firefighter_1)
+(road wpt_02 wpt_01)
+(clear wpt_02 wpt_01)
+(idle ems_0)
+(road wpt_03 wpt_02)
+(clear wpt_03 wpt_02)
+(idle police_0)
+(road wpt_04 wpt_05)
+(clear wpt_04 wpt_05)
+(idle firefighter_0)
+(agent_at ems_0 wpt_01)
+(road wpt_09 wpt_13)
+(clear wpt_09 wpt_13)
+(road wpt_05 wpt_01)
+(clear wpt_05 wpt_01)
+(agent_at policebot_0 wpt_03)
+(located_at battery_charger_2 wpt_03)
+(road wpt_13 wpt_17)
+(clear wpt_13 wpt_17)
+(agent_at firefighter_0 wpt_01)
+(gas_clear wpt_01)
+(agent_at emsbot_0 wpt_02)
+(located_at battery_charger_0 wpt_02)
+(idle policebot_0)
+(road wpt_17 wpt_16)
+(clear wpt_17 wpt_16)
+(agent_at firefighter_1 wpt_16)
+(gas_clear wpt_16)
+(located_at battery_charger_1 wpt_04)
+(idle emsbot_0)
+(empty policebot_0)
+(agent_at police_0 wpt_01)
+(located_at weapons_0 wpt_01)
+(road wpt_01 wpt_00)
+(road wpt_01 wpt_05)
+(road wpt_01 wpt_06)
+(road wpt_06 wpt_01)
+(road wpt_06 wpt_02)
+(empty emsbot_0)
+(idle firebot_0)
+(road wpt_05 wpt_06)
+(clear wpt_05 wpt_06)
+(road wpt_01 wpt_02)
+(clear wpt_01 wpt_02)
+(road wpt_06 wpt_07)
+(clear wpt_06 wpt_07)
+(located_at hospital_0 wpt_02)
+(road wpt_02 wpt_03)
+(agent_at firebot_0 wpt_07)
+(road wpt_07 wpt_03)
+(road wpt_03 wpt_07)
+(clear wpt_02 wpt_03)
+(located_at police_base_0 wpt_03)
+(road wpt_02 wpt_06)
+(located_at drugs_0 wpt_01)
+(clear wpt_02 wpt_06)
+(idle ems_2)
+(road wpt_06 wpt_05)
+(clear wpt_06 wpt_05)
+(road wpt_05 wpt_09)
+(clear wpt_05 wpt_09)
+(road wpt_09 wpt_08)
+(clear wpt_09 wpt_08)
+(road wpt_00 wpt_01)
+(road wpt_05 wpt_04)
+(road wpt_04 wpt_08)
+(road wpt_08 wpt_04)
+(road wpt_09 wpt_04)
+(road wpt_09 wpt_05)
+(road wpt_05 wpt_10)
+(road wpt_10 wpt_05)
+(road wpt_07 wpt_06)
+(road wpt_07 wpt_11)
+(road wpt_11 wpt_07)
+(road wpt_08 wpt_09)
+(road wpt_09 wpt_10)
+(road wpt_10 wpt_09)
+(road wpt_13 wpt_09)
+(road wpt_09 wpt_14)
+(road wpt_14 wpt_09)
+(road wpt_10 wpt_11)
+(road wpt_11 wpt_10)
+(road wpt_11 wpt_15)
+(road wpt_15 wpt_11)
+(road wpt_12 wpt_13)
+(road wpt_13 wpt_12)
+(road wpt_13 wpt_14)
+(road wpt_14 wpt_13)
+(road wpt_17 wpt_13)
+(road wpt_13 wpt_18)
+(road wpt_18 wpt_13)
+(road wpt_14 wpt_15)
+(road wpt_15 wpt_14)
+(road wpt_14 wpt_18)
+(road wpt_18 wpt_14)
+(road wpt_16 wpt_17)
+(road wpt_17 wpt_18)
+(road wpt_18 wpt_17)
+(clear wpt_00 wpt_01)
+(clear wpt_01 wpt_00)
+(clear wpt_01 wpt_05)
+(clear wpt_01 wpt_06)
+(clear wpt_06 wpt_01)
+(clear wpt_06 wpt_02)
+(clear wpt_05 wpt_04)
+(clear wpt_04 wpt_08)
+(clear wpt_08 wpt_04)
+(clear wpt_09 wpt_04)
+(clear wpt_09 wpt_05)
+(clear wpt_05 wpt_10)
+(clear wpt_10 wpt_05)
+(clear wpt_07 wpt_06)
+(clear wpt_07 wpt_11)
+(clear wpt_11 wpt_07)
+(clear wpt_08 wpt_09)
+(clear wpt_09 wpt_10)
+(clear wpt_10 wpt_09)
+(clear wpt_13 wpt_09)
+(clear wpt_09 wpt_14)
+(clear wpt_14 wpt_09)
+(clear wpt_10 wpt_11)
+(clear wpt_11 wpt_10)
+(clear wpt_11 wpt_15)
+(clear wpt_15 wpt_11)
+(clear wpt_12 wpt_13)
+(clear wpt_13 wpt_12)
+(clear wpt_13 wpt_14)
+(clear wpt_14 wpt_13)
+(clear wpt_17 wpt_13)
+(clear wpt_13 wpt_18)
+(clear wpt_18 wpt_13)
+(clear wpt_14 wpt_15)
+(clear wpt_15 wpt_14)
+(clear wpt_14 wpt_18)
+(clear wpt_18 wpt_14)
+(clear wpt_16 wpt_17)
+(clear wpt_17 wpt_18)
+(clear wpt_18 wpt_17)
+(gas_clear wpt_00)
+(gas_clear wpt_02)
+(gas_clear wpt_03)
+(gas_clear wpt_04)
+(gas_clear wpt_05)
+(gas_clear wpt_06)
+(gas_clear wpt_07)
+(gas_clear wpt_08)
+(gas_clear wpt_09)
+(gas_clear wpt_10)
+(gas_clear wpt_11)
+(gas_clear wpt_12)
+(gas_clear wpt_13)
+(gas_clear wpt_14)
+(gas_clear wpt_15)
+(gas_clear wpt_17)
+(gas_clear wpt_18)
+(located_at fire_base_0 wpt_04)
+(agent_at quadrotor_0 wpt_03)
+(agent_at ems_1 wpt_02)
+(agent_at emsbot_1 wpt_02)
+(agent_at emsbot_2 wpt_02)
+(idle quadrotor_0)
+(idle ems_1)
+(idle emsbot_1)
+(idle emsbot_2)
+(empty emsbot_1)
+(empty emsbot_2)
+(drugs_stored drugs_0 hospital_0)
+(clear wpt_03 wpt_07)
+(clear wpt_07 wpt_03)
+(weapons_stored weapons_0 police_base_0)
+(agent_at ems_2 wpt_08)
+(victim_at_hosp victim_0 hospital_0)
+(victim_injury victim_0) = 2
+(victim_state victim_0) = 2
+(power emsbot_0) = 21
+(power emsbot_1) = 0
+(power emsbot_2) = 0
+(power firebot_0) = 30
+(power policebot_0) = 25
+(power quadrotor_0) = 0
+(power_max emsbot_0) = 35
+(power_max emsbot_1) = 35
+(power_max emsbot_2) = 35
+(power_max firebot_0) = 35
+(power_max policebot_0) = 35
+(power_max quadrotor_0) = 35
+
+Successful plans:
+Value: 37
+ /home/gil/Documents/prob/solution 
+

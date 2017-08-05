@@ -1,0 +1,16 @@
+(and
+      (transportable_at_city pass_49 ord)
+      (transportable_at_city pass_50 ord)
+      (transportable_at_city pass_51 ord)
+      (transportable_at_city cargo_48 ord)
+      (transportable_at_city cargo_49 ord)
+      (transportable_at_city cargo_50 ord)
+    )(and
+      (transportable_at_city pass_24 dfw)
+      (transportable_at_city pass_25 dfw)
+      (transportable_at_city pass_26 dfw)
+      (transportable_at_city cargo_24 dfw)
+      (transportable_at_city cargo_25 dfw)
+      (transportable_at_city cargo_26 dfw)
+      (transportable_at_city cargo_27 dfw)
+    )

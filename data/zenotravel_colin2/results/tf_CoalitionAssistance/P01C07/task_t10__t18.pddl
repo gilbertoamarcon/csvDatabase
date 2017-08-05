@@ -1,0 +1,18 @@
+(and
+      (transportable_at_city pass_33 ord)
+      (transportable_at_city pass_34 ord)
+      (transportable_at_city pass_35 ord)
+      (transportable_at_city cargo_33 ord)
+      (transportable_at_city cargo_34 ord)
+      (transportable_at_city cargo_35 ord)
+      (transportable_at_city cargo_36 ord)
+    )(and
+      (transportable_at_city pass_61 den)
+      (transportable_at_city pass_62 den)
+      (transportable_at_city pass_63 den)
+      (transportable_at_city pass_64 den)
+      (transportable_at_city cargo_62 den)
+      (transportable_at_city cargo_63 den)
+      (transportable_at_city cargo_64 den)
+      (transportable_at_city cargo_65 den)
+    )

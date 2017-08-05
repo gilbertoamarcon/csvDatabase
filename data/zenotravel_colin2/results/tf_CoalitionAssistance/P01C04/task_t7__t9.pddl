@@ -1,0 +1,18 @@
+(and
+      (transportable_at_city pass_23 sea)
+      (transportable_at_city pass_24 sea)
+      (transportable_at_city pass_25 sea)
+      (transportable_at_city pass_26 sea)
+      (transportable_at_city cargo_22 sea)
+      (transportable_at_city cargo_23 sea)
+      (transportable_at_city cargo_24 sea)
+      (transportable_at_city cargo_25 sea)
+    )(and
+      (transportable_at_city pass_30 jfk)
+      (transportable_at_city pass_31 jfk)
+      (transportable_at_city pass_32 jfk)
+      (transportable_at_city cargo_29 jfk)
+      (transportable_at_city cargo_30 jfk)
+      (transportable_at_city cargo_31 jfk)
+      (transportable_at_city cargo_32 jfk)
+    )

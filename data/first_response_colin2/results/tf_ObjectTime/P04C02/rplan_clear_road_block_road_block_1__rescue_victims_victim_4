@@ -1,0 +1,46 @@
+0.001
+(change-battery emsbot_2 battery_charger_1 wpt_01)
+(change-battery firebot_1 battery_charger_2 wpt_02)
+1
+2
+2.001
+2.002
+(clear-road firebot_1 wpt_02 wpt_01)
+3.001
+4.001
+4.002
+4.003
+(ground-move emsbot_2 wpt_01 wpt_02)
+(human-move ems_1 wpt_01 wpt_02)
+5.002
+5.003
+5.004
+(ground-move emsbot_2 wpt_02 wpt_05)
+(human-move ems_1 wpt_02 wpt_05)
+6.003
+6.004
+6.005
+(ground-move emsbot_2 wpt_05 wpt_08)
+(human-move ems_1 wpt_05 wpt_08)
+7.003
+7.004
+7.005
+7.006
+(triage ems_1 victim_4 wpt_08)
+8.004
+8.005
+8.006
+9.005
+9.006
+9.007
+(load-victim ems_1 emsbot_2 victim_4 wpt_08)
+10.006
+10.007
+11.006
+11.008
+(unload-victim-at-hospital emsbot_2 victim_4 wpt_01 hospital_0)
+12.007
+12.008
+12.009
+13.006
+13.007

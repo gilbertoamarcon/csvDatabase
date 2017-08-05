@@ -1,0 +1,10 @@
+(and
+      (transportable_at_city pass_51 dsm)
+      (transportable_at_city pass_52 dsm)
+      (transportable_at_city pass_53 dsm)
+      (transportable_at_city pass_54 dsm)
+      (transportable_at_city cargo_55 dsm)
+      (transportable_at_city cargo_56 dsm)
+      (transportable_at_city cargo_57 dsm)
+      (transportable_at_city cargo_58 dsm)
+    )

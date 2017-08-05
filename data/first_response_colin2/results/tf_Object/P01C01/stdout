@@ -1,0 +1,125 @@
+[3gH    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H
+-------------------------------------
+Coalition Formation
+Coalition-Task Pairs:
+	clear_gas_leak_gas_leak_0  (and (gas_clear wpt_02) ): firefighter_0
+	clear_gas_leak_gas_leak_1  (and (gas_clear wpt_12) ): firefighter_0
+	clear_pawn_weapons_0  (and (weapons_stored weapons_0 police_base_0) ): police_0 policebot_0
+	clear_pharmacy_drugs_0  (and (drugs_stored drugs_0 hospital_0) ): ems_0 emsbot_0
+	clear_road_block_road_block_0  (and (clear wpt_01 wpt_05)(clear wpt_05 wpt_01) ): firebot_0
+	clear_road_block_road_block_1  (and (clear wpt_10 wpt_14)(clear wpt_14 wpt_10) ): firebot_1
+	rescue_victims_victim_0  (and (victim_at_hosp victim_0 hospital_0) ): ems_0 emsbot_0
+	rescue_victims_victim_1  (and (victim_at_hosp victim_1 hospital_0) ): ems_0 quadrotor_0
+	rescue_victims_victim_2  (and (victim_at_hosp victim_2 hospital_0) ): ems_0 emsbot_0
+	rescue_victims_victim_3  (and (victim_at_hosp victim_3 hospital_0) ): ems_0 emsbot_0
+-------------------------------------
+
+-------------------------------------
+Task Fusion
+
+Agent Capabilities:
+	ems_0: < 1 1 >
+	emsbot_0: < 1 1 >
+	emsbot_1: < 1 1 >
+	emsbot_2: < 1 1 >
+	firebot_0: < 1 >
+	firebot_1: < 1 >
+	firefighter_0: < 1 >
+	police_0: < 1 >
+	police_1: < 1 >
+	policebot_0: < 1 >
+	quadrotor_0: < 1 >
+Coalitions Capabilities:
+	clear_gas_leak_gas_leak_0: < 1 > firefighter_0
+	clear_gas_leak_gas_leak_1: < 1 > firefighter_0
+	clear_pawn_weapons_0: < 1 1 > police_0 policebot_0
+	clear_pharmacy_drugs_0: < 1 1 > ems_0 emsbot_0
+	clear_road_block_road_block_0: < 1 > firebot_0
+	clear_road_block_road_block_1: < 1 > firebot_1
+	rescue_victims_victim_0: < 1 1 > ems_0 emsbot_0
+	rescue_victims_victim_1: < 1 1 > ems_0 quadrotor_0
+	rescue_victims_victim_2: < 1 1 > ems_0 emsbot_0
+	rescue_victims_victim_3: < 1 1 > ems_0 emsbot_0
+
+
+Agent Capabilities:
+	ems_0: < 1 1 >
+	emsbot_0: < 1 1 >
+	emsbot_1: < 1 1 >
+	emsbot_2: < 1 1 >
+	firebot_0: < 1 >
+	firebot_1: < 1 >
+	firefighter_0: < 1 >
+	police_0: < 1 >
+	police_1: < 1 >
+	policebot_0: < 1 >
+	quadrotor_0: < 1 >
+Coalitions Capabilities:
+	clear_gas_leak_gas_leak_0__rescue_victims_victim_0: < 1 1 1 > ems_0 emsbot_0 firefighter_0
+	clear_gas_leak_gas_leak_1__clear_pawn_weapons_0: < 1 1 1 > firefighter_0 police_0 policebot_0
+	clear_pharmacy_drugs_0__rescue_victims_victim_3: < 1 1 1 1 > ems_0 emsbot_0
+	clear_road_block_road_block_0: < 1 > firebot_0
+	clear_road_block_road_block_1: < 1 > firebot_1
+	rescue_victims_victim_1: < 1 1 > ems_0 quadrotor_0
+	rescue_victims_victim_2: < 1 1 > ems_0 emsbot_0
+
+Coalition-Task Pairs:
+	clear_gas_leak_gas_leak_0__rescue_victims_victim_0  (and (gas_clear wpt_02) )(and (victim_at_hosp victim_0 hospital_0) ): ems_0 emsbot_0 firefighter_0
+	clear_gas_leak_gas_leak_1__clear_pawn_weapons_0  (and (gas_clear wpt_12) )(and (weapons_stored weapons_0 police_base_0) ): firefighter_0 police_0 policebot_0
+	clear_pharmacy_drugs_0__rescue_victims_victim_3  (and (drugs_stored drugs_0 hospital_0) )(and (victim_at_hosp victim_3 hospital_0) ): ems_0 emsbot_0
+	clear_road_block_road_block_0  (and (clear wpt_01 wpt_05)(clear wpt_05 wpt_01) ): firebot_0
+	clear_road_block_road_block_1  (and (clear wpt_10 wpt_14)(clear wpt_14 wpt_10) ): firebot_1
+	rescue_victims_victim_1  (and (victim_at_hosp victim_1 hospital_0) ): ems_0 quadrotor_0
+	rescue_victims_victim_2  (and (victim_at_hosp victim_2 hospital_0) ): ems_0 emsbot_0
+-------------------------------------
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for clear_gas_leak_gas_leak_0__rescue_victims_victim_0
+Planning resources:  24 MB 0.725 s
+Merging resources:  10 MB 0.62 s
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for clear_gas_leak_gas_leak_1__clear_pawn_weapons_0
+Planning resources:  295 MB 15.154 s
+Merging resources:  11 MB 0.333 s
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for clear_pharmacy_drugs_0__rescue_victims_victim_3
+Planning resources:  10 MB 0.250 s
+Merging resources:  11 MB 0.554 s
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for clear_road_block_road_block_0
+Planning resources:  8 MB 0.13 s
+Merging resources:  11 MB 0.63 s
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for clear_road_block_road_block_1
+Planning resources:  8 MB 0.19 s
+Merging resources:  10 MB 0.101 s
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for rescue_victims_victim_1
+Planning resources:  10 MB 0.148 s
+Merging resources:  13 MB 1.865 s
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for rescue_victims_victim_2
+Planning resources:  16 MB 0.450 s
+Merging resources:  14 MB 2.374 s
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+-------------------------------------
+Processing time: 25 s
+Memory usage: 451 MB
+Makespan: 58.040 s
+Number of actions: 98
+Exit value: 0
+-------------------------------------
+

@@ -1,0 +1,10 @@
+(and
+      (transportable_at_city pass_35 geg)
+      (transportable_at_city pass_36 geg)
+      (transportable_at_city pass_37 geg)
+      (transportable_at_city pass_38 geg)
+      (transportable_at_city cargo_33 geg)
+      (transportable_at_city cargo_34 geg)
+      (transportable_at_city cargo_35 geg)
+      (transportable_at_city cargo_36 geg)
+    )

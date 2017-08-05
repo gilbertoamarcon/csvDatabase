@@ -1,0 +1,18 @@
+(and
+      (transportable_at_city pass_44 gjt)
+      (transportable_at_city pass_45 gjt)
+      (transportable_at_city pass_46 gjt)
+      (transportable_at_city pass_47 gjt)
+      (transportable_at_city cargo_43 gjt)
+      (transportable_at_city cargo_44 gjt)
+      (transportable_at_city cargo_45 gjt)
+      (transportable_at_city cargo_46 gjt)
+    )(and
+      (transportable_at_city pass_52 sea)
+      (transportable_at_city pass_53 sea)
+      (transportable_at_city pass_54 sea)
+      (transportable_at_city cargo_51 sea)
+      (transportable_at_city cargo_52 sea)
+      (transportable_at_city cargo_53 sea)
+      (transportable_at_city cargo_54 sea)
+    )

@@ -1,0 +1,17 @@
+(and
+      (transportable_at_city pass_53 atl)
+      (transportable_at_city pass_54 atl)
+      (transportable_at_city pass_55 atl)
+      (transportable_at_city pass_56 atl)
+      (transportable_at_city cargo_51 atl)
+      (transportable_at_city cargo_52 atl)
+      (transportable_at_city cargo_53 atl)
+      (transportable_at_city cargo_54 atl)
+    )(and
+      (transportable_at_city pass_32 sea)
+      (transportable_at_city pass_33 sea)
+      (transportable_at_city pass_34 sea)
+      (transportable_at_city cargo_31 sea)
+      (transportable_at_city cargo_32 sea)
+      (transportable_at_city cargo_33 sea)
+    )

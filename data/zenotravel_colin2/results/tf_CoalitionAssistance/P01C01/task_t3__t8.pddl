@@ -1,0 +1,16 @@
+(and
+      (transportable_at_city pass_10 bna)
+      (transportable_at_city pass_11 bna)
+      (transportable_at_city pass_12 bna)
+      (transportable_at_city pass_13 bna)
+      (transportable_at_city cargo_10 bna)
+      (transportable_at_city cargo_11 bna)
+      (transportable_at_city cargo_12 bna)
+    )(and
+      (transportable_at_city pass_27 atl)
+      (transportable_at_city pass_28 atl)
+      (transportable_at_city pass_29 atl)
+      (transportable_at_city cargo_26 atl)
+      (transportable_at_city cargo_27 atl)
+      (transportable_at_city cargo_28 atl)
+    )

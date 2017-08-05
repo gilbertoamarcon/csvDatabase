@@ -1,0 +1,18 @@
+(and
+      (transportable_at_city pass_45 phl)
+      (transportable_at_city pass_46 phl)
+      (transportable_at_city pass_47 phl)
+      (transportable_at_city pass_48 phl)
+      (transportable_at_city cargo_45 phl)
+      (transportable_at_city cargo_46 phl)
+      (transportable_at_city cargo_47 phl)
+    )(and
+      (transportable_at_city pass_10 ord)
+      (transportable_at_city pass_11 ord)
+      (transportable_at_city pass_12 ord)
+      (transportable_at_city pass_13 ord)
+      (transportable_at_city cargo_10 ord)
+      (transportable_at_city cargo_11 ord)
+      (transportable_at_city cargo_12 ord)
+      (transportable_at_city cargo_13 ord)
+    )

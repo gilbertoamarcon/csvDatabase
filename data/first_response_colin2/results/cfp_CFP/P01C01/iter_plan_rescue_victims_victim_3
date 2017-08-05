@@ -1,0 +1,13 @@
+; Time 0.06
+0.000: (human-move ems_0 wpt_12 wpt_09)  [1.000]
+1.001: (human-move ems_0 wpt_09 wpt_06)  [1.000]
+2.002: (human-move ems_0 wpt_06 wpt_03)  [1.000]
+3.003: (human-move ems_0 wpt_03 wpt_04)  [1.000]
+4.004: (triage ems_0 victim_3 wpt_04)  [2.000]
+6.005: (change-battery emsbot_0 battery_charger_0 wpt_00)  [2.000]
+8.006: (ground-move emsbot_0 wpt_00 wpt_01)  [1.000]
+9.007: (ground-move emsbot_0 wpt_01 wpt_04)  [1.000]
+10.008: (load-victim ems_0 emsbot_0 victim_3 wpt_04)  [2.000]
+12.009: (ground-move emsbot_0 wpt_04 wpt_01)  [1.000]
+13.010: (ground-move emsbot_0 wpt_01 wpt_00)  [1.000]
+14.011: (unload-victim-at-hospital emsbot_0 victim_3 wpt_00 hospital_0)  [2.000]

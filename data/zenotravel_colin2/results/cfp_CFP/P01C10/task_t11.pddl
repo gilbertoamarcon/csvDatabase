@@ -1,0 +1,9 @@
+(and
+      (transportable_at_city pass_36 msn)
+      (transportable_at_city pass_37 msn)
+      (transportable_at_city pass_38 msn)
+      (transportable_at_city pass_39 msn)
+      (transportable_at_city cargo_37 msn)
+      (transportable_at_city cargo_38 msn)
+      (transportable_at_city cargo_39 msn)
+    )

@@ -1,0 +1,47 @@
+0.001
+(change-battery firebot_0 battery_charger_2 wpt_14)
+(change-battery quadrotor_0 battery_charger_0 wpt_12)
+(human-move ems_0 wpt_13 wpt_14)
+1
+1.002
+(human-move ems_0 wpt_14 wpt_10)
+2
+2.001
+2.002
+(ground-move firebot_0 wpt_14 wpt_10)
+(quad-move quadrotor_0 wpt_12 wpt_09)
+(quad-move quadrotor_0 wpt_12 wpt_13)
+2.003
+(human-move ems_0 wpt_10 wpt_07)
+3.001
+3.002
+3.003
+(clear-road firebot_0 wpt_10 wpt_13)
+(quad-move quadrotor_0 wpt_09 wpt_10)
+3.004
+(triage ems_0 victim_1 wpt_07)
+4.001
+4.002
+4.003
+4.004
+(quad-move quadrotor_0 wpt_10 wpt_07)
+5.002
+5.003
+5.004
+5.005
+(guide-victim quadrotor_0 victim_1 wpt_07 wpt_10)
+6.003
+6.004
+6.005
+7.004
+7.005
+7.006
+(guide-victim quadrotor_0 victim_1 wpt_10 wpt_13)
+8.004
+8.005
+8.006
+9.005
+9.006
+9.007
+(guide-victim-to-hospital quadrotor_0 victim_1 hospital_0 wpt_13)
+9.506

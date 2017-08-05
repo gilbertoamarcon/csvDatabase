@@ -1,0 +1,184 @@
+Type-checking change-battery
+...action passes type checking.
+Type-checking quad-move
+...action passes type checking.
+Type-checking ground-move
+...action passes type checking.
+Type-checking human-move
+...action passes type checking.
+Type-checking guide-victim
+...action passes type checking.
+Type-checking guide-victim-to-hospital
+...action passes type checking.
+Type-checking clear-road
+...action passes type checking.
+Type-checking seal-leak
+...action passes type checking.
+Type-checking triage
+...action passes type checking.
+Type-checking load-victim
+...action passes type checking.
+Type-checking unload-victim-at-hospital
+...action passes type checking.
+Type-checking clear-pawn
+...action passes type checking.
+Type-checking clear-pharmacy
+...action passes type checking.
+Type-checking drop-weapons
+...action passes type checking.
+Type-checking drop-drugs
+...action passes type checking.
+Checking plan: /home/gil/Documents/prob/solution
+Plan to validate:
+
+Plan size: 12
+0:
+(human-move firefighter_0 wpt_02 wpt_05) - start
+ 
+1:
+Invariant for (human-move firefighter_0 wpt_02 wpt_05)
+ 
+1:
+(human-move firefighter_0 wpt_02 wpt_05) - end
+ 
+1.001:
+(human-move firefighter_0 wpt_05 wpt_08) - start
+ 
+2.001:
+Invariant for (human-move firefighter_0 wpt_05 wpt_08)
+ 
+2.001:
+(human-move firefighter_0 wpt_05 wpt_08) - end
+ 
+2.002:
+(human-move firefighter_0 wpt_08 wpt_07) - start
+ 
+3.002:
+Invariant for (human-move firefighter_0 wpt_08 wpt_07)
+ 
+3.002:
+(human-move firefighter_0 wpt_08 wpt_07) - end
+ 
+3.003:
+(human-move firefighter_0 wpt_07 wpt_06) - start
+ 
+4.003:
+Invariant for (human-move firefighter_0 wpt_07 wpt_06)
+ 
+4.003:
+(human-move firefighter_0 wpt_07 wpt_06) - end
+ 
+4.004:
+(human-move firefighter_0 wpt_06 wpt_03) - start
+ 
+5.004:
+Invariant for (human-move firefighter_0 wpt_06 wpt_03)
+ 
+5.004:
+(human-move firefighter_0 wpt_06 wpt_03) - end
+ 
+5.005:
+(seal-leak firefighter_0 wpt_03) - start
+ 
+8.005:
+Invariant for (seal-leak firefighter_0 wpt_03)
+ 
+8.005:
+(seal-leak firefighter_0 wpt_03) - end
+ 
+
+Plan Validation details
+-----------------------
+
+Checking next happening (time 0)
+Deleting (idle firefighter_0)
+Deleting (agent_at firefighter_0 wpt_02)
+
+Checking next happening (time 1)
+
+Checking next happening (time 1)
+Adding (agent_at firefighter_0 wpt_05)
+Adding (idle firefighter_0)
+
+Checking next happening (time 1.001)
+Deleting (idle firefighter_0)
+Deleting (agent_at firefighter_0 wpt_05)
+
+Checking next happening (time 2.001)
+
+Checking next happening (time 2.001)
+Adding (agent_at firefighter_0 wpt_08)
+Adding (idle firefighter_0)
+
+Checking next happening (time 2.002)
+Deleting (idle firefighter_0)
+Deleting (agent_at firefighter_0 wpt_08)
+
+Checking next happening (time 3.002)
+
+Checking next happening (time 3.002)
+Adding (agent_at firefighter_0 wpt_07)
+Adding (idle firefighter_0)
+
+Checking next happening (time 3.003)
+Deleting (idle firefighter_0)
+Deleting (agent_at firefighter_0 wpt_07)
+
+Checking next happening (time 4.003)
+
+Checking next happening (time 4.003)
+Adding (agent_at firefighter_0 wpt_06)
+Adding (idle firefighter_0)
+
+Checking next happening (time 4.004)
+Deleting (idle firefighter_0)
+Deleting (agent_at firefighter_0 wpt_06)
+
+Checking next happening (time 5.004)
+
+Checking next happening (time 5.004)
+Adding (agent_at firefighter_0 wpt_03)
+Adding (idle firefighter_0)
+
+Checking next happening (time 5.005)
+
+Checking next happening (time 8.005)
+
+Checking next happening (time 8.005)
+Adding (gas_clear wpt_03)
+Plan executed successfully - checking goal
+Goal not satisfied
+Plan invalid
+
+Plan Repair Advice:
+
+The goal is not satisfied
+(Follow each of:
+    (Set (weapons_stored weapons_0 police_base_0) to true)
+    and 
+    (Set (drugs_stored drugs_0 hospital_0) to true)
+    and 
+    (Set (victim_at_hosp victim_0 hospital_0) to true)
+    and 
+    (Set (victim_at_hosp victim_1 hospital_0) to true)
+    and 
+    (Set (victim_at_hosp victim_2 hospital_0) to true)
+    and 
+    (Set (victim_at_hosp victim_3 hospital_0) to true)
+    and 
+    (Set (victim_at_hosp victim_4 hospital_0) to true)
+    and 
+    (Follow each of:
+        (Set (clear wpt_03 wpt_04) to true)
+        and (Set (clear wpt_04 wpt_03) to true)
+    )
+    and 
+    (Follow each of:
+        (Set (clear wpt_01 wpt_02) to true)
+        and (Set (clear wpt_02 wpt_01) to true)
+    )
+)
+
+
+Failed plans:
+ /home/gil/Documents/prob/solution 

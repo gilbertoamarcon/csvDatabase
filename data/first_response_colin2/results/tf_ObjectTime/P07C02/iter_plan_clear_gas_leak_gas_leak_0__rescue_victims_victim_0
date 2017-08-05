@@ -1,0 +1,10 @@
+; Time 0.03
+0.000: (human-move firefighter_0 wpt_03 wpt_00)  [1.000]
+1.001: (seal-leak firefighter_0 wpt_00)  [3.000]
+1.002: (human-move ems_0 wpt_01 wpt_00)  [1.000]
+4.002: (triage ems_0 victim_0 wpt_00)  [2.000]
+6.003: (change-battery emsbot_1 battery_charger_0 wpt_01)  [2.000]
+8.004: (ground-move emsbot_1 wpt_01 wpt_00)  [1.000]
+9.005: (load-victim ems_0 emsbot_1 victim_0 wpt_00)  [2.000]
+11.006: (ground-move emsbot_1 wpt_00 wpt_01)  [1.000]
+12.007: (unload-victim-at-hospital emsbot_1 victim_0 wpt_01 hospital_0)  [2.000]

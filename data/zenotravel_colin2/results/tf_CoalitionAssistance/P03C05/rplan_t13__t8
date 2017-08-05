@@ -1,0 +1,259 @@
+0.001
+(load_cargo large4 ord cargo_45)
+(load_cargo large4 ord cargo_46)
+(load_cargo large4 ord cargo_47)
+(load_passenger large4 ord pass_45)
+(load_passenger large4 ord pass_46)
+(load_passenger large4 ord pass_47)
+(load_passenger large4 ord pass_48)
+(refuel large4 ord)
+(refuel small12 spi)
+(refuel small8 buf)
+0.003
+(fly_small_2 small12 spi dsm)
+(fly_small_2 small8 buf jfk)
+(fly_small_2 small8 buf phl)
+(zoom_large_1 large4 ord den)
+(zoom_large_1 large4 ord jfk)
+(zoom_small_2 small12 spi ord)
+1
+2.001
+16.802
+16.804
+21.002
+26.802
+26.804
+27.803
+28.804
+33.502
+33.603
+34.802
+34.804
+35.803
+36.002
+36.004
+36.804
+37.003
+37.803
+37.805
+38.004
+43.502
+45.002
+48.403
+48.405
+49.404
+50.405
+50.803
+50.805
+51.803
+51.804
+52.805
+53.603
+56.403
+56.405
+56.803
+57.002
+57.404
+58.405
+58.502
+60.002
+60.004
+60.303
+60.602
+60.604
+61.003
+61.603
+61.803
+62.004
+62.604
+63.002
+63.204
+63.605
+64.606
+65.404
+65.607
+66.904
+69.603
+70.002
+70.004
+70.403
+71.003
+71.204
+71.603
+72.003
+72.004
+73.803
+74.002
+74.004
+(unload_cargo large4 jfk cargo_45)
+(unload_cargo large4 jfk cargo_46)
+(unload_cargo large4 jfk cargo_47)
+(unload_passenger large4 jfk pass_45)
+(unload_passenger large4 jfk pass_46)
+(unload_passenger large4 jfk pass_47)
+(unload_passenger large4 jfk pass_48)
+74.502
+74.504
+74.804
+74.904
+75.003
+75.005
+(load_cargo small8 jfk cargo_45)
+(load_cargo small8 jfk cargo_46)
+(load_cargo small8 jfk cargo_47)
+(load_passenger small8 jfk pass_45)
+(load_passenger small8 jfk pass_46)
+(load_passenger small8 jfk pass_47)
+(load_passenger small8 jfk pass_48)
+75.503
+75.752
+76.004
+76.006
+(unload_cargo small8 phl cargo_45)
+(unload_cargo small8 phl cargo_46)
+(unload_cargo small8 phl cargo_47)
+(unload_passenger small8 phl pass_45)
+(unload_passenger small8 phl pass_46)
+(unload_passenger small8 phl pass_47)
+(unload_passenger small8 phl pass_48)
+76.504
+77.005
+77.505
+78.004
+78.006
+78.303
+78.506
+78.803
+79.303
+79.507
+80.004
+80.006
+80.202
+80.204
+80.503
+80.508
+80.804
+81.003
+81.005
+81.203
+81.303
+81.803
+82.006
+82.204
+83.404
+83.803
+87.304
+88.802
+88.803
+88.804
+(zoom_large_2 large4 den lax)
+89.803
+90.804
+91.805
+92.502
+92.806
+93.003
+93.303
+93.305
+93.503
+93.807
+94.003
+94.304
+95.305
+95.503
+98.003
+99.303
+100.003
+100.252
+101.303
+103.703
+103.804
+104.003
+106.904
+107.003
+107.904
+109.205
+109.303
+111.002
+111.003
+111.703
+113.404
+113.804
+116.505
+117.205
+118.404
+120.003
+121.003
+121.203
+122.003
+123.003
+125.003
+126.503
+126.505
+127.003
+127.404
+127.503
+128.003
+133.603
+134.503
+136.353
+136.603
+140.003
+144.403
+146.505
+148.003
+148.503
+149.003
+150.003
+150.005
+151.304
+151.804
+151.853
+152.804
+153.003
+153.203
+155.603
+160.403
+160.453
+166.503
+169.003
+169.053
+171.453
+175.003
+175.005
+(load_cargo large4 lax cargo_28)
+(load_cargo large4 lax cargo_29)
+(load_cargo large4 lax cargo_30)
+(load_cargo large4 lax cargo_31)
+(load_passenger large4 lax pass_27)
+(load_passenger large4 lax pass_28)
+(load_passenger large4 lax pass_29)
+176.004
+176.006
+(unload_cargo large4 ord cargo_28)
+(unload_cargo large4 ord cargo_29)
+(unload_cargo large4 ord cargo_30)
+(unload_cargo large4 ord cargo_31)
+(unload_passenger large4 ord pass_27)
+(unload_passenger large4 ord pass_28)
+(unload_passenger large4 ord pass_29)
+177.005
+177.007
+(load_cargo small12 ord cargo_28)
+(load_cargo small12 ord cargo_29)
+(load_cargo small12 ord cargo_30)
+(load_cargo small12 ord cargo_31)
+(load_passenger small12 ord pass_27)
+(load_passenger small12 ord pass_28)
+(load_passenger small12 ord pass_29)
+177.603
+178.006
+178.008
+(unload_cargo small12 dsm cargo_28)
+(unload_cargo small12 dsm cargo_29)
+(unload_cargo small12 dsm cargo_30)
+(unload_cargo small12 dsm cargo_31)
+(unload_passenger small12 dsm pass_27)
+(unload_passenger small12 dsm pass_28)
+(unload_passenger small12 dsm pass_29)
+179.007

@@ -1,6 +1,8 @@
 import re
 import csv
 
+FILTER_CHAR = '[/]'
+
 class StatsFilter:
 
 	# File input
@@ -29,29 +31,29 @@ class StatsFilter:
 				row_buffer.append(token[1])
 
 			# CFA
-			row_buffer.append(row[5])
+			row_buffer.append(re.sub(FILTER_CHAR, '', row[5]))
 
 			# Planner
-			row_buffer.append(row[9])
+			row_buffer.append(re.sub(FILTER_CHAR, '', row[9]))
 
 			# Tool
-			row_buffer.append(row[11])
+			row_buffer.append(re.sub(FILTER_CHAR, '', row[11]))
 
 			# Makespan
-			row_buffer.append(row[12])
+			row_buffer.append(re.sub(FILTER_CHAR, '', row[12]))
 
 			# Actions
-			row_buffer.append(row[13])
+			row_buffer.append(re.sub(FILTER_CHAR, '', row[13]))
 
 			# Proc. Time (s)
-			row_buffer.append(row[14])
+			row_buffer.append(re.sub(FILTER_CHAR, '', row[14]))
 
 			# Memory (GB)
-			mem = float(row[15])/1024
+			mem = float(re.sub(FILTER_CHAR, '', row[15]))/1024
 			row_buffer.append(str(mem))
 
 			# Status
-			row_buffer.append(row[16])
+			row_buffer.append(re.sub(FILTER_CHAR, '', row[16]))
 
 			ret_val.append(row_buffer)
 

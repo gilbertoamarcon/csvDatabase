@@ -1,0 +1,10 @@
+(and
+      (transportable_at_city pass_27 buf)
+      (transportable_at_city pass_28 buf)
+      (transportable_at_city pass_29 buf)
+      (transportable_at_city pass_30 buf)
+      (transportable_at_city cargo_26 buf)
+      (transportable_at_city cargo_27 buf)
+      (transportable_at_city cargo_28 buf)
+      (transportable_at_city cargo_29 buf)
+    )

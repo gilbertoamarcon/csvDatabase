@@ -1,0 +1,77 @@
+[3gH    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H
+-------------------------------------
+Coalition Formation
+Coalition-Task Pairs:
+	clear_gas_leak_gas_leak_0  (and (gas_clear wpt_15) ): firefighter_0
+	clear_gas_leak_gas_leak_1  (and (gas_clear wpt_12) ): firefighter_0
+	clear_gas_leak_gas_leak_2  (and (gas_clear wpt_19) ): firefighter_0
+	clear_pawn_weapons_0  (and (weapons_stored weapons_0 police_base_0) ): police_0 policebot_0
+	clear_pharmacy_drugs_0  (and (drugs_stored drugs_0 hospital_0) ): ems_0 emsbot_0
+	clear_road_block_road_block_0  (and (clear wpt_11 wpt_15)(clear wpt_15 wpt_11) ): firebot_0
+	clear_road_block_road_block_1  (and (clear wpt_13 wpt_17)(clear wpt_17 wpt_13) ): firebot_1
+	clear_road_block_road_block_2  (and (clear wpt_14 wpt_15)(clear wpt_15 wpt_14) ): firebot_0
+	rescue_victims_victim_0  (and (victim_at_hosp victim_0 hospital_0) ): ems_0 emsbot_0
+-------------------------------------
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for clear_gas_leak_gas_leak_0
+Planning resources:  6 MB 0.6 s
+Merging resources:  10 MB 0.9 s
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for clear_gas_leak_gas_leak_1
+Planning resources:  6 MB 0.6 s
+Merging resources:  10 MB 0.26 s
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for clear_gas_leak_gas_leak_2
+Planning resources:  6 MB 0.8 s
+Merging resources:  10 MB 0.44 s
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for clear_pawn_weapons_0
+Planning resources:  9 MB 0.64 s
+Merging resources:  10 MB 0.58 s
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for clear_pharmacy_drugs_0
+Planning resources:  9 MB 0.54 s
+Merging resources:  10 MB 0.65 s
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for clear_road_block_road_block_0
+Planning resources:  9 MB 0.18 s
+Merging resources:  10 MB 0.42 s
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for clear_road_block_road_block_1
+Planning resources:  9 MB 0.13 s
+Merging resources:  10 MB 0.31 s
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for clear_road_block_road_block_2
+Planning resources:  9 MB 0.29 s
+Merging resources:  11 MB 0.126 s
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Planning for rescue_victims_victim_0
+Planning resources:  9 MB 0.104 s
+Merging resources:  11 MB 0.480 s
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+-------------------------------------
+Processing time: 2 s
+Memory usage: 164 MB
+Makespan: 19.013 s
+Number of actions: 49
+Exit value: 0
+-------------------------------------
+

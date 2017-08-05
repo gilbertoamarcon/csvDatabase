@@ -1,0 +1,18 @@
+(and
+      (transportable_at_city pass_39 lax)
+      (transportable_at_city pass_40 lax)
+      (transportable_at_city pass_41 lax)
+      (transportable_at_city pass_42 lax)
+      (transportable_at_city cargo_38 lax)
+      (transportable_at_city cargo_39 lax)
+      (transportable_at_city cargo_40 lax)
+      (transportable_at_city cargo_41 lax)
+    )(and
+      (transportable_at_city pass_49 sea)
+      (transportable_at_city pass_50 sea)
+      (transportable_at_city pass_51 sea)
+      (transportable_at_city pass_52 sea)
+      (transportable_at_city cargo_48 sea)
+      (transportable_at_city cargo_49 sea)
+      (transportable_at_city cargo_50 sea)
+    )

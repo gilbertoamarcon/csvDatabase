@@ -1,0 +1,70 @@
+0.001
+(change-battery emsbot_1 battery_charger_1 wpt_18)
+(change-battery policebot_0 battery_charger_0 wpt_20)
+(human-move ems_1 wpt_18 wpt_14)
+(human-move police_0 wpt_20 wpt_16)
+1
+1.002
+(human-move ems_1 wpt_14 wpt_10)
+(human-move police_0 wpt_16 wpt_12)
+2
+2.001
+2.002
+(ground-move emsbot_1 wpt_18 wpt_14)
+(ground-move policebot_0 wpt_20 wpt_16)
+2.003
+(human-move ems_1 wpt_10 wpt_06)
+(human-move police_0 wpt_12 wpt_08)
+3.001
+3.002
+3.003
+(ground-move emsbot_1 wpt_14 wpt_10)
+(ground-move policebot_0 wpt_16 wpt_12)
+3.004
+(human-move police_0 wpt_08 wpt_04)
+(triage ems_1 victim_0 wpt_06)
+4.002
+4.003
+4.004
+(ground-move emsbot_1 wpt_10 wpt_06)
+(ground-move policebot_0 wpt_12 wpt_08)
+4.005
+(human-move police_0 wpt_04 wpt_05)
+5.002
+5.003
+5.004
+5.005
+(ground-move policebot_0 wpt_08 wpt_04)
+(load-victim ems_1 emsbot_1 victim_0 wpt_06)
+5.006
+(human-move police_0 wpt_05 wpt_06)
+6.003
+6.004
+6.005
+6.006
+(ground-move policebot_0 wpt_04 wpt_05)
+7.004
+7.005
+7.006
+(unload-victim-at-hospital emsbot_1 victim_0 wpt_18 hospital_0)
+7.007
+(ground-move policebot_0 wpt_05 wpt_06)
+8.005
+8.006
+8.007
+8.008
+(clear-pawn police_0 policebot_0 weapons_0 wpt_06)
+9.005
+9.006
+9.007
+9.008
+10.004
+10.006
+10.008
+11.005
+11.007
+11.009
+13.007
+13.009
+(drop-weapons policebot_0 weapons_0 police_base_0 wpt_20)
+14.008

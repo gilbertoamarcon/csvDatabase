@@ -20,18 +20,19 @@ C	= [
 		(0.635, 0.078, 0.184),
 	]
 S	= [
-		(0.929, 0.694, 0.125),
-		(0.850, 0.325, 0.098),
-		(0.000, 0.447, 0.741),
-		(0.929, 0.894, 0.325),
-		(0.950, 0.525, 0.298),
-		(0.301, 0.745, 0.933),
+		(0.000, 0.447, 0.741), # Blue
+		(0.850, 0.325, 0.098), # Tomato
+		(0.929, 0.694, 0.125), # Orange
+		(0.929, 0.894, 0.325), # Yellow
+		(0.950, 0.525, 0.298), # Salmon
+		(0.301, 0.745, 0.933), # Light Blue
 	]
+
 BAR_FILL		= 0.60
 FONT_SIZE		= 8
 FONT_FAMILY		= 'serif'
 SHOW_PLOT		= False
-DOMAIN			= 'blocks_world'
+DOMAIN			= 'first_response'
 COL_PAD			= 5
 CSPACING		= 1
 FIG_SIZE		= (4, 12)
@@ -49,8 +50,10 @@ PLOT_NAME			= "plot.pdf"
 
 header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (s)','Number of Actions','Processing Time (s)','Memory Usage (GB)','Planning Results (%)']
 lmetrics	= header[-5:]
-lplanners	= ['tfd/downward', 'colin2']
-ltools		= ['CFP', 'CoalitionAssistance', 'CoalitionSimilarity', 'Object', 'ObjectTime', 'ActionObject', 'ActionObjectTime', 'Makespan', 'IdleTime', 'PA']
+lplanners	= ['colin2']
+# lplanners	= ['tfd/downward', 'colin2']
+ltools		= ['CFP', 'Object', 'ObjectTime']
+# ltools		= ['CFP', 'CoalitionAssistance', 'CoalitionSimilarity', 'Object', 'ObjectTime', 'ActionObject', 'ActionObjectTime', 'Makespan', 'IdleTime', 'PA']
 
 # Neat Names
 NPLANNERS = {'tfd/downward': 'TFD', 'colin2': 'COLIN2'}
@@ -69,10 +72,18 @@ def generate_table(metrics, ltools, separator=None):
 	# Body
 	for metric in metrics:
 		for planner in metrics[metric]:
-			trow = []
-			for r in ["\"%s\""%metric, NPLANNERS[planner]] + ["%.*f"%(CSPACING,v) for v in metrics[metric][planner]['mean']]:
-				trow.append(r)
-			table.append(trow)
+			if metric == "Planning Results (%)":
+				succ = ['success', 'nonex', 'time', 'mem']
+				for s in succ:
+					trow = []
+					for r in ["\"%s\""%s, NPLANNERS[planner]] + ["%.*f"%(CSPACING,v) for v in metrics[metric][planner][s]]:
+						trow.append(r)
+					table.append(trow)
+			else:
+				trow = []
+				for r in ["\"%s\""%metric, NPLANNERS[planner]] + ["%.*f"%(CSPACING,v) for v in metrics[metric][planner]['mean']]:
+					trow.append(r)
+				table.append(trow)
 	
 	# Getting column widths
 	if separator is None:
@@ -125,15 +136,18 @@ def generate_plot(metrics,ltools):
 			else:
 				label_succ = []
 				for lp in lplanners:
-					label_succ.append(lp+" "+"Time Fail")
 					label_succ.append(lp+" "+"Mem Fail")
+					label_succ.append(lp+" "+"Time Fail")
+					label_succ.append(lp+" "+"Nonexecutable")
 					label_succ.append(lp+" "+"Success")
 				success = np.array(tools['success'])
-				mem = np.array(tools['mem'])
+				nonex = np.array(tools['nonex'])
 				time = np.array(tools['time'])
-				plt.barh(shift_pos, success+mem+time, bar_width, color=S[3*p+0])
-				plt.barh(shift_pos, success+mem, bar_width, color=S[3*p+1])
-				plt.barh(shift_pos, success, bar_width, color=S[3*p+2])
+				mem = np.array(tools['mem'])
+				plt.barh(shift_pos, success+nonex+time+mem, bar_width, color=S[4*p+3])
+				plt.barh(shift_pos, success+nonex+time, bar_width, color=S[4*p+2])
+				plt.barh(shift_pos, success+nonex, bar_width, color=S[4*p+1])
+				plt.barh(shift_pos, success, bar_width, color=S[4*p+0])
 				plt.legend(label_succ, loc='lower center', bbox_to_anchor=(0.5,-0.7), ncol=2)
 
 		plt.xlabel(metric)
@@ -174,8 +188,9 @@ for metric in lmetrics:
 		tools = OrderedDict()
 		tools['mean'] = []
 		tools['success'] = []
-		tools['mem'] = []
+		tools['nonex'] = []
 		tools['time'] = []
+		tools['mem'] = []
 		tools['error'] = []
 		for tool in ltools:
 			# query = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool)])
@@ -185,17 +200,20 @@ for metric in lmetrics:
 				success = db.select('Planning Results (%)', query_all, as_integer=True)
 				time = db.select('Processing Time (s)', query_all, as_integer=True)
 				n = len(query_all)
+				nonex_count = 0
 				time_count = 0
 				mem_count = 0
 				for i in range(0,n):
-					if success[i]!= 0:
-						if time[i] < 3600:
-							mem_count += 1
-						else:
-							time_count += 1
+					if success[i] == 1:
+						nonex_count += 1
+					if success[i] == 124:
+						time_count += 1
+					if success[i] == 134:
+						mem_count += 1
 				tools['success'].append(100.0*len(query)/n)
-				tools['mem'].append(100.0*mem_count/n)
+				tools['nonex'].append(100.0*nonex_count/n)
 				tools['time'].append(100.0*time_count/n)
+				tools['mem'].append(100.0*mem_count/n)
 				tools['mean'].append(0)
 				tools['error'].append(0)
 			else:

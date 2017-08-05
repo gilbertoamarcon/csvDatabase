@@ -1,0 +1,17 @@
+(and
+      (transportable_at_city pass_14 den)
+      (transportable_at_city pass_15 den)
+      (transportable_at_city pass_16 den)
+      (transportable_at_city cargo_14 den)
+      (transportable_at_city cargo_15 den)
+      (transportable_at_city cargo_16 den)
+      (transportable_at_city cargo_17 den)
+    )(and
+      (transportable_at_city pass_27 dsm)
+      (transportable_at_city pass_28 dsm)
+      (transportable_at_city pass_29 dsm)
+      (transportable_at_city cargo_28 dsm)
+      (transportable_at_city cargo_29 dsm)
+      (transportable_at_city cargo_30 dsm)
+      (transportable_at_city cargo_31 dsm)
+    )

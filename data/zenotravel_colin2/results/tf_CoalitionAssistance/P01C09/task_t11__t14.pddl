@@ -1,0 +1,18 @@
+(and
+      (transportable_at_city pass_36 msn)
+      (transportable_at_city pass_37 msn)
+      (transportable_at_city pass_38 msn)
+      (transportable_at_city pass_39 msn)
+      (transportable_at_city cargo_37 msn)
+      (transportable_at_city cargo_38 msn)
+      (transportable_at_city cargo_39 msn)
+    )(and
+      (transportable_at_city pass_48 dfw)
+      (transportable_at_city pass_49 dfw)
+      (transportable_at_city pass_50 dfw)
+      (transportable_at_city pass_51 dfw)
+      (transportable_at_city cargo_47 dfw)
+      (transportable_at_city cargo_48 dfw)
+      (transportable_at_city cargo_49 dfw)
+      (transportable_at_city cargo_50 dfw)
+    )

@@ -1,0 +1,9 @@
+; Time 0.05
+0.000: (human-move ems_1 wpt_01 wpt_00)  [1.000]
+1.001: (triage ems_1 victim_2 wpt_00)  [2.000]
+3.002: (ground-move emsbot_0 wpt_02 wpt_01)  [1.000]
+4.003: (ground-move emsbot_0 wpt_01 wpt_00)  [1.000]
+5.004: (load-victim ems_1 emsbot_0 victim_2 wpt_00)  [2.000]
+7.005: (ground-move emsbot_0 wpt_00 wpt_01)  [1.000]
+8.006: (ground-move emsbot_0 wpt_01 wpt_02)  [1.000]
+9.007: (unload-victim-at-hospital emsbot_0 victim_2 wpt_02 hospital_0)  [2.000]

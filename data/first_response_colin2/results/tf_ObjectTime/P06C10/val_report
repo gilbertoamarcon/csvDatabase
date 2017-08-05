@@ -1,0 +1,385 @@
+Type-checking change-battery
+...action passes type checking.
+Type-checking quad-move
+...action passes type checking.
+Type-checking ground-move
+...action passes type checking.
+Type-checking human-move
+...action passes type checking.
+Type-checking guide-victim
+...action passes type checking.
+Type-checking guide-victim-to-hospital
+...action passes type checking.
+Type-checking clear-road
+...action passes type checking.
+Type-checking seal-leak
+...action passes type checking.
+Type-checking triage
+...action passes type checking.
+Type-checking load-victim
+...action passes type checking.
+Type-checking unload-victim-at-hospital
+...action passes type checking.
+Type-checking clear-pawn
+...action passes type checking.
+Type-checking clear-pharmacy
+...action passes type checking.
+Type-checking drop-weapons
+...action passes type checking.
+Type-checking drop-drugs
+...action passes type checking.
+Checking plan: /home/gil/Documents/prob/solution
+Plan to validate:
+
+Plan size: 25
+0:
+(human-move police_1 wpt_12 wpt_09) - start
+(human-move firefighter_0 wpt_14 wpt_10) - start
+ 
+1:
+Invariant for (human-move police_1 wpt_12 wpt_09)
+Invariant for (human-move firefighter_0 wpt_14 wpt_10)
+ 
+1:
+(human-move police_1 wpt_12 wpt_09) - end
+(human-move firefighter_0 wpt_14 wpt_10) - end
+ 
+1.001:
+(human-move firefighter_0 wpt_10 wpt_07) - start
+(human-move police_1 wpt_09 wpt_10) - start
+ 
+2.001:
+Invariant for (human-move firefighter_0 wpt_10 wpt_07)
+Invariant for (human-move police_1 wpt_09 wpt_10)
+ 
+2.001:
+(human-move firefighter_0 wpt_10 wpt_07) - end
+(human-move police_1 wpt_09 wpt_10) - end
+ 
+2.002:
+(seal-leak firefighter_0 wpt_07) - start
+(human-move police_1 wpt_10 wpt_07) - start
+ 
+2.003:
+Invariant for (seal-leak firefighter_0 wpt_07)
+Invariant for (human-move police_1 wpt_10 wpt_07)
+ 
+2.003:
+(change-battery policebot_0 battery_charger_0 wpt_12) - start
+ 
+3.002:
+Invariant for (seal-leak firefighter_0 wpt_07)
+Invariant for (human-move police_1 wpt_10 wpt_07)
+Invariant for (change-battery policebot_0 battery_charger_0 wpt_12)
+ 
+3.002:
+(human-move police_1 wpt_10 wpt_07) - end
+ 
+4.003:
+Invariant for (seal-leak firefighter_0 wpt_07)
+Invariant for (change-battery policebot_0 battery_charger_0 wpt_12)
+ 
+4.003:
+(change-battery policebot_0 battery_charger_0 wpt_12) - end
+ 
+4.004:
+Invariant for (seal-leak firefighter_0 wpt_07)
+ 
+4.004:
+(ground-move policebot_0 wpt_12 wpt_09) - start
+ 
+5.002:
+Invariant for (seal-leak firefighter_0 wpt_07)
+Invariant for (ground-move policebot_0 wpt_12 wpt_09)
+ 
+5.002:
+Update of continuously changing Primitive Numerical Expressions
+ 
+5.002:
+(seal-leak firefighter_0 wpt_07) - end
+ 
+5.004:
+Invariant for (ground-move policebot_0 wpt_12 wpt_09)
+ 
+5.004:
+Update of continuously changing Primitive Numerical Expressions
+ 
+5.004:
+(ground-move policebot_0 wpt_12 wpt_09) - end
+ 
+5.005:
+(ground-move policebot_0 wpt_09 wpt_10) - start
+ 
+6.005:
+Invariant for (ground-move policebot_0 wpt_09 wpt_10)
+ 
+6.005:
+Update of continuously changing Primitive Numerical Expressions
+ 
+6.005:
+(ground-move policebot_0 wpt_09 wpt_10) - end
+ 
+6.006:
+(ground-move policebot_0 wpt_10 wpt_07) - start
+ 
+7.006:
+Invariant for (ground-move policebot_0 wpt_10 wpt_07)
+ 
+7.006:
+Update of continuously changing Primitive Numerical Expressions
+ 
+7.006:
+(ground-move policebot_0 wpt_10 wpt_07) - end
+ 
+7.007:
+(clear-pawn police_1 policebot_0 weapons_0 wpt_07) - start
+ 
+12.007:
+Invariant for (clear-pawn police_1 policebot_0 weapons_0 wpt_07)
+ 
+12.007:
+Update of continuously changing Primitive Numerical Expressions
+ 
+12.007:
+(clear-pawn police_1 policebot_0 weapons_0 wpt_07) - end
+ 
+12.008:
+(ground-move policebot_0 wpt_07 wpt_10) - start
+ 
+13.008:
+Invariant for (ground-move policebot_0 wpt_07 wpt_10)
+ 
+13.008:
+Update of continuously changing Primitive Numerical Expressions
+ 
+13.008:
+(ground-move policebot_0 wpt_07 wpt_10) - end
+ 
+13.009:
+(ground-move policebot_0 wpt_10 wpt_09) - start
+ 
+14.009:
+Invariant for (ground-move policebot_0 wpt_10 wpt_09)
+ 
+14.009:
+Update of continuously changing Primitive Numerical Expressions
+ 
+14.009:
+(ground-move policebot_0 wpt_10 wpt_09) - end
+ 
+14.01:
+(ground-move policebot_0 wpt_09 wpt_12) - start
+ 
+15.01:
+Invariant for (ground-move policebot_0 wpt_09 wpt_12)
+ 
+15.01:
+Update of continuously changing Primitive Numerical Expressions
+ 
+15.01:
+(ground-move policebot_0 wpt_09 wpt_12) - end
+ 
+15.011:
+(drop-weapons policebot_0 weapons_0 police_base_0 wpt_12) - start
+ 
+16.011:
+Invariant for (drop-weapons policebot_0 weapons_0 police_base_0 wpt_12)
+ 
+16.011:
+Update of continuously changing Primitive Numerical Expressions
+ 
+16.011:
+(drop-weapons policebot_0 weapons_0 police_base_0 wpt_12) - end
+ 
+
+Plan Validation details
+-----------------------
+
+Checking next happening (time 0)
+Deleting (idle police_1)
+Deleting (agent_at police_1 wpt_12)
+Deleting (idle firefighter_0)
+Deleting (agent_at firefighter_0 wpt_14)
+
+Checking next happening (time 1)
+
+Checking next happening (time 1)
+Adding (agent_at police_1 wpt_09)
+Adding (idle police_1)
+Adding (agent_at firefighter_0 wpt_10)
+Adding (idle firefighter_0)
+
+Checking next happening (time 1.001)
+Deleting (idle firefighter_0)
+Deleting (agent_at firefighter_0 wpt_10)
+Deleting (idle police_1)
+Deleting (agent_at police_1 wpt_09)
+
+Checking next happening (time 2.001)
+
+Checking next happening (time 2.001)
+Adding (agent_at firefighter_0 wpt_07)
+Adding (idle firefighter_0)
+Adding (agent_at police_1 wpt_10)
+Adding (idle police_1)
+
+Checking next happening (time 2.002)
+Deleting (idle police_1)
+Deleting (agent_at police_1 wpt_10)
+
+Checking next happening (time 2.003)
+
+Checking next happening (time 2.003)
+Updating (power policebot_0) (0) by 0 assignment
+
+Checking next happening (time 3.002)
+
+Checking next happening (time 3.002)
+Adding (agent_at police_1 wpt_07)
+Adding (idle police_1)
+
+Checking next happening (time 4.003)
+
+Checking next happening (time 4.003)
+Updating (power policebot_0) (0) by 35 assignment
+
+Checking next happening (time 4.004)
+
+Checking next happening (time 4.004)
+Deleting (idle policebot_0)
+Deleting (agent_at policebot_0 wpt_12)
+
+Checking next happening (time 5.002)
+
+Checking next happening (time 5.002)
+Updating (power policebot_0) (35) by 34.002 assignment
+
+Checking next happening (time 5.002)
+Adding (gas_clear wpt_07)
+
+Checking next happening (time 5.004)
+
+Checking next happening (time 5.004)
+Updating (power policebot_0) (34.002) by 34 assignment
+
+Checking next happening (time 5.004)
+Adding (agent_at policebot_0 wpt_09)
+Adding (idle policebot_0)
+
+Checking next happening (time 5.005)
+Deleting (idle policebot_0)
+Deleting (agent_at policebot_0 wpt_09)
+
+Checking next happening (time 6.005)
+
+Checking next happening (time 6.005)
+Updating (power policebot_0) (34) by 33 assignment
+
+Checking next happening (time 6.005)
+Adding (agent_at policebot_0 wpt_10)
+Adding (idle policebot_0)
+
+Checking next happening (time 6.006)
+Deleting (idle policebot_0)
+Deleting (agent_at policebot_0 wpt_10)
+
+Checking next happening (time 7.006)
+
+Checking next happening (time 7.006)
+Updating (power policebot_0) (33) by 32 assignment
+
+Checking next happening (time 7.006)
+Adding (agent_at policebot_0 wpt_07)
+Adding (idle policebot_0)
+
+Checking next happening (time 7.007)
+Deleting (empty policebot_0)
+
+Checking next happening (time 12.007)
+
+Checking next happening (time 12.007)
+Updating (power policebot_0) (32) by 27 assignment
+
+Checking next happening (time 12.007)
+Adding (carrying_weapons policebot_0 weapons_0)
+
+Checking next happening (time 12.008)
+Deleting (idle policebot_0)
+Deleting (agent_at policebot_0 wpt_07)
+
+Checking next happening (time 13.008)
+
+Checking next happening (time 13.008)
+Updating (power policebot_0) (27) by 26 assignment
+
+Checking next happening (time 13.008)
+Adding (agent_at policebot_0 wpt_10)
+Adding (idle policebot_0)
+
+Checking next happening (time 13.009)
+Deleting (idle policebot_0)
+Deleting (agent_at policebot_0 wpt_10)
+
+Checking next happening (time 14.009)
+
+Checking next happening (time 14.009)
+Updating (power policebot_0) (26) by 25 assignment
+
+Checking next happening (time 14.009)
+Adding (agent_at policebot_0 wpt_09)
+Adding (idle policebot_0)
+
+Checking next happening (time 14.01)
+Deleting (idle policebot_0)
+Deleting (agent_at policebot_0 wpt_09)
+
+Checking next happening (time 15.01)
+
+Checking next happening (time 15.01)
+Updating (power policebot_0) (25) by 24 assignment
+
+Checking next happening (time 15.01)
+Adding (agent_at policebot_0 wpt_12)
+Adding (idle policebot_0)
+
+Checking next happening (time 15.011)
+Deleting (carrying_weapons policebot_0 weapons_0)
+
+Checking next happening (time 16.011)
+
+Checking next happening (time 16.011)
+Updating (power policebot_0) (24) by 23 assignment
+
+Checking next happening (time 16.011)
+Adding (empty policebot_0)
+Adding (weapons_stored weapons_0 police_base_0)
+Plan executed successfully - checking goal
+Goal not satisfied
+Plan invalid
+
+Plan Repair Advice:
+
+The goal is not satisfied
+(Follow each of:
+    (Set (drugs_stored drugs_0 hospital_0) to true)
+    and 
+    (Set (victim_at_hosp victim_0 hospital_0) to true)
+    and 
+    (Set (victim_at_hosp victim_1 hospital_0) to true)
+    and 
+    (Set (victim_at_hosp victim_2 hospital_0) to true)
+    and 
+    (Follow each of:
+        (Set (clear wpt_10 wpt_13) to true)
+        and (Set (clear wpt_13 wpt_10) to true)
+    )
+    and 
+    (Follow each of:
+        (Set (clear wpt_06 wpt_07) to true)
+        and (Set (clear wpt_07 wpt_06) to true)
+    )
+)
+
+
+Failed plans:
+ /home/gil/Documents/prob/solution 

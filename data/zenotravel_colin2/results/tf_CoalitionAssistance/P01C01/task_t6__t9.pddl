@@ -1,0 +1,16 @@
+(and
+      (transportable_at_city pass_20 den)
+      (transportable_at_city pass_21 den)
+      (transportable_at_city pass_22 den)
+      (transportable_at_city cargo_19 den)
+      (transportable_at_city cargo_20 den)
+      (transportable_at_city cargo_21 den)
+    )(and
+      (transportable_at_city pass_30 jfk)
+      (transportable_at_city pass_31 jfk)
+      (transportable_at_city pass_32 jfk)
+      (transportable_at_city cargo_29 jfk)
+      (transportable_at_city cargo_30 jfk)
+      (transportable_at_city cargo_31 jfk)
+      (transportable_at_city cargo_32 jfk)
+    )

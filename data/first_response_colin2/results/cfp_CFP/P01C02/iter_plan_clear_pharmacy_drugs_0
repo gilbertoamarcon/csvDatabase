@@ -1,0 +1,10 @@
+; Time 0.03
+0.000: (human-move ems_2 wpt_00 wpt_01)  [1.000]
+1.001: (human-move ems_2 wpt_01 wpt_02)  [1.000]
+1.002: (change-battery emsbot_0 battery_charger_0 wpt_00)  [2.000]
+3.003: (ground-move emsbot_0 wpt_00 wpt_01)  [1.000]
+4.004: (ground-move emsbot_0 wpt_01 wpt_02)  [1.000]
+5.005: (clear-pharmacy ems_2 emsbot_0 drugs_0 wpt_02)  [5.000]
+10.006: (ground-move emsbot_0 wpt_02 wpt_01)  [1.000]
+11.007: (ground-move emsbot_0 wpt_01 wpt_00)  [1.000]
+12.008: (drop-drugs emsbot_0 drugs_0 hospital_0 wpt_00)  [1.000]

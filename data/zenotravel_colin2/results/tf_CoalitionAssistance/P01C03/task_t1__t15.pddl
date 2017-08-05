@@ -1,0 +1,17 @@
+(and
+      (transportable_at_city pass_3 sea)
+      (transportable_at_city pass_4 sea)
+      (transportable_at_city pass_5 sea)
+      (transportable_at_city pass_6 sea)
+      (transportable_at_city cargo_4 sea)
+      (transportable_at_city cargo_5 sea)
+      (transportable_at_city cargo_6 sea)
+    )(and
+      (transportable_at_city pass_52 sea)
+      (transportable_at_city pass_53 sea)
+      (transportable_at_city pass_54 sea)
+      (transportable_at_city cargo_51 sea)
+      (transportable_at_city cargo_52 sea)
+      (transportable_at_city cargo_53 sea)
+      (transportable_at_city cargo_54 sea)
+    )

@@ -1,0 +1,67 @@
+0.001
+(change-battery quadrotor_0 battery_charger_2 wpt_03)
+(human-move ems_0 wpt_02 wpt_03)
+1
+1.002
+(human-move ems_0 wpt_03 wpt_07)
+2
+2.001
+2.002
+(quad-move quadrotor_0 wpt_03 wpt_02)
+(quad-move quadrotor_0 wpt_03 wpt_07)
+2.003
+(human-move ems_0 wpt_07 wpt_11)
+3.001
+3.002
+3.003
+(quad-move quadrotor_0 wpt_07 wpt_11)
+3.004
+(human-move ems_0 wpt_11 wpt_10)
+4.002
+4.003
+4.004
+(quad-move quadrotor_0 wpt_11 wpt_10)
+4.005
+(human-move ems_0 wpt_10 wpt_14)
+5.002
+5.003
+5.004
+5.005
+(quad-move quadrotor_0 wpt_10 wpt_14)
+5.006
+(human-move ems_0 wpt_14 wpt_18)
+6.004
+6.005
+6.006
+(quad-move quadrotor_0 wpt_14 wpt_18)
+6.007
+(triage ems_0 victim_1 wpt_18)
+7.005
+7.006
+8.005
+8.006
+8.007
+8.008
+(guide-victim quadrotor_0 victim_1 wpt_18 wpt_14)
+9.007
+9.008
+10.007
+10.008
+10.009
+(guide-victim quadrotor_0 victim_1 wpt_14 wpt_10)
+12.008
+12.01
+(guide-victim quadrotor_0 victim_1 wpt_10 wpt_11)
+14.009
+14.011
+(guide-victim quadrotor_0 victim_1 wpt_11 wpt_07)
+16.01
+16.012
+(guide-victim quadrotor_0 victim_1 wpt_07 wpt_03)
+18.011
+18.013
+(guide-victim quadrotor_0 victim_1 wpt_03 wpt_02)
+20.012
+20.014
+(guide-victim-to-hospital quadrotor_0 victim_1 hospital_0 wpt_02)
+20.513

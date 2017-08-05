@@ -1,0 +1,16 @@
+(and
+      (transportable_at_city pass_0 mke)
+      (transportable_at_city pass_1 mke)
+      (transportable_at_city pass_2 mke)
+      (transportable_at_city cargo_0 mke)
+      (transportable_at_city cargo_1 mke)
+      (transportable_at_city cargo_2 mke)
+    )(and
+      (transportable_at_city pass_34 fat)
+      (transportable_at_city pass_35 fat)
+      (transportable_at_city pass_36 fat)
+      (transportable_at_city pass_37 fat)
+      (transportable_at_city cargo_35 fat)
+      (transportable_at_city cargo_36 fat)
+      (transportable_at_city cargo_37 fat)
+    )

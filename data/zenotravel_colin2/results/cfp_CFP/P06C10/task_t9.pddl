@@ -1,0 +1,10 @@
+(and
+      (transportable_at_city pass_32 pub)
+      (transportable_at_city pass_33 pub)
+      (transportable_at_city pass_34 pub)
+      (transportable_at_city pass_35 pub)
+      (transportable_at_city cargo_30 pub)
+      (transportable_at_city cargo_31 pub)
+      (transportable_at_city cargo_32 pub)
+      (transportable_at_city cargo_33 pub)
+    )
