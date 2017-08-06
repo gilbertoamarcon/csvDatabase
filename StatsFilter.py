@@ -24,36 +24,36 @@ class StatsFilter:
 			row_buffer = []
 
 			# Problem Name
-			token = re.findall('(\w+)/problems/(P\d+C\d+)/', row[1])
+			token = re.findall('(\w+)/problems/(P\d+C\d+)/', row[0])
 			if len(token) > 0:
 				token = token[0]
 				row_buffer.append(token[0])
 				row_buffer.append(token[1])
 
 			# CFA
-			row_buffer.append(re.sub(FILTER_CHAR, '', row[5]))
+			row_buffer.append(re.sub(FILTER_CHAR, '', row[2]))
 
 			# Planner
-			row_buffer.append(re.sub(FILTER_CHAR, '', row[9]))
+			row_buffer.append(re.sub(FILTER_CHAR, '', row[4]))
 
 			# Tool
-			row_buffer.append(re.sub(FILTER_CHAR, '', row[11]))
+			row_buffer.append(re.sub(FILTER_CHAR, '', row[6]))
 
 			# Makespan
-			row_buffer.append(re.sub(FILTER_CHAR, '', row[12]))
+			row_buffer.append(re.sub(FILTER_CHAR, '', row[7]))
 
 			# Actions
-			row_buffer.append(re.sub(FILTER_CHAR, '', row[13]))
+			row_buffer.append(re.sub(FILTER_CHAR, '', row[8]))
 
 			# Proc. Time (s)
-			row_buffer.append(re.sub(FILTER_CHAR, '', row[14]))
+			row_buffer.append(re.sub(FILTER_CHAR, '', row[9]))
 
 			# Memory (GB)
-			mem = float(re.sub(FILTER_CHAR, '', row[15]))/1024
+			mem = float(re.sub(FILTER_CHAR, '', row[10]))/1024
 			row_buffer.append(str(mem))
 
 			# Status
-			row_buffer.append(re.sub(FILTER_CHAR, '', row[16]))
+			row_buffer.append(re.sub(FILTER_CHAR, '', row[11]))
 
 			ret_val.append(row_buffer)
 

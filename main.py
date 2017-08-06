@@ -24,6 +24,10 @@ S	= [
 		(0.850, 0.325, 0.098), # Tomato
 		(0.929, 0.694, 0.125), # Orange
 		(0.929, 0.894, 0.325), # Yellow
+		(0.000, 0.447, 0.741), # Blue
+		(0.850, 0.325, 0.098), # Tomato
+		(0.929, 0.694, 0.125), # Orange
+		(0.929, 0.894, 0.325), # Yellow
 		(0.950, 0.525, 0.298), # Salmon
 		(0.301, 0.745, 0.933), # Light Blue
 	]
@@ -32,6 +36,7 @@ BAR_FILL		= 0.60
 FONT_SIZE		= 8
 FONT_FAMILY		= 'serif'
 SHOW_PLOT		= False
+# DOMAIN			= 'blocks_world'
 DOMAIN			= 'first_response'
 COL_PAD			= 5
 CSPACING		= 1
@@ -51,12 +56,12 @@ PLOT_NAME			= "plot.pdf"
 header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (s)','Number of Actions','Processing Time (s)','Memory Usage (GB)','Planning Results (%)']
 lmetrics	= header[-5:]
 lplanners	= ['colin2']
-# lplanners	= ['tfd/downward', 'colin2']
-ltools		= ['CFP', 'Object', 'ObjectTime']
+# lplanners	= ['tfddownward', 'colin2']
+ltools		= ['CFP', 'Object']
 # ltools		= ['CFP', 'CoalitionAssistance', 'CoalitionSimilarity', 'Object', 'ObjectTime', 'ActionObject', 'ActionObjectTime', 'Makespan', 'IdleTime', 'PA']
 
 # Neat Names
-NPLANNERS = {'tfd/downward': 'TFD', 'colin2': 'COLIN2'}
+NPLANNERS = {'tfddownward': 'TFD', 'colin2': 'COLIN2'}
 
 def generate_table(metrics, ltools, separator=None):
 

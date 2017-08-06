@@ -1,9 +1,0 @@
-(and
-      (transportable_at_city pass_52 sea)
-      (transportable_at_city pass_53 sea)
-      (transportable_at_city pass_54 sea)
-      (transportable_at_city cargo_51 sea)
-      (transportable_at_city cargo_52 sea)
-      (transportable_at_city cargo_53 sea)
-      (transportable_at_city cargo_54 sea)
-    )
