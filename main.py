@@ -57,9 +57,8 @@ header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (s)','Number of A
 lmetrics	= header[-5:]
 lplanners	= ['colin2']
 # lplanners	= ['tfddownward', 'colin2']
-ltools		= ['CFP']
-# ltools		= ['CFP', 'Object']
-# ltools		= ['CFP', 'CoalitionAssistance', 'CoalitionSimilarity', 'Object', 'ObjectTime', 'ActionObject', 'ActionObjectTime', 'Makespan', 'IdleTime', 'PA']
+ltools		= ['CFP', 'Object', 'ObjectTime']
+# ltools		= ['CFP', 'Object', 'ObjectTime', 'ActionObject', 'ActionObjectTime', 'Makespan', 'IdleTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
 
 # Neat Names
 NPLANNERS = {'tfddownward': 'TFD', 'colin2': 'COLIN2'}
