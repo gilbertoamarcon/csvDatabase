@@ -10,6 +10,15 @@ class CsvDatabase:
 		with open(filename, 'rb') as csvfile:
 			raw = list(csv.reader(csvfile, delimiter=delimiter, quotechar=quotechar))
 
+		# Removing voids
+		for i, r in enumerate(raw):
+			for j, e in enumerate(raw[i]):
+				if len(e) == 0:
+					for k in range(j,len(raw[i])):
+						raw[i][k] = '-1'
+					raw[i][-1] = '1'
+			print r
+
 		# self.header parsing
 		self.header = raw[0]
 		for e in range(len(self.header)):
