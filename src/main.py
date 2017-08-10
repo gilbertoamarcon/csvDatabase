@@ -40,11 +40,11 @@ SHOW_PLOT		= False
 DOMAIN			= 'first_response'
 COL_PAD			= 5
 CSPACING		= 1
-FIG_SIZE		= (4, 12)
+FIG_SIZE		= (4, 5)
 LEGEND			= False
 
 # File names
-GATHER_DATA_SCRIPT	= "./gather_data.sh"
+GATHER_DATA_SCRIPT	= "scripts/gather_data.sh"
 RAW_STATS			= "csv/stats.csv"
 FILTERED_STATS		= "csv/stats_filtered.csv"
 TABLE_OUT			= "csv/table.csv"
@@ -57,7 +57,7 @@ header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (s)','Number of A
 lmetrics	= header[-5:]
 lplanners	= ['colin2']
 # lplanners	= ['tfddownward', 'colin2']
-ltools		= ['CFP', 'Object', 'ObjectTime']
+ltools		= ['CFP', 'Object']
 # ltools		= ['CFP', 'Object', 'ObjectTime', 'ActionObject', 'ActionObjectTime', 'Makespan', 'IdleTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
 
 # Neat Names
@@ -86,7 +86,11 @@ def generate_table(metrics, ltools, separator=None):
 					table.append(trow)
 			else:
 				trow = []
-				for r in ["\"%s\""%metric, NPLANNERS[planner]] + ["%.*f"%(CSPACING,v) for v in metrics[metric][planner]['mean']]:
+				num_elements = len(metrics[metric][planner]['mean'])
+				content = []
+				for i in range(num_elements):
+					content.append("%.*f (%.*f)"%(CSPACING,metrics[metric][planner]['mean'][i],CSPACING,metrics[metric][planner]['error'][i]))
+				for r in ["\"%s\""%metric, NPLANNERS[planner]] + content:
 					trow.append(r)
 				table.append(trow)
 	
@@ -141,10 +145,14 @@ def generate_plot(metrics,ltools):
 			else:
 				label_succ = []
 				for lp in lplanners:
-					label_succ.append(lp+" "+"Mem Fail")
-					label_succ.append(lp+" "+"Time Fail")
-					label_succ.append(lp+" "+"Nonexecutable")
-					label_succ.append(lp+" "+"Success")
+					if len(lplanners)> 1:
+						prefix = lp+" "
+					else:
+						prefix = ""
+					label_succ.append(prefix+"Mem Fail")
+					label_succ.append(prefix+"Time Fail")
+					label_succ.append(prefix+"Nonexecutable")
+					label_succ.append(prefix+"Success")
 				success = np.array(tools['success'])
 				nonex = np.array(tools['nonex'])
 				time = np.array(tools['time'])
@@ -153,7 +161,7 @@ def generate_plot(metrics,ltools):
 				plt.barh(shift_pos, success+nonex+time, bar_width, color=S[4*p+2])
 				plt.barh(shift_pos, success+nonex, bar_width, color=S[4*p+1])
 				plt.barh(shift_pos, success, bar_width, color=S[4*p+0])
-				plt.legend(label_succ, loc='lower center', bbox_to_anchor=(0.5,-0.7), ncol=2)
+				plt.legend(label_succ, loc='lower center', bbox_to_anchor=(0.5,-2.0), ncol=2)
 
 		plt.xlabel(metric)
 		plt.yticks(bar_origin+BAR_FILL/2, ltools)
@@ -197,6 +205,7 @@ for metric in lmetrics:
 		tools['time'] = []
 		tools['mem'] = []
 		tools['error'] = []
+		tools['hist'] = []
 		for tool in ltools:
 			# query = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool)])
 			query = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool),('Planning Results (%)','0')])
@@ -226,6 +235,7 @@ for metric in lmetrics:
 				mean, error = get_stats(select)
 				tools['mean'].append(mean)
 				tools['error'].append(error)
+				tools['hist'].append(select)
 		planners[planner] = tools
 	metrics[metric] = planners
 

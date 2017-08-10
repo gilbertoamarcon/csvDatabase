@@ -17,7 +17,6 @@ class CsvDatabase:
 					for k in range(j,len(raw[i])):
 						raw[i][k] = '-1'
 					raw[i][-1] = '1'
-			print r
 
 		# self.header parsing
 		self.header = raw[0]
