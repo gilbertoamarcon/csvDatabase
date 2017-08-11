@@ -58,13 +58,13 @@ header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (s)','Number of A
 lmetrics	= header[-5:]
 lplanners	= ['colin2']
 # lplanners	= ['tfddownward', 'colin2']
-ltools		= ['CFP', 'Object']
+ltools		= ['CFP', 'Object', 'ObjectTime']
 # ltools		= ['CFP', 'Object', 'ObjectTime', 'ActionObject', 'ActionObjectTime', 'Makespan', 'IdleTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
 
 # Neat Names
 NPLANNERS = {'tfddownward': 'TFD', 'colin2': 'COLIN2'}
 
-def generate_table(metrics, ltools, separator=None):
+def generate_main_table(metrics, ltools, separator=None):
 
 	# Assembling table
 	table = []
@@ -79,7 +79,7 @@ def generate_table(metrics, ltools, separator=None):
 	for metric in metrics:
 		for planner in metrics[metric]:
 			if metric == "Planning Results (%)":
-				succ = ['success', 'nonex', 'time', 'mem']
+				succ = ['Success (%)', 'Nonexecutable (%)', 'Time Fail (%)', 'Memory Fail (%)']
 				for s in succ:
 					trow = []
 					for r in ["\"%s\""%s, NPLANNERS[planner]] + ["%.*f"%(CSPACING,v) for v in metrics[metric][planner][s]]:
@@ -90,7 +90,7 @@ def generate_table(metrics, ltools, separator=None):
 				num_elements = len(metrics[metric][planner]['mean'])
 				content = []
 				for i in range(num_elements):
-					content.append("%.*f (%.*f)"%(CSPACING,metrics[metric][planner]['mean'][i],CSPACING,metrics[metric][planner]['error'][i]))
+					content.append("%.*f(%.*f)"%(CSPACING,metrics[metric][planner]['mean'][i],CSPACING,metrics[metric][planner]['error'][i]))
 				for r in ["\"%s\""%metric, NPLANNERS[planner]] + content:
 					trow.append(r)
 				table.append(trow)
@@ -154,10 +154,10 @@ def generate_main_plot(metrics,ltools):
 					label_succ.append(prefix+"Time Fail")
 					label_succ.append(prefix+"Nonexecutable")
 					label_succ.append(prefix+"Success")
-				success = np.array(tools['success'])
-				nonex = np.array(tools['nonex'])
-				time = np.array(tools['time'])
-				mem = np.array(tools['mem'])
+				success = np.array(tools['Success (%)'])
+				nonex = np.array(tools['Nonexecutable (%)'])
+				time = np.array(tools['Time Fail (%)'])
+				mem = np.array(tools['Memory Fail (%)'])
 				plt.barh(shift_pos, success+nonex+time+mem, bar_width, color=S[4*p+3])
 				plt.barh(shift_pos, success+nonex+time, bar_width, color=S[4*p+2])
 				plt.barh(shift_pos, success+nonex, bar_width, color=S[4*p+1])
@@ -240,13 +240,13 @@ for metric in lmetrics:
 	planners = OrderedDict()
 	for planner in lplanners:
 		tools = OrderedDict()
-		tools['mean'] = []
-		tools['success'] = []
-		tools['nonex'] = []
-		tools['time'] = []
-		tools['mem'] = []
-		tools['error'] = []
-		tools['hist'] = []
+		tools['mean']				= []
+		tools['Success (%)']		= []
+		tools['Nonexecutable (%)']	= []
+		tools['Time Fail (%)']		= []
+		tools['Memory Fail (%)']	= []
+		tools['error']				= []
+		tools['hist']				= []
 		limits_query = db.query([('Domain',DOMAIN),('Planner',planner),('Planning Results (%)','0')])
 		for tool in ltools:
 			# query = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool)])
@@ -266,10 +266,10 @@ for metric in lmetrics:
 						time_count += 1
 					if success[i] == 134:
 						mem_count += 1
-				tools['success'].append(100.0*len(query)/n)
-				tools['nonex'].append(100.0*nonex_count/n)
-				tools['time'].append(100.0*time_count/n)
-				tools['mem'].append(100.0*mem_count/n)
+				tools['Success (%)'].append(100.0*len(query)/n)
+				tools['Nonexecutable (%)'].append(100.0*nonex_count/n)
+				tools['Time Fail (%)'].append(100.0*time_count/n)
+				tools['Memory Fail (%)'].append(100.0*mem_count/n)
 				tools['mean'].append(0)
 				tools['error'].append(0)
 			else:
@@ -285,8 +285,7 @@ for metric in lmetrics:
 
 # Generating outputs
 with open(TABLE_OUT, 'wb') as f:
-	f.write(generate_table(metrics,ltools,","))
-print generate_table(metrics,ltools)
+	f.write(generate_main_table(metrics,ltools,","))
 generate_main_plot(metrics,ltools)
 generate_hist_plots(metrics,ltools)
 
