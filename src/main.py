@@ -8,6 +8,7 @@ from collections import OrderedDict
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
+from scipy import stats
 
 # Parameters
 C	= [
@@ -47,7 +48,8 @@ LEGEND			= False
 GATHER_DATA_SCRIPT	= "scripts/gather_data.sh"
 RAW_STATS			= "csv/stats.csv"
 FILTERED_STATS		= "csv/stats_filtered.csv"
-TABLE_OUT			= "csv/table.csv"
+STATS_TABLE			= "csv/stats_table.csv"
+P_TABLE				= "csv/p_table.csv"
 MAIN_PLOT_NAME		= "main_plot.pdf"
 HIST_PLOT_NAME		= "hist_plot.pdf"
 
@@ -58,22 +60,52 @@ header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (s)','Number of A
 lmetrics	= header[-5:]
 lplanners	= ['colin2']
 # lplanners	= ['tfddownward', 'colin2']
-ltools		= ['CFP', 'Object', 'ObjectTime']
+ltools		= ['CFP', 'Object', 'ObjectTime', 'Makespan', 'IdleTime']
 # ltools		= ['CFP', 'Object', 'ObjectTime', 'ActionObject', 'ActionObjectTime', 'Makespan', 'IdleTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
 
 # Neat Names
 NPLANNERS = {'tfddownward': 'TFD', 'colin2': 'COLIN2'}
 
+def p_test(metrics, ltools):
+	p_test_results = {}
+	for m, metric in enumerate(metrics):
+		if m < len(metrics)-1:
+			# p_test_results[metric] = {}
+			planners = metrics[metric]
+			for p, planner in enumerate(planners):
+				for i, t1 in enumerate(planners[planner]['sample']):
+					for j, t2 in enumerate(planners[planner]['sample']):
+						if j > i:
+							if (ltools[i], ltools[j]) not in p_test_results:
+								p_test_results[(ltools[i], ltools[j])] = {}
+							p_test_results[(ltools[i], ltools[j])][metric] = stats.kruskal(t1,t2)
+	return p_test_results
+
+def p_test_table(p_test_results):
+	ret_var = ""
+	for p in p_test_results:
+		ret_var += 'Pair,'
+		for m in p_test_results[p]:
+			ret_var += "%sH(p)," % m
+		ret_var += "\n"
+		break
+	for p in p_test_results:
+		ret_var += '\"%s-%s\",' % p
+		for m in p_test_results[p]:
+			ret_var += "%0.4f(%0.4f)," % p_test_results[p][m]
+		ret_var += "\n"
+	return ret_var
+
 def generate_main_table(metrics, ltools, separator=None):
 
-	# Assembling table
-	table = []
+	# Assembling stats_table
+	stats_table = []
 	trow = []
 
 	# Header
 	for h in ["Metric", "Planner"] + ltools:
 		trow.append(h)
-	table.append(trow)
+	stats_table.append(trow)
 
 	# Body
 	for metric in metrics:
@@ -84,7 +116,7 @@ def generate_main_table(metrics, ltools, separator=None):
 					trow = []
 					for r in ["\"%s\""%s, NPLANNERS[planner]] + ["%.*f"%(CSPACING,v) for v in metrics[metric][planner][s]]:
 						trow.append(r)
-					table.append(trow)
+					stats_table.append(trow)
 			else:
 				trow = []
 				num_elements = len(metrics[metric][planner]['mean'])
@@ -93,25 +125,25 @@ def generate_main_table(metrics, ltools, separator=None):
 					content.append("%.*f(%.*f)"%(CSPACING,metrics[metric][planner]['mean'][i],CSPACING,metrics[metric][planner]['error'][i]))
 				for r in ["\"%s\""%metric, NPLANNERS[planner]] + content:
 					trow.append(r)
-				table.append(trow)
+				stats_table.append(trow)
 	
 	# Getting column widths
 	if separator is None:
 		col_widths = OrderedDict()
-		for j in range(len(table[0])):
+		for j in range(len(stats_table[0])):
 			col_width = 0
-			for e in table:
+			for e in stats_table:
 				col_width = max(len(e[j]),col_width)
 			col_widths[j] = col_width+COL_PAD
 
 	# Lists to string
 	ret_var = ""
-	for i in range(len(table)):
-		for j in range(len(table[0])):
+	for i in range(len(stats_table)):
+		for j in range(len(stats_table[0])):
 			if separator is None:
-				ret_var += "% *s" % (col_widths[j],table[i][j])
+				ret_var += "% *s" % (col_widths[j],stats_table[i][j])
 			else:
-				ret_var += "%s%s" % (table[i][j],separator)
+				ret_var += "%s%s" % (stats_table[i][j],separator)
 		ret_var += "\n"
 	return ret_var
 
@@ -170,7 +202,6 @@ def generate_main_plot(metrics,ltools):
 
 		if m == 0:
 			plt.legend(lplanners, loc='lower center', bbox_to_anchor=(0.5,1.0), ncol=2)
-
 
 	# Legend and ticks
 	plt.tight_layout()
@@ -246,6 +277,7 @@ for metric in lmetrics:
 		tools['Time Fail (%)']		= []
 		tools['Memory Fail (%)']	= []
 		tools['error']				= []
+		tools['sample']				= []
 		tools['hist']				= []
 		limits_query = db.query([('Domain',DOMAIN),('Planner',planner),('Planning Results (%)','0')])
 		for tool in ltools:
@@ -278,14 +310,18 @@ for metric in lmetrics:
 				mean, error = get_stats(select)
 				tools['mean'].append(mean)
 				tools['error'].append(error)
+				tools['sample'].append(select)
 				tools['hist'].append(np.histogram(select, density=True, bins=8, range=(min(limits),max(limits))))
 		planners[planner] = tools
 	metrics[metric] = planners
 
+p_test_results = p_test(metrics,ltools)
 
 # Generating outputs
-with open(TABLE_OUT, 'wb') as f:
+with open(STATS_TABLE, 'wb') as f:
 	f.write(generate_main_table(metrics,ltools,","))
+with open(P_TABLE, 'wb') as f:
+	f.write(p_test_table(p_test_results))
 generate_main_plot(metrics,ltools)
 generate_hist_plots(metrics,ltools)
 
