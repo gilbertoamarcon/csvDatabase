@@ -40,7 +40,7 @@ SHOW_PLOT		= False
 DOMAIN			= 'first_response'
 COL_PAD			= 5
 CSPACING		= 1
-FIG_SIZE		= (4, 5)
+FIG_SIZE		= (4, 7)
 LEGEND			= False
 
 # File names
@@ -48,7 +48,8 @@ GATHER_DATA_SCRIPT	= "scripts/gather_data.sh"
 RAW_STATS			= "csv/stats.csv"
 FILTERED_STATS		= "csv/stats_filtered.csv"
 TABLE_OUT			= "csv/table.csv"
-PLOT_NAME			= "plot.pdf"
+MAIN_PLOT_NAME		= "main_plot.pdf"
+HIST_PLOT_NAME		= "hist_plot.pdf"
 
 
 # Labels
@@ -114,7 +115,7 @@ def generate_table(metrics, ltools, separator=None):
 		ret_var += "\n"
 	return ret_var
 
-def generate_plot(metrics,ltools):
+def generate_main_plot(metrics,ltools):
 	plt.figure(figsize=FIG_SIZE)
 	matplotlib.rcParams.update({'font.size': FONT_SIZE})
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
@@ -173,7 +174,47 @@ def generate_plot(metrics,ltools):
 
 	# Legend and ticks
 	plt.tight_layout()
-	plt.savefig(PLOT_NAME, bbox_inches='tight')
+	plt.savefig(MAIN_PLOT_NAME, bbox_inches='tight')
+	if SHOW_PLOT:
+		plt.show()
+
+def generate_hist_plots(metrics,ltools):
+	plt.figure(figsize=FIG_SIZE)
+	matplotlib.rcParams.update({'font.size': FONT_SIZE})
+	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
+	subplot_pfix = 10 + 100*len(metrics)
+
+	# For each metric
+	for m, metric in enumerate(metrics):
+		if m < len(metrics)-1:
+
+			planners = metrics[metric]
+			lplanners = []
+			for p in planners:
+				lplanners.append(NPLANNERS[p])
+
+			ax = plt.subplot(subplot_pfix+m+1)
+			ax.yaxis.grid(True, which='major')
+			ax.set_axisbelow(True)
+
+			# For each planner
+			for p, planner in enumerate(planners):
+				for i, t in enumerate(planners[planner]['hist']):
+					x_array = np.asarray(range(len(t[0])))
+					plt.bar(x_array, t[0], 1.0, color=C[i], alpha=0.5)
+					for lx, l in enumerate(t[1]):
+						t[1][lx] = "%.1f" % float(l)
+
+			plt.xlabel(metric)
+			plt.xticks(x_array, t[1])
+			plt.xlim([0, len(t[0])]) 
+
+		if m == 0:
+			plt.legend(ltools, loc='lower center', bbox_to_anchor=(0.5,1.0), ncol=2)
+
+	# Legend and ticks
+	plt.tight_layout()
+	plt.savefig(HIST_PLOT_NAME, bbox_inches='tight')
 	if SHOW_PLOT:
 		plt.show()
 
@@ -206,6 +247,7 @@ for metric in lmetrics:
 		tools['mem'] = []
 		tools['error'] = []
 		tools['hist'] = []
+		limits_query = db.query([('Domain',DOMAIN),('Planner',planner),('Planning Results (%)','0')])
 		for tool in ltools:
 			# query = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool)])
 			query = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool),('Planning Results (%)','0')])
@@ -231,11 +273,12 @@ for metric in lmetrics:
 				tools['mean'].append(0)
 				tools['error'].append(0)
 			else:
+				limits = db.select(metric, limits_query, as_float=True)
 				select = db.select(metric, query, as_float=True)
 				mean, error = get_stats(select)
 				tools['mean'].append(mean)
 				tools['error'].append(error)
-				tools['hist'].append(select)
+				tools['hist'].append(np.histogram(select, density=True, bins=8, range=(min(limits),max(limits))))
 		planners[planner] = tools
 	metrics[metric] = planners
 
@@ -244,5 +287,6 @@ for metric in lmetrics:
 with open(TABLE_OUT, 'wb') as f:
 	f.write(generate_table(metrics,ltools,","))
 print generate_table(metrics,ltools)
-generate_plot(metrics,ltools)
+generate_main_plot(metrics,ltools)
+generate_hist_plots(metrics,ltools)
 
