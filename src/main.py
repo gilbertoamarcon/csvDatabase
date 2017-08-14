@@ -61,7 +61,9 @@ header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (s)','Number of A
 lmetrics	= header[-5:]
 lplanners	= ['colin2']
 # lplanners	= ['tfddownward', 'colin2']
-ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity']
+# ltools		= ['CFP', 'Object']
+ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionSimilarity']
+# ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity']
 # ltools		= ['CFP', 'Object', 'ObjectTime', 'ActionObject', 'ActionObjectTime', 'Makespan', 'IdleTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
 
 # Neat Names
@@ -269,6 +271,12 @@ StatsFilter.filter(RAW_STATS,FILTERED_STATS,header)
 # Creating database
 db = CsvDatabase(FILTERED_STATS)
 
+# Problems at which all tools succeeded
+all_success_problems = []
+for tool in ltools:
+	all_success_problems.append(set(db.select('Problem', db.query([('Domain',DOMAIN),('Tool',tool),('Planning Results (%)','0')]))))
+all_success_problems = sorted(list(set.intersection(*all_success_problems)))
+
 # For each metric
 metrics = OrderedDict()
 for metric in lmetrics:
@@ -285,7 +293,6 @@ for metric in lmetrics:
 		tools['error']				= []
 		tools['sample']				= []
 		tools['kde']				= []
-		limits_query = db.query([('Domain',DOMAIN),('Planner',planner),('Planning Results (%)','0')])
 		for tool in ltools:
 			# query = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool)])
 			query = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool),('Planning Results (%)','0')])
@@ -311,8 +318,8 @@ for metric in lmetrics:
 				tools['mean'].append(0)
 				tools['error'].append(0)
 			else:
-				limits = db.select(metric, limits_query, as_float=True)
-				select = db.select(metric, query, as_float=True)
+				# select = db.select(metric, query, as_float=True)
+				select = db.select(metric, db.query([('Problem',all_success_problems)],query), as_float=True)
 				mean, error = get_stats(select)
 				tools['mean'].append(mean)
 				tools['error'].append(error)

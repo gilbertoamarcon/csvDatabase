@@ -31,10 +31,12 @@ class CsvDatabase:
 		return re.sub(r'\W+', '', key)
 
 	def __query_r(self,key,value,data=None):
+		if not isinstance(value, list):
+			value = [value]
 		if data is None:
 			data = self.data
 		key = self.__filter_key(key)
-		return [entry for entry in data if entry._asdict()[key]==value]
+		return [entry for entry in data if entry._asdict()[key] in value]
 
 	def query(self,select,data=None):
 		q = self.__query_r(select[0][0],select[0][1],data)
