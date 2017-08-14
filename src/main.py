@@ -50,8 +50,9 @@ RAW_STATS			= "csv/stats.csv"
 FILTERED_STATS		= "csv/stats_filtered.csv"
 STATS_TABLE			= "csv/stats_table.csv"
 P_TABLE				= "csv/p_table.csv"
-MAIN_PLOT_NAME		= "main_plot.pdf"
-HIST_PLOT_NAME		= "hist_plot.pdf"
+PLOT_FORMATS		= ['pdf', 'svg', 'eps']
+STATS_PLOT_NAME		= "plots/stats_plot"
+PDF_PLOT_NAME		= "plots/pdf_plot"
 
 
 # Labels
@@ -148,7 +149,7 @@ def generate_main_table(metrics, ltools, separator=None):
 		ret_var += "\n"
 	return ret_var
 
-def generate_main_plot(metrics,ltools):
+def generate_stats_plots(metrics,ltools):
 	plt.figure(figsize=FIG_SIZE)
 	matplotlib.rcParams.update({'font.size': FONT_SIZE})
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
@@ -167,7 +168,6 @@ def generate_main_plot(metrics,ltools):
 		ax = plt.subplot(subplot_pfix+m+1)
 		ax.xaxis.grid(True, which='major')
 		ax.set_axisbelow(True)
-		# plt.title(metric) 
 
 		# For each planner
 		for p, planner in enumerate(planners):
@@ -207,11 +207,12 @@ def generate_main_plot(metrics,ltools):
 
 	# Legend and ticks
 	plt.tight_layout()
-	plt.savefig(MAIN_PLOT_NAME, bbox_inches='tight')
+	for f in PLOT_FORMATS:
+		plt.savefig(STATS_PLOT_NAME+'.'+f, bbox_inches='tight')
 	if SHOW_PLOT:
 		plt.show()
 
-def generate_kde_plots(metrics,ltools):
+def generate_pdf_plots(metrics,ltools):
 	plt.figure(figsize=FIG_SIZE)
 	matplotlib.rcParams.update({'font.size': FONT_SIZE})
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
@@ -241,21 +242,16 @@ def generate_kde_plots(metrics,ltools):
 				for i, t in enumerate(planners[planner]['kde']):
 					t_range = np.linspace(0,1.5*max_range,100)
 					plt.plot(t_range,t(t_range))
-					# x_array = np.asarray(range(len(t[0])))
-					# plt.bar(x_array, t[0], 1.0, color=C[i], alpha=0.5)
-					# for lx, l in enumerate(t[1]):
-					# 	t[1][lx] = "%.1f" % float(l)
 
 			plt.xlabel(metric)
-			# plt.xticks(x_array, t[1])
-			# plt.xlim([0, len(t[0])]) 
 
 		if m == 0:
 			plt.legend(ltools, loc='lower center', bbox_to_anchor=(0.5,1.0), ncol=2)
 
 	# Legend and ticks
 	plt.tight_layout()
-	plt.savefig(HIST_PLOT_NAME, bbox_inches='tight')
+	for f in PLOT_FORMATS:
+		plt.savefig(PDF_PLOT_NAME+'.'+f, bbox_inches='tight')
 	if SHOW_PLOT:
 		plt.show()
 
@@ -332,6 +328,6 @@ with open(STATS_TABLE, 'wb') as f:
 	f.write(generate_main_table(metrics,ltools,","))
 with open(P_TABLE, 'wb') as f:
 	f.write(p_test_table(p_test_results))
-generate_main_plot(metrics,ltools)
-generate_kde_plots(metrics,ltools)
+generate_stats_plots(metrics,ltools)
+generate_pdf_plots(metrics,ltools)
 
