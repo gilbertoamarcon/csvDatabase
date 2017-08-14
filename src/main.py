@@ -60,7 +60,7 @@ header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (s)','Number of A
 lmetrics	= header[-5:]
 lplanners	= ['colin2']
 # lplanners	= ['tfddownward', 'colin2']
-ltools		= ['CFP', 'Object', 'ObjectTime', 'Makespan', 'IdleTime']
+ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity']
 # ltools		= ['CFP', 'Object', 'ObjectTime', 'ActionObject', 'ActionObjectTime', 'Makespan', 'IdleTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
 
 # Neat Names
@@ -86,13 +86,14 @@ def p_test_table(p_test_results):
 	for p in p_test_results:
 		ret_var += 'Pair,'
 		for m in p_test_results[p]:
-			ret_var += "%sH(p)," % m
+			ret_var += "%s," % m
+			ret_var += "%s," % m
 		ret_var += "\n"
 		break
 	for p in p_test_results:
 		ret_var += '\"%s-%s\",' % p
 		for m in p_test_results[p]:
-			ret_var += "%0.4f(%0.4f)," % p_test_results[p][m]
+			ret_var += "%0.4f,%0.4f," % p_test_results[p][m]
 		ret_var += "\n"
 	return ret_var
 
@@ -195,6 +196,7 @@ def generate_main_plot(metrics,ltools):
 				plt.barh(shift_pos, success+nonex, bar_width, color=S[4*p+1])
 				plt.barh(shift_pos, success, bar_width, color=S[4*p+0])
 				plt.legend(label_succ, loc='lower center', bbox_to_anchor=(0.5,-2.0), ncol=2)
+				plt.xlim([0, 100]) 
 
 		plt.xlabel(metric)
 		plt.yticks(bar_origin+BAR_FILL/2, ltools)
@@ -209,7 +211,7 @@ def generate_main_plot(metrics,ltools):
 	if SHOW_PLOT:
 		plt.show()
 
-def generate_hist_plots(metrics,ltools):
+def generate_kde_plots(metrics,ltools):
 	plt.figure(figsize=FIG_SIZE)
 	matplotlib.rcParams.update({'font.size': FONT_SIZE})
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
@@ -228,17 +230,25 @@ def generate_hist_plots(metrics,ltools):
 			ax.yaxis.grid(True, which='major')
 			ax.set_axisbelow(True)
 
+			# Ranges
+			max_range = 0
+			for planner in planners:
+				for i, tool in enumerate(planners[planner]['sample']):
+					max_range = max(max(tool),max_range)
+
 			# For each planner
 			for p, planner in enumerate(planners):
-				for i, t in enumerate(planners[planner]['hist']):
-					x_array = np.asarray(range(len(t[0])))
-					plt.bar(x_array, t[0], 1.0, color=C[i], alpha=0.5)
-					for lx, l in enumerate(t[1]):
-						t[1][lx] = "%.1f" % float(l)
+				for i, t in enumerate(planners[planner]['kde']):
+					t_range = np.linspace(0,1.5*max_range,100)
+					plt.plot(t_range,t(t_range))
+					# x_array = np.asarray(range(len(t[0])))
+					# plt.bar(x_array, t[0], 1.0, color=C[i], alpha=0.5)
+					# for lx, l in enumerate(t[1]):
+					# 	t[1][lx] = "%.1f" % float(l)
 
 			plt.xlabel(metric)
-			plt.xticks(x_array, t[1])
-			plt.xlim([0, len(t[0])]) 
+			# plt.xticks(x_array, t[1])
+			# plt.xlim([0, len(t[0])]) 
 
 		if m == 0:
 			plt.legend(ltools, loc='lower center', bbox_to_anchor=(0.5,1.0), ncol=2)
@@ -278,7 +288,7 @@ for metric in lmetrics:
 		tools['Memory Fail (%)']	= []
 		tools['error']				= []
 		tools['sample']				= []
-		tools['hist']				= []
+		tools['kde']				= []
 		limits_query = db.query([('Domain',DOMAIN),('Planner',planner),('Planning Results (%)','0')])
 		for tool in ltools:
 			# query = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool)])
@@ -311,7 +321,7 @@ for metric in lmetrics:
 				tools['mean'].append(mean)
 				tools['error'].append(error)
 				tools['sample'].append(select)
-				tools['hist'].append(np.histogram(select, density=True, bins=8, range=(min(limits),max(limits))))
+				tools['kde'].append(stats.gaussian_kde(select))
 		planners[planner] = tools
 	metrics[metric] = planners
 
@@ -323,5 +333,5 @@ with open(STATS_TABLE, 'wb') as f:
 with open(P_TABLE, 'wb') as f:
 	f.write(p_test_table(p_test_results))
 generate_main_plot(metrics,ltools)
-generate_hist_plots(metrics,ltools)
+generate_kde_plots(metrics,ltools)
 
