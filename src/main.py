@@ -20,17 +20,17 @@ C	= [
 		(0.301, 0.745, 0.933),
 		(0.635, 0.078, 0.184),
 	]
+
 S	= [
 		(0.000, 0.447, 0.741), # Blue
-		(0.850, 0.325, 0.098), # Tomato
 		(0.929, 0.694, 0.125), # Orange
 		(0.929, 0.894, 0.325), # Yellow
-		(0.000, 0.447, 0.741), # Blue
 		(0.850, 0.325, 0.098), # Tomato
-		(0.929, 0.694, 0.125), # Orange
-		(0.929, 0.894, 0.325), # Yellow
-		(0.950, 0.525, 0.298), # Salmon
-		(0.301, 0.745, 0.933), # Light Blue
+
+		(0.000, 0.000, 0.750), # Blue
+		(1.000, 0.500, 0.000), # Orange
+		(1.000, 1.000, 0.000), # Yellow
+		(1.000, 0.000, 0.000), # Tomato
 	]
 
 BAR_FILL		= 0.60
@@ -62,7 +62,8 @@ header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (%)','Number of A
 lmetrics	= header[-5:]
 lplanners	= ['colin2']
 # lplanners	= ['tfddownward', 'colin2']
-ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'IdleTime']
+ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity']
+# ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
 # ltools		= ['CFP', 'Object', 'ObjectTime', 'ActionObject', 'ActionObjectTime', 'Makespan', 'IdleTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
 
 # Neat Names
@@ -177,7 +178,6 @@ def generate_stats_plots(metrics,ltools):
 			shift_pos = bar_origin+bar_width*p
 			if m < len(metrics)-1:
 				plt.barh(shift_pos, tools['mean'], bar_width, color=C[p], xerr=tools['error'], ecolor='k')
-				plt.xlim(xmin=1.0)
 			else:
 				label_succ = []
 				for lp in lplanners:
@@ -185,19 +185,21 @@ def generate_stats_plots(metrics,ltools):
 						prefix = lp+" "
 					else:
 						prefix = ""
+					if DOMAIN != 'blocks_world':
+						label_succ.append(prefix+"Nonexecutable")
 					label_succ.append(prefix+"Mem Fail")
 					label_succ.append(prefix+"Time Fail")
-					label_succ.append(prefix+"Nonexecutable")
 					label_succ.append(prefix+"Success")
 				success = np.array(tools['Success (%)'])
-				nonex = np.array(tools['Nonexecutable (%)'])
 				time = np.array(tools['Time Fail (%)'])
 				mem = np.array(tools['Memory Fail (%)'])
-				plt.barh(shift_pos, success+nonex+time+mem, bar_width, color=S[4*p+3])
-				plt.barh(shift_pos, success+nonex+time, bar_width, color=S[4*p+2])
-				plt.barh(shift_pos, success+nonex, bar_width, color=S[4*p+1])
+				nonex = np.array(tools['Nonexecutable (%)'])
+				if DOMAIN != 'blocks_world':
+					plt.barh(shift_pos, success+time+mem+nonex, bar_width, color=S[4*p+3])
+				plt.barh(shift_pos, success+time+mem, bar_width, color=S[4*p+2])
+				plt.barh(shift_pos, success+time, bar_width, color=S[4*p+1])
 				plt.barh(shift_pos, success, bar_width, color=S[4*p+0])
-				plt.legend(label_succ, loc='lower center', bbox_to_anchor=(0.5,-1.0), ncol=2)
+				plt.legend(label_succ, loc='lower center', bbox_to_anchor=(0.5,-1.5), ncol=2)
 				plt.xlim([0, 100]) 
 
 		plt.xlabel(metric)
@@ -316,13 +318,21 @@ for metric in lmetrics:
 				nonex_count = 0
 				time_count = 0
 				mem_count = 0
-				for i in range(0,n):
-					if success[i] == 1:
-						nonex_count += 1
-					if success[i] == 124:
-						time_count += 1
-					if success[i] == 134:
-						mem_count += 1
+				if DOMAIN == 'blocks_world':
+					for i in range(0,n):
+						if success[i]!= 0:
+							if time[i] < 3600:
+								mem_count += 1
+							else:
+								time_count += 1
+				else:
+					for i in range(0,n):
+						if success[i] == 1:
+							nonex_count += 1
+						if success[i] == 124:
+							time_count += 1
+						if success[i] == 134:
+							mem_count += 1
 				tools['Success (%)'].append(100.0*len(query)/n)
 				tools['Nonexecutable (%)'].append(100.0*nonex_count/n)
 				tools['Time Fail (%)'].append(100.0*time_count/n)
