@@ -46,17 +46,33 @@ class CsvDatabase:
 			return self.query(select[1:],q)
 
 	def select(self,key,data=None,as_integer=False,as_float=False):
+
 		if data is None:
 			data = self.data
-		key = self.__filter_key(key)
+
+		if not isinstance(key, list):
+			key = [key]
+
+		for k in range(len(key)):
+			key[k] = self.__filter_key(key[k])
+
 		ret_val = []
 		for d in data:
-			e = d._asdict()[key]
-			if as_integer:
-				e = int(e)
-			if as_float:
-				e = float(e)
-			ret_val.append(e)
+
+			ret_entry = []
+			for k in key:
+				e = d._asdict()[k]
+				if as_integer:
+					e = int(e)
+				if as_float:
+					e = float(e)
+				ret_entry.append(e)
+
+			if len(key) == 1:
+				ret_val.append(ret_entry[0])
+			else:
+				ret_val.append(ret_entry)
+
 		return ret_val
 
 	def get_data(self):

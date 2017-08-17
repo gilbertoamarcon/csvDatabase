@@ -57,13 +57,12 @@ PDF_PLOT_NAME		= "plots/pdf_plot"
 
 # Labels
 
-header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (s)','Number of Actions','Processing Time (s)','Memory Usage (GB)','Planning Results (%)']
+header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (%)','Number of Actions (%)','Processing Time (%)','Memory Usage (%)','Planning Results (%)']
+# header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (%)','Number of Actions (%)','Processing Time (%)','Memory Usage (%)','Planning Results (%)']
 lmetrics	= header[-5:]
 lplanners	= ['colin2']
 # lplanners	= ['tfddownward', 'colin2']
-# ltools		= ['CFP', 'Object']
-ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionSimilarity']
-# ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity']
+ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'IdleTime']
 # ltools		= ['CFP', 'Object', 'ObjectTime', 'ActionObject', 'ActionObjectTime', 'Makespan', 'IdleTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
 
 # Neat Names
@@ -178,6 +177,7 @@ def generate_stats_plots(metrics,ltools):
 			shift_pos = bar_origin+bar_width*p
 			if m < len(metrics)-1:
 				plt.barh(shift_pos, tools['mean'], bar_width, color=C[p], xerr=tools['error'], ecolor='k')
+				plt.xlim(xmin=1.0)
 			else:
 				label_succ = []
 				for lp in lplanners:
@@ -197,7 +197,7 @@ def generate_stats_plots(metrics,ltools):
 				plt.barh(shift_pos, success+nonex+time, bar_width, color=S[4*p+2])
 				plt.barh(shift_pos, success+nonex, bar_width, color=S[4*p+1])
 				plt.barh(shift_pos, success, bar_width, color=S[4*p+0])
-				plt.legend(label_succ, loc='lower center', bbox_to_anchor=(0.5,-2.0), ncol=2)
+				plt.legend(label_succ, loc='lower center', bbox_to_anchor=(0.5,-1.0), ncol=2)
 				plt.xlim([0, 100]) 
 
 		plt.xlabel(metric)
@@ -263,7 +263,7 @@ def get_stats(sample):
 	return mean, error
 
 # Gathering data
-os.system(GATHER_DATA_SCRIPT)
+# os.system(GATHER_DATA_SCRIPT)
 
 # Filtering CSV file
 StatsFilter.filter(RAW_STATS,FILTERED_STATS,header)
@@ -276,6 +276,18 @@ all_success_problems = []
 for tool in ltools:
 	all_success_problems.append(set(db.select('Problem', db.query([('Domain',DOMAIN),('Tool',tool),('Planning Results (%)','0')]))))
 all_success_problems = sorted(list(set.intersection(*all_success_problems)))
+
+
+# Stats on Problems Solved
+solved_query = db.query([('Domain',DOMAIN), ('Planning Results (%)','0')])
+solved_problems = set(db.select('Problem', solved_query))
+problems_stats = {}
+for s in solved_problems:
+	problems_stats[s] = {}
+	for metric in lmetrics:
+		if metric != lmetrics[-1:][0]:
+			problem_query = db.query([('Domain',DOMAIN), ('Planning Results (%)','0'), ('Problem',s)])
+			problems_stats[s][metric] = db.select(metric, problem_query, as_float=True)
 
 # For each metric
 metrics = OrderedDict()
@@ -299,7 +311,7 @@ for metric in lmetrics:
 			if metric == lmetrics[-1:][0]:
 				query_all = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool)])
 				success = db.select('Planning Results (%)', query_all, as_integer=True)
-				time = db.select('Processing Time (s)', query_all, as_integer=True)
+				time = db.select('Processing Time (%)', query_all, as_integer=True)
 				n = len(query_all)
 				nonex_count = 0
 				time_count = 0
@@ -318,13 +330,14 @@ for metric in lmetrics:
 				tools['mean'].append(0)
 				tools['error'].append(0)
 			else:
-				# select = db.select(metric, query, as_float=True)
-				select = db.select(metric, db.query([('Problem',all_success_problems)],query), as_float=True)
-				mean, error = get_stats(select)
+				normalized = []
+				for p in db.select(['Problem', metric], query):
+					normalized.append(100.00*float(p[1])/min(problems_stats[p[0]][metric]) - 100.00)
+				mean, error = get_stats(normalized)
 				tools['mean'].append(mean)
 				tools['error'].append(error)
-				tools['sample'].append(select)
-				tools['kde'].append(stats.gaussian_kde(select))
+				tools['sample'].append(normalized)
+				tools['kde'].append(stats.gaussian_kde(normalized))
 		planners[planner] = tools
 	metrics[metric] = planners
 
