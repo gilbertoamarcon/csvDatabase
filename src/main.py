@@ -33,6 +33,8 @@ S	= [
 		(1.000, 0.000, 0.000), # Tomato
 	]
 
+STATUS_FLAGS = {'Success (%)':0, 'Nonexecutable (%)':1, 'Time Fail (%)':124, 'Memory Fail (%)':134}
+
 BAR_FILL		= 0.60
 FONT_SIZE		= 8
 FONT_FAMILY		= 'serif'
@@ -74,10 +76,10 @@ def p_test(metrics, ltools):
 	for m, metric in enumerate(metrics):
 		if m < len(metrics)-1:
 			# p_test_results[metric] = {}
-			planners = metrics[metric]
-			for p, planner in enumerate(planners):
-				for i, t1 in enumerate(planners[planner]['sample']):
-					for j, t2 in enumerate(planners[planner]['sample']):
+			metrics[metric] = metrics[metric]
+			for p, planner in enumerate(metrics[metric]):
+				for i, t1 in enumerate(metrics[metric][planner]['sample']):
+					for j, t2 in enumerate(metrics[metric][planner]['sample']):
 						if j > i:
 							if (ltools[i], ltools[j]) not in p_test_results:
 								p_test_results[(ltools[i], ltools[j])] = {}
@@ -161,9 +163,9 @@ def generate_stats_plots(metrics,ltools):
 
 	# For each metric
 	for m, metric in enumerate(metrics):
-		planners = metrics[metric]
+		metrics[metric] = metrics[metric]
 		lplanners = []
-		for p in planners:
+		for p in metrics[metric]:
 			lplanners.append(NPLANNERS[p])
 		bar_width = BAR_FILL/len(lplanners)
 
@@ -172,12 +174,12 @@ def generate_stats_plots(metrics,ltools):
 		ax.set_axisbelow(True)
 
 		# For each planner
-		for p, planner in enumerate(planners):
-			tools = planners[planner]
+		for p, planner in enumerate(metrics[metric]):
+			metrics[metric][planner] = metrics[metric][planner]
 
 			shift_pos = bar_origin+bar_width*p
 			if m < len(metrics)-1:
-				plt.barh(shift_pos, tools['mean'], bar_width, color=C[p], xerr=tools['error'], ecolor='k')
+				plt.barh(shift_pos, metrics[metric][planner]['mean'], bar_width, color=C[p], xerr=metrics[metric][planner]['error'], ecolor='k')
 			else:
 				label_succ = []
 				for lp in lplanners:
@@ -189,14 +191,14 @@ def generate_stats_plots(metrics,ltools):
 					label_succ.append(prefix+"Mem Fail")
 					label_succ.append(prefix+"Time Fail")
 					label_succ.append(prefix+"Success")
-				success = np.array(tools['Success (%)'])
-				time = np.array(tools['Time Fail (%)'])
-				mem = np.array(tools['Memory Fail (%)'])
-				nonex = np.array(tools['Nonexecutable (%)'])
-				plt.barh(shift_pos, success+time+mem+nonex, bar_width, color=S[4*p+3])
-				plt.barh(shift_pos, success+time+mem, bar_width, color=S[4*p+2])
-				plt.barh(shift_pos, success+time, bar_width, color=S[4*p+1])
-				plt.barh(shift_pos, success, bar_width, color=S[4*p+0])
+				status = np.array(metrics[metric][planner]['Success (%)'])
+				time = np.array(metrics[metric][planner]['Time Fail (%)'])
+				mem = np.array(metrics[metric][planner]['Memory Fail (%)'])
+				nonex = np.array(metrics[metric][planner]['Nonexecutable (%)'])
+				plt.barh(shift_pos, status+time+mem+nonex, bar_width, color=S[4*p+3])
+				plt.barh(shift_pos, status+time+mem, bar_width, color=S[4*p+2])
+				plt.barh(shift_pos, status+time, bar_width, color=S[4*p+1])
+				plt.barh(shift_pos, status, bar_width, color=S[4*p+0])
 				plt.legend(label_succ, loc='lower center', bbox_to_anchor=(0.5,-1.5), ncol=2)
 				plt.xlim([0, 100]) 
 
@@ -224,9 +226,9 @@ def generate_pdf_plots(metrics,ltools):
 	for m, metric in enumerate(metrics):
 		if m < len(metrics)-1:
 
-			planners = metrics[metric]
+			metrics[metric] = metrics[metric]
 			lplanners = []
-			for p in planners:
+			for p in metrics[metric]:
 				lplanners.append(NPLANNERS[p])
 
 			ax = plt.subplot(subplot_pfix+m+1)
@@ -235,13 +237,13 @@ def generate_pdf_plots(metrics,ltools):
 
 			# Ranges
 			max_range = 0
-			for planner in planners:
-				for i, tool in enumerate(planners[planner]['sample']):
+			for planner in metrics[metric]:
+				for i, tool in enumerate(metrics[metric][planner]['sample']):
 					max_range = max(max(tool),max_range)
 
 			# For each planner
-			for p, planner in enumerate(planners):
-				for i, t in enumerate(planners[planner]['kde']):
+			for p, planner in enumerate(metrics[metric]):
+				for i, t in enumerate(metrics[metric][planner]['kde']):
 					t_range = np.linspace(0,1.5*max_range,100)
 					plt.plot(t_range,t(t_range))
 
@@ -271,83 +273,59 @@ StatsFilter.filter(RAW_STATS,FILTERED_STATS,header)
 # Creating database
 db = CsvDatabase(FILTERED_STATS)
 
-# Problems at which all tools succeeded
-all_success_problems = []
-for tool in ltools:
-	all_success_problems.append(set(db.select('Problem', db.query([('Domain',DOMAIN),('Tool',tool),('Planning Results (%)','0')]))))
-all_success_problems = sorted(list(set.intersection(*all_success_problems)))
-
-
 # Stats on Problems Solved
-solved_query = db.query([('Domain',DOMAIN), ('Planning Results (%)','0')])
-solved_problems = set(db.select('Problem', solved_query))
 problems_stats = {}
-for s in solved_problems:
+for s in set(db.select('Problem', db.query([('Domain',DOMAIN), ('Planning Results (%)','0')]))):
 	problems_stats[s] = {}
 	for metric in lmetrics:
 		if metric != lmetrics[-1:][0]:
-			problem_query = db.query([('Domain',DOMAIN), ('Planning Results (%)','0'), ('Problem',s)])
-			problems_stats[s][metric] = db.select(metric, problem_query, as_float=True)
+			problems_stats[s][metric] = db.select(metric, db.query([('Domain',DOMAIN), ('Planning Results (%)','0'), ('Problem',s)]), as_float=True)
 
 # For each metric
 metrics = OrderedDict()
 for metric in lmetrics:
 
 	# For each planner
-	planners = OrderedDict()
+	metrics[metric] = OrderedDict()
 	for planner in lplanners:
-		tools = OrderedDict()
-		tools['mean']				= []
-		tools['Success (%)']		= []
-		tools['Nonexecutable (%)']	= []
-		tools['Time Fail (%)']		= []
-		tools['Memory Fail (%)']	= []
-		tools['error']				= []
-		tools['sample']				= []
-		tools['kde']				= []
+		metrics[metric][planner] = OrderedDict()
+		metrics[metric][planner]['Success (%)']			= []
+		metrics[metric][planner]['Nonexecutable (%)']	= []
+		metrics[metric][planner]['Time Fail (%)']		= []
+		metrics[metric][planner]['Memory Fail (%)']		= []
+		metrics[metric][planner]['mean']				= []
+		metrics[metric][planner]['error']				= []
+		metrics[metric][planner]['sample']				= []
+		metrics[metric][planner]['kde']					= []
 		for tool in ltools:
-			# query = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool)])
-			query = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool),('Planning Results (%)','0')])
 			if metric == lmetrics[-1:][0]:
 				query_all = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool)])
-				success = db.select('Planning Results (%)', query_all, as_integer=True)
-				time = db.select('Processing Time (%)', query_all, as_integer=True)
-				n = len(query_all)
-				nonex_count = 0
-				time_count = 0
-				mem_count = 0
-				for i in range(0,n):
-					if success[i] == 1:
-						nonex_count += 1
-					if success[i] == 124:
-						time_count += 1
-					if success[i] == 134:
-						mem_count += 1
-				tools['Success (%)'].append(100.0*len(query)/n)
-				tools['Nonexecutable (%)'].append(100.0*nonex_count/n)
-				tools['Time Fail (%)'].append(100.0*time_count/n)
-				tools['Memory Fail (%)'].append(100.0*mem_count/n)
-				tools['mean'].append(0)
-				tools['error'].append(0)
+				status = db.select('Planning Results (%)', query_all, as_integer=True)
+				for f in STATUS_FLAGS:
+					metrics[metric][planner][f].append(100.0*len([k for k in status if k == STATUS_FLAGS[f]])/len(query_all))
 			else:
 				normalized = []
-				for p in db.select(['Problem', metric], query):
+				for p in db.select(['Problem', metric], db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool),('Planning Results (%)','0')])):
 					normalized.append(100.00*float(p[1])/min(problems_stats[p[0]][metric]) - 100.00)
 				mean, error = get_stats(normalized)
-				tools['mean'].append(mean)
-				tools['error'].append(error)
-				tools['sample'].append(normalized)
-				tools['kde'].append(stats.gaussian_kde(normalized))
-		planners[planner] = tools
-	metrics[metric] = planners
+				metrics[metric][planner]['mean'].append(mean)
+				metrics[metric][planner]['error'].append(error)
+				metrics[metric][planner]['sample'].append(normalized)
+				metrics[metric][planner]['kde'].append(stats.gaussian_kde(normalized))
 
 p_test_results = p_test(metrics,ltools)
 
-# Generating outputs
+# Stats table
 with open(STATS_TABLE, 'wb') as f:
 	f.write(generate_main_table(metrics,ltools,","))
+
+# P-Test table
 with open(P_TABLE, 'wb') as f:
 	f.write(p_test_table(p_test_results))
+
+# Stats Plots
 generate_stats_plots(metrics,ltools)
+
+# PDF Plots
 generate_pdf_plots(metrics,ltools)
 
