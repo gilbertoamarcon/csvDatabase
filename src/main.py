@@ -37,8 +37,8 @@ BAR_FILL		= 0.60
 FONT_SIZE		= 8
 FONT_FAMILY		= 'serif'
 SHOW_PLOT		= False
-# DOMAIN			= 'blocks_world'
-DOMAIN			= 'first_response'
+DOMAIN			= 'blocks_world'
+# DOMAIN			= 'first_response'
 COL_PAD			= 5
 CSPACING		= 1
 FIG_SIZE		= (4, 7)
@@ -60,10 +60,10 @@ PDF_PLOT_NAME		= "plots/pdf_plot"
 header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (%)','Number of Actions (%)','Processing Time (%)','Memory Usage (%)','Planning Results (%)']
 # header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (%)','Number of Actions (%)','Processing Time (%)','Memory Usage (%)','Planning Results (%)']
 lmetrics	= header[-5:]
-lplanners	= ['colin2']
-# lplanners	= ['tfddownward', 'colin2']
-ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity']
-# ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
+# lplanners	= ['colin2']
+lplanners	= ['tfddownward', 'colin2']
+# ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity']
+ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
 # ltools		= ['CFP', 'Object', 'ObjectTime', 'ActionObject', 'ActionObjectTime', 'Makespan', 'IdleTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
 
 # Neat Names
@@ -185,8 +185,7 @@ def generate_stats_plots(metrics,ltools):
 						prefix = lp+" "
 					else:
 						prefix = ""
-					if DOMAIN != 'blocks_world':
-						label_succ.append(prefix+"Nonexecutable")
+					label_succ.append(prefix+"Nonexecutable")
 					label_succ.append(prefix+"Mem Fail")
 					label_succ.append(prefix+"Time Fail")
 					label_succ.append(prefix+"Success")
@@ -194,8 +193,7 @@ def generate_stats_plots(metrics,ltools):
 				time = np.array(tools['Time Fail (%)'])
 				mem = np.array(tools['Memory Fail (%)'])
 				nonex = np.array(tools['Nonexecutable (%)'])
-				if DOMAIN != 'blocks_world':
-					plt.barh(shift_pos, success+time+mem+nonex, bar_width, color=S[4*p+3])
+				plt.barh(shift_pos, success+time+mem+nonex, bar_width, color=S[4*p+3])
 				plt.barh(shift_pos, success+time+mem, bar_width, color=S[4*p+2])
 				plt.barh(shift_pos, success+time, bar_width, color=S[4*p+1])
 				plt.barh(shift_pos, success, bar_width, color=S[4*p+0])
@@ -265,7 +263,7 @@ def get_stats(sample):
 	return mean, error
 
 # Gathering data
-# os.system(GATHER_DATA_SCRIPT)
+os.system(GATHER_DATA_SCRIPT)
 
 # Filtering CSV file
 StatsFilter.filter(RAW_STATS,FILTERED_STATS,header)
@@ -318,21 +316,13 @@ for metric in lmetrics:
 				nonex_count = 0
 				time_count = 0
 				mem_count = 0
-				if DOMAIN == 'blocks_world':
-					for i in range(0,n):
-						if success[i]!= 0:
-							if time[i] < 3600:
-								mem_count += 1
-							else:
-								time_count += 1
-				else:
-					for i in range(0,n):
-						if success[i] == 1:
-							nonex_count += 1
-						if success[i] == 124:
-							time_count += 1
-						if success[i] == 134:
-							mem_count += 1
+				for i in range(0,n):
+					if success[i] == 1:
+						nonex_count += 1
+					if success[i] == 124:
+						time_count += 1
+					if success[i] == 134:
+						mem_count += 1
 				tools['Success (%)'].append(100.0*len(query)/n)
 				tools['Nonexecutable (%)'].append(100.0*nonex_count/n)
 				tools['Time Fail (%)'].append(100.0*time_count/n)
