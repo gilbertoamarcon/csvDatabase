@@ -37,8 +37,8 @@ STATUS_FLAGS = OrderedDict([('Nonexecutable (%)',1), ('Memory Fail (%)',134), ('
 BAR_FILL		= 0.60
 FONT_SIZE		= 8
 FONT_FAMILY		= 'serif'
-# DOMAIN			= 'blocks_world'
-DOMAIN			= 'first_response'
+DOMAIN			= 'blocks_world'
+# DOMAIN			= 'first_response'
 COL_PAD			= 5
 CSPACING		= 1
 FIG_SIZE		= (4, 7)
@@ -49,38 +49,40 @@ GATHER_DATA_SCRIPT	= "scripts/gather_data.sh"
 RAW_STATS			= "csv/stats.csv"
 FILTERED_STATS		= "csv/stats_filtered.csv"
 STATS_TABLE			= "csv/stats_table.csv"
-P_TABLE				= "csv/p_table.csv"
+P_TABLE				= "csv/p_table"
 PLOT_FORMATS		= ['pdf', 'svg', 'eps']
 STATS_PLOT_NAME		= "plots/stats_plot"
 PDF_PLOT_NAME		= "plots/pdf_plot"
 
 
 # Labels
-
 header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (%)','Number of Actions (%)','Processing Time (%)','Memory Usage (%)','Planning Results (%)']
-# header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (%)','Number of Actions (%)','Processing Time (%)','Memory Usage (%)','Planning Results (%)']
+
 lmetrics	= header[-5:]
 lmetrics	= [lmetrics[-1]]+lmetrics[:-1]
-lplanners	= ['colin2']
-# lplanners	= ['tfddownward', 'colin2']
-ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity']
-# ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
-# ltools		= ['CFP', 'Object', 'ObjectTime', 'ActionObject', 'ActionObjectTime', 'Makespan', 'IdleTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
+
+
+if DOMAIN == 'first_response':
+	lplanners	= ['colin2']
+	ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity']
+
+if DOMAIN == 'blocks_world':
+	lplanners	= ['tfddownward', 'colin2']
+	ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
 
 # Neat Names
 NPLANNERS = {'tfddownward': 'TFD', 'colin2': 'COLIN2'}
 
-def p_test(metrics, ltools):
+def p_test(metrics, ltools, planner):
 	p_test_results = {}
 	for m, metric in enumerate(metrics):
 		if metric != "Planning Results (%)":
-			for p, planner in enumerate(metrics[metric]):
-				for i, t1 in enumerate(metrics[metric][planner]['sample']):
-					for j, t2 in enumerate(metrics[metric][planner]['sample']):
-						if j > i:
-							if (ltools[i], ltools[j]) not in p_test_results:
-								p_test_results[(ltools[i], ltools[j])] = {}
-							p_test_results[(ltools[i], ltools[j])][metric] = stats.kruskal(t1,t2)
+			for i, t1 in enumerate(metrics[metric][planner]['sample']):
+				for j, t2 in enumerate(metrics[metric][planner]['sample']):
+					if j > i:
+						if (ltools[i], ltools[j]) not in p_test_results:
+							p_test_results[(ltools[i], ltools[j])] = {}
+						p_test_results[(ltools[i], ltools[j])][metric] = stats.kruskal(t1,t2)
 	return p_test_results
 
 def p_test_table(p_test_results):
@@ -99,7 +101,7 @@ def p_test_table(p_test_results):
 		ret_var += "\n"
 	return ret_var
 
-def generate_main_table(metrics, ltools, separator=None):
+def generate_stats_table(metrics, ltools, separator=None):
 
 	# Assembling stats_table
 	stats_table = []
@@ -296,15 +298,13 @@ for metric in lmetrics:
 				metrics[metric][planner]['sample'].append(normalized)
 				metrics[metric][planner]['kde'].append(stats.gaussian_kde(normalized))
 
-p_test_results = p_test(metrics,ltools)
+for p in lplanners:
+	with open(P_TABLE+'_'+p+'.csv', 'wb') as f:
+		f.write(p_test_table(p_test(metrics,ltools,p)))
 
 # Stats table
 with open(STATS_TABLE, 'wb') as f:
-	f.write(generate_main_table(metrics,ltools,","))
-
-# P-Test table
-with open(P_TABLE, 'wb') as f:
-	f.write(p_test_table(p_test_results))
+	f.write(generate_stats_table(metrics,ltools,","))
 
 # Stats Plots
 generate_stats_plots(metrics,ltools)
