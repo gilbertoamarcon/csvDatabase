@@ -22,26 +22,27 @@ C	= [
 
 S	= [
 		(0.000, 0.447, 0.741), # Blue
+		(0.850, 0.325, 0.098), # Tomato
 		(0.929, 0.694, 0.125), # Orange
 		(0.929, 0.894, 0.325), # Yellow
-		(0.850, 0.325, 0.098), # Tomato
 
 		(0.000, 0.000, 0.750), # Blue
+		(1.000, 0.000, 0.000), # Tomato
 		(1.000, 0.500, 0.000), # Orange
 		(1.000, 1.000, 0.000), # Yellow
-		(1.000, 0.000, 0.000), # Tomato
 	]
 
-STATUS_FLAGS = OrderedDict([('Nonexecutable (%)',1), ('Memory Fail (%)',134), ('Time Fail (%)',124), ('Success (%)',0)])
+STATUS_FLAGS = OrderedDict([('Memory Fail (%)',134), ('Time Fail (%)',124), ('Nonexecutable (%)',1), ('Success (%)',0)])
+STATUS_SHORT = OrderedDict([('Memory Fail (%)','Mem Fail'), ('Time Fail (%)','Time Fail'), ('Nonexecutable (%)','Nonex'), ('Success (%)','Success')])
 
 BAR_FILL		= 0.60
 FONT_SIZE		= 8
 FONT_FAMILY		= 'serif'
-DOMAIN			= 'blocks_world'
+DOMAIN			= 'first_response'
+# DOMAIN			= 'blocks_world'
 # DOMAIN			= 'first_response'
 COL_PAD			= 5
 CSPACING		= 1
-FIG_SIZE		= (4, 7)
 LEGEND			= False
 
 # File names
@@ -65,10 +66,14 @@ lmetrics	= [lmetrics[-1]]+lmetrics[:-1]
 if DOMAIN == 'first_response':
 	lplanners	= ['colin2']
 	ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity']
+	FIG_SIZE	= (4, 6)
+	LABEL_OSET	= -1.0
 
 if DOMAIN == 'blocks_world':
 	lplanners	= ['tfddownward', 'colin2']
 	ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
+	FIG_SIZE	= (4, 9)
+	LABEL_OSET	= -0.6
 
 # Neat Names
 NPLANNERS = {'tfddownward': 'TFD', 'colin2': 'COLIN2'}
@@ -184,20 +189,20 @@ def generate_stats_plots(metrics,ltools):
 					if len(lplanners) > 1:
 						prefix = lp+" "
 					for f in STATUS_FLAGS:
-						label_succ.append(prefix+f)
+						label_succ.append(prefix+STATUS_SHORT[f])
 				barl = np.array([100.00]*len(ltools))
 				for i,f in enumerate(list(STATUS_FLAGS)):
 					plt.barh(shift_pos, barl, bar_width, color=S[4*p+(3-i)])
 					barl -= np.array(metrics[metric][planner][f])
-				plt.legend(label_succ, loc='lower center', bbox_to_anchor=(0.5,1.5), ncol=2)
+				plt.legend(label_succ, loc='lower center', bbox_to_anchor=(0.3,1.0), ncol=2)
 				plt.xlim([0, 100]) 
 
 		plt.xlabel(metric)
 		plt.yticks(bar_origin+BAR_FILL/2, ltools)
 		plt.ylim([0, numbars]) 
 
-		if m == len(metrics)-1:
-			plt.legend(lplanners, loc='lower center', bbox_to_anchor=(0.5,-1.5), ncol=2)
+		if len(lplanners) > 1 and m == len(metrics)-1:
+			plt.legend(lplanners, loc='lower center', bbox_to_anchor=(0.5,LABEL_OSET), ncol=2)
 
 	# Legend and ticks
 	plt.tight_layout()
@@ -298,11 +303,12 @@ for metric in lmetrics:
 				metrics[metric][planner]['sample'].append(normalized)
 				metrics[metric][planner]['kde'].append(stats.gaussian_kde(normalized))
 
+# P-Test Table
 for p in lplanners:
 	with open(P_TABLE+'_'+p+'.csv', 'wb') as f:
 		f.write(p_test_table(p_test(metrics,ltools,p)))
 
-# Stats table
+# Stats Table
 with open(STATS_TABLE, 'wb') as f:
 	f.write(generate_stats_table(metrics,ltools,","))
 
