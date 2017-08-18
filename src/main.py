@@ -1,14 +1,13 @@
 #!/usr/bin/python
 import os
-import sys
-import statistics as stat
-from CsvDatabase import *
-from StatsFilter import *
-from collections import OrderedDict
-import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
+import statistics as stat
+import numpy as np
+from collections import OrderedDict
 from scipy import stats
+from CsvDatabase import *
+from StatsFilter import *
 
 # Parameters
 C	= [
@@ -33,14 +32,13 @@ S	= [
 		(1.000, 0.000, 0.000), # Tomato
 	]
 
-STATUS_FLAGS = {'Success (%)':0, 'Nonexecutable (%)':1, 'Time Fail (%)':124, 'Memory Fail (%)':134}
+STATUS_FLAGS = OrderedDict([('Nonexecutable (%)',1), ('Memory Fail (%)',134), ('Time Fail (%)',124), ('Success (%)',0)])
 
 BAR_FILL		= 0.60
 FONT_SIZE		= 8
 FONT_FAMILY		= 'serif'
-SHOW_PLOT		= False
-DOMAIN			= 'blocks_world'
-# DOMAIN			= 'first_response'
+# DOMAIN			= 'blocks_world'
+DOMAIN			= 'first_response'
 COL_PAD			= 5
 CSPACING		= 1
 FIG_SIZE		= (4, 7)
@@ -62,10 +60,11 @@ PDF_PLOT_NAME		= "plots/pdf_plot"
 header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (%)','Number of Actions (%)','Processing Time (%)','Memory Usage (%)','Planning Results (%)']
 # header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (%)','Number of Actions (%)','Processing Time (%)','Memory Usage (%)','Planning Results (%)']
 lmetrics	= header[-5:]
-# lplanners	= ['colin2']
-lplanners	= ['tfddownward', 'colin2']
-# ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity']
-ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
+lmetrics	= [lmetrics[-1]]+lmetrics[:-1]
+lplanners	= ['colin2']
+# lplanners	= ['tfddownward', 'colin2']
+ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity']
+# ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
 # ltools		= ['CFP', 'Object', 'ObjectTime', 'ActionObject', 'ActionObjectTime', 'Makespan', 'IdleTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
 
 # Neat Names
@@ -74,9 +73,7 @@ NPLANNERS = {'tfddownward': 'TFD', 'colin2': 'COLIN2'}
 def p_test(metrics, ltools):
 	p_test_results = {}
 	for m, metric in enumerate(metrics):
-		if m < len(metrics)-1:
-			# p_test_results[metric] = {}
-			metrics[metric] = metrics[metric]
+		if metric != "Planning Results (%)":
 			for p, planner in enumerate(metrics[metric]):
 				for i, t1 in enumerate(metrics[metric][planner]['sample']):
 					for j, t2 in enumerate(metrics[metric][planner]['sample']):
@@ -163,7 +160,6 @@ def generate_stats_plots(metrics,ltools):
 
 	# For each metric
 	for m, metric in enumerate(metrics):
-		metrics[metric] = metrics[metric]
 		lplanners = []
 		for p in metrics[metric]:
 			lplanners.append(NPLANNERS[p])
@@ -175,46 +171,36 @@ def generate_stats_plots(metrics,ltools):
 
 		# For each planner
 		for p, planner in enumerate(metrics[metric]):
-			metrics[metric][planner] = metrics[metric][planner]
 
 			shift_pos = bar_origin+bar_width*p
-			if m < len(metrics)-1:
+			if metric != "Planning Results (%)":
 				plt.barh(shift_pos, metrics[metric][planner]['mean'], bar_width, color=C[p], xerr=metrics[metric][planner]['error'], ecolor='k')
 			else:
 				label_succ = []
 				for lp in lplanners:
-					if len(lplanners)> 1:
+					prefix = ""
+					if len(lplanners) > 1:
 						prefix = lp+" "
-					else:
-						prefix = ""
-					label_succ.append(prefix+"Nonexecutable")
-					label_succ.append(prefix+"Mem Fail")
-					label_succ.append(prefix+"Time Fail")
-					label_succ.append(prefix+"Success")
-				status = np.array(metrics[metric][planner]['Success (%)'])
-				time = np.array(metrics[metric][planner]['Time Fail (%)'])
-				mem = np.array(metrics[metric][planner]['Memory Fail (%)'])
-				nonex = np.array(metrics[metric][planner]['Nonexecutable (%)'])
-				plt.barh(shift_pos, status+time+mem+nonex, bar_width, color=S[4*p+3])
-				plt.barh(shift_pos, status+time+mem, bar_width, color=S[4*p+2])
-				plt.barh(shift_pos, status+time, bar_width, color=S[4*p+1])
-				plt.barh(shift_pos, status, bar_width, color=S[4*p+0])
-				plt.legend(label_succ, loc='lower center', bbox_to_anchor=(0.5,-1.5), ncol=2)
+					for f in STATUS_FLAGS:
+						label_succ.append(prefix+f)
+				barl = np.array([100.00]*len(ltools))
+				for i,f in enumerate(list(STATUS_FLAGS)):
+					plt.barh(shift_pos, barl, bar_width, color=S[4*p+(3-i)])
+					barl -= np.array(metrics[metric][planner][f])
+				plt.legend(label_succ, loc='lower center', bbox_to_anchor=(0.5,1.5), ncol=2)
 				plt.xlim([0, 100]) 
 
 		plt.xlabel(metric)
 		plt.yticks(bar_origin+BAR_FILL/2, ltools)
 		plt.ylim([0, numbars]) 
 
-		if m == 0:
-			plt.legend(lplanners, loc='lower center', bbox_to_anchor=(0.5,1.0), ncol=2)
+		if m == len(metrics)-1:
+			plt.legend(lplanners, loc='lower center', bbox_to_anchor=(0.5,-1.5), ncol=2)
 
 	# Legend and ticks
 	plt.tight_layout()
 	for f in PLOT_FORMATS:
 		plt.savefig(STATS_PLOT_NAME+'.'+f, bbox_inches='tight')
-	if SHOW_PLOT:
-		plt.show()
 
 def generate_pdf_plots(metrics,ltools):
 	plt.figure(figsize=FIG_SIZE)
@@ -224,9 +210,8 @@ def generate_pdf_plots(metrics,ltools):
 
 	# For each metric
 	for m, metric in enumerate(metrics):
-		if m < len(metrics)-1:
+		if metric != "Planning Results (%)":
 
-			metrics[metric] = metrics[metric]
 			lplanners = []
 			for p in metrics[metric]:
 				lplanners.append(NPLANNERS[p])
@@ -249,15 +234,13 @@ def generate_pdf_plots(metrics,ltools):
 
 			plt.xlabel(metric)
 
-		if m == 0:
-			plt.legend(ltools, loc='lower center', bbox_to_anchor=(0.5,1.0), ncol=2)
+		if m == len(metrics)-1:
+			plt.legend(ltools, loc='lower center', bbox_to_anchor=(0.5,-1.5), ncol=2)
 
 	# Legend and ticks
 	plt.tight_layout()
 	for f in PLOT_FORMATS:
 		plt.savefig(PDF_PLOT_NAME+'.'+f, bbox_inches='tight')
-	if SHOW_PLOT:
-		plt.show()
 
 def get_stats(sample):
 	mean = stat.mean(sample)
@@ -278,7 +261,7 @@ problems_stats = {}
 for s in set(db.select('Problem', db.query([('Domain',DOMAIN), ('Planning Results (%)','0')]))):
 	problems_stats[s] = {}
 	for metric in lmetrics:
-		if metric != lmetrics[-1:][0]:
+		if metric != "Planning Results (%)":
 			problems_stats[s][metric] = db.select(metric, db.query([('Domain',DOMAIN), ('Planning Results (%)','0'), ('Problem',s)]), as_float=True)
 
 # For each metric
@@ -298,7 +281,7 @@ for metric in lmetrics:
 		metrics[metric][planner]['sample']				= []
 		metrics[metric][planner]['kde']					= []
 		for tool in ltools:
-			if metric == lmetrics[-1:][0]:
+			if metric == "Planning Results (%)":
 				query_all = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool)])
 				status = db.select('Planning Results (%)', query_all, as_integer=True)
 				for f in STATUS_FLAGS:
