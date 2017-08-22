@@ -32,13 +32,14 @@ S	= [
 		(1.000, 1.000, 0.000), # Yellow
 	]
 
-STATUS_FLAGS = OrderedDict([('Memory Fail (%)',134), ('Time Fail (%)',124), ('Nonexecutable (%)',1), ('Success (%)',0)])
-STATUS_SHORT = OrderedDict([('Memory Fail (%)','Mem Fail'), ('Time Fail (%)','Time Fail'), ('Nonexecutable (%)','Nonex'), ('Success (%)','Success')])
+STATUS_FLAGS	= OrderedDict([('Memory Fail (%)',134), ('Time Fail (%)',124), ('Nonexecutable (%)',1), ('Success (%)',0)])
+STATUS_SHORT	= OrderedDict([('Memory Fail (%)','Mem Fail'), ('Time Fail (%)','Time Fail'), ('Nonexecutable (%)','Nonex'), ('Success (%)','Success')])
+TOOLS_LONG		= OrderedDict([('CFP','CFP'), ('Object','Object'), ('ObjectTime','Object-Temporal'), ('CoalitionAssistance','Coalition Assistance'), ('CoalitionSimilarity','Coalition Similarity'), ('PA','Planning Alone')])
 
 BAR_FILL		= 0.60
 FONT_SIZE		= 8
 FONT_FAMILY		= 'serif'
-DOMAIN			= 'first_response'
+DOMAIN			= 'blocks_world'
 # DOMAIN			= 'blocks_world'
 # DOMAIN			= 'first_response'
 COL_PAD			= 5
@@ -76,7 +77,7 @@ if DOMAIN == 'blocks_world':
 	LABEL_OSET	= -0.6
 
 # Neat Names
-NPLANNERS = {'tfddownward': 'TFD', 'colin2': 'COLIN2'}
+NPLANNERS = {'tfddownward': 'TFD', 'colin2': 'COLIN'}
 
 def p_test(metrics, ltools, planner):
 	p_test_results = {}
@@ -165,6 +166,10 @@ def generate_stats_plots(metrics,ltools):
 	numbars = len(ltools)
 	bar_origin = ((1-BAR_FILL)/2)*np.ones(numbars) + np.asarray(range(numbars))
 
+	ntools = []
+	for t in ltools:
+		ntools.append(TOOLS_LONG[t])
+
 	# For each metric
 	for m, metric in enumerate(metrics):
 		lplanners = []
@@ -189,20 +194,20 @@ def generate_stats_plots(metrics,ltools):
 					if len(lplanners) > 1:
 						prefix = lp+" "
 					for f in STATUS_FLAGS:
-						label_succ.append(prefix+STATUS_SHORT[f])
+						label_succ.append(prefix+f)
 				barl = np.array([100.00]*len(ltools))
 				for i,f in enumerate(list(STATUS_FLAGS)):
 					plt.barh(shift_pos, barl, bar_width, color=S[4*p+(3-i)])
 					barl -= np.array(metrics[metric][planner][f])
-				plt.legend(label_succ, loc='lower center', bbox_to_anchor=(0.3,1.0), ncol=2)
+				plt.legend(label_succ, loc='lower center', bbox_to_anchor=(0.3,1.0), ncol=2, fontsize=FONT_SIZE)
 				plt.xlim([0, 100]) 
 
 		plt.xlabel(metric)
-		plt.yticks(bar_origin+BAR_FILL/2, ltools)
+		plt.yticks(bar_origin+BAR_FILL/2, ntools)
 		plt.ylim([0, numbars]) 
 
 		if len(lplanners) > 1 and m == len(metrics)-1:
-			plt.legend(lplanners, loc='lower center', bbox_to_anchor=(0.5,LABEL_OSET), ncol=2)
+			plt.legend(lplanners, loc='lower center', bbox_to_anchor=(0.5,LABEL_OSET), ncol=2, fontsize=FONT_SIZE)
 
 	# Legend and ticks
 	plt.tight_layout()
@@ -242,7 +247,7 @@ def generate_pdf_plots(metrics,ltools):
 			plt.xlabel(metric)
 
 		if m == len(metrics)-1:
-			plt.legend(ltools, loc='lower center', bbox_to_anchor=(0.5,-1.5), ncol=2)
+			plt.legend(ltools, loc='lower center', bbox_to_anchor=(0.5,-1.5), ncol=2, fontsize=FONT_SIZE)
 
 	# Legend and ticks
 	plt.tight_layout()
