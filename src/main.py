@@ -33,11 +33,11 @@ S	= [
 	]
 
 STATUS_FLAGS	= OrderedDict([('Memory Fail (%)',134), ('Time Fail (%)',124), ('Nonexecutable (%)',1), ('Success (%)',0)])
-STATUS_SHORT	= OrderedDict([('Memory Fail (%)','Memory Fail'), ('Time Fail (%)','Time Fail'), ('Nonexecutable (%)','Nonexecutable'), ('Success (%)','Success')])
-TOOLS_LONG		= OrderedDict([('CFP','CFP'), ('Object','Object'), ('ObjectTime','Object-Temporal'), ('CoalitionAssistance','Coalition Assistance'), ('CoalitionSimilarity','Coalition Similarity'), ('PA','Planning Alone')])
+STATUS_SHORT	= OrderedDict([('Memory Fail (%)','Mem Fail'), ('Time Fail (%)','Time Fail'), ('Nonexecutable (%)','Nonexec'), ('Success (%)','Success')])
+TOOLS_LONG		= OrderedDict([('CFP','CFP'), ('Object','Obj'), ('ObjectTime','O-T'), ('CoalitionAssistance','CA'), ('CoalitionSimilarity','CS'), ('PA','PA')])
 
 BAR_FILL		= 0.60
-FONT_SIZE		= 7.5
+FONT_SIZE		= 6
 FONT_FAMILY		= 'serif'
 DOMAIN			= 'first_response'
 # DOMAIN			= 'blocks_world'
@@ -63,22 +63,22 @@ header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (%)','Number of A
 lmetrics	= header[-5:]
 lmetrics	= [lmetrics[-1]]+lmetrics[:-1]
 
+NCOL		= 4
 
 if DOMAIN == 'first_response':
 	lplanners	= ['colin2']
-	ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity']
-	FIG_SIZE	= (5, 5.5)
-	LABEL_OSET_RESULTS	= 0.4
+	ltools		= ['CFP', 'PA']
+	# ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity']
+	FIG_SIZE	= (3.4, 5.0)
+	LABEL_OSET_RESULTS	= 0.5
 	LABEL_OSET_METRICS	= -1.0
-	NCOL		= 4
 
 if DOMAIN == 'blocks_world':
 	lplanners	= ['tfddownward', 'colin2']
 	ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
-	FIG_SIZE	= (5, 8.5)
+	FIG_SIZE	= (3.4, 6.0)
 	LABEL_OSET_RESULTS	= 0.5
 	LABEL_OSET_METRICS	= -0.6
-	NCOL		= 2
 
 # Neat Names
 NPLANNERS = {'tfddownward': 'TFD', 'colin2': 'COLIN'}
@@ -206,12 +206,12 @@ def generate_stats_plots(metrics,ltools):
 				plt.legend(label_succ, loc='lower center', bbox_to_anchor=(LABEL_OSET_RESULTS,1.0), ncol=NCOL, fontsize=FONT_SIZE)
 				plt.xlim([0, 100]) 
 
-		plt.xlabel(metric)
+		# plt.xlabel(metric)
 		plt.yticks(bar_origin+BAR_FILL/2, ntools)
 		plt.ylim([0, numbars]) 
 
-		if len(lplanners) > 1 and m == len(metrics)-1:
-			plt.legend(lplanners, loc='lower center', bbox_to_anchor=(0.5,LABEL_OSET_METRICS), ncol=NCOL, fontsize=FONT_SIZE)
+		if len(lplanners) > 1 and m >= 1:
+			plt.legend(lplanners, loc='best', fontsize=FONT_SIZE)
 
 	# Legend and ticks
 	plt.tight_layout()
