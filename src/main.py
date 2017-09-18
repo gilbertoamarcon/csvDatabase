@@ -34,13 +34,13 @@ S	= [
 
 STATUS_FLAGS	= OrderedDict([('Memory Fail (%)',134), ('Time Fail (%)',124), ('Nonexecutable (%)',1), ('Success (%)',0)])
 STATUS_SHORT	= OrderedDict([('Memory Fail (%)','Mem Fail'), ('Time Fail (%)','Time Fail'), ('Nonexecutable (%)','Nonexec'), ('Success (%)','Success')])
-TOOLS_LONG		= OrderedDict([('CFP','CFP'), ('Object','Obj'), ('ObjectTime','O-T'), ('CoalitionAssistance','CA'), ('CoalitionSimilarity','CS'), ('PA','PA')])
+TOOLS_LONG		= OrderedDict([('CFP','CFP'), ('Object','O'), ('ObjectTime','OT'), ('Action','A'), ('ActionTime','AT'), ('ActionObject','AO'), ('ActionObjectTime','AOT'), ('CoalitionAssistance','CA'), ('CoalitionSimilarity','CS'), ('PA','PA')])
 
 BAR_FILL		= 0.60
 FONT_SIZE		= 6
 FONT_FAMILY		= 'serif'
-DOMAIN			= 'first_response'
-# DOMAIN			= 'blocks_world'
+# DOMAIN			= 'first_response'
+DOMAIN			= 'blocks_world'
 # DOMAIN			= 'first_response'
 COL_PAD			= 5
 CSPACING		= 1
@@ -51,7 +51,7 @@ GATHER_DATA_SCRIPT	= "scripts/gather_data.sh"
 RAW_STATS			= "csv/stats.csv"
 FILTERED_STATS		= "csv/stats_filtered.csv"
 STATS_TABLE			= "csv/stats_table.csv"
-P_TABLE				= "csv/p_table"
+P_TABLE				= "csv/P_TABLE"
 PLOT_FORMATS		= ['pdf', 'svg', 'eps']
 STATS_PLOT_NAME		= "plots/stats_plot"
 PDF_PLOT_NAME		= "plots/pdf_plot"
@@ -67,16 +67,18 @@ NCOL		= 4
 
 if DOMAIN == 'first_response':
 	lplanners	= ['colin2']
-	ltools		= ['CFP', 'PA']
-	# ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity']
+	# ltools		= ['CFP', 'PA']
+	ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity']
 	FIG_SIZE	= (3.4, 5.0)
 	LABEL_OSET_RESULTS	= 0.5
 	LABEL_OSET_METRICS	= -1.0
 
 if DOMAIN == 'blocks_world':
-	lplanners	= ['tfddownward', 'colin2']
-	ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
-	FIG_SIZE	= (3.4, 6.0)
+	# lplanners	= ['tfddownward', 'colin2']
+	lplanners	= ['colin2']
+	# ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
+	ltools		= ['CFP', 'Object', 'ObjectTime', 'Action', 'ActionTime', 'ActionObject', 'ActionObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
+	FIG_SIZE	= (3.4, 9.0)
 	LABEL_OSET_RESULTS	= 0.5
 	LABEL_OSET_METRICS	= -0.6
 
@@ -206,7 +208,7 @@ def generate_stats_plots(metrics,ltools):
 				plt.legend(label_succ, loc='lower center', bbox_to_anchor=(LABEL_OSET_RESULTS,1.0), ncol=NCOL, fontsize=FONT_SIZE)
 				plt.xlim([0, 100]) 
 
-		# plt.xlabel(metric)
+		plt.xlabel(metric)
 		plt.yticks(bar_origin+BAR_FILL/2, ntools)
 		plt.ylim([0, numbars]) 
 
