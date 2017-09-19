@@ -43,6 +43,8 @@ FONT_SIZE		= 6
 FONT_FAMILY		= 'serif'
 # DOMAIN			= 'first_response'
 DOMAIN			= 'blocks_world'
+# PLANNER			= 'tfddownward'
+PLANNER			= 'colin2'
 # DOMAIN			= 'first_response'
 COL_PAD			= 5
 CSPACING		= 1
@@ -68,7 +70,6 @@ lmetrics	= [lmetrics[-1]]+lmetrics[:-1]
 NCOL		= 4
 
 if DOMAIN == 'first_response':
-	lplanners	= ['colin2']
 	# ltools		= ['CFP', 'PA']
 	ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity']
 	FIG_SIZE	= (3.4, 5.0)
@@ -76,95 +77,90 @@ if DOMAIN == 'first_response':
 	LABEL_OSET_METRICS	= -1.0
 
 if DOMAIN == 'blocks_world':
-	# lplanners	= ['tfddownward', 'colin2']
-	lplanners	= ['colin2']
 	# ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
 	ltools		= ['CFP', 'Object', 'ObjectTime', 'Action', 'ActionTime', 'ActionObject', 'ActionObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
 	FIG_SIZE	= (3.4, 15.0)
 	LABEL_OSET_RESULTS	= 0.5
 	LABEL_OSET_METRICS	= -0.6
 
-# Neat Names
-NPLANNERS = {'tfddownward': 'TFD', 'colin2': 'COLIN'}
+# def p_test(metrics, ltools, PLANNER):
+# 	p_test_results = {}
+# 	for m, metric in enumerate(metrics):
+# 		if metric != "Planning Results (%)":
+# 			for i, t1 in enumerate(metrics[metric]['sample']):
+# 				for j, t2 in enumerate(metrics[metric]['sample']):
+# 					if j > i:
+# 						if (ltools[i], ltools[j]) not in p_test_results:
+# 							p_test_results[(ltools[i], ltools[j])] = {}
+# 						p_test_results[(ltools[i], ltools[j])][metric] = stats.kruskal(t1,t2)
+# 	return p_test_results
 
-def p_test(metrics, ltools, planner):
-	p_test_results = {}
-	for m, metric in enumerate(metrics):
-		if metric != "Planning Results (%)":
-			for i, t1 in enumerate(metrics[metric][planner]['sample']):
-				for j, t2 in enumerate(metrics[metric][planner]['sample']):
-					if j > i:
-						if (ltools[i], ltools[j]) not in p_test_results:
-							p_test_results[(ltools[i], ltools[j])] = {}
-						p_test_results[(ltools[i], ltools[j])][metric] = stats.kruskal(t1,t2)
-	return p_test_results
+# def p_test_table(p_test_results):
+# 	ret_var = ""
+# 	for p in p_test_results:
+# 		ret_var += 'Pair,'
+# 		for m in p_test_results[p]:
+# 			ret_var += "%s," % m
+# 			ret_var += "%s," % m
+# 		ret_var += "\n"
+# 		break
+# 	for p in p_test_results:
+# 		ret_var += '\"%s-%s\",' % p
+# 		for m in p_test_results[p]:
+# 			ret_var += "%0.4f,%0.4f," % p_test_results[p][m]
+# 		ret_var += "\n"
+# 	return ret_var
 
-def p_test_table(p_test_results):
-	ret_var = ""
-	for p in p_test_results:
-		ret_var += 'Pair,'
-		for m in p_test_results[p]:
-			ret_var += "%s," % m
-			ret_var += "%s," % m
-		ret_var += "\n"
-		break
-	for p in p_test_results:
-		ret_var += '\"%s-%s\",' % p
-		for m in p_test_results[p]:
-			ret_var += "%0.4f,%0.4f," % p_test_results[p][m]
-		ret_var += "\n"
-	return ret_var
+# def generate_stats_table(metrics, ltools, separator=None):
 
-def generate_stats_table(metrics, ltools, separator=None):
+# 	# Assembling stats_table
+# 	stats_table = []
+# 	trow = []
 
-	# Assembling stats_table
-	stats_table = []
-	trow = []
+# 	# Header
+# 	for h in ["Metric", "Planner"] + ltools:
+# 		trow.append(h)
+# 	stats_table.append(trow)
 
-	# Header
-	for h in ["Metric", "Planner"] + ltools:
-		trow.append(h)
-	stats_table.append(trow)
-
-	# Body
-	for metric in metrics:
-		for planner in metrics[metric]:
-			if metric == "Planning Results (%)":
-				succ = ['Success (%)', 'Nonexecutable (%)', 'Time Fail (%)', 'Memory Fail (%)']
-				for s in succ:
-					trow = []
-					for r in ["\"%s\""%s, NPLANNERS[planner]] + ["%.*f"%(CSPACING,v) for v in metrics[metric][planner][s]]:
-						trow.append(r)
-					stats_table.append(trow)
-			else:
-				trow = []
-				num_elements = len(metrics[metric][planner]['mean'])
-				content = []
-				for i in range(num_elements):
-					content.append("%.*f(%.*f)"%(CSPACING,metrics[metric][planner]['mean'][i],CSPACING,metrics[metric][planner]['error'][i]))
-				for r in ["\"%s\""%metric, NPLANNERS[planner]] + content:
-					trow.append(r)
-				stats_table.append(trow)
+# 	# Body
+# 	for metric in metrics:
+# 		for PLANNER in metrics[metric]:
+# 			if metric == "Planning Results (%)":
+# 				succ = ['Success (%)', 'Nonexecutable (%)', 'Time Fail (%)', 'Memory Fail (%)']
+# 				for s in succ:
+# 					trow = []
+# 					for r in ["\"%s\""%s, NPLANNERS] + ["%.*f"%(CSPACING,v) for v in metrics[metric][s]]:
+# 						trow.append(r)
+# 					stats_table.append(trow)
+# 			else:
+# 				trow = []
+# 				num_elements = len(metrics[metric]['mean'])
+# 				content = []
+# 				for i in range(num_elements):
+# 					content.append("%.*f(%.*f)"%(CSPACING,metrics[metric]['mean'][i],CSPACING,metrics[metric]['error'][i]))
+# 				for r in ["\"%s\""%metric, NPLANNERS] + content:
+# 					trow.append(r)
+# 				stats_table.append(trow)
 	
-	# Getting column widths
-	if separator is None:
-		col_widths = OrderedDict()
-		for j in range(len(stats_table[0])):
-			col_width = 0
-			for e in stats_table:
-				col_width = max(len(e[j]),col_width)
-			col_widths[j] = col_width+COL_PAD
+# 	# Getting column widths
+# 	if separator is None:
+# 		col_widths = OrderedDict()
+# 		for j in range(len(stats_table[0])):
+# 			col_width = 0
+# 			for e in stats_table:
+# 				col_width = max(len(e[j]),col_width)
+# 			col_widths[j] = col_width+COL_PAD
 
-	# Lists to string
-	ret_var = ""
-	for i in range(len(stats_table)):
-		for j in range(len(stats_table[0])):
-			if separator is None:
-				ret_var += "% *s" % (col_widths[j],stats_table[i][j])
-			else:
-				ret_var += "%s%s" % (stats_table[i][j],separator)
-		ret_var += "\n"
-	return ret_var
+# 	# Lists to string
+# 	ret_var = ""
+# 	for i in range(len(stats_table)):
+# 		for j in range(len(stats_table[0])):
+# 			if separator is None:
+# 				ret_var += "% *s" % (col_widths[j],stats_table[i][j])
+# 			else:
+# 				ret_var += "%s%s" % (stats_table[i][j],separator)
+# 		ret_var += "\n"
+# 	return ret_var
 
 def generate_stats_plots(metrics,ltools):
 	plt.figure(figsize=FIG_SIZE)
@@ -181,102 +177,49 @@ def generate_stats_plots(metrics,ltools):
 	# For each metric
 	grid_ctr = 0
 	for m, metric in enumerate(metrics):
-		lplanners = []
-		for p in metrics[metric]:
-			lplanners.append(NPLANNERS[p])
 
 		if metric in set(['Processing Time (%)','Memory Usage (%)']):
-			bar_width = 0.25*BAR_FILL/len(lplanners)
+			bar_width = 0.25*BAR_FILL
 			ax = plt.subplot2grid((9,1), (grid_ctr,0), rowspan=3)
 			grid_ctr += 3
 		else:
-			bar_width = BAR_FILL/len(lplanners)
+			bar_width = BAR_FILL
 			ax = plt.subplot2grid((9,1), (grid_ctr,0))
 			grid_ctr += 1
 
 		ax.xaxis.grid(True, which='major')
 		ax.set_axisbelow(True)
 
-		# For each planner
-		for p, planner in enumerate(metrics[metric]):
-
-			shift_pos = bar_origin+bar_width*p
-			if metric != "Planning Results (%)":
-				if metric in set(['Processing Time (%)','Memory Usage (%)']):
-					plt.barh(shift_pos+bar_width*3, metrics[metric][planner]['mean'],				bar_width, color=C[0], xerr=metrics[metric][planner]['error'], ecolor='k')
-					plt.barh(shift_pos+bar_width*2, metrics[metric][planner]['mean_nonex_fail'],	bar_width, color=C[3], xerr=metrics[metric][planner]['error_nonex_fail'], ecolor='k')
-					plt.barh(shift_pos+bar_width*1, metrics[metric][planner]['mean_time_fail'],		bar_width, color=C[1], xerr=metrics[metric][planner]['error_time_fail'], ecolor='k')
-					plt.barh(shift_pos+bar_width*0, metrics[metric][planner]['mean_mem_fail'],		bar_width, color=C[2], xerr=metrics[metric][planner]['error_mem_fail'], ecolor='k')
-					# plt.legend([STATUS_SHORT[k] for k in list(STATUS_FLAGS)], loc='lower center', bbox_to_anchor=(LABEL_OSET_RESULTS,1.0), ncol=NCOL, fontsize=FONT_SIZE)
-				else:
-					plt.barh(shift_pos+bar_width*0, metrics[metric][planner]['mean'], bar_width, color=C[0], xerr=metrics[metric][planner]['error'], ecolor='k')
+		shift_pos = bar_origin+bar_width
+		if metric != "Planning Results (%)":
+			if metric in set(['Processing Time (%)','Memory Usage (%)']):
+				plt.barh(shift_pos+bar_width*3, metrics[metric]['mean'],			bar_width, color=C[0], xerr=metrics[metric]['error'], ecolor='k')
+				plt.barh(shift_pos+bar_width*2, metrics[metric]['mean_nonex_fail'],	bar_width, color=C[3], xerr=metrics[metric]['error_nonex_fail'], ecolor='k')
+				plt.barh(shift_pos+bar_width*1, metrics[metric]['mean_time_fail'],	bar_width, color=C[1], xerr=metrics[metric]['error_time_fail'], ecolor='k')
+				plt.barh(shift_pos+bar_width*0, metrics[metric]['mean_mem_fail'],	bar_width, color=C[2], xerr=metrics[metric]['error_mem_fail'], ecolor='k')
+				# plt.legend([STATUS_SHORT[k] for k in list(STATUS_FLAGS)], loc='lower center', bbox_to_anchor=(LABEL_OSET_RESULTS,1.0), ncol=NCOL, fontsize=FONT_SIZE)
 			else:
-				label_succ = []
-				for lp in lplanners:
-					prefix = ""
-					if len(lplanners) > 1:
-						prefix = lp+" "
-					for f in STATUS_FLAGS:
-						label_succ.append(prefix+STATUS_SHORT[f])
-				barl = np.array([100.00]*len(ltools))
-				bar_handle = []
-				for i,f in enumerate(list(reversed(list(STATUS_FLAGS)))):
-					bar_handle.append(plt.barh(shift_pos, barl, bar_width, color=S[4*p+(3-i)]))
-					barl -= np.array(metrics[metric][planner][f])
-				plt.legend(list(reversed(bar_handle)), label_succ, loc='lower center', bbox_to_anchor=(LABEL_OSET_RESULTS,1.0), ncol=NCOL, fontsize=FONT_SIZE)
-				plt.xlim([0, 100])
+				plt.barh(shift_pos+bar_width*0, metrics[metric]['mean'], bar_width, color=C[0], xerr=metrics[metric]['error'], ecolor='k')
+		else:
+			label_succ = []
+			for f in STATUS_FLAGS:
+				label_succ.append(STATUS_SHORT[f])
+			barl = np.array([100.00]*len(ltools))
+			bar_handle = []
+			for i,f in enumerate(list(reversed(list(STATUS_FLAGS)))):
+				bar_handle.append(plt.barh(shift_pos, barl, bar_width, color=S[4+(3-i)]))
+				barl -= np.array(metrics[metric][f])
+			plt.legend(list(reversed(bar_handle)), label_succ, loc='lower center', bbox_to_anchor=(LABEL_OSET_RESULTS,1.0), ncol=NCOL, fontsize=FONT_SIZE)
+			plt.xlim([0, 100])
 
 		plt.xlabel(metric)
 		plt.yticks(bar_origin+BAR_FILL/2, ntools)
 		plt.ylim([0, numbars]) 
 
-		if len(lplanners) > 1 and m >= 1:
-			plt.legend(reversed(lplanners), loc='best', fontsize=FONT_SIZE)
-
 	# Legend and ticks
 	plt.tight_layout()
 	for f in PLOT_FORMATS:
 		plt.savefig(STATS_PLOT_NAME+'.'+f, bbox_inches='tight')
-
-def generate_pdf_plots(metrics,ltools):
-	plt.figure(figsize=FIG_SIZE)
-	matplotlib.rcParams.update({'font.size': FONT_SIZE})
-	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
-	subplot_pfix = 10 + 100*len(metrics)
-
-	# For each metric
-	for m, metric in enumerate(metrics):
-		if metric != "Planning Results (%)":
-
-			lplanners = []
-			for p in metrics[metric]:
-				lplanners.append(NPLANNERS[p])
-
-			ax = plt.subplot(subplot_pfix+m+1)
-			ax.yaxis.grid(True, which='major')
-			ax.set_axisbelow(True)
-
-			# Ranges
-			max_range = 0
-			for planner in metrics[metric]:
-				for i, tool in enumerate(metrics[metric][planner]['sample']):
-					max_range = max(max(tool),max_range)
-
-			# For each planner
-			for p, planner in enumerate(metrics[metric]):
-				for i, t in enumerate(metrics[metric][planner]['kde']):
-					t_range = np.linspace(0,1.5*max_range,100)
-					plt.plot(t_range,t(t_range))
-
-			plt.xlabel(metric)
-
-		if m == len(metrics)-1:
-			plt.legend(ltools, loc='lower center', bbox_to_anchor=(0.5,-1.5), ncol=2, fontsize=FONT_SIZE)
-
-	# Legend and ticks
-	plt.tight_layout()
-	for f in PLOT_FORMATS:
-		plt.savefig(PDF_PLOT_NAME+'.'+f, bbox_inches='tight')
 
 def get_stats(sample):
 	if len(sample) == 0:
@@ -315,78 +258,75 @@ print 'Processing ...'
 metrics = OrderedDict()
 for metric in tqdm(lmetrics):
 
-	# For each planner
 	metrics[metric] = OrderedDict()
-	for planner in lplanners:
-		metrics[metric][planner] = OrderedDict()
-		metrics[metric][planner]['Success (%)']			= []
-		metrics[metric][planner]['Nonexecutable (%)']	= []
-		metrics[metric][planner]['Time Fail (%)']		= []
-		metrics[metric][planner]['Memory Fail (%)']		= []
-		metrics[metric][planner]['mean']				= []
-		metrics[metric][planner]['error']				= []
-		metrics[metric][planner]['mean_time_fail']		= []
-		metrics[metric][planner]['error_time_fail']		= []
-		metrics[metric][planner]['mean_mem_fail']		= []
-		metrics[metric][planner]['error_mem_fail']		= []
-		metrics[metric][planner]['mean_nonex_fail']		= []
-		metrics[metric][planner]['error_nonex_fail']	= []
-		metrics[metric][planner]['sample']				= []
-		metrics[metric][planner]['kde']					= []
-		for tool in ltools:
-			if metric == "Planning Results (%)":
-				query_all = db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool)])
-				status = db.select('Planning Results (%)', query_all, as_integer=True)
-				for f in STATUS_FLAGS:
-					metrics[metric][planner][f].append(100.0*len([k for k in status if k == STATUS_FLAGS[f]])/len(query_all))
-			else:
-				normalized_success		= []
-				normalized_time_fail	= []
-				normalized_mem_fail		= []
-				normalized_nonex_fail	= []
-				for p in db.select(['Problem', metric], db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool),('Planning Results (%)','0')])):
-					if len(problem_stats[p[0]][metric]) > 0:
-						normalized_success.append(100.00*float(p[1])/stat.mean(problem_stats[p[0]][metric]) - 100.00)
-				for p in db.select(['Problem', metric], db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool),('Planning Results (%)','124')])):
-					if len(problem_stats[p[0]][metric]) > 0:
-						normalized_time_fail.append(100.00*float(p[1])/stat.mean(problem_stats[p[0]][metric]) - 100.00)
-				for p in db.select(['Problem', metric], db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool),('Planning Results (%)','134')])):
-					if len(problem_stats[p[0]][metric]) > 0:
-						normalized_mem_fail.append(100.00*float(p[1])/stat.mean(problem_stats[p[0]][metric]) - 100.00)
-				for p in db.select(['Problem', metric], db.query([('Domain',DOMAIN),('Planner',planner),('Tool',tool),('Planning Results (%)','1')])):
-					if len(problem_stats[p[0]][metric]) > 0:
-						normalized_nonex_fail.append(100.00*float(p[1])/stat.mean(problem_stats[p[0]][metric]) - 100.00)
-				mean, error = get_stats(normalized_success)
-				metrics[metric][planner]['mean'].append(mean)
-				metrics[metric][planner]['error'].append(error)
-				mean, error = get_stats(normalized_time_fail)
-				metrics[metric][planner]['mean_time_fail'].append(mean)
-				metrics[metric][planner]['error_time_fail'].append(error)
-				mean, error = get_stats(normalized_mem_fail)
-				metrics[metric][planner]['mean_mem_fail'].append(mean)
-				metrics[metric][planner]['error_mem_fail'].append(error)
-				mean, error = get_stats(normalized_nonex_fail)
-				metrics[metric][planner]['mean_nonex_fail'].append(mean)
-				metrics[metric][planner]['error_nonex_fail'].append(error)
-				metrics[metric][planner]['sample'].append(normalized_success)
-				metrics[metric][planner]['kde'].append(stats.gaussian_kde(normalized_success))
+	metrics[metric]['Success (%)']			= []
+	metrics[metric]['Nonexecutable (%)']	= []
+	metrics[metric]['Time Fail (%)']		= []
+	metrics[metric]['Memory Fail (%)']		= []
+	metrics[metric]['mean']					= []
+	metrics[metric]['error']				= []
+	metrics[metric]['mean_time_fail']		= []
+	metrics[metric]['error_time_fail']		= []
+	metrics[metric]['mean_mem_fail']		= []
+	metrics[metric]['error_mem_fail']		= []
+	metrics[metric]['mean_nonex_fail']		= []
+	metrics[metric]['error_nonex_fail']		= []
+	metrics[metric]['sample']				= []
+	metrics[metric]['kde']					= []
+	for tool in ltools:
+		if metric == "Planning Results (%)":
+			query_all = db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',tool)])
+			status = db.select('Planning Results (%)', query_all, as_integer=True)
+			for f in STATUS_FLAGS:
+				metrics[metric][f].append(100.0*len([k for k in status if k == STATUS_FLAGS[f]])/len(query_all))
+		else:
+			normalized_success		= []
+			normalized_time_fail	= []
+			normalized_mem_fail		= []
+			normalized_nonex_fail	= []
+			for p in db.select(['Problem', metric], db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',tool),('Planning Results (%)','0')])):
+				if len(problem_stats[p[0]][metric]) > 0:
+					normalized_success.append(100.00*float(p[1])/stat.mean(problem_stats[p[0]][metric]) - 100.00)
+			for p in db.select(['Problem', metric], db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',tool),('Planning Results (%)','124')])):
+				if len(problem_stats[p[0]][metric]) > 0:
+					normalized_time_fail.append(100.00*float(p[1])/stat.mean(problem_stats[p[0]][metric]) - 100.00)
+			for p in db.select(['Problem', metric], db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',tool),('Planning Results (%)','134')])):
+				if len(problem_stats[p[0]][metric]) > 0:
+					normalized_mem_fail.append(100.00*float(p[1])/stat.mean(problem_stats[p[0]][metric]) - 100.00)
+			for p in db.select(['Problem', metric], db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',tool),('Planning Results (%)','1')])):
+				if len(problem_stats[p[0]][metric]) > 0:
+					normalized_nonex_fail.append(100.00*float(p[1])/stat.mean(problem_stats[p[0]][metric]) - 100.00)
+			mean, error = get_stats(normalized_success)
+			metrics[metric]['mean'].append(mean)
+			metrics[metric]['error'].append(error)
+			mean, error = get_stats(normalized_time_fail)
+			metrics[metric]['mean_time_fail'].append(mean)
+			metrics[metric]['error_time_fail'].append(error)
+			mean, error = get_stats(normalized_mem_fail)
+			metrics[metric]['mean_mem_fail'].append(mean)
+			metrics[metric]['error_mem_fail'].append(error)
+			mean, error = get_stats(normalized_nonex_fail)
+			metrics[metric]['mean_nonex_fail'].append(mean)
+			metrics[metric]['error_nonex_fail'].append(error)
+			metrics[metric]['sample'].append(normalized_success)
+			metrics[metric]['kde'].append(stats.gaussian_kde(normalized_success))
 
-# P-Test Table
-print 'P-Test Table ...'
-for p in lplanners:
-	with open(P_TABLE+'_'+p+'.csv', 'wb') as f:
-		f.write(p_test_table(p_test(metrics,ltools,p)))
+# # P-Test Table
+# print 'P-Test Table ...'
+# for p in lplanners:
+# 	with open(P_TABLE+'_'+p+'.csv', 'wb') as f:
+# 		f.write(p_test_table(p_test(metrics,ltools,p)))
 
-# Stats Table
-print 'Stats Table ...'
-with open(STATS_TABLE, 'wb') as f:
-	f.write(generate_stats_table(metrics,ltools,","))
+# # Stats Table
+# print 'Stats Table ...'
+# with open(STATS_TABLE, 'wb') as f:
+# 	f.write(generate_stats_table(metrics,ltools,","))
 
 # Stats Plots
 print 'Stats Plots ...'
 generate_stats_plots(metrics,ltools)
 
-# PDF Plots
-print 'PDF Plots ...'
-generate_pdf_plots(metrics,ltools)
+# # PDF Plots
+# print 'PDF Plots ...'
+# generate_pdf_plots(metrics,ltools)
 
