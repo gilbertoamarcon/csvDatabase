@@ -54,18 +54,20 @@ lmetrics	= [lmetrics[-1]]+lmetrics[:-1]
 NCOL		= 4
 
 if DOMAIN == 'first_response':
-	# ltools		= ['CFP', 'PA']
-	ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity']
+	# tools		= ['CFP', 'PA']
+	tools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity']
 	FIG_SIZE	= (3.4, 5.0)
 	LABEL_OSET_RESULTS	= 0.5
 	LABEL_OSET_METRICS	= -1.0
 
 if DOMAIN == 'blocks_world':
-	# ltools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
-	ltools		= ['ActionObjectTime', 'ActionObject', 'ActionTime', 'Action', 'ObjectTime', 'Object', 'CoalitionAssistance', 'CoalitionSimilarity', 'CFP', 'PA']
+	# tools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
+	tools		= ['ActionObjectTime', 'ActionObject', 'ActionTime', 'Action', 'ObjectTime', 'Object', 'CoalitionAssistance', 'CoalitionSimilarity', 'CFP', 'PA']
 	FIG_SIZE	= (3.4, 15.0)
 	LABEL_OSET_RESULTS	= 0.5
 	LABEL_OSET_METRICS	= -0.6
+
+tools_short = [TOOLS_SHORT[t] for t in tools]
 
 def table_to_string(table, separator=None):
 
@@ -89,26 +91,25 @@ def table_to_string(table, separator=None):
 		ret_var += "\n"
 	return ret_var
 
-def compute_kruskal(metrics, ltools, status):
-	ntools = [TOOLS_SHORT[t] for t in ltools]
+def compute_kruskal(metrics, tools, status):
 	ret_var = {}
 	for m, metric in enumerate(metrics):
 		if metric != "Planning Results (%)":
 			for i, t1 in enumerate(metrics[metric]['sample'][status]):
 				for j, t2 in enumerate(metrics[metric]['sample'][status]):
 					if j > i:
-						if (ntools[i], ntools[j]) not in ret_var:
-							ret_var[(ntools[i], ntools[j])] = {}
-						ret_var[(ntools[i], ntools[j])][metric] = stats.kruskal(t1,t2)
+						if (tools_short[i], tools_short[j]) not in ret_var:
+							ret_var[(tools_short[i], tools_short[j])] = {}
+						ret_var[(tools_short[i], tools_short[j])][metric] = stats.kruskal(t1,t2)
 	return ret_var
 
 def generate_kruskal_table(kruskal_results):
 
 	# Assembling Kruskal table
 	ret_var = []
-	trow = []
 
-	# Header
+	# Header 1
+	trow = []
 	trow.append('Pair')
 	for r in kruskal_results:
 		for h in kruskal_results[r]:
@@ -117,10 +118,20 @@ def generate_kruskal_table(kruskal_results):
 		break
 	ret_var.append(trow)
 
+	# Header 2
+	trow = []
+	trow.append('Pair')
+	for r in kruskal_results:
+		for h in kruskal_results[r]:
+			trow.append("H")
+			trow.append("p")
+		break
+	ret_var.append(trow)
+
 	# Body
 	for p in kruskal_results:
 		trow = []
-		trow.append('\"%s-%s\"' % p)
+		trow.append('%s-%s' % p)
 		for m in kruskal_results[p]:
 			for entry in kruskal_results[p][m]:
 				trow.append("%0.4f" % entry)
@@ -128,16 +139,14 @@ def generate_kruskal_table(kruskal_results):
 
 	return ret_var
 
-def generate_stats_table(metrics, ltools):
-
-	ntools = [TOOLS_SHORT[t] for t in ltools]
+def generate_stats_table(metrics, tools):
 
 	# Assembling stats_table
 	ret_var = []
 	trow = []
 
 	# Header
-	for h in ["Metric"] + list(reversed(ntools)):
+	for h in ["Metric"] + list(reversed(tools_short)):
 		trow.append(h)
 	ret_var.append(trow)
 
@@ -161,15 +170,13 @@ def generate_stats_table(metrics, ltools):
 
 	return ret_var
 
-def generate_stats_plots(metrics,ltools):
+def generate_stats_plots(metrics,tools):
 	plt.figure(figsize=FIG_SIZE)
 	matplotlib.rcParams.update({'font.size': FONT_SIZE})
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
 	gridspec.GridSpec(9,1)
-	numbars = len(ltools)
+	numbars = len(tools)
 	bar_origin = ((1-BAR_FILL)/2)*np.ones(numbars) + np.asarray(range(numbars))
-
-	ntools = [TOOLS_SHORT[t] for t in ltools]
 
 	# For each metric
 	grid_ctr = 0
@@ -200,7 +207,7 @@ def generate_stats_plots(metrics,ltools):
 			label_succ = []
 			for f in STATUS_FLAGS:
 				label_succ.append(STATUS_SHORT[f])
-			barl = np.array([100.00]*len(ltools))
+			barl = np.array([100.00]*len(tools))
 			bar_handle = []
 			for i,f in enumerate(list(reversed(list(STATUS_FLAGS)))):
 				bar_handle.append(plt.barh(shift_pos, barl, bar_width, color=C[3-i]))
@@ -209,7 +216,7 @@ def generate_stats_plots(metrics,ltools):
 			plt.xlim([0, 100])
 
 		plt.xlabel(metric)
-		plt.yticks(bar_origin+BAR_FILL/2, ntools)
+		plt.yticks(bar_origin+BAR_FILL/2, tools_short)
 		plt.ylim([0, numbars]) 
 
 	# Legend and ticks
@@ -267,9 +274,9 @@ for metric in tqdm(lmetrics):
 		metrics[metric]['sample'][f]	= []
 
 	# For each tool
-	for tool in ltools:
+	for t in tools:
 		if metric == "Planning Results (%)":
-			query_all = db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',tool)])
+			query_all = db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',t)])
 			status = db.select('Planning Results (%)', query_all, as_integer=True)
 			for f in STATUS_FLAGS:
 				metrics[metric][f].append(100.0*len([k for k in status if k == STATUS_FLAGS[f]])/len(query_all))
@@ -277,7 +284,7 @@ for metric in tqdm(lmetrics):
 
 			for f in STATUS_FLAGS:
 				normalized		= []
-				for p in db.select(['Problem', metric], db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',tool),('Planning Results (%)',str(STATUS_FLAGS[f]))])):
+				for p in db.select(['Problem', metric], db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',t),('Planning Results (%)',str(STATUS_FLAGS[f]))])):
 					if len(problem_stats[p[0]][metric]) > 0:
 						normalized.append(100.00*float(p[1])/stat.mean(problem_stats[p[0]][metric]) - 100.00)
 				mean, error = get_stats(normalized)
@@ -289,16 +296,16 @@ for metric in tqdm(lmetrics):
 print 'Kruskal Table ...'
 for f in STATUS_FLAGS:
 	with open(KRUSKAL+PLANNER+'_'+STATUS_SHORT[f].replace(' ','')+'.csv', 'wb') as file:
-		pta = generate_kruskal_table(compute_kruskal(metrics,ltools,f))
+		pta = generate_kruskal_table(compute_kruskal(metrics,tools,f))
 		file.write(table_to_string(pta))
 
 # Stats Table
 print 'Stats Table ...'
 with open(STATS_TABLE, 'wb') as file:
-	stats_table = generate_stats_table(metrics,ltools)
+	stats_table = generate_stats_table(metrics,tools)
 	print table_to_string(stats_table)
 	file.write(table_to_string(stats_table,','))
 
 # Stats Plots
 print 'Stats Plots ...'
-generate_stats_plots(metrics,ltools)
+generate_stats_plots(metrics,tools)
