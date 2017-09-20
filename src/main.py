@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import statistics as stat
 import numpy as np
 from tqdm import tqdm
+from tabulate import tabulate
 from collections import OrderedDict
 import matplotlib.gridspec as gridspec
 from scipy import stats
@@ -309,6 +310,7 @@ with open(STATS_TABLE, 'wb') as file:
 	stats_table = generate_stats_table(metrics,tools)
 	print table_to_string(stats_table)
 	file.write(table_to_string(stats_table,','))
+	# print tabulate(stats_table, headers="firstrow", tablefmt="latex")
 
 # Stats Plots
 print 'Stats Plots ...'
