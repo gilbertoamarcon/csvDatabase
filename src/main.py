@@ -29,8 +29,8 @@ FONT_FAMILY		= 'serif'
 
 # DOMAIN			= 'first_response'
 DOMAIN			= 'blocks_world'
-PLANNER			= 'colin2'
 # PLANNER			= 'tfddownward'
+PLANNER			= 'colin2'
 COL_PAD			= 5
 CSPACING		= 1
 
@@ -54,14 +54,12 @@ lmetrics	= [lmetrics[-1]]+lmetrics[:-1]
 NCOL		= 4
 
 if DOMAIN == 'first_response':
-	# tools		= ['CFP', 'PA']
 	tools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity']
 	FIG_SIZE	= (3.4, 5.0)
 	LABEL_OSET_RESULTS	= 0.5
 	LABEL_OSET_METRICS	= -1.0
 
 if DOMAIN == 'blocks_world':
-	# tools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity', 'PA']
 	tools		= ['ActionObjectTime', 'ActionObject', 'ActionTime', 'Action', 'ObjectTime', 'Object', 'CoalitionAssistance', 'CoalitionSimilarity', 'CFP', 'PA']
 	FIG_SIZE	= (3.4, 15.0)
 	LABEL_OSET_RESULTS	= 0.5
@@ -97,7 +95,7 @@ def compute_kruskal(metrics, tools, status):
 		if metric != "Planning Results (%)":
 			for i, t1 in enumerate(metrics[metric]['sample'][status]):
 				for j, t2 in enumerate(metrics[metric]['sample'][status]):
-					if j > i:
+					if j != i:
 						if (tools_short[i], tools_short[j]) not in ret_var:
 							ret_var[(tools_short[i], tools_short[j])] = {}
 						ret_var[(tools_short[i], tools_short[j])][metric] = stats.kruskal(t1,t2)
@@ -111,6 +109,7 @@ def generate_kruskal_table(kruskal_results):
 	# Header 1
 	trow = []
 	trow.append('Pair')
+	trow.append('Pair')
 	for r in kruskal_results:
 		for h in kruskal_results[r]:
 			trow.append("%s" % h)
@@ -120,7 +119,8 @@ def generate_kruskal_table(kruskal_results):
 
 	# Header 2
 	trow = []
-	trow.append('Pair')
+	trow.append('Tool A')
+	trow.append('Tool B')
 	for r in kruskal_results:
 		for h in kruskal_results[r]:
 			trow.append("H")
@@ -129,19 +129,23 @@ def generate_kruskal_table(kruskal_results):
 	ret_var.append(trow)
 
 	# Body
-	for p in kruskal_results:
-		trow = []
-		trow.append('%s-%s' % p)
-		for m in kruskal_results[p]:
-			for entry in kruskal_results[p][m]:
-				trow.append("%0.4f" % entry)
-		ret_var.append(trow)
+	for i, t1 in enumerate(reversed(tools_short)):
+		for j, t2 in enumerate(reversed(tools_short)):
+			if i < j:
+				trow = []
+				trow.append('%s' % t1)
+				trow.append('%s' % t2)
+				for m in kruskal_results[(t1,t2)]:
+					for entry in kruskal_results[(t1,t2)][m]:
+						trow.append("%0.4f" % entry)
+				ret_var.append(trow)
+
 
 	return ret_var
 
 def generate_stats_table(metrics, tools):
 
-	# Assembling stats_table
+	# Assembling stats table
 	ret_var = []
 	trow = []
 
@@ -296,8 +300,8 @@ for metric in tqdm(lmetrics):
 print 'Kruskal Table ...'
 for f in STATUS_FLAGS:
 	with open(KRUSKAL+PLANNER+'_'+STATUS_SHORT[f].replace(' ','')+'.csv', 'wb') as file:
-		pta = generate_kruskal_table(compute_kruskal(metrics,tools,f))
-		file.write(table_to_string(pta))
+		kruskal_table = generate_kruskal_table(compute_kruskal(metrics,tools,f))
+		file.write(table_to_string(kruskal_table,','))
 
 # Stats Table
 print 'Stats Table ...'
