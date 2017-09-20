@@ -291,7 +291,8 @@ for metric in tqdm(lmetrics):
 				normalized		= []
 				for p in db.select(['Problem', metric], db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',t),('Planning Results (%)',str(STATUS_FLAGS[f]))])):
 					if len(problem_stats[p[0]][metric]) > 0:
-						normalized.append(100.00*float(p[1])/stat.mean(problem_stats[p[0]][metric]) - 100.00)
+						# normalized.append(100.00*float(p[1])/stat.mean(problem_stats[p[0]][metric]) - 100.00)
+						normalized.append(100.00*float(p[1])/min(problem_stats[p[0]][metric]) - 100.00)
 				mean, error = get_stats(normalized)
 				metrics[metric]['mean'][f].append(mean)
 				metrics[metric]['error'][f].append(error)
