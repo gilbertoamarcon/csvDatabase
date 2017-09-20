@@ -26,14 +26,13 @@ TOOLS_LONG		= OrderedDict([('PA','PA'), ('CFP','CFP'), ('Object','O'), ('ObjectT
 BAR_FILL		= 0.60
 FONT_SIZE		= 6
 FONT_FAMILY		= 'serif'
+
 # DOMAIN			= 'first_response'
 DOMAIN			= 'blocks_world'
 PLANNER			= 'colin2'
 # PLANNER			= 'tfddownward'
-# DOMAIN			= 'first_response'
 COL_PAD			= 5
 CSPACING		= 1
-LEGEND			= False
 
 # File names
 GATHER_DATA_SCRIPT	= "scripts/gather_data.sh"
@@ -68,6 +67,28 @@ if DOMAIN == 'blocks_world':
 	LABEL_OSET_RESULTS	= 0.5
 	LABEL_OSET_METRICS	= -0.6
 
+def table_to_string(table, separator=None):
+
+	# Getting column widths
+	if separator is None:
+		col_widths = OrderedDict()
+		for j in range(len(table[0])):
+			col_width = 0
+			for e in table:
+				col_width = max(len(e[j]),col_width)
+			col_widths[j] = col_width+COL_PAD
+
+	# Lists to string
+	ret_var = ""
+	for i in range(len(table)):
+		for j in range(len(table[0])):
+			if separator is None:
+				ret_var += "% *s" % (col_widths[j],table[i][j])
+			else:
+				ret_var += "%s%s" % (table[i][j],separator)
+		ret_var += "\n"
+	return ret_var
+
 def p_test(metrics, ltools, status):
 	p_test_results = {}
 	for m, metric in enumerate(metrics):
@@ -96,7 +117,7 @@ def p_test_table(p_test_results):
 		ret_var += "\n"
 	return ret_var
 
-def generate_stats_table(metrics, ltools, separator=None):
+def generate_stats_table(metrics, ltools):
 
 	# Assembling stats_table
 	stats_table = []
@@ -116,7 +137,6 @@ def generate_stats_table(metrics, ltools, separator=None):
 					trow.append(r)
 				stats_table.append(trow)
 		else:
-
 			for f in STATUS_FLAGS:
 				trow = []
 				content = []
@@ -125,26 +145,8 @@ def generate_stats_table(metrics, ltools, separator=None):
 				for r in ["\"%s\""%metric] + content:
 					trow.append(r)
 				stats_table.append(trow)
-	
-	# Getting column widths
-	if separator is None:
-		col_widths = OrderedDict()
-		for j in range(len(stats_table[0])):
-			col_width = 0
-			for e in stats_table:
-				col_width = max(len(e[j]),col_width)
-			col_widths[j] = col_width+COL_PAD
 
-	# Lists to string
-	ret_var = ""
-	for i in range(len(stats_table)):
-		for j in range(len(stats_table[0])):
-			if separator is None:
-				ret_var += "% *s" % (col_widths[j],stats_table[i][j])
-			else:
-				ret_var += "%s%s" % (stats_table[i][j],separator)
-		ret_var += "\n"
-	return ret_var
+	return stats_table
 
 def generate_stats_plots(metrics,ltools):
 	plt.figure(figsize=FIG_SIZE)
@@ -281,7 +283,9 @@ for f in STATUS_FLAGS:
 # Stats Table
 print 'Stats Table ...'
 with open(STATS_TABLE, 'wb') as f:
-	f.write(generate_stats_table(metrics,ltools,","))
+	stats_table = generate_stats_table(metrics,ltools)
+	print table_to_string(stats_table)
+	f.write(table_to_string(stats_table,','))
 
 # Stats Plots
 print 'Stats Plots ...'
