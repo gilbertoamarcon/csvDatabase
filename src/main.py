@@ -21,7 +21,7 @@ C	= [
 
 STATUS_FLAGS	= OrderedDict([('Success (%)',0), ('Nonexecutable (%)',1), ('Time Fail (%)',124), ('Memory Fail (%)',134)])
 STATUS_SHORT	= OrderedDict([('Memory Fail (%)','Mem Fail'), ('Time Fail (%)','Time Fail'), ('Nonexecutable (%)','Nonexec'), ('Success (%)','Success')])
-TOOLS_LONG		= OrderedDict([('PA','PA'), ('CFP','CFP'), ('Object','O'), ('ObjectTime','OT'), ('Action','A'), ('ActionTime','AT'), ('ActionObject','AO'), ('ActionObjectTime','AOT'), ('CoalitionAssistance','CA'), ('CoalitionSimilarity','CS')])
+TOOLS_SHORT		= OrderedDict([('PA','PA'), ('CFP','CFP'), ('Object','O'), ('ObjectTime','OT'), ('Action','A'), ('ActionTime','AT'), ('ActionObject','AO'), ('ActionObjectTime','AOT'), ('CoalitionAssistance','CA'), ('CoalitionSimilarity','CS')])
 
 BAR_FILL		= 0.60
 FONT_SIZE		= 6
@@ -39,7 +39,7 @@ GATHER_DATA_SCRIPT	= "scripts/gather_data.sh"
 RAW_STATS			= "csv/stats.csv"
 FILTERED_STATS		= "csv/stats_filtered.csv"
 STATS_TABLE			= "csv/stats_table.csv"
-P_TABLE				= "csv/p_table_"
+KRUSKAL				= "csv/kruskal_"
 PLOT_FORMATS		= ['pdf', 'svg', 'eps']
 STATS_PLOT_NAME		= "plots/stats_plot"
 PDF_PLOT_NAME		= "plots/pdf_plot"
@@ -89,44 +89,57 @@ def table_to_string(table, separator=None):
 		ret_var += "\n"
 	return ret_var
 
-def p_test(metrics, ltools, status):
-	p_test_results = {}
+def compute_kruskal(metrics, ltools, status):
+	ntools = [TOOLS_SHORT[t] for t in ltools]
+	ret_var = {}
 	for m, metric in enumerate(metrics):
 		if metric != "Planning Results (%)":
 			for i, t1 in enumerate(metrics[metric]['sample'][status]):
 				for j, t2 in enumerate(metrics[metric]['sample'][status]):
 					if j > i:
-						if (ltools[i], ltools[j]) not in p_test_results:
-							p_test_results[(ltools[i], ltools[j])] = {}
-						p_test_results[(ltools[i], ltools[j])][metric] = stats.kruskal(t1,t2)
-	return p_test_results
+						if (ntools[i], ntools[j]) not in ret_var:
+							ret_var[(ntools[i], ntools[j])] = {}
+						ret_var[(ntools[i], ntools[j])][metric] = stats.kruskal(t1,t2)
+	return ret_var
 
-def p_test_table(p_test_results):
-	ret_var = ""
-	for p in p_test_results:
-		ret_var += 'Pair,'
-		for m in p_test_results[p]:
-			ret_var += "%s," % m
-			ret_var += "%s," % m
-		ret_var += "\n"
+def generate_kruskal_table(kruskal_results):
+
+	# Assembling Kruskal table
+	ret_var = []
+	trow = []
+
+	# Header
+	trow.append('Pair')
+	for r in kruskal_results:
+		for h in kruskal_results[r]:
+			trow.append("%s" % h)
+			trow.append("%s" % h)
 		break
-	for p in p_test_results:
-		ret_var += '\"%s-%s\",' % p
-		for m in p_test_results[p]:
-			ret_var += "%0.4f,%0.4f," % p_test_results[p][m]
-		ret_var += "\n"
+	ret_var.append(trow)
+
+	# Body
+	for p in kruskal_results:
+		trow = []
+		trow.append('\"%s-%s\"' % p)
+		for m in kruskal_results[p]:
+			for entry in kruskal_results[p][m]:
+				trow.append("%0.4f" % entry)
+		ret_var.append(trow)
+
 	return ret_var
 
 def generate_stats_table(metrics, ltools):
 
+	ntools = [TOOLS_SHORT[t] for t in ltools]
+
 	# Assembling stats_table
-	stats_table = []
+	ret_var = []
 	trow = []
 
 	# Header
-	for h in ["Metric"] + list(reversed(ltools)):
+	for h in ["Metric"] + list(reversed(ntools)):
 		trow.append(h)
-	stats_table.append(trow)
+	ret_var.append(trow)
 
 	# Body
 	for metric in metrics:
@@ -135,7 +148,7 @@ def generate_stats_table(metrics, ltools):
 				trow = []
 				for r in ["\"%s\""%f] + ["%.*f"%(CSPACING,v) for v in reversed(metrics[metric][f])]:
 					trow.append(r)
-				stats_table.append(trow)
+				ret_var.append(trow)
 		else:
 			for f in STATUS_FLAGS:
 				trow = []
@@ -144,9 +157,9 @@ def generate_stats_table(metrics, ltools):
 					content.append("%.*f (%.*f)"%(CSPACING,metrics[metric]['mean'][f][i],CSPACING,metrics[metric]['error'][f][i]))
 				for r in ["\"%s\""%metric] + content:
 					trow.append(r)
-				stats_table.append(trow)
+				ret_var.append(trow)
 
-	return stats_table
+	return ret_var
 
 def generate_stats_plots(metrics,ltools):
 	plt.figure(figsize=FIG_SIZE)
@@ -156,9 +169,7 @@ def generate_stats_plots(metrics,ltools):
 	numbars = len(ltools)
 	bar_origin = ((1-BAR_FILL)/2)*np.ones(numbars) + np.asarray(range(numbars))
 
-	ntools = []
-	for t in ltools:
-		ntools.append(TOOLS_LONG[t])
+	ntools = [TOOLS_SHORT[t] for t in ltools]
 
 	# For each metric
 	grid_ctr = 0
@@ -274,18 +285,19 @@ for metric in tqdm(lmetrics):
 				metrics[metric]['error'][f].append(error)
 				metrics[metric]['sample'][f].append(normalized)
 
-# P-Test Tables
-print 'P-Test Table ...'
+# Kruskal Tables
+print 'Kruskal Table ...'
 for f in STATUS_FLAGS:
-	with open(P_TABLE+PLANNER+'_'+STATUS_SHORT[f].replace(' ','')+'.csv', 'wb') as file:
-		file.write(p_test_table(p_test(metrics,ltools,f)))
+	with open(KRUSKAL+PLANNER+'_'+STATUS_SHORT[f].replace(' ','')+'.csv', 'wb') as file:
+		pta = generate_kruskal_table(compute_kruskal(metrics,ltools,f))
+		file.write(table_to_string(pta))
 
 # Stats Table
 print 'Stats Table ...'
-with open(STATS_TABLE, 'wb') as f:
+with open(STATS_TABLE, 'wb') as file:
 	stats_table = generate_stats_table(metrics,ltools)
 	print table_to_string(stats_table)
-	f.write(table_to_string(stats_table,','))
+	file.write(table_to_string(stats_table,','))
 
 # Stats Plots
 print 'Stats Plots ...'
