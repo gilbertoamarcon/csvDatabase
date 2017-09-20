@@ -40,7 +40,7 @@ GATHER_DATA_SCRIPT	= "scripts/gather_data.sh"
 RAW_STATS			= "csv/stats.csv"
 FILTERED_STATS		= "csv/stats_filtered.csv"
 STATS_TABLE			= "csv/stats_table.csv"
-P_TABLE				= "csv/P_TABLE"
+P_TABLE				= "csv/p_table_"
 PLOT_FORMATS		= ['pdf', 'svg', 'eps']
 STATS_PLOT_NAME		= "plots/stats_plot"
 PDF_PLOT_NAME		= "plots/pdf_plot"
@@ -68,12 +68,12 @@ if DOMAIN == 'blocks_world':
 	LABEL_OSET_RESULTS	= 0.5
 	LABEL_OSET_METRICS	= -0.6
 
-def p_test(metrics, ltools):
+def p_test(metrics, ltools, status):
 	p_test_results = {}
 	for m, metric in enumerate(metrics):
 		if metric != "Planning Results (%)":
-			for i, t1 in enumerate(metrics[metric]['sample']):
-				for j, t2 in enumerate(metrics[metric]['sample']):
+			for i, t1 in enumerate(metrics[metric]['sample'][status]):
+				for j, t2 in enumerate(metrics[metric]['sample'][status]):
 					if j > i:
 						if (ltools[i], ltools[j]) not in p_test_results:
 							p_test_results[(ltools[i], ltools[j])] = {}
@@ -110,44 +110,21 @@ def generate_stats_table(metrics, ltools, separator=None):
 	# Body
 	for metric in metrics:
 		if metric == "Planning Results (%)":
-			for s in list(STATUS_FLAGS):
+			for f in STATUS_FLAGS:
 				trow = []
-				for r in ["\"%s\""%s] + ["%.*f"%(CSPACING,v) for v in reversed(metrics[metric][s])]:
+				for r in ["\"%s\""%f] + ["%.*f"%(CSPACING,v) for v in reversed(metrics[metric][f])]:
 					trow.append(r)
 				stats_table.append(trow)
 		else:
 
-			trow = []
-			content = []
-			for i in reversed(range(len(metrics[metric]['mean']))):
-				content.append("%.*f (%.*f)"%(CSPACING,metrics[metric]['mean'][i],CSPACING,metrics[metric]['error'][i]))
-			for r in ["\"%s\""%metric] + content:
-				trow.append(r)
-			stats_table.append(trow)
-
-			trow = []
-			content = []
-			for i in reversed(range(len(metrics[metric]['mean_nonex_fail']))):
-				content.append("%.*f (%.*f)"%(CSPACING,metrics[metric]['mean_nonex_fail'][i],CSPACING,metrics[metric]['error_nonex_fail'][i]))
-			for r in ["\"%s\""%metric] + content:
-				trow.append(r)
-			stats_table.append(trow)
-
-			trow = []
-			content = []
-			for i in reversed(range(len(metrics[metric]['mean_time_fail']))):
-				content.append("%.*f (%.*f)"%(CSPACING,metrics[metric]['mean_time_fail'][i],CSPACING,metrics[metric]['error_time_fail'][i]))
-			for r in ["\"%s\""%metric] + content:
-				trow.append(r)
-			stats_table.append(trow)
-
-			trow = []
-			content = []
-			for i in reversed(range(len(metrics[metric]['mean_mem_fail']))):
-				content.append("%.*f (%.*f)"%(CSPACING,metrics[metric]['mean_mem_fail'][i],CSPACING,metrics[metric]['error_mem_fail'][i]))
-			for r in ["\"%s\""%metric] + content:
-				trow.append(r)
-			stats_table.append(trow)
+			for f in STATUS_FLAGS:
+				trow = []
+				content = []
+				for i in reversed(range(len(metrics[metric]['mean'][f]))):
+					content.append("%.*f (%.*f)"%(CSPACING,metrics[metric]['mean'][f][i],CSPACING,metrics[metric]['error'][f][i]))
+				for r in ["\"%s\""%metric] + content:
+					trow.append(r)
+				stats_table.append(trow)
 	
 	# Getting column widths
 	if separator is None:
@@ -200,13 +177,12 @@ def generate_stats_plots(metrics,ltools):
 		shift_pos = bar_origin
 		if metric != "Planning Results (%)":
 			if metric in set(['Processing Time (%)','Memory Usage (%)']):
-				plt.barh(shift_pos+bar_width*3, metrics[metric]['mean'],			bar_width, color=C[0], xerr=metrics[metric]['error'], ecolor='k')
-				plt.barh(shift_pos+bar_width*2, metrics[metric]['mean_nonex_fail'],	bar_width, color=C[1], xerr=metrics[metric]['error_nonex_fail'], ecolor='k')
-				plt.barh(shift_pos+bar_width*1, metrics[metric]['mean_time_fail'],	bar_width, color=C[2], xerr=metrics[metric]['error_time_fail'], ecolor='k')
-				plt.barh(shift_pos+bar_width*0, metrics[metric]['mean_mem_fail'],	bar_width, color=C[3], xerr=metrics[metric]['error_mem_fail'], ecolor='k')
-				# plt.legend([STATUS_SHORT[k] for k in list(STATUS_FLAGS)], loc='lower center', bbox_to_anchor=(LABEL_OSET_RESULTS,1.0), ncol=NCOL, fontsize=FONT_SIZE)
+				counter = 3
+				for f in STATUS_FLAGS:
+					plt.barh(shift_pos+bar_width*counter, metrics[metric]['mean'][f], bar_width, color=C[3-counter], xerr=metrics[metric]['error'][f], ecolor='k')
+					counter -= 1
 			else:
-				plt.barh(shift_pos+bar_width*0, metrics[metric]['mean'], bar_width, color=C[0], xerr=metrics[metric]['error'], ecolor='k')
+				plt.barh(shift_pos+bar_width*0, metrics[metric]['mean']['Success (%)'], bar_width, color=C[0], xerr=metrics[metric]['error']['Success (%)'], ecolor='k')
 		else:
 			label_succ = []
 			for f in STATUS_FLAGS:
@@ -265,21 +241,19 @@ print 'Processing ...'
 metrics = OrderedDict()
 for metric in tqdm(lmetrics):
 
-	# For each planner
 	metrics[metric] = OrderedDict()
-	metrics[metric]['Success (%)']			= []
-	metrics[metric]['Nonexecutable (%)']	= []
-	metrics[metric]['Time Fail (%)']		= []
-	metrics[metric]['Memory Fail (%)']		= []
-	metrics[metric]['mean']					= []
-	metrics[metric]['error']				= []
-	metrics[metric]['mean_time_fail']		= []
-	metrics[metric]['error_time_fail']		= []
-	metrics[metric]['mean_mem_fail']		= []
-	metrics[metric]['error_mem_fail']		= []
-	metrics[metric]['mean_nonex_fail']		= []
-	metrics[metric]['error_nonex_fail']		= []
-	metrics[metric]['sample']				= []
+	metrics[metric]['sample']			= []
+	for f in STATUS_FLAGS:
+		metrics[metric][f]				= []
+	metrics[metric]['mean']				= {}
+	metrics[metric]['error']			= {}
+	metrics[metric]['sample']			= {}
+	for f in STATUS_FLAGS:
+		metrics[metric]['mean'][f]		= []
+		metrics[metric]['error'][f]		= []
+		metrics[metric]['sample'][f]	= []
+
+	# For each tool
 	for tool in ltools:
 		if metric == "Planning Results (%)":
 			query_all = db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',tool)])
@@ -287,40 +261,22 @@ for metric in tqdm(lmetrics):
 			for f in STATUS_FLAGS:
 				metrics[metric][f].append(100.0*len([k for k in status if k == STATUS_FLAGS[f]])/len(query_all))
 		else:
-			normalized_success		= []
-			normalized_time_fail	= []
-			normalized_mem_fail		= []
-			normalized_nonex_fail	= []
-			for p in db.select(['Problem', metric], db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',tool),('Planning Results (%)','0')])):
-				if len(problem_stats[p[0]][metric]) > 0:
-					normalized_success.append(100.00*float(p[1])/stat.mean(problem_stats[p[0]][metric]) - 100.00)
-			for p in db.select(['Problem', metric], db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',tool),('Planning Results (%)','124')])):
-				if len(problem_stats[p[0]][metric]) > 0:
-					normalized_time_fail.append(100.00*float(p[1])/stat.mean(problem_stats[p[0]][metric]) - 100.00)
-			for p in db.select(['Problem', metric], db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',tool),('Planning Results (%)','134')])):
-				if len(problem_stats[p[0]][metric]) > 0:
-					normalized_mem_fail.append(100.00*float(p[1])/stat.mean(problem_stats[p[0]][metric]) - 100.00)
-			for p in db.select(['Problem', metric], db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',tool),('Planning Results (%)','1')])):
-				if len(problem_stats[p[0]][metric]) > 0:
-					normalized_nonex_fail.append(100.00*float(p[1])/stat.mean(problem_stats[p[0]][metric]) - 100.00)
-			mean, error = get_stats(normalized_success)
-			metrics[metric]['mean'].append(mean)
-			metrics[metric]['error'].append(error)
-			mean, error = get_stats(normalized_nonex_fail)
-			metrics[metric]['mean_nonex_fail'].append(mean)
-			metrics[metric]['error_nonex_fail'].append(error)
-			metrics[metric]['sample'].append(normalized_success)
-			mean, error = get_stats(normalized_time_fail)
-			metrics[metric]['mean_time_fail'].append(mean)
-			metrics[metric]['error_time_fail'].append(error)
-			mean, error = get_stats(normalized_mem_fail)
-			metrics[metric]['mean_mem_fail'].append(mean)
-			metrics[metric]['error_mem_fail'].append(error)
 
-# P-Test Table
+			for f in STATUS_FLAGS:
+				normalized		= []
+				for p in db.select(['Problem', metric], db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',tool),('Planning Results (%)',str(STATUS_FLAGS[f]))])):
+					if len(problem_stats[p[0]][metric]) > 0:
+						normalized.append(100.00*float(p[1])/stat.mean(problem_stats[p[0]][metric]) - 100.00)
+				mean, error = get_stats(normalized)
+				metrics[metric]['mean'][f].append(mean)
+				metrics[metric]['error'][f].append(error)
+				metrics[metric]['sample'][f].append(normalized)
+
+# P-Test Tables
 print 'P-Test Table ...'
-with open(P_TABLE+'_'+PLANNER+'.csv', 'wb') as f:
-	f.write(p_test_table(p_test(metrics,ltools)))
+for f in STATUS_FLAGS:
+	with open(P_TABLE+PLANNER+'_'+STATUS_SHORT[f].replace(' ','')+'.csv', 'wb') as file:
+		file.write(p_test_table(p_test(metrics,ltools,f)))
 
 # Stats Table
 print 'Stats Table ...'
