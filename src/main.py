@@ -47,24 +47,17 @@ PDF_PLOT_NAME		= "plots/pdf_plot"
 
 
 # Labels
-header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (%)','Number of Actions (%)','Processing Time (%)','Memory Usage (%)','Planning Results (%)']
+header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (s)','Number of Actions','Processing Time (s)','Memory Usage (GB)','Planning Results (%)']
 
 lmetrics	= header[-5:]
 lmetrics	= [lmetrics[-1]]+lmetrics[:-1]
 
 NCOL		= 4
 
-if DOMAIN == 'first_response':
-	tools		= ['CFP', 'Object', 'ObjectTime', 'CoalitionAssistance', 'CoalitionSimilarity']
-	FIG_SIZE	= (3.4, 5.0)
-	LABEL_OSET_RESULTS	= 0.5
-	LABEL_OSET_METRICS	= -1.0
-
-if DOMAIN == 'blocks_world':
-	tools		= ['ActionObjectTime', 'ActionObject', 'ActionTime', 'Action', 'ObjectTime', 'Object', 'CoalitionAssistance', 'CoalitionSimilarity', 'CFP', 'PA']
-	FIG_SIZE	= (3.4, 15.0)
-	LABEL_OSET_RESULTS	= 0.5
-	LABEL_OSET_METRICS	= -0.6
+tools		= ['ActionObjectTime', 'ActionObject', 'ActionTime', 'Action', 'ObjectTime', 'Object', 'CoalitionAssistance', 'CoalitionSimilarity', 'CFP', 'PA']
+FIG_SIZE	= (10.0, 5.0)
+LABEL_OSET_RESULTS	= 0.5
+LABEL_OSET_METRICS	= -0.6
 
 tools_short = [TOOLS_SHORT[t] for t in tools]
 
@@ -187,28 +180,24 @@ def generate_stats_plots(metrics,tools):
 	grid_ctr = 0
 	for m, metric in enumerate(metrics):
 
-		if metric in set(['Processing Time (%)','Memory Usage (%)']):
+		if metric in set(['Processing Time (s)','Memory Usage (GB)']):
 			bar_width = 0.25*BAR_FILL
-			ax = plt.subplot2grid((9,1), (grid_ctr,0), rowspan=3)
-			grid_ctr += 3
 		else:
 			bar_width = BAR_FILL
-			ax = plt.subplot2grid((9,1), (grid_ctr,0))
+
+		if metric in set(['Processing Time (s)']):
+			ax = plt.subplot2grid((3,3), (0,1), rowspan=3)
+		elif metric in set(['Memory Usage (GB)']):
+			ax = plt.subplot2grid((3,3), (0,2), rowspan=3)
+		else:
+			ax = plt.subplot2grid((3,3), (grid_ctr,0))
 			grid_ctr += 1
 
 		ax.xaxis.grid(True, which='major')
 		ax.set_axisbelow(True)
 
 		shift_pos = bar_origin
-		if metric != "Planning Results (%)":
-			if metric in set(['Processing Time (%)','Memory Usage (%)']):
-				counter = 3
-				for f in STATUS_FLAGS:
-					plt.barh(shift_pos+bar_width*counter, metrics[metric]['mean'][f], bar_width, color=C[3-counter], xerr=metrics[metric]['error'][f], ecolor='k')
-					counter -= 1
-			else:
-				plt.barh(shift_pos+bar_width*0, metrics[metric]['mean']['Success (%)'], bar_width, color=C[0], xerr=metrics[metric]['error']['Success (%)'], ecolor='k')
-		else:
+		if metric == "Planning Results (%)":
 			label_succ = []
 			for f in STATUS_FLAGS:
 				label_succ.append(STATUS_SHORT[f])
@@ -219,6 +208,18 @@ def generate_stats_plots(metrics,tools):
 				barl -= np.array(metrics[metric][f])
 			plt.legend(list(reversed(bar_handle)), label_succ, loc='lower center', bbox_to_anchor=(LABEL_OSET_RESULTS,1.0), ncol=NCOL, fontsize=FONT_SIZE)
 			plt.xlim([0, 100])
+		else:
+			if metric in set(['Processing Time (s)','Memory Usage (GB)']):
+				counter = 3
+				for f in STATUS_FLAGS:
+					plt.barh(shift_pos+bar_width*counter, metrics[metric]['mean'][f], bar_width, color=C[3-counter], xerr=metrics[metric]['error'][f], ecolor='k')
+					counter -= 1
+				if metric in set(['Processing Time (s)']):
+					plt.xlim([0, 3600])
+				if metric in set(['Memory Usage (GB)']):
+					plt.xlim([0, 120])
+			else:
+				plt.barh(shift_pos+bar_width*0, metrics[metric]['mean']['Success (%)'], bar_width, color=C[0], xerr=metrics[metric]['error']['Success (%)'], ecolor='k')
 
 		plt.xlabel(metric)
 		plt.yticks(bar_origin+BAR_FILL/2, tools_short)
@@ -248,19 +249,6 @@ StatsFilter.filter(RAW_STATS,FILTERED_STATS,header)
 print 'Creating database ...'
 db = CsvDatabase(FILTERED_STATS)
 
-# Stats on Problems Solved/Unsolved
-print 'Stats on Problems Solved/Unsolved ...'
-problem_stats = OrderedDict()
-for s in tqdm(set(db.select('Problem', db.query([('Domain',DOMAIN)])))):
-	problem_stats[s] = OrderedDict()
-	for metric in lmetrics:
-		if metric in set(['Makespan (%)','Number of Actions (%)']):
-			raw_select = db.select(metric, db.query([('Domain',DOMAIN), ('Problem',s), ('Planning Results (%)','0')]), as_float=True)
-			problem_stats[s][metric] = list(filter(lambda a: a > 0, raw_select))
-		if metric in set(['Processing Time (%)','Memory Usage (%)']):
-			raw_select = db.select(metric, db.query([('Domain',DOMAIN), ('Problem',s)]), as_float=True)
-			problem_stats[s][metric] = list(filter(lambda a: a > 0, raw_select))
-
 # For each metric
 print 'Processing ...'
 metrics = OrderedDict()
@@ -286,24 +274,19 @@ for metric in tqdm(lmetrics):
 			for f in STATUS_FLAGS:
 				metrics[metric][f].append(100.0*len([k for k in status if k == STATUS_FLAGS[f]])/len(query_all))
 		else:
-
 			for f in STATUS_FLAGS:
-				normalized		= []
-				for p in db.select(['Problem', metric], db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',t),('Planning Results (%)',str(STATUS_FLAGS[f]))])):
-					if len(problem_stats[p[0]][metric]) > 0:
-						# normalized.append(100.00*float(p[1])/stat.mean(problem_stats[p[0]][metric]) - 100.00)
-						normalized.append(100.00*float(p[1])/min(problem_stats[p[0]][metric]) - 100.00)
-				mean, error = get_stats(normalized)
+				sample = db.select(metric, db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',t),('Planning Results (%)',str(STATUS_FLAGS[f]))]), as_float=True)
+				mean, error = get_stats(sample)
 				metrics[metric]['mean'][f].append(mean)
 				metrics[metric]['error'][f].append(error)
-				metrics[metric]['sample'][f].append(normalized)
+				metrics[metric]['sample'][f].append(sample)
 
 # Kruskal Tables
-print 'Kruskal Table ...'
-for f in STATUS_FLAGS:
-	with open(KRUSKAL+PLANNER+'_'+STATUS_SHORT[f].replace(' ','')+'.csv', 'wb') as file:
-		kruskal_table = generate_kruskal_table(compute_kruskal(metrics,tools,f))
-		file.write(table_to_string(kruskal_table,','))
+# print 'Kruskal Table ...'
+# for f in STATUS_FLAGS:
+# 	with open(KRUSKAL+PLANNER+'_'+STATUS_SHORT[f].replace(' ','')+'.csv', 'wb') as file:
+# 		kruskal_table = generate_kruskal_table(compute_kruskal(metrics,tools,f))
+# 		file.write(table_to_string(kruskal_table,','))
 
 # Stats Table
 print 'Stats Table ...'

@@ -49,7 +49,7 @@ class StatsFilter:
 			row_buffer.append(re.sub(FILTER_CHAR, '', row[9]))
 
 			# Memory (GB)
-			mem = float(re.sub(FILTER_CHAR, '', row[10]))/1024
+			mem = float(re.sub(FILTER_CHAR, '', row[10]))/(2**20)
 			row_buffer.append(str(mem))
 
 			# Status
