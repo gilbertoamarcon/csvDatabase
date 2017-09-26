@@ -9,9 +9,9 @@ STATUS_FLAGS	= OrderedDict([('Success (%)',0), ('Nonexecutable (%)',1), ('Time F
 STATUS_SHORT	= OrderedDict([('Memory Fail (%)','Mem Fail'), ('Time Fail (%)','Time Fail'), ('Nonexecutable (%)','Nonexec'), ('Success (%)','Success')])
 TOOLS_SHORT		= OrderedDict([('PA','PA'), ('CFP','CFP'), ('Object','O'), ('ObjectTime','OT'), ('Action','A'), ('ActionTime','AT'), ('ActionObject','AO'), ('ActionObjectTime','AOT'), ('CoalitionAssistance','CA'), ('CoalitionSimilarity','CS')])
 
-DOMAIN			= 'first_response'
-OVERLAP_PREF	= 'csv/overlap_'
-# DOMAIN			= 'blocks_world'
+# DOMAIN			= 'first_response'
+DOMAIN			= 'blocks_world'
+OVERLAP_PREF	= 'csv/overlap.csv'
 # PLANNER			= 'tfddownward'
 PLANNER			= 'colin2'
 
@@ -42,8 +42,9 @@ StatsFilter.filter(RAW_STATS,FILTERED_STATS,header)
 print 'Creating database ...'
 db = CsvDatabase(FILTERED_STATS)
 
+trow = []
 for f in STATUS_FLAGS:
-	trow = []
+	trow.append([f])
 	trow.append(['']+list(reversed(tools_short)))
 	for t1 in reversed(tools):
 		tcol = []
@@ -52,6 +53,7 @@ for f in STATUS_FLAGS:
 			sel2 = db.select('Problem', db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',t2),('Planning Results (%)',str(STATUS_FLAGS[f]))]))
 			tcol.append(len(set(sel1) & set(sel2)))
 		trow.append([TOOLS_SHORT[t1]]+tcol)
-	with open(OVERLAP_PREF+STATUS_SHORT[f]+'.csv', "wb") as file:
-		writer = csv.writer(file)
-		writer.writerows(trow)
+	trow.append([''])
+with open(OVERLAP_PREF,"wb") as file:
+	writer = csv.writer(file)
+	writer.writerows(trow)

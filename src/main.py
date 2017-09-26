@@ -92,7 +92,11 @@ def compute_kruskal(metrics, tools, status):
 					if j != i:
 						if (tools_short[i], tools_short[j]) not in ret_var:
 							ret_var[(tools_short[i], tools_short[j])] = {}
-						ret_var[(tools_short[i], tools_short[j])][metric] = stats.kruskal(t1,t2)
+						if set(t1).issubset(t2) or set(t2).issubset(t1):
+							aux = (0.0,1.0)
+						else:
+							aux = stats.kruskal(t1,t2)
+						ret_var[(tools_short[i], tools_short[j])][metric] = aux
 	return ret_var
 
 def generate_kruskal_table(kruskal_results):
@@ -231,8 +235,8 @@ def generate_stats_plots(metrics,tools):
 		plt.savefig(STATS_PLOT_NAME+'.'+f, bbox_inches='tight')
 
 def get_stats(sample):
-	if len(sample) == 0:
-		return 0, 0
+	if len(sample) < 2:
+		return float('nan'), float('nan')
 	mean = stat.mean(sample)
 	error = stat.stdev(sample)/len(sample)**0.5
 	return mean, error
@@ -282,11 +286,12 @@ for metric in tqdm(lmetrics):
 				metrics[metric]['sample'][f].append(sample)
 
 # Kruskal Tables
-# print 'Kruskal Table ...'
-# for f in STATUS_FLAGS:
-# 	with open(KRUSKAL+PLANNER+'_'+STATUS_SHORT[f].replace(' ','')+'.csv', 'wb') as file:
-# 		kruskal_table = generate_kruskal_table(compute_kruskal(metrics,tools,f))
-# 		file.write(table_to_string(kruskal_table,','))
+print 'Kruskal Table ...'
+for f in OrderedDict([('Success (%)',0), ('Nonexecutable (%)',1), ('Time Fail (%)',124), ('Memory Fail (%)',134)]):
+	with open(KRUSKAL+PLANNER+'_'+STATUS_SHORT[f].replace(' ','')+'.csv', 'wb') as file:
+		kruss = compute_kruskal(metrics,tools,f)
+		kruskal_table = generate_kruskal_table(kruss)
+		file.write(table_to_string(kruskal_table,','))
 
 # Stats Table
 print 'Stats Table ...'
