@@ -13,12 +13,12 @@ from CsvDatabase import *
 from StatsFilter import *
 
 # Parameters
-C	= [
-		(0.000, 0.447, 0.741), # Blue
-		(0.850, 0.325, 0.098), # Tomato
-		(0.929, 0.694, 0.125), # Orange
-		(0.929, 0.894, 0.325), # Yellow
-	]
+COLOR_MAP	= OrderedDict([
+		('Success (%)',			(0.000, 0.447, 0.741)), # Blue
+		('Nonexecutable (%)',	(0.850, 0.325, 0.098)), # Tomato
+		('Time Fail (%)',		(0.929, 0.694, 0.125)), # Orange
+		('Memory Fail (%)',		(0.929, 0.894, 0.325)), # Yellow
+	])
 
 STATUS_FLAGS	= OrderedDict([('Success (%)',0), ('Nonexecutable (%)',1), ('Time Fail (%)',124), ('Memory Fail (%)',134)])
 STATUS_SHORT	= OrderedDict([('Memory Fail (%)','Mem Fail'), ('Time Fail (%)','Time Fail'), ('Nonexecutable (%)','Nonexec'), ('Success (%)','Success')])
@@ -28,8 +28,8 @@ BAR_FILL		= 0.60
 FONT_SIZE		= 6
 FONT_FAMILY		= 'serif'
 
-# DOMAIN			= 'first_response'
-DOMAIN			= 'blocks_world'
+DOMAIN			= 'first_response'
+# DOMAIN			= 'blocks_world'
 # PLANNER			= 'tfddownward'
 PLANNER			= 'colin2'
 COL_PAD			= 5
@@ -84,14 +84,14 @@ def table_to_string(table, separator=None):
 	return ret_var
 
 def compute_kruskal(metrics, tools, status):
-	ret_var = {}
+	ret_var = OrderedDict()
 	for m, metric in enumerate(metrics):
 		if metric != "Planning Results (%)":
 			for i, t1 in enumerate(metrics[metric]['sample'][status]):
 				for j, t2 in enumerate(metrics[metric]['sample'][status]):
 					if j != i:
 						if (tools_short[i], tools_short[j]) not in ret_var:
-							ret_var[(tools_short[i], tools_short[j])] = {}
+							ret_var[(tools_short[i], tools_short[j])] = OrderedDict()
 						if set(t1).issubset(t2) or set(t2).issubset(t1):
 							aux = (0.0,1.0)
 						else:
@@ -185,7 +185,7 @@ def generate_stats_plots(metrics,tools):
 	for m, metric in enumerate(metrics):
 
 		if metric in set(['Processing Time (s)','Memory Usage (GB)']):
-			bar_width = 0.25*BAR_FILL
+			bar_width = 0.33*BAR_FILL
 		else:
 			bar_width = BAR_FILL
 
@@ -208,22 +208,22 @@ def generate_stats_plots(metrics,tools):
 			barl = np.array([100.00]*len(tools))
 			bar_handle = []
 			for i,f in enumerate(list(reversed(list(STATUS_FLAGS)))):
-				bar_handle.append(plt.barh(shift_pos, barl, bar_width, color=C[3-i]))
+				bar_handle.append(plt.barh(shift_pos, barl, bar_width, color=COLOR_MAP[f]))
 				barl -= np.array(metrics[metric][f])
 			plt.legend(list(reversed(bar_handle)), label_succ, loc='lower center', bbox_to_anchor=(LABEL_OSET_RESULTS,1.0), ncol=NCOL, fontsize=FONT_SIZE)
 			plt.xlim([0, 100])
 		else:
 			if metric in set(['Processing Time (s)','Memory Usage (GB)']):
-				counter = 3
-				for f in STATUS_FLAGS:
-					plt.barh(shift_pos+bar_width*counter, metrics[metric]['mean'][f], bar_width, color=C[3-counter], xerr=metrics[metric]['error'][f], ecolor='k')
-					counter -= 1
 				if metric in set(['Processing Time (s)']):
-					plt.xlim([0, 3600])
+					tool_plot = ['Success (%)', 'Nonexecutable (%)', 'Memory Fail (%)']
 				if metric in set(['Memory Usage (GB)']):
-					plt.xlim([0, 120])
+					tool_plot = ['Success (%)', 'Nonexecutable (%)', 'Time Fail (%)']
+				counter = 2
+				for f in tool_plot:
+					plt.barh(shift_pos+bar_width*counter, metrics[metric]['mean'][f], bar_width, color=COLOR_MAP[f], xerr=metrics[metric]['error'][f], ecolor='k')
+					counter -= 1
 			else:
-				plt.barh(shift_pos+bar_width*0, metrics[metric]['mean']['Success (%)'], bar_width, color=C[0], xerr=metrics[metric]['error']['Success (%)'], ecolor='k')
+				plt.barh(shift_pos+bar_width*0, metrics[metric]['mean']['Success (%)'], bar_width, color=COLOR_MAP['Success (%)'], xerr=metrics[metric]['error']['Success (%)'], ecolor='k')
 
 		plt.xlabel(metric)
 		plt.yticks(bar_origin+BAR_FILL/2, tools_short)
