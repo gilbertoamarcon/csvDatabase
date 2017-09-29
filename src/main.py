@@ -12,47 +12,46 @@ from scipy import stats
 from CsvDatabase import *
 from StatsFilter import *
 
-# Parameters
-COLOR_MAP	= OrderedDict([
-							('Success (%)',			(0.000, 0.447, 0.741)), # Blue
-							('Nonexecutable (%)',	(0.850, 0.325, 0.098)), # Tomato
-							('Time Fail (%)',		(0.929, 0.694, 0.125)), # Orange
-							('Memory Fail (%)',		(0.929, 0.894, 0.325)), # Yellow
+
+STATUSES	= OrderedDict([
+							('Success (%)',			OrderedDict([	('short', 'Success'),	('code', 0),	('color', (0.000, 0.447, 0.741))	])), # Blue
+							('Nonexecutable (%)',	OrderedDict([	('short', 'Nonexec'),	('code', 1),	('color', (0.850, 0.325, 0.098))	])), # Tomato
+							('Time Fail (%)',		OrderedDict([	('short', 'Time Fail'),	('code', 124),	('color', (0.929, 0.694, 0.125))	])), # Orange
+							('Memory Fail (%)',		OrderedDict([	('short', 'Mem Fail'),	('code', 134),	('color', (0.929, 0.894, 0.325))	])), # Yellow
 						])
 
-STATUS_FLAGS	= OrderedDict([
-							('Success (%)',			0),
-							('Nonexecutable (%)',	1),
-							('Time Fail (%)',		124),
-							('Memory Fail (%)',		134)
-						])
-
-STATUS_SHORT	= OrderedDict([
-							('Success (%)',			'Success'),
-							('Nonexecutable (%)',	'Nonexec'),
-							('Time Fail (%)',		'Time Fail'),
-							('Memory Fail (%)',		'Mem Fail')
-						])
-
-TOOLS_SHORT		= OrderedDict([
+TOOLS		= OrderedDict([
 							('PA',					'PA'),
 							('CFP',					'CFP'),
+							('CoalitionSimilarity',	'CS'),
+							('CoalitionAssistance',	'CA'),
 							('Object',				'O'),
 							('ObjectTime',			'OT'),
 							('Action',				'A'),
 							('ActionTime',			'AT'),
 							('ActionObject',		'AO'),
 							('ActionObjectTime',	'AOT'),
-							('CoalitionAssistance',	'CA'),
-							('CoalitionSimilarity',	'CS')
 						])
+
+METRICS		= OrderedDict([
+							('Planning Results (%)',	'a) Planning results'),
+							('Makespan (s)',			'b) Makespan'),
+							('Number of Actions',		'c) Number of actions'),
+							('Processing Time (s)',		'd) Processing time'),
+							('Memory Usage (GB)',		'e) Memory usage'),
+						])
+
+
+# Labels
+file_header		= ['Domain','Problem','CFA','Planner','Tool', 'Planning Results (%)', 'Makespan (s)', 'Number of Actions', 'Processing Time (s)', 'Memory Usage (GB)']
+
 
 BAR_FILL		= 0.60
 FONT_SIZE		= 6
 FONT_FAMILY		= 'serif'
 
-DOMAIN			= 'first_response'
-# DOMAIN			= 'blocks_world'
+# DOMAIN			= 'first_response'
+DOMAIN			= 'blocks_world'
 # PLANNER			= 'tfddownward'
 PLANNER			= 'colin2'
 COL_PAD			= 5
@@ -68,28 +67,11 @@ PLOT_FORMATS		= ['pdf', 'svg', 'eps']
 STATS_PLOT_NAME		= "plots/stats_plot"
 PDF_PLOT_NAME		= "plots/pdf_plot"
 
-
-# Labels
-header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (s)','Number of Actions','Processing Time (s)','Memory Usage (GB)','Planning Results (%)']
-
-lmetrics	= header[-5:]
-lmetrics	= [lmetrics[-1]]+lmetrics[:-1]
-titles		= OrderedDict([
-							('Planning Results (%)',	'a) Planning results'),
-							('Makespan (s)',			'b) Makespan'),
-							('Number of Actions',		'c) Number of actions'),
-							('Processing Time (s)',		'd) Processing time'),
-							('Memory Usage (GB)',		'e) Memory usage')
-						])
-
 NCOL		= 4
 
-tools		= ['ActionObjectTime', 'ActionObject', 'ActionTime', 'Action', 'ObjectTime', 'Object', 'CoalitionAssistance', 'CoalitionSimilarity', 'CFP', 'PA']
 FIG_SIZE	= (10.0, 5.0)
 LABEL_OSET_RESULTS	= 0.5
 LABEL_OSET_METRICS	= -0.6
-
-tools_short = [TOOLS_SHORT[t] for t in tools]
 
 def table_to_string(table, separator=None):
 
@@ -113,20 +95,22 @@ def table_to_string(table, separator=None):
 		ret_var += "\n"
 	return ret_var
 
-def compute_kruskal(metrics, tools, status):
+def compute_kruskal(metrics, status):
 	ret_var = OrderedDict()
 	for m, metric in enumerate(metrics):
 		if metric != "Planning Results (%)":
-			for i, t1 in enumerate(metrics[metric]['sample'][status]):
-				for j, t2 in enumerate(metrics[metric]['sample'][status]):
-					if j != i:
-						if (tools_short[i], tools_short[j]) not in ret_var:
-							ret_var[(tools_short[i], tools_short[j])] = OrderedDict()
-						if set(t1).issubset(t2) or set(t2).issubset(t1):
+			for t1 in metrics[metric]['sample'][status]:
+				for t2 in metrics[metric]['sample'][status]:
+					if t1 != t2:
+						tool_pair = (TOOLS[t1], TOOLS[t2])
+						if tool_pair not in ret_var:
+							ret_var[tool_pair] = OrderedDict()
+						if set(metrics[metric]['sample'][status][t1]).issubset(metrics[metric]['sample'][status][t2]) or set(metrics[metric]['sample'][status][t2]).issubset(metrics[metric]['sample'][status][t1]):
 							aux = (0.0,1.0)
 						else:
-							aux = stats.kruskal(t1,t2)
-						ret_var[(tools_short[i], tools_short[j])][metric] = aux
+							aux = stats.kruskal(metrics[metric]['sample'][status][t1],metrics[metric]['sample'][status][t2])
+						ret_var[tool_pair][metric] = aux
+
 	return ret_var
 
 def generate_kruskal_table(kruskal_results):
@@ -157,8 +141,8 @@ def generate_kruskal_table(kruskal_results):
 	ret_var.append(trow)
 
 	# Body
-	for i, t1 in enumerate(reversed(tools_short)):
-		for j, t2 in enumerate(reversed(tools_short)):
+	for i, t1 in enumerate(TOOLS.values()):
+		for j, t2 in enumerate(TOOLS.values()):
 			if i < j:
 				trow = []
 				trow.append('%s' % t1)
@@ -168,46 +152,45 @@ def generate_kruskal_table(kruskal_results):
 						trow.append("%0.4f" % entry)
 				ret_var.append(trow)
 
-
 	return ret_var
 
-def generate_stats_table(metrics, tools):
+def generate_stats_table(metrics):
 
 	# Assembling stats table
 	ret_var = []
 	trow = []
 
 	# Header
-	for h in ["Metric"] + list(reversed(tools_short)):
+	for h in ["Metric"] + TOOLS.values():
 		trow.append(h)
 	ret_var.append(trow)
 
 	# Body
 	for metric in metrics:
 		if metric == "Planning Results (%)":
-			for f in STATUS_FLAGS:
-				trow = []
-				for r in ["\"%s\""%f] + ["%.*f"%(CSPACING,v) for v in reversed(metrics[metric][f])]:
-					trow.append(r)
+			for f in STATUSES:
+				trow = ["\"%s\""%f]
+				for t in TOOLS.keys():
+					trow.append("%.*f"%(CSPACING,metrics[metric][f][t]))
 				ret_var.append(trow)
 		else:
-			for f in STATUS_FLAGS:
+			for f in STATUSES:
 				trow = []
 				content = []
-				for i in reversed(range(len(metrics[metric]['mean'][f]))):
-					content.append("%.*f (%.*f)"%(CSPACING,metrics[metric]['mean'][f][i],CSPACING,metrics[metric]['error'][f][i]))
+				for t in TOOLS.keys():
+					content.append("%.*f (%.*f)"%(CSPACING,metrics[metric]['mean'][f][t],CSPACING,metrics[metric]['error'][f][t]))
 				for r in ["\"%s\""%metric] + content:
 					trow.append(r)
 				ret_var.append(trow)
 
 	return ret_var
 
-def generate_stats_plots(metrics,tools):
+def generate_stats_plots(metrics):
 	plt.figure(figsize=FIG_SIZE)
 	matplotlib.rcParams.update({'font.size': FONT_SIZE})
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
 	gridspec.GridSpec(9,1)
-	numbars = len(tools)
+	numbars = len(TOOLS)
 	bar_origin = ((1-BAR_FILL)/2)*np.ones(numbars) + np.asarray(range(numbars))
 
 	# For each metric
@@ -227,21 +210,21 @@ def generate_stats_plots(metrics,tools):
 			ax = plt.subplot2grid((3,3), (grid_ctr,0))
 			grid_ctr += 1
 
-		plt.title(titles[metric]+' for each tool.', loc='left')
+		plt.title(METRICS[metric]+' for each tool.', loc='left')
 		ax.xaxis.grid(True, which='major')
 		ax.set_axisbelow(True)
 
 		shift_pos = bar_origin
 		if metric == "Planning Results (%)":
 			label_succ = []
-			for f in STATUS_FLAGS:
-				label_succ.append(STATUS_SHORT[f])
-			barl = np.array([100.00]*len(tools))
+			for f in STATUSES:
+				label_succ.append(STATUSES[f]['short'])
+			barl = np.array([100.00]*len(TOOLS))
 			bar_handle = []
-			for i,f in enumerate(list(reversed(list(STATUS_FLAGS)))):
-				bar_handle.append(plt.barh(shift_pos, barl, bar_width, color=COLOR_MAP[f]))
-				barl -= np.array(metrics[metric][f])
-			plt.legend(list(reversed(bar_handle)), label_succ, loc='lower center', bbox_to_anchor=(LABEL_OSET_RESULTS,1.2), ncol=NCOL, fontsize=FONT_SIZE-0.27)
+			for i,f in enumerate(list(reversed(STATUSES.keys()))):
+				bar_handle.append(plt.barh(shift_pos, barl, bar_width, color=STATUSES[f]['color']))
+				barl -= np.array(list(reversed(metrics[metric][f].values())))
+			plt.legend(list(reversed(bar_handle)), label_succ, loc='lower center', bbox_to_anchor=(LABEL_OSET_RESULTS,1.2), ncol=NCOL, fontsize=FONT_SIZE)
 			plt.xlim([0, 100])
 		else:
 			if metric in set(['Processing Time (s)','Memory Usage (GB)']):
@@ -251,13 +234,17 @@ def generate_stats_plots(metrics,tools):
 					tool_plot = ['Success (%)', 'Nonexecutable (%)', 'Time Fail (%)']
 				counter = 2
 				for f in tool_plot:
-					plt.barh(shift_pos+bar_width*counter, metrics[metric]['mean'][f], bar_width, color=COLOR_MAP[f], xerr=metrics[metric]['error'][f], ecolor='k')
+					means	= list(reversed(metrics[metric]['mean'][f].values()))
+					errors	= list(reversed(metrics[metric]['error'][f].values()))
+					plt.barh(shift_pos+bar_width*counter, means, bar_width, color=STATUSES[f]['color'], xerr=errors, ecolor='k')
 					counter -= 1
 			else:
-				plt.barh(shift_pos+bar_width*0, metrics[metric]['mean']['Success (%)'], bar_width, color=COLOR_MAP['Success (%)'], xerr=metrics[metric]['error']['Success (%)'], ecolor='k')
+				means	= list(reversed(metrics[metric]['mean']['Success (%)'].values()))
+				errors	= list(reversed(metrics[metric]['error']['Success (%)'].values()))
+				plt.barh(shift_pos+bar_width*0, means, bar_width, color=STATUSES['Success (%)']['color'], xerr=errors, ecolor='k')
 
 		plt.xlabel(metric)
-		plt.yticks(bar_origin+BAR_FILL/2, tools_short)
+		plt.yticks(bar_origin+BAR_FILL/2, reversed(TOOLS.values()))
 		plt.ylim([0, numbars]) 
 
 	# Legend and ticks
@@ -278,7 +265,7 @@ os.system(GATHER_DATA_SCRIPT)
 
 # Filtering CSV file
 print 'Filtering CSV file ...'
-StatsFilter.filter(RAW_STATS,FILTERED_STATS,header)
+StatsFilter.filter(RAW_STATS,FILTERED_STATS,file_header)
 
 # Creating database
 print 'Creating database ...'
@@ -287,51 +274,48 @@ db = CsvDatabase(FILTERED_STATS)
 # For each metric
 print 'Processing ...'
 metrics = OrderedDict()
-for metric in tqdm(lmetrics):
-
+for metric in tqdm(METRICS.keys()):
 	metrics[metric] = OrderedDict()
-	metrics[metric]['sample']			= []
-	for f in STATUS_FLAGS:
-		metrics[metric][f]				= []
-	metrics[metric]['mean']				= {}
-	metrics[metric]['error']			= {}
-	metrics[metric]['sample']			= {}
-	for f in STATUS_FLAGS:
-		metrics[metric]['mean'][f]		= []
-		metrics[metric]['error'][f]		= []
-		metrics[metric]['sample'][f]	= []
+	metrics[metric]['mean']				= OrderedDict()
+	metrics[metric]['error']			= OrderedDict()
+	metrics[metric]['sample']			= OrderedDict()
+	for f in STATUSES:
+		metrics[metric][f]				= OrderedDict()
+		metrics[metric]['mean'][f]		= OrderedDict()
+		metrics[metric]['error'][f]		= OrderedDict()
+		metrics[metric]['sample'][f]	= OrderedDict()
 
 	# For each tool
-	for t in tools:
+	for t in TOOLS.keys():
 		if metric == "Planning Results (%)":
-			query_all = db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',t)])
-			status = db.select('Planning Results (%)', query_all, as_integer=True)
-			for f in STATUS_FLAGS:
-				metrics[metric][f].append(100.0*len([k for k in status if k == STATUS_FLAGS[f]])/len(query_all))
+			query_all	= db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',t)])
+			status		= db.select('Planning Results (%)', query_all, as_integer=True)
+			for f in STATUSES:
+				metrics[metric][f][t] = 100.0*len([k for k in status if k == STATUSES[f]['code']])/len(query_all)
 		else:
-			for f in STATUS_FLAGS:
-				sample = db.select(metric, db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',t),('Planning Results (%)',str(STATUS_FLAGS[f]))]), as_float=True)
+			for f in STATUSES:
+				sample = db.select(metric, db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',t),('Planning Results (%)',str(STATUSES[f]['code']))]), as_float=True)
 				mean, error = get_stats(sample)
-				metrics[metric]['mean'][f].append(mean)
-				metrics[metric]['error'][f].append(error)
-				metrics[metric]['sample'][f].append(sample)
+				metrics[metric]['mean'][f][t]	= mean
+				metrics[metric]['error'][f][t]	= error
+				metrics[metric]['sample'][f][t]	= sample
 
 # Kruskal Tables
 print 'Kruskal Table ...'
-for f in OrderedDict([('Success (%)',0), ('Nonexecutable (%)',1), ('Time Fail (%)',124), ('Memory Fail (%)',134)]):
-	with open(KRUSKAL+PLANNER+'_'+STATUS_SHORT[f].replace(' ','')+'.csv', 'wb') as file:
-		kruss = compute_kruskal(metrics,tools,f)
+for f in STATUSES:
+	with open(KRUSKAL+PLANNER+'_'+STATUSES[f]['short'].replace(' ','')+'.csv', 'wb') as file:
+		kruss = compute_kruskal(metrics,f)
 		kruskal_table = generate_kruskal_table(kruss)
 		file.write(table_to_string(kruskal_table,','))
 
 # Stats Table
 print 'Stats Table ...'
 with open(STATS_TABLE, 'wb') as file:
-	stats_table = generate_stats_table(metrics,tools)
+	stats_table = generate_stats_table(metrics)
 	print table_to_string(stats_table)
 	file.write(table_to_string(stats_table,','))
 	# print tabulate(stats_table, headers="firstrow", tablefmt="latex")
 
 # Stats Plots
 print 'Stats Plots ...'
-generate_stats_plots(metrics,tools)
+generate_stats_plots(metrics)

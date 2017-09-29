@@ -39,6 +39,9 @@ class StatsFilter:
 			# Tool
 			row_buffer.append(re.sub(FILTER_CHAR, '', row[6]))
 
+			# Status
+			row_buffer.append(re.sub(FILTER_CHAR, '', row[11]))
+
 			# Makespan
 			row_buffer.append(re.sub(FILTER_CHAR, '', row[7]))
 
@@ -51,9 +54,6 @@ class StatsFilter:
 			# Memory (GB)
 			mem = float(re.sub(FILTER_CHAR, '', row[10]))/(2**20)
 			row_buffer.append(str(mem))
-
-			# Status
-			row_buffer.append(re.sub(FILTER_CHAR, '', row[11]))
 
 			ret_val.append(row_buffer)
 
