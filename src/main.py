@@ -14,15 +14,38 @@ from StatsFilter import *
 
 # Parameters
 COLOR_MAP	= OrderedDict([
-		('Success (%)',			(0.000, 0.447, 0.741)), # Blue
-		('Nonexecutable (%)',	(0.850, 0.325, 0.098)), # Tomato
-		('Time Fail (%)',		(0.929, 0.694, 0.125)), # Orange
-		('Memory Fail (%)',		(0.929, 0.894, 0.325)), # Yellow
-	])
+							('Success (%)',			(0.000, 0.447, 0.741)), # Blue
+							('Nonexecutable (%)',	(0.850, 0.325, 0.098)), # Tomato
+							('Time Fail (%)',		(0.929, 0.694, 0.125)), # Orange
+							('Memory Fail (%)',		(0.929, 0.894, 0.325)), # Yellow
+						])
 
-STATUS_FLAGS	= OrderedDict([('Success (%)',0), ('Nonexecutable (%)',1), ('Time Fail (%)',124), ('Memory Fail (%)',134)])
-STATUS_SHORT	= OrderedDict([('Memory Fail (%)','Mem Fail'), ('Time Fail (%)','Time Fail'), ('Nonexecutable (%)','Nonexec'), ('Success (%)','Success')])
-TOOLS_SHORT		= OrderedDict([('PA','PA'), ('CFP','CFP'), ('Object','O'), ('ObjectTime','OT'), ('Action','A'), ('ActionTime','AT'), ('ActionObject','AO'), ('ActionObjectTime','AOT'), ('CoalitionAssistance','CA'), ('CoalitionSimilarity','CS')])
+STATUS_FLAGS	= OrderedDict([
+							('Success (%)',			0),
+							('Nonexecutable (%)',	1),
+							('Time Fail (%)',		124),
+							('Memory Fail (%)',		134)
+						])
+
+STATUS_SHORT	= OrderedDict([
+							('Success (%)',			'Success'),
+							('Nonexecutable (%)',	'Nonexec'),
+							('Time Fail (%)',		'Time Fail'),
+							('Memory Fail (%)',		'Mem Fail')
+						])
+
+TOOLS_SHORT		= OrderedDict([
+							('PA',					'PA'),
+							('CFP',					'CFP'),
+							('Object',				'O'),
+							('ObjectTime',			'OT'),
+							('Action',				'A'),
+							('ActionTime',			'AT'),
+							('ActionObject',		'AO'),
+							('ActionObjectTime',	'AOT'),
+							('CoalitionAssistance',	'CA'),
+							('CoalitionSimilarity',	'CS')
+						])
 
 BAR_FILL		= 0.60
 FONT_SIZE		= 6
@@ -51,6 +74,13 @@ header		= ['Domain','Problem','CFA','Planner','Tool','Makespan (s)','Number of A
 
 lmetrics	= header[-5:]
 lmetrics	= [lmetrics[-1]]+lmetrics[:-1]
+titles		= OrderedDict([
+							('Planning Results (%)',	'a) Planning results'),
+							('Makespan (s)',			'b) Makespan'),
+							('Number of Actions',		'c) Number of actions'),
+							('Processing Time (s)',		'd) Processing time'),
+							('Memory Usage (GB)',		'e) Memory usage')
+						])
 
 NCOL		= 4
 
@@ -197,6 +227,7 @@ def generate_stats_plots(metrics,tools):
 			ax = plt.subplot2grid((3,3), (grid_ctr,0))
 			grid_ctr += 1
 
+		plt.title(titles[metric]+' for each tool.', loc='left')
 		ax.xaxis.grid(True, which='major')
 		ax.set_axisbelow(True)
 
@@ -210,7 +241,7 @@ def generate_stats_plots(metrics,tools):
 			for i,f in enumerate(list(reversed(list(STATUS_FLAGS)))):
 				bar_handle.append(plt.barh(shift_pos, barl, bar_width, color=COLOR_MAP[f]))
 				barl -= np.array(metrics[metric][f])
-			plt.legend(list(reversed(bar_handle)), label_succ, loc='lower center', bbox_to_anchor=(LABEL_OSET_RESULTS,1.0), ncol=NCOL, fontsize=FONT_SIZE)
+			plt.legend(list(reversed(bar_handle)), label_succ, loc='lower center', bbox_to_anchor=(LABEL_OSET_RESULTS,1.2), ncol=NCOL, fontsize=FONT_SIZE-0.27)
 			plt.xlim([0, 100])
 		else:
 			if metric in set(['Processing Time (s)','Memory Usage (GB)']):
