@@ -21,7 +21,7 @@ STATUSES	= OrderedDict([
 						])
 
 TOOLS		= OrderedDict([
-							('PA',					'PA'),
+							# ('PA',					'PA'),
 							('CFP',					'CFP'),
 							('CoalitionSimilarity',	'CS'),
 							('CoalitionAssistance',	'CA'),
@@ -50,8 +50,8 @@ BAR_FILL		= 0.60
 FONT_SIZE		= 6
 FONT_FAMILY		= 'serif'
 
-# DOMAIN			= 'first_response'
-DOMAIN			= 'blocks_world'
+DOMAIN			= 'first_response'
+# DOMAIN			= 'blocks_world'
 # PLANNER			= 'tfddownward'
 PLANNER			= 'colin2'
 COL_PAD			= 5
@@ -97,7 +97,7 @@ def table_to_string(table, separator=None):
 
 def compute_kruskal(metrics, status):
 	ret_var = OrderedDict()
-	for m, metric in enumerate(metrics):
+	for metric in metrics.keys():
 		if metric != "Planning Results (%)":
 			for t1 in metrics[metric]['sample'][status]:
 				for t2 in metrics[metric]['sample'][status]:
@@ -106,10 +106,9 @@ def compute_kruskal(metrics, status):
 						if tool_pair not in ret_var:
 							ret_var[tool_pair] = OrderedDict()
 						if set(metrics[metric]['sample'][status][t1]).issubset(metrics[metric]['sample'][status][t2]) or set(metrics[metric]['sample'][status][t2]).issubset(metrics[metric]['sample'][status][t1]):
-							aux = (0.0,1.0)
+							ret_var[tool_pair][metric] = (0.0,1.0)
 						else:
-							aux = stats.kruskal(metrics[metric]['sample'][status][t1],metrics[metric]['sample'][status][t2])
-						ret_var[tool_pair][metric] = aux
+							ret_var[tool_pair][metric] = stats.kruskal(metrics[metric]['sample'][status][t1],metrics[metric]['sample'][status][t2])
 
 	return ret_var
 
@@ -167,22 +166,17 @@ def generate_stats_table(metrics):
 
 	# Body
 	for metric in metrics:
-		if metric == "Planning Results (%)":
-			for f in STATUSES:
+		for f in STATUSES:
+			if metric == "Planning Results (%)":
 				trow = ["\"%s\""%f]
-				for t in TOOLS.keys():
+			else:
+				trow = ["\"%s\""%metric]
+			for t in TOOLS.keys():
+				if metric == "Planning Results (%)":
 					trow.append("%.*f"%(CSPACING,metrics[metric][f][t]))
-				ret_var.append(trow)
-		else:
-			for f in STATUSES:
-				trow = []
-				content = []
-				for t in TOOLS.keys():
-					content.append("%.*f (%.*f)"%(CSPACING,metrics[metric]['mean'][f][t],CSPACING,metrics[metric]['error'][f][t]))
-				for r in ["\"%s\""%metric] + content:
-					trow.append(r)
-				ret_var.append(trow)
-
+				else:
+					trow.append("%.*f (%.*f)"%(CSPACING,metrics[metric]['mean'][f][t],CSPACING,metrics[metric]['error'][f][t]))
+			ret_var.append(trow)
 	return ret_var
 
 def generate_stats_plots(metrics):
