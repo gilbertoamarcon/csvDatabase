@@ -21,24 +21,24 @@ STATUSES	= OrderedDict([
 						])
 
 TOOLS		= OrderedDict([
-							# ('PA',					'PA'),
-							('CFP',					'CFP'),
-							('CoalitionSimilarity',	'CS'),
-							('CoalitionAssistance',	'CA'),
-							('Object',				'O'),
-							('ObjectTime',			'OT'),
-							('Action',				'A'),
-							('ActionTime',			'AT'),
-							('ActionObject',		'AO'),
-							('ActionObjectTime',	'AOT'),
+							# ('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA')			])),
+							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP')			])),
+							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS')			])),
+							('CoalitionAssistance',	OrderedDict([	('reg', 'CA'),		('tex','CA')			])),
+							('Object',				OrderedDict([	('reg', 'O'),		('tex',r'\textbf{O}')	])),
+							('Action',				OrderedDict([	('reg', 'A'),		('tex',r'\textbf{A}')	])),
+							('ActionObject',		OrderedDict([	('reg', 'AO'),		('tex',r'\textbf{AO}')	])),
+							('ObjectTime',			OrderedDict([	('reg', 'OT'),		('tex',r'\textbf{OT}')	])),
+							('ActionTime',			OrderedDict([	('reg', 'AT'),		('tex',r'\textbf{AT}')	])),
+							('ActionObjectTime',	OrderedDict([	('reg', 'AOT'),		('tex',r'\textbf{AOT}')	])),
 						])
 
 METRICS		= OrderedDict([
 							('Planning Results (%)',	'a) Planning results'),
 							('Makespan (s)',			'b) Makespan'),
 							('Number of Actions',		'c) Number of actions'),
-							('Processing Time (s)',		'd) Processing time'),
-							('Memory Usage (GB)',		'e) Memory usage'),
+							# ('Processing Time (s)',		'd) Processing time'),
+							# ('Memory Usage (GB)',		'e) Memory usage'),
 						])
 
 
@@ -47,7 +47,7 @@ file_header		= ['Domain','Problem','CFA','Planner','Tool', 'Planning Results (%)
 
 
 BAR_FILL		= 0.60
-FONT_SIZE		= 6
+FONT_SIZE		= 7
 FONT_FAMILY		= 'serif'
 
 DOMAIN			= 'first_response'
@@ -63,13 +63,13 @@ RAW_STATS			= "csv/stats.csv"
 FILTERED_STATS		= "csv/stats_filtered.csv"
 STATS_TABLE			= "csv/stats_table.csv"
 KRUSKAL				= "csv/kruskal_"
-PLOT_FORMATS		= ['pdf', 'svg', 'eps']
+PLOT_FORMATS		= ['pdf', 'eps']
 STATS_PLOT_NAME		= "plots/stats_plot"
 PDF_PLOT_NAME		= "plots/pdf_plot"
 
-NCOL		= 4
+NCOL		= 2
 
-FIG_SIZE	= (10.0, 5.0)
+FIG_SIZE	= (9.0, 5.0)
 LABEL_OSET_RESULTS	= 0.5
 LABEL_OSET_METRICS	= -0.6
 
@@ -102,7 +102,7 @@ def compute_kruskal(metrics, status):
 			for t1 in metrics[metric]['sample'][status]:
 				for t2 in metrics[metric]['sample'][status]:
 					if t1 != t2:
-						tool_pair = (TOOLS[t1], TOOLS[t2])
+						tool_pair = (TOOLS[t1]['reg'], TOOLS[t2]['reg'])
 						if tool_pair not in ret_var:
 							ret_var[tool_pair] = OrderedDict()
 						if set(metrics[metric]['sample'][status][t1]).issubset(metrics[metric]['sample'][status][t2]) or set(metrics[metric]['sample'][status][t2]).issubset(metrics[metric]['sample'][status][t1]):
@@ -144,10 +144,10 @@ def generate_kruskal_table(kruskal_results):
 		for j, t2 in enumerate(TOOLS.values()):
 			if i < j:
 				trow = []
-				trow.append('%s' % t1)
-				trow.append('%s' % t2)
-				for m in kruskal_results[(t1,t2)]:
-					for entry in kruskal_results[(t1,t2)][m]:
+				trow.append('%s' % t1['reg'])
+				trow.append('%s' % t2['reg'])
+				for m in kruskal_results[(t1['reg'],t2['reg'])]:
+					for entry in kruskal_results[(t1['reg'],t2['reg'])][m]:
 						trow.append("%0.4f" % entry)
 				ret_var.append(trow)
 
@@ -160,7 +160,7 @@ def generate_stats_table(metrics):
 	trow = []
 
 	# Header
-	for h in ["Metric"] + TOOLS.values():
+	for h in ["Metric"] + [k['reg'] for k in TOOLS.values()]:
 		trow.append(h)
 	ret_var.append(trow)
 
@@ -183,6 +183,7 @@ def generate_stats_plots(metrics):
 	plt.figure(figsize=FIG_SIZE)
 	matplotlib.rcParams.update({'font.size': FONT_SIZE})
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
+	matplotlib.rc('text', usetex=True)
 	gridspec.GridSpec(9,1)
 	numbars = len(TOOLS)
 	bar_origin = ((1-BAR_FILL)/2)*np.ones(numbars) + np.asarray(range(numbars))
@@ -237,8 +238,8 @@ def generate_stats_plots(metrics):
 				errors	= list(reversed(metrics[metric]['error']['Success (%)'].values()))
 				plt.barh(shift_pos+bar_width*0, means, bar_width, color=STATUSES['Success (%)']['color'], xerr=errors, ecolor='k')
 
-		plt.xlabel(metric)
-		plt.yticks(bar_origin+BAR_FILL/2, reversed(TOOLS.values()))
+		plt.xlabel(metric.replace('%','\%'))
+		plt.yticks(bar_origin+BAR_FILL/2, reversed([k['tex'] for k in TOOLS.values()]))
 		plt.ylim([0, numbars]) 
 
 	# Legend and ticks
