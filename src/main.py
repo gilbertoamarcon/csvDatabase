@@ -239,7 +239,7 @@ def generate_stats_plots(metrics):
 				plt.barh(shift_pos+bar_width*0, means, bar_width, color=STATUSES['Success (%)']['color'], xerr=errors, ecolor='k')
 
 		plt.xlabel(metric.replace('%','\%'))
-		plt.yticks(bar_origin+BAR_FILL/2, reversed([k['tex'] for k in TOOLS.values()]))
+		plt.yticks(bar_origin+BAR_FILL/2, list(reversed([k['tex'] for k in TOOLS.values()])))
 		plt.ylim([0, numbars]) 
 
 	# Legend and ticks
