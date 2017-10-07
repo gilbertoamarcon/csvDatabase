@@ -13,6 +13,10 @@ from CsvDatabase import *
 from StatsFilter import *
 
 
+# SPREAD = 'STDEV'
+SPREAD = 'CI'
+
+
 STATUSES	= OrderedDict([
 							('Success (%)',			OrderedDict([	('short', 'Success'),	('code', 0),	('color', (0.000, 0.447, 0.741))	])), # Blue
 							('Nonexecutable (%)',	OrderedDict([	('short', 'Nonexec'),	('code', 1),	('color', (0.850, 0.325, 0.098))	])), # Tomato
@@ -21,7 +25,7 @@ STATUSES	= OrderedDict([
 						])
 
 TOOLS		= OrderedDict([
-							# ('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA')			])),
+							('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA')			])),
 							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP')			])),
 							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS')			])),
 							('CoalitionAssistance',	OrderedDict([	('reg', 'CA'),		('tex','CA')			])),
@@ -50,8 +54,8 @@ BAR_FILL		= 0.60
 FONT_SIZE		= 7
 FONT_FAMILY		= 'serif'
 
-DOMAIN			= 'first_response'
-# DOMAIN			= 'blocks_world'
+# DOMAIN			= 'first_response'
+DOMAIN			= 'blocks_world'
 # PLANNER			= 'tfddownward'
 PLANNER			= 'colin2'
 COL_PAD			= 5
@@ -251,7 +255,10 @@ def get_stats(sample):
 	if len(sample) < 2:
 		return float('nan'), float('nan')
 	mean = stat.mean(sample)
-	error = stat.stdev(sample)/len(sample)**0.5
+	if SPREAD == 'STDEV':
+		error = stat.stdev(sample)
+	if SPREAD == 'CI':
+		error = 1.96*stat.stdev(sample)/len(sample)**0.5
 	return mean, error
 
 # Gathering data
