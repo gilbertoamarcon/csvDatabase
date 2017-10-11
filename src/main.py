@@ -25,7 +25,7 @@ STATUSES	= OrderedDict([
 						])
 
 TOOLS		= OrderedDict([
-							('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA')			])),
+							# ('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA')			])),
 							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP')			])),
 							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS')			])),
 							('CoalitionAssistance',	OrderedDict([	('reg', 'CA'),		('tex','CA')			])),
@@ -41,8 +41,8 @@ METRICS		= OrderedDict([
 							('Planning Results (%)',	'a) Planning results'),
 							('Makespan (s)',			'b) Makespan'),
 							('Number of Actions',		'c) Number of actions'),
-							# ('Processing Time (s)',		'd) Processing time'),
-							# ('Memory Usage (GB)',		'e) Memory usage'),
+							('Processing Time (s)',		'd) Processing time'),
+							('Memory Usage (GB)',		'e) Memory usage'),
 						])
 
 
@@ -54,8 +54,8 @@ BAR_FILL		= 0.60
 FONT_SIZE		= 7
 FONT_FAMILY		= 'serif'
 
-# DOMAIN			= 'first_response'
-DOMAIN			= 'blocks_world'
+DOMAIN			= 'first_response'
+# DOMAIN			= 'blocks_world'
 # PLANNER			= 'tfddownward'
 PLANNER			= 'colin2'
 COL_PAD			= 5
@@ -241,6 +241,7 @@ def generate_stats_plots(metrics):
 				means	= list(reversed(metrics[metric]['mean']['Success (%)'].values()))
 				errors	= list(reversed(metrics[metric]['error']['Success (%)'].values()))
 				plt.barh(shift_pos+bar_width*0, means, bar_width, color=STATUSES['Success (%)']['color'], xerr=errors, ecolor='k')
+		ax.set_xlim(left=0, right=None)
 
 		plt.xlabel(metric.replace('%','\%'))
 		plt.yticks(bar_origin+BAR_FILL/2, list(reversed([k['tex'] for k in TOOLS.values()])))
