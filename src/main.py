@@ -13,8 +13,8 @@ from CsvDatabase import *
 from StatsFilter import *
 
 
-# SPREAD = 'STDEV'
-SPREAD = 'CI'
+SPREAD = 'STDEV'
+# SPREAD = 'CI'
 
 
 STATUSES	= OrderedDict([
@@ -25,7 +25,7 @@ STATUSES	= OrderedDict([
 						])
 
 TOOLS		= OrderedDict([
-							# ('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA')			])),
+							('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA')			])),
 							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP')			])),
 							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS')			])),
 							('CoalitionAssistance',	OrderedDict([	('reg', 'CA'),		('tex','CA')			])),
@@ -65,10 +65,10 @@ CSPACING		= 1
 GATHER_DATA_SCRIPT	= "scripts/gather_data.sh"
 RAW_STATS			= "csv/stats.csv"
 FILTERED_STATS		= "csv/stats_filtered.csv"
-STATS_TABLE			= "csv/stats_table.csv"
+STATS_TABLE			= "csv/stats_"
 KRUSKAL				= "csv/kruskal_"
 PLOT_FORMATS		= ['pdf', 'eps']
-STATS_PLOT_NAME		= "plots/stats_plot"
+STATS_PLOT_NAME		= "plots/stats_"
 PDF_PLOT_NAME		= "plots/pdf_plot"
 
 NCOL		= 2
@@ -99,7 +99,22 @@ def table_to_string(table, separator=None):
 		ret_var += "\n"
 	return ret_var
 
-def compute_kruskal(metrics, status):
+def compute_general_kruskal(metrics):
+	ret_var = OrderedDict()
+	for metric in metrics.keys():
+		if metric != "Planning Results (%)":
+			ret_var[metric] = OrderedDict()
+			for status in metrics[metric]['sample']:
+				try:
+					if len([e for e in metrics[metric]['sample'][status].values() if len(e) < 2]) == 0:
+						ret_var[metric][status] =  stats.kruskal(*metrics[metric]['sample'][status].values())
+					else:
+						raise				
+				except:
+					ret_var[metric][status] = (0.0,1.0)
+	return ret_var
+
+def compute_pairwise_kruskal(metrics, status):
 	ret_var = OrderedDict()
 	for metric in metrics.keys():
 		if metric != "Planning Results (%)":
@@ -113,10 +128,23 @@ def compute_kruskal(metrics, status):
 							ret_var[tool_pair][metric] = (0.0,1.0)
 						else:
 							ret_var[tool_pair][metric] = stats.kruskal(metrics[metric]['sample'][status][t1],metrics[metric]['sample'][status][t2])
+	return ret_var
+
+def generate_general_kruskal_table(general_kruskal_table):
+
+	# Header
+	ret_var = [['Metric']+[status for status in general_kruskal_table[next(iter(general_kruskal_table))]]]
+
+	# Body
+	for metric in general_kruskal_table:
+		trow = [metric]
+		for status in general_kruskal_table[metric]:
+			trow.append("%0.4f" % general_kruskal_table[metric][status][1])
+		ret_var.append(trow)
 
 	return ret_var
 
-def generate_kruskal_table(kruskal_results):
+def generate_pairwise_kruskal_table(kruskal_results):
 
 	# Assembling Kruskal table
 	ret_var = []
@@ -250,7 +278,7 @@ def generate_stats_plots(metrics):
 	# Legend and ticks
 	plt.tight_layout()
 	for f in PLOT_FORMATS:
-		plt.savefig(STATS_PLOT_NAME+'.'+f, bbox_inches='tight')
+		plt.savefig(STATS_PLOT_NAME+DOMAIN+'_'+PLANNER+'.'+f, bbox_inches='tight')
 
 def get_stats(sample):
 	if len(sample) < 2:
@@ -303,22 +331,27 @@ for metric in tqdm(METRICS.keys()):
 				metrics[metric]['error'][f][t]	= error
 				metrics[metric]['sample'][f][t]	= sample
 
-# Kruskal Tables
-print 'Kruskal Table ...'
+
+general_kruskal_table = generate_general_kruskal_table(compute_general_kruskal(metrics))
+print table_to_string(general_kruskal_table)
+with open(KRUSKAL+DOMAIN+'_'+PLANNER+'.csv', 'wb') as file:
+	file.write(table_to_string(general_kruskal_table,','))
+
+# Pair-wise Kruskal Tables
+print 'Pair-wise Kruskal Table ...'
 for f in STATUSES:
-	with open(KRUSKAL+PLANNER+'_'+STATUSES[f]['short'].replace(' ','')+'.csv', 'wb') as file:
-		kruss = compute_kruskal(metrics,f)
-		kruskal_table = generate_kruskal_table(kruss)
-		file.write(table_to_string(kruskal_table,','))
+	with open(KRUSKAL+DOMAIN+'_'+PLANNER+'_'+STATUSES[f]['short'].replace(' ','')+'.csv', 'wb') as file:
+		pairwise_kruskal_table = generate_pairwise_kruskal_table(compute_pairwise_kruskal(metrics,f))
+		file.write(table_to_string(pairwise_kruskal_table,','))
 
 # Stats Table
 print 'Stats Table ...'
-with open(STATS_TABLE, 'wb') as file:
+with open(STATS_TABLE+DOMAIN+'_'+PLANNER+'.csv', 'wb') as file:
 	stats_table = generate_stats_table(metrics)
 	print table_to_string(stats_table)
 	file.write(table_to_string(stats_table,','))
 	# print tabulate(stats_table, headers="firstrow", tablefmt="latex")
 
-# Stats Plots
-print 'Stats Plots ...'
-generate_stats_plots(metrics)
+# # Stats Plots
+# print 'Stats Plots ...'
+# generate_stats_plots(metrics)
