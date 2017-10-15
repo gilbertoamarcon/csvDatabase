@@ -13,8 +13,8 @@ from CsvDatabase import *
 from StatsFilter import *
 
 
-SPREAD = 'STDEV'
-# SPREAD = 'CI'
+# SPREAD = 'STDEV'
+SPREAD = 'CI'
 
 
 STATUSES	= OrderedDict([
@@ -41,8 +41,8 @@ METRICS		= OrderedDict([
 							('Planning Results (%)',	'a) Planning results'),
 							('Makespan (s)',			'b) Makespan'),
 							('Number of Actions',		'c) Number of actions'),
-							('Processing Time (s)',		'd) Processing time'),
-							('Memory Usage (GB)',		'e) Memory usage'),
+							# ('Processing Time (s)',		'd) Processing time'),
+							# ('Memory Usage (GB)',		'e) Memory usage'),
 						])
 
 
@@ -54,10 +54,10 @@ BAR_FILL		= 0.60
 FONT_SIZE		= 7
 FONT_FAMILY		= 'serif'
 
-DOMAIN			= 'first_response'
-# DOMAIN			= 'blocks_world'
-# PLANNER			= 'tfddownward'
-PLANNER			= 'colin2'
+# DOMAIN			= 'first_response'
+DOMAIN			= 'blocks_world'
+PLANNER			= 'tfddownward'
+# PLANNER			= 'colin2'
 COL_PAD			= 5
 CSPACING		= 1
 
@@ -332,26 +332,26 @@ for metric in tqdm(METRICS.keys()):
 				metrics[metric]['sample'][f][t]	= sample
 
 
-general_kruskal_table = generate_general_kruskal_table(compute_general_kruskal(metrics))
-print table_to_string(general_kruskal_table)
-with open(KRUSKAL+DOMAIN+'_'+PLANNER+'.csv', 'wb') as file:
-	file.write(table_to_string(general_kruskal_table,','))
+# general_kruskal_table = generate_general_kruskal_table(compute_general_kruskal(metrics))
+# print table_to_string(general_kruskal_table)
+# with open(KRUSKAL+DOMAIN+'_'+PLANNER+'.csv', 'wb') as file:
+# 	file.write(table_to_string(general_kruskal_table,','))
 
-# Pair-wise Kruskal Tables
-print 'Pair-wise Kruskal Table ...'
-for f in STATUSES:
-	with open(KRUSKAL+DOMAIN+'_'+PLANNER+'_'+STATUSES[f]['short'].replace(' ','')+'.csv', 'wb') as file:
-		pairwise_kruskal_table = generate_pairwise_kruskal_table(compute_pairwise_kruskal(metrics,f))
-		file.write(table_to_string(pairwise_kruskal_table,','))
+# # Pair-wise Kruskal Tables
+# print 'Pair-wise Kruskal Table ...'
+# for f in STATUSES:
+# 	with open(KRUSKAL+DOMAIN+'_'+PLANNER+'_'+STATUSES[f]['short'].replace(' ','')+'.csv', 'wb') as file:
+# 		pairwise_kruskal_table = generate_pairwise_kruskal_table(compute_pairwise_kruskal(metrics,f))
+# 		file.write(table_to_string(pairwise_kruskal_table,','))
 
-# Stats Table
-print 'Stats Table ...'
-with open(STATS_TABLE+DOMAIN+'_'+PLANNER+'.csv', 'wb') as file:
-	stats_table = generate_stats_table(metrics)
-	print table_to_string(stats_table)
-	file.write(table_to_string(stats_table,','))
-	# print tabulate(stats_table, headers="firstrow", tablefmt="latex")
+# # Stats Table
+# print 'Stats Table ...'
+# with open(STATS_TABLE+DOMAIN+'_'+PLANNER+'.csv', 'wb') as file:
+# 	stats_table = generate_stats_table(metrics)
+# 	print table_to_string(stats_table)
+# 	file.write(table_to_string(stats_table,','))
+# 	# print tabulate(stats_table, headers="firstrow", tablefmt="latex")
 
-# # Stats Plots
-# print 'Stats Plots ...'
-# generate_stats_plots(metrics)
+# Stats Plots
+print 'Stats Plots ...'
+generate_stats_plots(metrics)
