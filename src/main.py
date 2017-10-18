@@ -12,20 +12,22 @@ from scipy import stats
 from CsvDatabase import *
 from StatsFilter import *
 
+# Tool sets
+TOOLS_BASELINE		= ['PA', 'CFP', 'CoalitionSimilarity', 'CoalitionAssistance']
+TOOLS_RP			= ['Object', 'Action', 'ActionObject', 'ObjectTime', 'ActionTime', 'ActionObjectTime']
 
-# SPREAD = 'STDEV'
-SPREAD = 'CI'
+# SPREAD			= 'STDEV'
+SPREAD				= 'CI'
 
-
-STATUSES	= OrderedDict([
+STATUSES			= OrderedDict([
 							('Success (%)',			OrderedDict([	('short', 'Success'),	('code', 0),	('color', (0.000, 0.447, 0.741))	])), # Blue
 							('Nonexecutable (%)',	OrderedDict([	('short', 'Nonexec'),	('code', 1),	('color', (0.850, 0.325, 0.098))	])), # Tomato
 							('Time Fail (%)',		OrderedDict([	('short', 'Time Fail'),	('code', 124),	('color', (0.929, 0.694, 0.125))	])), # Orange
 							('Memory Fail (%)',		OrderedDict([	('short', 'Mem Fail'),	('code', 134),	('color', (0.929, 0.894, 0.325))	])), # Yellow
-						])
+					])
 
-TOOLS		= OrderedDict([
-							('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA')			])),
+TOOLS				= OrderedDict([
+							# ('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA')			])),
 							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP')			])),
 							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS')			])),
 							('CoalitionAssistance',	OrderedDict([	('reg', 'CA'),		('tex','CA')			])),
@@ -35,31 +37,29 @@ TOOLS		= OrderedDict([
 							('ObjectTime',			OrderedDict([	('reg', 'OT'),		('tex',r'\textbf{OT}')	])),
 							('ActionTime',			OrderedDict([	('reg', 'AT'),		('tex',r'\textbf{AT}')	])),
 							('ActionObjectTime',	OrderedDict([	('reg', 'AOT'),		('tex',r'\textbf{AOT}')	])),
-						])
+					])
 
-METRICS		= OrderedDict([
+METRICS				= OrderedDict([
 							('Planning Results (%)',	'a) Planning results'),
 							('Makespan (s)',			'b) Makespan'),
 							('Number of Actions',		'c) Number of actions'),
-							# ('Processing Time (s)',		'd) Processing time'),
-							# ('Memory Usage (GB)',		'e) Memory usage'),
-						])
-
+							('Processing Time (s)',		'd) Processing time'),
+							('Memory Usage (GB)',		'e) Memory usage'),
+					])
 
 # Labels
-file_header		= ['Domain','Problem','CFA','Planner','Tool', 'Planning Results (%)', 'Makespan (s)', 'Number of Actions', 'Processing Time (s)', 'Memory Usage (GB)']
+file_header			= ['Domain','Problem','CFA','Planner','Tool', 'Planning Results (%)', 'Makespan (s)', 'Number of Actions', 'Processing Time (s)', 'Memory Usage (GB)']
 
+BAR_FILL			= 0.60
+FONT_SIZE			= 7
+FONT_FAMILY			= 'serif'
 
-BAR_FILL		= 0.60
-FONT_SIZE		= 7
-FONT_FAMILY		= 'serif'
-
-# DOMAIN			= 'first_response'
-DOMAIN			= 'blocks_world'
-PLANNER			= 'tfddownward'
-# PLANNER			= 'colin2'
-COL_PAD			= 5
-CSPACING		= 1
+DOMAIN			= 'first_response'
+# DOMAIN				= 'blocks_world'
+# PLANNER				= 'tfddownward'
+PLANNER			= 'colin2'
+COL_PAD				= 5
+CSPACING			= 1
 
 # File names
 GATHER_DATA_SCRIPT	= "scripts/gather_data.sh"
@@ -71,9 +71,9 @@ PLOT_FORMATS		= ['pdf', 'eps']
 STATS_PLOT_NAME		= "plots/stats_"
 PDF_PLOT_NAME		= "plots/pdf_plot"
 
-NCOL		= 2
+NCOL				= 2
 
-FIG_SIZE	= (9.0, 5.0)
+FIG_SIZE			= (9.0, 5.0)
 LABEL_OSET_RESULTS	= 0.5
 LABEL_OSET_METRICS	= -0.6
 
@@ -99,19 +99,20 @@ def table_to_string(table, separator=None):
 		ret_var += "\n"
 	return ret_var
 
-def compute_general_kruskal(metrics):
+def compute_general_kruskal(metrics, tools):
 	ret_var = OrderedDict()
-	for metric in metrics.keys():
-		if metric != "Planning Results (%)":
-			ret_var[metric] = OrderedDict()
-			for status in metrics[metric]['sample']:
-				try:
-					if len([e for e in metrics[metric]['sample'][status].values() if len(e) < 2]) == 0:
-						ret_var[metric][status] =  stats.kruskal(*metrics[metric]['sample'][status].values())
-					else:
-						raise				
-				except:
-					ret_var[metric][status] = (0.0,1.0)
+	for metric in [metric for metric in metrics.keys() if metric != "Planning Results (%)"]:
+		ret_var[metric] = OrderedDict()
+		for status in metrics[metric]['sample']:
+			try:
+				# print metrics[metric]['sample'][status]
+				datasets = [metrics[metric]['sample'][status][k] for k in metrics[metric]['sample'][status] if k in tools]
+				if len([e for e in datasets if len(e) < 2]) == 0:
+					ret_var[metric][status] =  stats.kruskal(*datasets)
+				else:
+					raise				
+			except:
+				ret_var[metric][status] = (float('nan'),float('nan'))
 	return ret_var
 
 def compute_pairwise_kruskal(metrics, status):
@@ -331,11 +332,12 @@ for metric in tqdm(METRICS.keys()):
 				metrics[metric]['error'][f][t]	= error
 				metrics[metric]['sample'][f][t]	= sample
 
-
-# general_kruskal_table = generate_general_kruskal_table(compute_general_kruskal(metrics))
-# print table_to_string(general_kruskal_table)
-# with open(KRUSKAL+DOMAIN+'_'+PLANNER+'.csv', 'wb') as file:
-# 	file.write(table_to_string(general_kruskal_table,','))
+buf = ''
+for tools_baseline in TOOLS_BASELINE:
+	general_kruskal_table = generate_general_kruskal_table(compute_general_kruskal(metrics, set([tools_baseline]) | set(TOOLS_RP)))
+	buf += tools_baseline + '\n' + table_to_string(general_kruskal_table,',')
+with open(KRUSKAL+DOMAIN+'_'+PLANNER+'.csv', 'wb') as file:
+	file.write(buf)
 
 # # Pair-wise Kruskal Tables
 # print 'Pair-wise Kruskal Table ...'
@@ -353,5 +355,5 @@ for metric in tqdm(METRICS.keys()):
 # 	# print tabulate(stats_table, headers="firstrow", tablefmt="latex")
 
 # Stats Plots
-print 'Stats Plots ...'
-generate_stats_plots(metrics)
+# print 'Stats Plots ...'
+# generate_stats_plots(metrics)
