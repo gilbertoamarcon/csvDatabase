@@ -18,6 +18,10 @@ TOOLS_RP			= ['Object', 'Action', 'ActionObject', 'ObjectTime', 'ActionTime', 'A
 
 # SPREAD			= 'STDEV'
 SPREAD				= 'CI'
+# PAIRWISE			= 'kw'
+PAIRWISE			= 'mw'
+MIN_P				= 0.01
+INVALID_PAIR		= (float('nan'),float('nan'))
 
 STATUSES			= OrderedDict([
 							('Success (%)',			OrderedDict([	('short', 'Success'),	('code', 0),	('color', (0.000, 0.447, 0.741))	])), # Blue
@@ -27,7 +31,7 @@ STATUSES			= OrderedDict([
 					])
 
 TOOLS				= OrderedDict([
-							# ('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA')			])),
+							('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA')			])),
 							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP')			])),
 							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS')			])),
 							('CoalitionAssistance',	OrderedDict([	('reg', 'CA'),		('tex','CA')			])),
@@ -54,8 +58,8 @@ BAR_FILL			= 0.60
 FONT_SIZE			= 7
 FONT_FAMILY			= 'serif'
 
-DOMAIN			= 'first_response'
-# DOMAIN				= 'blocks_world'
+# DOMAIN			= 'first_response'
+DOMAIN				= 'blocks_world'
 # PLANNER				= 'tfddownward'
 PLANNER			= 'colin2'
 COL_PAD				= 5
@@ -66,7 +70,7 @@ GATHER_DATA_SCRIPT	= "scripts/gather_data.sh"
 RAW_STATS			= "csv/stats.csv"
 FILTERED_STATS		= "csv/stats_filtered.csv"
 STATS_TABLE			= "csv/stats_"
-KRUSKAL				= "csv/kruskal_"
+CSV_PREFIX			= "csv/"
 PLOT_FORMATS		= ['pdf', 'eps']
 STATS_PLOT_NAME		= "plots/stats_"
 PDF_PLOT_NAME		= "plots/pdf_plot"
@@ -105,14 +109,13 @@ def compute_general_kruskal(metrics, tools):
 		ret_var[metric] = OrderedDict()
 		for status in metrics[metric]['sample']:
 			try:
-				# print metrics[metric]['sample'][status]
 				datasets = [metrics[metric]['sample'][status][k] for k in metrics[metric]['sample'][status] if k in tools]
 				if len([e for e in datasets if len(e) < 2]) == 0:
 					ret_var[metric][status] =  stats.kruskal(*datasets)
 				else:
 					raise				
 			except:
-				ret_var[metric][status] = (float('nan'),float('nan'))
+				ret_var[metric][status] = INVALID_PAIR
 	return ret_var
 
 def compute_pairwise_kruskal(metrics, status):
@@ -126,9 +129,26 @@ def compute_pairwise_kruskal(metrics, status):
 						if tool_pair not in ret_var:
 							ret_var[tool_pair] = OrderedDict()
 						if set(metrics[metric]['sample'][status][t1]).issubset(metrics[metric]['sample'][status][t2]) or set(metrics[metric]['sample'][status][t2]).issubset(metrics[metric]['sample'][status][t1]):
-							ret_var[tool_pair][metric] = (0.0,1.0)
+							ret_var[tool_pair][metric] = INVALID_PAIR
 						else:
-							ret_var[tool_pair][metric] = stats.kruskal(metrics[metric]['sample'][status][t1],metrics[metric]['sample'][status][t2])
+
+							# Data pair
+							data_set_a = metrics[metric]['sample'][status][t1]
+							data_set_b = metrics[metric]['sample'][status][t2]
+
+							# Method
+							if PAIRWISE == 'kw':
+								ret_var[tool_pair][metric] = stats.kruskal(data_set_a, data_set_b)
+							if PAIRWISE == 'mw':
+								ret_var[tool_pair][metric] = stats.mannwhitneyu(data_set_a, data_set_b)
+
+							# Rounding up zero p-values
+							if ret_var[tool_pair][metric][1] < MIN_P:
+								ret_var[tool_pair][metric] = (ret_var[tool_pair][metric][0], MIN_P)
+
+							# NaN for P >= 0.99
+							if ret_var[tool_pair][metric][1] >= 0.99:
+								ret_var[tool_pair][metric] = INVALID_PAIR
 	return ret_var
 
 def generate_general_kruskal_table(general_kruskal_table):
@@ -181,7 +201,10 @@ def generate_pairwise_kruskal_table(kruskal_results):
 				trow.append('%s' % t2['reg'])
 				for m in kruskal_results[(t1['reg'],t2['reg'])]:
 					for entry in kruskal_results[(t1['reg'],t2['reg'])][m]:
-						trow.append("%0.4f" % entry)
+						if entry == entry:
+							trow.append("%0.2f" % entry)
+						else:
+							trow.append("N/A")
 				ret_var.append(trow)
 
 	return ret_var
@@ -332,19 +355,19 @@ for metric in tqdm(METRICS.keys()):
 				metrics[metric]['error'][f][t]	= error
 				metrics[metric]['sample'][f][t]	= sample
 
-buf = ''
-for tools_baseline in TOOLS_BASELINE:
-	general_kruskal_table = generate_general_kruskal_table(compute_general_kruskal(metrics, set([tools_baseline]) | set(TOOLS_RP)))
-	buf += tools_baseline + '\n' + table_to_string(general_kruskal_table,',')
-with open(KRUSKAL+DOMAIN+'_'+PLANNER+'.csv', 'wb') as file:
-	file.write(buf)
+# buf = ''
+# for tools_baseline in TOOLS_BASELINE:
+# 	general_kruskal_table = generate_general_kruskal_table(compute_general_kruskal(metrics, set([tools_baseline]) | set(TOOLS_RP)))
+# 	buf += tools_baseline + '\n' + table_to_string(general_kruskal_table,',')
+# with open(CSV_PREFIX+'kruskal_'+DOMAIN+'_'+PLANNER+'.csv', 'wb') as file:
+# 	file.write(buf)
 
-# # Pair-wise Kruskal Tables
-# print 'Pair-wise Kruskal Table ...'
-# for f in STATUSES:
-# 	with open(KRUSKAL+DOMAIN+'_'+PLANNER+'_'+STATUSES[f]['short'].replace(' ','')+'.csv', 'wb') as file:
-# 		pairwise_kruskal_table = generate_pairwise_kruskal_table(compute_pairwise_kruskal(metrics,f))
-# 		file.write(table_to_string(pairwise_kruskal_table,','))
+# Pair-wise Kruskal Tables
+print 'Pair-wise Kruskal Table ...'
+for f in STATUSES:
+	with open(CSV_PREFIX+PAIRWISE+'_'+DOMAIN+'_'+PLANNER+'_'+STATUSES[f]['short'].replace(' ','')+'.csv', 'wb') as file:
+		pairwise_kruskal_table = generate_pairwise_kruskal_table(compute_pairwise_kruskal(metrics,f))
+		file.write(table_to_string(pairwise_kruskal_table,','))
 
 # # Stats Table
 # print 'Stats Table ...'
