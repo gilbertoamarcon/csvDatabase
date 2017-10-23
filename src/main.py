@@ -31,25 +31,35 @@ STATUSES			= OrderedDict([
 					])
 
 TOOLS				= OrderedDict([
-							('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA')			])),
-							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP')			])),
-							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS')			])),
-							('CoalitionAssistance',	OrderedDict([	('reg', 'CA'),		('tex','CA')			])),
-							('Object',				OrderedDict([	('reg', 'O'),		('tex',r'\textbf{O}')	])),
-							('Action',				OrderedDict([	('reg', 'A'),		('tex',r'\textbf{A}')	])),
-							('ActionObject',		OrderedDict([	('reg', 'AO'),		('tex',r'\textbf{AO}')	])),
-							('ObjectTime',			OrderedDict([	('reg', 'OT'),		('tex',r'\textbf{OT}')	])),
-							('ActionTime',			OrderedDict([	('reg', 'AT'),		('tex',r'\textbf{AT}')	])),
-							('ActionObjectTime',	OrderedDict([	('reg', 'AOT'),		('tex',r'\textbf{AOT}')	])),
+							# ('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA'),				('color', (1.000, 0.000, 0.000))	])),
+							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP'),				('color', (0.000, 1.000, 0.000))	])),
+							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS'),				('color', (0.000, 0.000, 1.000))	])),
+							('CoalitionAssistance',	OrderedDict([	('reg', 'CA'),		('tex','CA'),				('color', (1.000, 1.000, 0.000))	])),
+							('Object',				OrderedDict([	('reg', 'O'),		('tex',r'\textbf{O}'),		('color', (1.000, 0.000, 1.000))	])),
+							('Action',				OrderedDict([	('reg', 'A'),		('tex',r'\textbf{A}'),		('color', (0.000, 1.000, 1.000))	])),
+							('ActionObject',		OrderedDict([	('reg', 'AO'),		('tex',r'\textbf{AO}'),		('color', (1.000, 0.500, 0.000))	])),
+							('ObjectTime',			OrderedDict([	('reg', 'OT'),		('tex',r'\textbf{OT}'),		('color', (0.500, 0.500, 0.000))	])),
+							('ActionTime',			OrderedDict([	('reg', 'AT'),		('tex',r'\textbf{AT}'),		('color', (1.000, 0.000, 0.500))	])),
+							('ActionObjectTime',	OrderedDict([	('reg', 'AOT'),		('tex',r'\textbf{AOT}'),	('color', (0.500, 0.000, 1.000))	])),
 					])
 
-METRICS				= OrderedDict([
+METRICS_AB				= OrderedDict([
 							('Planning Results (%)',	'a) Planning results'),
 							('Makespan (s)',			'b) Makespan'),
 							('Number of Actions',		'c) Number of actions'),
 							('Processing Time (s)',		'd) Processing time'),
 							('Memory Usage (GB)',		'e) Memory usage'),
 					])
+
+METRICS				= OrderedDict([
+							('Planning Results (%)',	'Planning results'),
+							('Makespan (s)',			'Makespan'),
+							('Number of Actions',		'Number of actions'),
+							('Processing Time (s)',		'Processing time'),
+							('Memory Usage (GB)',		'Memory usage'),
+					])
+
+PLANNER_DOM			= {'first_response': 'First Response', 'blocks_world': 'Blocks World', 'colin2': 'COLIN', 'tfddownward': 'TFD'}
 
 # Labels
 file_header			= ['Domain','Problem','CFA','Planner','Tool', 'Planning Results (%)', 'Makespan (s)', 'Number of Actions', 'Processing Time (s)', 'Memory Usage (GB)']
@@ -58,8 +68,8 @@ BAR_FILL			= 0.60
 FONT_SIZE			= 7
 FONT_FAMILY			= 'serif'
 
-# DOMAIN			= 'first_response'
-DOMAIN				= 'blocks_world'
+DOMAIN			= 'first_response'
+# DOMAIN				= 'blocks_world'
 # PLANNER				= 'tfddownward'
 PLANNER			= 'colin2'
 COL_PAD				= 5
@@ -73,6 +83,7 @@ STATS_TABLE			= "csv/stats_"
 CSV_PREFIX			= "csv/"
 PLOT_FORMATS		= ['pdf', 'eps']
 STATS_PLOT_NAME		= "plots/stats_"
+SCATTER_PLOT_NAME	= "plots/scatter_"
 PDF_PLOT_NAME		= "plots/pdf_plot"
 
 NCOL				= 2
@@ -261,7 +272,7 @@ def generate_stats_plots(metrics):
 			ax = plt.subplot2grid((3,3), (grid_ctr,0))
 			grid_ctr += 1
 
-		plt.title(METRICS[metric]+' for each tool.', loc='left')
+		plt.title(METRICS_AB[metric]+' for each tool.', loc='left')
 		ax.xaxis.grid(True, which='major')
 		ax.set_axisbelow(True)
 
@@ -304,6 +315,39 @@ def generate_stats_plots(metrics):
 	for f in PLOT_FORMATS:
 		plt.savefig(STATS_PLOT_NAME+DOMAIN+'_'+PLANNER+'.'+f, bbox_inches='tight')
 
+def generate_scatter_plots(metrics, tools):
+	fig = plt.figure(figsize=(8.5, 11.0))
+	fig.suptitle(PLANNER_DOM[DOMAIN]+' '+PLANNER_DOM[PLANNER], fontsize=12)
+	matplotlib.rcParams.update({'font.size': FONT_SIZE})
+	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
+	matplotlib.rc('text', usetex=True)
+
+	# For each metric
+	grid_ctr = 0
+	for m_a, metric_a in enumerate(metrics):
+		if metric_a not in ['Planning Results (%)']:
+			for m_b, metric_b in enumerate(metrics):
+				if metric_b not in ['Planning Results (%)']:
+					if m_a != m_b:
+						if m_a < m_b:
+							ax = plt.subplot2grid((4,3), (m_a-1,m_b-2))
+						else:
+							ax = plt.subplot2grid((4,3), (m_a-1,m_b-1))
+						for t in tools:
+							plt.title(METRICS[metric_b]+' vs '+METRICS[metric_a], loc='center')
+							samples_a	= metrics[metric_a]['sample']['Success (%)'][t]
+							samples_b	= metrics[metric_b]['sample']['Success (%)'][t]
+							plt.scatter(samples_a, samples_b, c=TOOLS[t]['color'], marker='.', linewidths=0)
+							plt.xlabel(metric_a)
+							plt.ylabel(metric_b)
+							ax.set_xlim(left=0, right=None)
+							ax.set_ylim(bottom=0, top=None)
+							plt.legend([TOOLS[t]['tex'] for t in tools], loc='best', ncol=2, scatterpoints=1, fontsize=FONT_SIZE*0.75)
+	plt.tight_layout()
+	fig.subplots_adjust(top=0.94)
+	for f in PLOT_FORMATS:
+		plt.savefig(SCATTER_PLOT_NAME+DOMAIN+'_'+PLANNER+'.'+f, bbox_inches='tight')
+
 def get_stats(sample):
 	if len(sample) < 2:
 		return float('nan'), float('nan')
@@ -329,7 +373,7 @@ db = CsvDatabase(FILTERED_STATS)
 # For each metric
 print 'Processing ...'
 metrics = OrderedDict()
-for metric in tqdm(METRICS.keys()):
+for metric in tqdm(METRICS_AB.keys()):
 	metrics[metric] = OrderedDict()
 	metrics[metric]['mean']				= OrderedDict()
 	metrics[metric]['error']			= OrderedDict()
@@ -363,11 +407,11 @@ for metric in tqdm(METRICS.keys()):
 # 	file.write(buf)
 
 # Pair-wise Kruskal Tables
-print 'Pair-wise Kruskal Table ...'
-for f in STATUSES:
-	with open(CSV_PREFIX+PAIRWISE+'_'+DOMAIN+'_'+PLANNER+'_'+STATUSES[f]['short'].replace(' ','')+'.csv', 'wb') as file:
-		pairwise_kruskal_table = generate_pairwise_kruskal_table(compute_pairwise_kruskal(metrics,f))
-		file.write(table_to_string(pairwise_kruskal_table,','))
+# print 'Pair-wise Kruskal Table ...'
+# for f in STATUSES:
+# 	with open(CSV_PREFIX+PAIRWISE+'_'+DOMAIN+'_'+PLANNER+'_'+STATUSES[f]['short'].replace(' ','')+'.csv', 'wb') as file:
+# 		pairwise_kruskal_table = generate_pairwise_kruskal_table(compute_pairwise_kruskal(metrics,f))
+# 		file.write(table_to_string(pairwise_kruskal_table,','))
 
 # # Stats Table
 # print 'Stats Table ...'
@@ -380,3 +424,7 @@ for f in STATUSES:
 # Stats Plots
 # print 'Stats Plots ...'
 # generate_stats_plots(metrics)
+
+# Scatter Plots
+print 'Stats Scatter ...'
+generate_scatter_plots(metrics, TOOLS)
