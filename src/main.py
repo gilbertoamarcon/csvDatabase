@@ -68,8 +68,8 @@ BAR_FILL			= 0.60
 FONT_SIZE			= 7
 FONT_FAMILY			= 'serif'
 
-DOMAIN			= 'first_response'
-# DOMAIN				= 'blocks_world'
+# DOMAIN			= 'first_response'
+DOMAIN				= 'blocks_world'
 # PLANNER				= 'tfddownward'
 PLANNER			= 'colin2'
 COL_PAD				= 5
@@ -84,6 +84,7 @@ CSV_PREFIX			= "csv/"
 PLOT_FORMATS		= ['pdf', 'eps']
 STATS_PLOT_NAME		= "plots/stats_"
 SCATTER_PLOT_NAME	= "plots/scatter_"
+BOX_PLOT_NAME		= "plots/box_"
 PDF_PLOT_NAME		= "plots/pdf_plot"
 
 NCOL				= 2
@@ -321,8 +322,6 @@ def generate_scatter_plots(metrics, tools):
 	matplotlib.rcParams.update({'font.size': FONT_SIZE})
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
 	matplotlib.rc('text', usetex=True)
-
-	# For each metric
 	grid_ctr = 0
 	for m_a, metric_a in enumerate(metrics):
 		if metric_a not in ['Planning Results (%)']:
@@ -347,6 +346,38 @@ def generate_scatter_plots(metrics, tools):
 	fig.subplots_adjust(top=0.94)
 	for f in PLOT_FORMATS:
 		plt.savefig(SCATTER_PLOT_NAME+DOMAIN+'_'+PLANNER+'.'+f, bbox_inches='tight')
+
+def generate_box_plots(metrics, tools):
+	fig = plt.figure(figsize=(6, 6))
+	fig.suptitle(PLANNER_DOM[DOMAIN]+' '+PLANNER_DOM[PLANNER], fontsize=12)
+	matplotlib.rcParams.update({'font.size': FONT_SIZE})
+	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
+	matplotlib.rc('text', usetex=True)
+	for p_type in range(2):
+		for m, (metric_a, metric_b) in enumerate([('Makespan (s)', 'Number of Actions'),('Processing Time (s)', 'Memory Usage (GB)')]):
+			ax = plt.subplot2grid((2,2), (m,p_type))
+			for t in tools:
+				plt.title(METRICS[metric_b]+' vs '+METRICS[metric_a], loc='center')
+				samples_a	= metrics[metric_a]['sample']['Success (%)'][t]
+				samples_b	= metrics[metric_b]['sample']['Success (%)'][t]
+				mean_a		= stat.mean(samples_a)
+				mean_b		= stat.mean(samples_b)
+				error_a		= 1.96*stat.stdev(samples_a)/(len(samples_a)**0.5)
+				error_b		= 1.96*stat.stdev(samples_b)/(len(samples_b)**0.5)
+				# mean_a		= stat.median(samples_a)
+				# mean_b		= stat.median(samples_b)
+				# error_a		= [[np.percentile(samples_a,40)], [np.percentile(samples_a,60)]]
+				# error_b		= [[np.percentile(samples_b,40)], [np.percentile(samples_b,60)]]
+				if p_type == 0:
+					plt.errorbar(x=mean_a, y=mean_b, xerr=error_a, yerr=error_b, c=TOOLS[t]['color'])
+				plt.scatter(x=mean_a, y=mean_b, c=TOOLS[t]['color'])
+				plt.xlabel(metric_a)
+				plt.ylabel(metric_b)
+				plt.legend([TOOLS[t]['tex'] for t in tools], loc='lower right', ncol=2, scatterpoints=1, fontsize=FONT_SIZE*0.75)
+	plt.tight_layout()
+	fig.subplots_adjust(top=0.90)
+	for f in PLOT_FORMATS:
+		plt.savefig(BOX_PLOT_NAME+DOMAIN+'_'+PLANNER+'.'+f, bbox_inches='tight')
 
 def get_stats(sample):
 	if len(sample) < 2:
@@ -425,6 +456,10 @@ for metric in tqdm(METRICS_AB.keys()):
 # print 'Stats Plots ...'
 # generate_stats_plots(metrics)
 
-# Scatter Plots
-print 'Stats Scatter ...'
-generate_scatter_plots(metrics, TOOLS)
+# # Scatter Plots
+# print 'Stats Scatter ...'
+# generate_scatter_plots(metrics, TOOLS)
+
+# Box Plots
+print 'Box Plots ...'
+generate_box_plots(metrics, TOOLS)
