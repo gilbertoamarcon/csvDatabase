@@ -40,7 +40,7 @@ TOOLS				= OrderedDict([
 							('ActionTime',			OrderedDict([	('reg', 'AT'),		('tex',r'\textbf{AT}'),		('color', (0.000, 0.500, 0.000))	])),
 							('ActionObjectTime',	OrderedDict([	('reg', 'AOT'),		('tex',r'\textbf{AOT}'),	('color', (0.000, 0.500, 1.000))	])),
 							('CoalitionAssistance',	OrderedDict([	('reg', 'CA'),		('tex','CA'),				('color', (1.000, 1.000, 0.000))	])),
-							('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA'),				('color', (0.000, 0.000, 0.000))	])),
+							# ('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA'),				('color', (0.000, 0.000, 0.000))	])),
 					])
 
 METRICS_AB				= OrderedDict([
@@ -68,10 +68,10 @@ BAR_FILL			= 0.60
 FONT_SIZE			= 7
 FONT_FAMILY			= 'serif'
 
-# DOMAIN				= 'first_response'
-DOMAIN				= 'blocks_world'
-PLANNER				= 'tfddownward'
-# PLANNER				= 'colin2'
+DOMAIN				= 'first_response'
+# DOMAIN				= 'blocks_world'
+# PLANNER				= 'tfddownward'
+PLANNER				= 'colin2'
 COL_PAD				= 5
 CSPACING			= 1
 
@@ -323,22 +323,22 @@ def generate_scatter_plots(metrics, tools):
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
 	matplotlib.rc('text', usetex=True)
 	grid_ctr = 0
-	for m_a, metric_a in enumerate(metrics):
-		if metric_a not in ['Planning Results (%)']:
-			for m_b, metric_b in enumerate(metrics):
-				if metric_b not in ['Planning Results (%)']:
+	for m_a, metric_x in enumerate(metrics):
+		if metric_x not in ['Planning Results (%)']:
+			for m_b, metric_y in enumerate(metrics):
+				if metric_y not in ['Planning Results (%)']:
 					if m_a != m_b:
 						if m_a < m_b:
 							ax = plt.subplot2grid((4,3), (m_a-1,m_b-2))
 						else:
 							ax = plt.subplot2grid((4,3), (m_a-1,m_b-1))
 						for t in tools:
-							plt.title(METRICS[metric_b]+' vs '+METRICS[metric_a], loc='center')
-							samples_a	= metrics[metric_a]['sample']['Success (%)'][t]
-							samples_b	= metrics[metric_b]['sample']['Success (%)'][t]
-							plt.scatter(samples_a, samples_b, c=TOOLS[t]['color'], marker='.', linewidths=0)
-							plt.xlabel(metric_a)
-							plt.ylabel(metric_b)
+							plt.title(METRICS[metric_y]+' vs '+METRICS[metric_x], loc='center')
+							samples_x	= metrics[metric_x]['sample']['Success (%)'][t]
+							samples_y	= metrics[metric_y]['sample']['Success (%)'][t]
+							plt.scatter(samples_x, samples_y, c=TOOLS[t]['color'], marker='.', linewidths=0)
+							plt.xlabel(metric_x)
+							plt.ylabel(metric_y)
 							ax.set_xlim(left=0, right=None)
 							ax.set_ylim(bottom=0, top=None)
 							plt.legend([TOOLS[t]['tex'] for t in tools], loc='best', ncol=2, scatterpoints=1, fontsize=FONT_SIZE*0.75)
@@ -349,69 +349,74 @@ def generate_scatter_plots(metrics, tools):
 
 def generate_box_plots(metrics, tools):
 	fig = plt.figure(figsize=(8.0, 14.0))
+	subplot_layout = (5,2)
+	label_offset = (6,-6)
 	fig.suptitle(PLANNER_DOM[DOMAIN]+' '+PLANNER_DOM[PLANNER], fontsize=12)
 	matplotlib.rcParams.update({'font.size': FONT_SIZE})
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
 	matplotlib.rc('text', usetex=True)
-	for m, (metric_a, metric_b) in enumerate([('Makespan (s)', 'Number of Actions'),('Processing Time (s)', 'Memory Usage (GB)')]):
+	for m, (metric_x, metric_y) in enumerate([('Makespan (s)', 'Number of Actions'),('Processing Time (s)', 'Memory Usage (GB)')]):
 
 		# Data
 		tcolors		= [TOOLS[t]['color'] for t in tools]
 		tnames		= [TOOLS[t]['tex'] for t in tools]
-		samples_a	= [metrics[metric_a]['sample']['Success (%)'][t] for t in tools]
-		samples_b	= [metrics[metric_b]['sample']['Success (%)'][t] for t in tools]
-		mean_a		= [stat.mean(s) for s in samples_a]
-		mean_b		= [stat.mean(s) for s in samples_b]
-		med_a		= [stat.median(s) for s in samples_a]
-		med_b		= [stat.median(s) for s in samples_b]
-		conf_a		= [1.96*stat.stdev(s)/(len(s)**0.5) for s in samples_a]
-		conf_b		= [1.96*stat.stdev(s)/(len(s)**0.5) for s in samples_b]
-		perc_a_l	= [np.percentile(s,25) for s in samples_a]
-		perc_a_h	= [np.percentile(s,75) for s in samples_a]
-		perc_b_l	= [np.percentile(s,25) for s in samples_b]
-		perc_b_h	= [np.percentile(s,75) for s in samples_b]
+		samples_x	= [metrics[metric_x]['sample']['Success (%)'][t] for t in tools]
+		samples_y	= [metrics[metric_y]['sample']['Success (%)'][t] for t in tools]
+		mean_x		= [stat.mean(s) for s in samples_x]
+		mean_y		= [stat.mean(s) for s in samples_y]
+		med_x		= [stat.median(s) for s in samples_x]
+		med_y		= [stat.median(s) for s in samples_y]
+		conf_x		= [1.96*stat.stdev(s)/(len(s)**0.5) for s in samples_x]
+		conf_y		= [1.96*stat.stdev(s)/(len(s)**0.5) for s in samples_y]
+		perc_x_l	= [np.percentile(s,25) for s in samples_x]
+		perc_x_h	= [np.percentile(s,75) for s in samples_x]
+		perc_y_l	= [np.percentile(s,25) for s in samples_y]
+		perc_y_h	= [np.percentile(s,75) for s in samples_y]
+
+		# Computing Pareto Domainance
+		mean_dom = [sum([1 for tb in range(len(tools)) if mean_x[ta] < mean_x[tb] and mean_y[ta] < mean_y[tb]]) for ta in range(len(tools))]
+		med_dom = [sum([1 for tb in range(len(tools)) if med_x[ta] < med_x[tb] and med_y[ta] < med_y[tb]]) for ta in range(len(tools))]
 
 		def plot_details(title, loc='lower right'):
-			plt.xlabel(metric_a)
-			plt.ylabel(metric_b)
+			plt.xlabel(metric_x)
+			plt.ylabel(metric_y)
 			plt.legend(tnames, loc=loc, ncol=2, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE*0.75)
-			plt.title(METRICS[metric_b]+' vs '+METRICS[metric_a]+': '+title, loc='center')
-
-		tool_range = range(len(tools))
-		subplot_layout = (5,2)
+			plt.title(METRICS[metric_y]+' vs '+METRICS[metric_x]+': '+title, loc='center')
 
 		# Mean and Confidence
 		ax = plt.subplot2grid(subplot_layout, (0,m))
-		for t in tool_range:
-			plt.errorbar(x=mean_a[t], y=mean_b[t], xerr=conf_a[t], yerr=conf_b[t], c=tcolors[t])
+		for x, y, xerr, yerr, c in zip(mean_x, mean_y, conf_x, conf_y, tcolors):
+			plt.errorbar(x=x, y=y, xerr=xerr, yerr=yerr, c=c)
 		plot_details('Mean and Confidence')
 
 		# Median and Quartiles
 		ax = plt.subplot2grid(subplot_layout, (1,m))
-		for t in tool_range:
-			plt.errorbar(x=med_a[t], y=med_b[t], xerr=[[perc_a_l[t]], [perc_a_h[t]]], yerr=[[perc_b_l[t]], [perc_b_h[t]]], c=tcolors[t])
+		for x, y, xerr_l, xerr_h, yerr_l, yerr_h, c in zip(med_x, med_y, perc_x_l, perc_x_h, perc_y_l, perc_y_h, tcolors):
+			plt.errorbar(x=x, y=y, xerr=[[xerr_l],[xerr_h]], yerr=[[yerr_l],[yerr_h]], c=c)
 		plot_details('Median and Quartiles', loc='upper right')
 
-		# Mean 
+		# Mean Pareto Dominance
 		ax = plt.subplot2grid(subplot_layout, (2,m))
-		for t in tool_range:
-			plt.plot(mean_a[t], mean_b[t], 's', c=tcolors[t])
-		plot_details('Mean')
+		for x, y, c, d in zip(mean_x, mean_y, tcolors, mean_dom):
+			plt.plot(x, y, 's', c=c)
+			plt.annotate(d, (x,y), xytext=label_offset, textcoords='offset points')
+		plot_details('Mean Pareto Dominance')
 
-		# Median
+		# Median Pareto Dominance
 		ax = plt.subplot2grid(subplot_layout, (3,m))
-		for t in tool_range:
-			plt.plot(med_a[t], med_b[t], 'o', c=tcolors[t])
-		plot_details('Median')
+		for x, y, c, d in zip(med_x, med_y, tcolors, med_dom):
+			plt.plot(x, y, 'o', c=c)
+			plt.annotate(d, (x,y), xytext=label_offset, textcoords='offset points')
+		plot_details('Median Pareto Dominance')
 
 		# Mean and Median
 		ax = plt.subplot2grid(subplot_layout, (4,m))
-		for t in tool_range:
-			plt.plot([mean_a[t],med_a[t]], [mean_b[t],med_b[t]], '-', c=tcolors[t])
-		for t in tool_range:
-			plt.plot(mean_a[t], mean_b[t], '-s', c=tcolors[t])
-		for t in tool_range:
-			plt.plot(med_a[t], med_b[t], '-o', c=tcolors[t])
+		for xa, xb, ya, yb, c in zip(mean_x, med_x, mean_y, med_y, tcolors):
+			plt.plot([xa,xb], [ya,yb], '-', c=c)
+		for x, y, c in zip(mean_x, mean_y, tcolors):
+			plt.plot(x, y, '-s', c=c)
+		for x, y, c in zip(med_x, med_y, tcolors):
+			plt.plot(x, y, '-o', c=c)
 		plot_details('Mean and Median')
 
 	plt.tight_layout()
