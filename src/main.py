@@ -31,16 +31,16 @@ STATUSES			= OrderedDict([
 					])
 
 TOOLS				= OrderedDict([
-							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP'),				('color', (0.000, 1.000, 0.000))	])),
-							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS'),				('color', (0.000, 0.000, 1.000))	])),
+							('Object',				OrderedDict([	('reg', 'O'),		('tex',r'\textbf{O}'),		('color', (1.000, 0.000, 0.000))	])),
+							('ObjectTime',			OrderedDict([	('reg', 'OT'),		('tex',r'\textbf{OT}'),		('color', (1.000, 0.500, 0.000))	])),
+							('Action',				OrderedDict([	('reg', 'A'),		('tex',r'\textbf{A}'),		('color', (0.000, 1.000, 0.000))	])),
+							('ActionTime',			OrderedDict([	('reg', 'AT'),		('tex',r'\textbf{AT}'),		('color', (0.000, 1.000, 0.500))	])),
+							('ActionObject',		OrderedDict([	('reg', 'AO'),		('tex',r'\textbf{AO}'),		('color', (0.000, 0.000, 1.000))	])),
+							('ActionObjectTime',	OrderedDict([	('reg', 'AOT'),		('tex',r'\textbf{AOT}'),	('color', (0.000, 0.500, 1.000))	])),
+							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS'),				('color', (0.000, 1.000, 1.000))	])),
 							('CoalitionAssistance',	OrderedDict([	('reg', 'CA'),		('tex','CA'),				('color', (1.000, 1.000, 0.000))	])),
-							('Object',				OrderedDict([	('reg', 'O'),		('tex',r'\textbf{O}'),		('color', (1.000, 0.000, 1.000))	])),
-							('Action',				OrderedDict([	('reg', 'A'),		('tex',r'\textbf{A}'),		('color', (0.000, 1.000, 1.000))	])),
-							('ActionObject',		OrderedDict([	('reg', 'AO'),		('tex',r'\textbf{AO}'),		('color', (1.000, 0.500, 0.000))	])),
-							('ObjectTime',			OrderedDict([	('reg', 'OT'),		('tex',r'\textbf{OT}'),		('color', (0.500, 0.500, 0.000))	])),
-							('ActionTime',			OrderedDict([	('reg', 'AT'),		('tex',r'\textbf{AT}'),		('color', (1.000, 0.000, 0.500))	])),
-							('ActionObjectTime',	OrderedDict([	('reg', 'AOT'),		('tex',r'\textbf{AOT}'),	('color', (0.500, 0.000, 1.000))	])),
-							('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA'),				('color', (1.000, 0.000, 0.000))	])),
+							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP'),				('color', (1.000, 1.000, 1.000))	])),
+							('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA'),				('color', (0.000, 0.000, 0.000))	])),
 					])
 
 METRICS_AB				= OrderedDict([
@@ -71,7 +71,7 @@ FONT_FAMILY			= 'serif'
 # DOMAIN			= 'first_response'
 DOMAIN				= 'blocks_world'
 # PLANNER				= 'tfddownward'
-PLANNER			= 'colin2'
+PLANNER				= 'colin2'
 COL_PAD				= 5
 CSPACING			= 1
 
@@ -349,7 +349,7 @@ def generate_scatter_plots(metrics, tools):
 
 def generate_box_plots(metrics, tools):
 	fig = plt.figure(figsize=(6, 6))
-	fig.suptitle(PLANNER_DOM[DOMAIN]+' '+PLANNER_DOM[PLANNER], fontsize=12)
+	fig.suptitle(PLANNER_DOM[DOMAIN]+' '+PLANNER_DOM[PLANNER]+' Median', fontsize=12)
 	matplotlib.rcParams.update({'font.size': FONT_SIZE})
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
 	matplotlib.rc('text', usetex=True)
@@ -360,14 +360,14 @@ def generate_box_plots(metrics, tools):
 				plt.title(METRICS[metric_b]+' vs '+METRICS[metric_a], loc='center')
 				samples_a	= metrics[metric_a]['sample']['Success (%)'][t]
 				samples_b	= metrics[metric_b]['sample']['Success (%)'][t]
-				mean_a		= stat.mean(samples_a)
-				mean_b		= stat.mean(samples_b)
-				error_a		= 1.96*stat.stdev(samples_a)/(len(samples_a)**0.5)
-				error_b		= 1.96*stat.stdev(samples_b)/(len(samples_b)**0.5)
-				# mean_a		= stat.median(samples_a)
-				# mean_b		= stat.median(samples_b)
-				# error_a		= [[np.percentile(samples_a,40)], [np.percentile(samples_a,60)]]
-				# error_b		= [[np.percentile(samples_b,40)], [np.percentile(samples_b,60)]]
+				# mean_a		= stat.mean(samples_a)
+				# mean_b		= stat.mean(samples_b)
+				# error_a		= 1.96*stat.stdev(samples_a)/(len(samples_a)**0.5)
+				# error_b		= 1.96*stat.stdev(samples_b)/(len(samples_b)**0.5)
+				mean_a		= stat.median(samples_a)
+				mean_b		= stat.median(samples_b)
+				error_a		= [[np.percentile(samples_a,40)], [np.percentile(samples_a,60)]]
+				error_b		= [[np.percentile(samples_b,40)], [np.percentile(samples_b,60)]]
 				if p_type == 0:
 					plt.errorbar(x=mean_a, y=mean_b, xerr=error_a, yerr=error_b, c=TOOLS[t]['color'])
 				plt.scatter(x=mean_a, y=mean_b, c=TOOLS[t]['color'])
@@ -377,7 +377,8 @@ def generate_box_plots(metrics, tools):
 	plt.tight_layout()
 	fig.subplots_adjust(top=0.90)
 	for f in PLOT_FORMATS:
-		plt.savefig(BOX_PLOT_NAME+DOMAIN+'_'+PLANNER+'.'+f, bbox_inches='tight')
+		# plt.savefig(BOX_PLOT_NAME+'mean_'+DOMAIN+'_'+PLANNER+'.'+f, bbox_inches='tight')
+		plt.savefig(BOX_PLOT_NAME+'median_'+DOMAIN+'_'+PLANNER+'.'+f, bbox_inches='tight')
 
 def get_stats(sample):
 	if len(sample) < 2:
