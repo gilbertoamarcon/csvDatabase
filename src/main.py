@@ -32,14 +32,14 @@ STATUSES			= OrderedDict([
 
 TOOLS				= OrderedDict([
 							('Object',				OrderedDict([	('reg', 'O'),		('tex',r'\textbf{O}'),		('color', (1.000, 0.000, 0.000))	])),
-							('ObjectTime',			OrderedDict([	('reg', 'OT'),		('tex',r'\textbf{OT}'),		('color', (1.000, 0.500, 0.000))	])),
 							('Action',				OrderedDict([	('reg', 'A'),		('tex',r'\textbf{A}'),		('color', (0.000, 1.000, 0.000))	])),
-							('ActionTime',			OrderedDict([	('reg', 'AT'),		('tex',r'\textbf{AT}'),		('color', (0.000, 1.000, 0.500))	])),
 							('ActionObject',		OrderedDict([	('reg', 'AO'),		('tex',r'\textbf{AO}'),		('color', (0.000, 0.000, 1.000))	])),
-							('ActionObjectTime',	OrderedDict([	('reg', 'AOT'),		('tex',r'\textbf{AOT}'),	('color', (0.000, 0.500, 1.000))	])),
 							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS'),				('color', (0.000, 1.000, 1.000))	])),
+							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP'),				('color', (1.000, 0.000, 1.000))	])),
+							('ObjectTime',			OrderedDict([	('reg', 'OT'),		('tex',r'\textbf{OT}'),		('color', (1.000, 0.500, 0.000))	])),
+							('ActionTime',			OrderedDict([	('reg', 'AT'),		('tex',r'\textbf{AT}'),		('color', (0.000, 0.500, 0.000))	])),
+							('ActionObjectTime',	OrderedDict([	('reg', 'AOT'),		('tex',r'\textbf{AOT}'),	('color', (0.000, 0.500, 1.000))	])),
 							('CoalitionAssistance',	OrderedDict([	('reg', 'CA'),		('tex','CA'),				('color', (1.000, 1.000, 0.000))	])),
-							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP'),				('color', (1.000, 1.000, 1.000))	])),
 							('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA'),				('color', (0.000, 0.000, 0.000))	])),
 					])
 
@@ -68,10 +68,10 @@ BAR_FILL			= 0.60
 FONT_SIZE			= 7
 FONT_FAMILY			= 'serif'
 
-# DOMAIN			= 'first_response'
+# DOMAIN				= 'first_response'
 DOMAIN				= 'blocks_world'
-# PLANNER				= 'tfddownward'
-PLANNER				= 'colin2'
+PLANNER				= 'tfddownward'
+# PLANNER				= 'colin2'
 COL_PAD				= 5
 CSPACING			= 1
 
@@ -348,37 +348,76 @@ def generate_scatter_plots(metrics, tools):
 		plt.savefig(SCATTER_PLOT_NAME+DOMAIN+'_'+PLANNER+'.'+f, bbox_inches='tight')
 
 def generate_box_plots(metrics, tools):
-	fig = plt.figure(figsize=(6, 6))
-	fig.suptitle(PLANNER_DOM[DOMAIN]+' '+PLANNER_DOM[PLANNER]+' Median', fontsize=12)
+	fig = plt.figure(figsize=(8.0, 14.0))
+	fig.suptitle(PLANNER_DOM[DOMAIN]+' '+PLANNER_DOM[PLANNER], fontsize=12)
 	matplotlib.rcParams.update({'font.size': FONT_SIZE})
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
 	matplotlib.rc('text', usetex=True)
-	for p_type in range(2):
-		for m, (metric_a, metric_b) in enumerate([('Makespan (s)', 'Number of Actions'),('Processing Time (s)', 'Memory Usage (GB)')]):
-			ax = plt.subplot2grid((2,2), (m,p_type))
-			for t in tools:
-				plt.title(METRICS[metric_b]+' vs '+METRICS[metric_a], loc='center')
-				samples_a	= metrics[metric_a]['sample']['Success (%)'][t]
-				samples_b	= metrics[metric_b]['sample']['Success (%)'][t]
-				# mean_a		= stat.mean(samples_a)
-				# mean_b		= stat.mean(samples_b)
-				# error_a		= 1.96*stat.stdev(samples_a)/(len(samples_a)**0.5)
-				# error_b		= 1.96*stat.stdev(samples_b)/(len(samples_b)**0.5)
-				mean_a		= stat.median(samples_a)
-				mean_b		= stat.median(samples_b)
-				error_a		= [[np.percentile(samples_a,40)], [np.percentile(samples_a,60)]]
-				error_b		= [[np.percentile(samples_b,40)], [np.percentile(samples_b,60)]]
-				if p_type == 0:
-					plt.errorbar(x=mean_a, y=mean_b, xerr=error_a, yerr=error_b, c=TOOLS[t]['color'])
-				plt.scatter(x=mean_a, y=mean_b, c=TOOLS[t]['color'])
-				plt.xlabel(metric_a)
-				plt.ylabel(metric_b)
-				plt.legend([TOOLS[t]['tex'] for t in tools], loc='lower right', ncol=2, scatterpoints=1, fontsize=FONT_SIZE*0.75)
+	for m, (metric_a, metric_b) in enumerate([('Makespan (s)', 'Number of Actions'),('Processing Time (s)', 'Memory Usage (GB)')]):
+
+		# Data
+		tcolors		= [TOOLS[t]['color'] for t in tools]
+		tnames		= [TOOLS[t]['tex'] for t in tools]
+		samples_a	= [metrics[metric_a]['sample']['Success (%)'][t] for t in tools]
+		samples_b	= [metrics[metric_b]['sample']['Success (%)'][t] for t in tools]
+		mean_a		= [stat.mean(s) for s in samples_a]
+		mean_b		= [stat.mean(s) for s in samples_b]
+		med_a		= [stat.median(s) for s in samples_a]
+		med_b		= [stat.median(s) for s in samples_b]
+		conf_a		= [1.96*stat.stdev(s)/(len(s)**0.5) for s in samples_a]
+		conf_b		= [1.96*stat.stdev(s)/(len(s)**0.5) for s in samples_b]
+		perc_a_l	= [np.percentile(s,25) for s in samples_a]
+		perc_a_h	= [np.percentile(s,75) for s in samples_a]
+		perc_b_l	= [np.percentile(s,25) for s in samples_b]
+		perc_b_h	= [np.percentile(s,75) for s in samples_b]
+
+		def plot_details(title, loc='lower right'):
+			plt.xlabel(metric_a)
+			plt.ylabel(metric_b)
+			plt.legend(tnames, loc=loc, ncol=2, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE*0.75)
+			plt.title(METRICS[metric_b]+' vs '+METRICS[metric_a]+': '+title, loc='center')
+
+		tool_range = range(len(tools))
+		subplot_layout = (5,2)
+
+		# Mean and Confidence
+		ax = plt.subplot2grid(subplot_layout, (0,m))
+		for t in tool_range:
+			plt.errorbar(x=mean_a[t], y=mean_b[t], xerr=conf_a[t], yerr=conf_b[t], c=tcolors[t])
+		plot_details('Mean and Confidence')
+
+		# Median and Quartiles
+		ax = plt.subplot2grid(subplot_layout, (1,m))
+		for t in tool_range:
+			plt.errorbar(x=med_a[t], y=med_b[t], xerr=[[perc_a_l[t]], [perc_a_h[t]]], yerr=[[perc_b_l[t]], [perc_b_h[t]]], c=tcolors[t])
+		plot_details('Median and Quartiles', loc='upper right')
+
+		# Mean 
+		ax = plt.subplot2grid(subplot_layout, (2,m))
+		for t in tool_range:
+			plt.plot(mean_a[t], mean_b[t], 's', c=tcolors[t])
+		plot_details('Mean')
+
+		# Median
+		ax = plt.subplot2grid(subplot_layout, (3,m))
+		for t in tool_range:
+			plt.plot(med_a[t], med_b[t], 'o', c=tcolors[t])
+		plot_details('Median')
+
+		# Mean and Median
+		ax = plt.subplot2grid(subplot_layout, (4,m))
+		for t in tool_range:
+			plt.plot([mean_a[t],med_a[t]], [mean_b[t],med_b[t]], '-', c=tcolors[t])
+		for t in tool_range:
+			plt.plot(mean_a[t], mean_b[t], '-s', c=tcolors[t])
+		for t in tool_range:
+			plt.plot(med_a[t], med_b[t], '-o', c=tcolors[t])
+		plot_details('Mean and Median')
+
 	plt.tight_layout()
-	fig.subplots_adjust(top=0.90)
+	fig.subplots_adjust(top=0.95)
 	for f in PLOT_FORMATS:
-		# plt.savefig(BOX_PLOT_NAME+'mean_'+DOMAIN+'_'+PLANNER+'.'+f, bbox_inches='tight')
-		plt.savefig(BOX_PLOT_NAME+'median_'+DOMAIN+'_'+PLANNER+'.'+f, bbox_inches='tight')
+		plt.savefig(BOX_PLOT_NAME+DOMAIN+'_'+PLANNER+'.'+f, bbox_inches='tight')
 
 def get_stats(sample):
 	if len(sample) < 2:
