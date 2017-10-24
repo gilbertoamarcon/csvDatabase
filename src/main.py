@@ -31,7 +31,6 @@ STATUSES			= OrderedDict([
 					])
 
 TOOLS				= OrderedDict([
-							# ('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA'),				('color', (1.000, 0.000, 0.000))	])),
 							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP'),				('color', (0.000, 1.000, 0.000))	])),
 							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS'),				('color', (0.000, 0.000, 1.000))	])),
 							('CoalitionAssistance',	OrderedDict([	('reg', 'CA'),		('tex','CA'),				('color', (1.000, 1.000, 0.000))	])),
@@ -41,6 +40,7 @@ TOOLS				= OrderedDict([
 							('ObjectTime',			OrderedDict([	('reg', 'OT'),		('tex',r'\textbf{OT}'),		('color', (0.500, 0.500, 0.000))	])),
 							('ActionTime',			OrderedDict([	('reg', 'AT'),		('tex',r'\textbf{AT}'),		('color', (1.000, 0.000, 0.500))	])),
 							('ActionObjectTime',	OrderedDict([	('reg', 'AOT'),		('tex',r'\textbf{AOT}'),	('color', (0.500, 0.000, 1.000))	])),
+							('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA'),				('color', (1.000, 0.000, 0.000))	])),
 					])
 
 METRICS_AB				= OrderedDict([
