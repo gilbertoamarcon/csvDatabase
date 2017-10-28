@@ -1,5 +1,7 @@
 #!/usr/bin/python
 import os
+import sys
+import getopt
 import matplotlib
 import matplotlib.pyplot as plt
 import statistics as stat
@@ -11,6 +13,26 @@ import matplotlib.gridspec as gridspec
 from scipy import stats
 from CsvDatabase import *
 from StatsFilter import *
+
+HELP_MSG = 'main.py -p <planner> -d <domain>\nplanner choices:\n\ttfddownward\n\tcolin2\ndomain choices:\n\tblocks_world\n\tfirst_response'
+
+domain = 'blocks_world'
+planner = 'tfddownward'
+try:
+	opts, args = getopt.getopt(sys.argv[1:],'hp:d:',['planner=','domain='])
+except getopt.GetoptError:
+	print HELP_MSG
+	sys.exit(2)
+for opt, arg in opts:
+	if opt in ('-h', '--help'):
+		print HELP_MSG
+		sys.exit()
+	elif opt in ('-p', '--planner'):
+		planner = arg
+	elif opt in ('-d', '--domain'):
+		domain = arg
+print 'Domain: %s' % domain
+print 'Planner: %s' % planner
 
 # Tool sets
 TOOLS_BASELINE		= ['PA', 'CFP', 'CoalitionSimilarity', 'CoalitionAssistance']
@@ -31,17 +53,21 @@ STATUSES			= OrderedDict([
 					])
 
 TOOLS				= OrderedDict([
-							('Object',				OrderedDict([	('reg', 'O'),		('tex',r'\textbf{O}'),		('color', (1.000, 0.000, 0.000))	])),
-							('Action',				OrderedDict([	('reg', 'A'),		('tex',r'\textbf{A}'),		('color', (0.000, 1.000, 0.000))	])),
-							('ActionObject',		OrderedDict([	('reg', 'AO'),		('tex',r'\textbf{AO}'),		('color', (0.000, 0.000, 1.000))	])),
-							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS'),				('color', (0.000, 1.000, 1.000))	])),
-							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP'),				('color', (1.000, 0.000, 1.000))	])),
-							('ObjectTime',			OrderedDict([	('reg', 'OT'),		('tex',r'\textbf{OT}'),		('color', (1.000, 0.500, 0.000))	])),
-							('ActionTime',			OrderedDict([	('reg', 'AT'),		('tex',r'\textbf{AT}'),		('color', (0.000, 0.500, 0.000))	])),
-							('ActionObjectTime',	OrderedDict([	('reg', 'AOT'),		('tex',r'\textbf{AOT}'),	('color', (0.000, 0.500, 1.000))	])),
-							('CoalitionAssistance',	OrderedDict([	('reg', 'CA'),		('tex','CA'),				('color', (1.000, 1.000, 0.000))	])),
-							# ('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA'),				('color', (0.000, 0.000, 0.000))	])),
+							('Object',				OrderedDict([	('reg', 'O'),		('tex',r'\textbf{O}'),		('color', (1.000, 0.000, 0.000)), ('marker', (3,0,0))	])), # Red
+							('Action',				OrderedDict([	('reg', 'A'),		('tex',r'\textbf{A}'),		('color', (0.000, 0.500, 0.000)), ('marker', (4,0,0))	])), # Green
+							('ActionObject',		OrderedDict([	('reg', 'AO'),		('tex',r'\textbf{AO}'),		('color', (0.000, 0.000, 1.000)), ('marker', (5,0,0))	])), # Blue
+							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS'),				('color', (0.500, 0.000, 0.500)), ('marker', (6,0,0))	])), # Purple
+							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP'),				('color', (0.000, 0.000, 0.000)), ('marker', (7,0,0))	])), # Black
+
+							('ObjectTime',			OrderedDict([	('reg', 'OT'),		('tex',r'\textbf{OT}'),		('color', (1.000, 0.500, 0.500)), ('marker', (3,0,180))	])), # Pink
+							('ActionTime',			OrderedDict([	('reg', 'AT'),		('tex',r'\textbf{AT}'),		('color', (0.500, 1.000, 0.500)), ('marker', (4,0,45))	])), # Light Green
+							('ActionObjectTime',	OrderedDict([	('reg', 'AOT'),		('tex',r'\textbf{AOT}'),	('color', (0.000, 0.750, 1.000)), ('marker', (5,0,180))	])), # Light Blue
+							('CoalitionAssistance',	OrderedDict([	('reg', 'CA'),		('tex','CA'),				('color', (1.000, 0.500, 1.000)), ('marker', (6,0,30))	])), # Light Purple
+							('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA'),				('color', (0.500, 0.500, 0.500)), ('marker', (7,0,180))	])), # Grey
 					])
+if domain == 'first_response':
+	del TOOLS['PA']
+
 
 METRICS_AB				= OrderedDict([
 							('Planning Results (%)',	'a) Planning results'),
@@ -67,11 +93,6 @@ file_header			= ['Domain','Problem','CFA','Planner','Tool', 'Planning Results (%
 BAR_FILL			= 0.60
 FONT_SIZE			= 7
 FONT_FAMILY			= 'serif'
-
-DOMAIN				= 'first_response'
-# DOMAIN				= 'blocks_world'
-# PLANNER				= 'tfddownward'
-PLANNER				= 'colin2'
 COL_PAD				= 5
 CSPACING			= 1
 
@@ -81,7 +102,7 @@ RAW_STATS			= "csv/stats.csv"
 FILTERED_STATS		= "csv/stats_filtered.csv"
 STATS_TABLE			= "csv/stats_"
 CSV_PREFIX			= "csv/"
-PLOT_FORMATS		= ['pdf', 'eps']
+PLOT_FORMATS		= ['pdf', 'eps', 'svg']
 STATS_PLOT_NAME		= "plots/stats_"
 SCATTER_PLOT_NAME	= "plots/scatter_"
 BOX_PLOT_NAME		= "plots/box_"
@@ -314,11 +335,11 @@ def generate_stats_plots(metrics):
 	# Legend and ticks
 	plt.tight_layout()
 	for f in PLOT_FORMATS:
-		plt.savefig(STATS_PLOT_NAME+DOMAIN+'_'+PLANNER+'.'+f, bbox_inches='tight')
+		plt.savefig(STATS_PLOT_NAME+domain+'_'+planner+'.'+f, bbox_inches='tight')
 
 def generate_scatter_plots(metrics, tools):
 	fig = plt.figure(figsize=(8.5, 11.0))
-	fig.suptitle(PLANNER_DOM[DOMAIN]+' '+PLANNER_DOM[PLANNER], fontsize=12)
+	fig.suptitle(PLANNER_DOM[domain]+' '+PLANNER_DOM[planner], fontsize=12)
 	matplotlib.rcParams.update({'font.size': FONT_SIZE})
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
 	matplotlib.rc('text', usetex=True)
@@ -345,13 +366,13 @@ def generate_scatter_plots(metrics, tools):
 	plt.tight_layout()
 	fig.subplots_adjust(top=0.94)
 	for f in PLOT_FORMATS:
-		plt.savefig(SCATTER_PLOT_NAME+DOMAIN+'_'+PLANNER+'.'+f, bbox_inches='tight')
+		plt.savefig(SCATTER_PLOT_NAME+domain+'_'+planner+'.'+f, bbox_inches='tight')
 
 def generate_box_plots(metrics, tools):
-	fig = plt.figure(figsize=(8.0, 14.0))
-	subplot_layout = (5,2)
+	fig = plt.figure(figsize=(8.0, 3.0))
+	subplot_layout = (1,2)
 	label_offset = (6,-6)
-	fig.suptitle(PLANNER_DOM[DOMAIN]+' '+PLANNER_DOM[PLANNER], fontsize=12)
+	fig.suptitle(PLANNER_DOM[domain]+' '+PLANNER_DOM[planner], fontsize=12)
 	matplotlib.rcParams.update({'font.size': FONT_SIZE})
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
 	matplotlib.rc('text', usetex=True)
@@ -359,6 +380,7 @@ def generate_box_plots(metrics, tools):
 
 		# Data
 		tcolors		= [TOOLS[t]['color'] for t in tools]
+		tmarkers	= [TOOLS[t]['marker'] for t in tools]
 		tnames		= [TOOLS[t]['tex'] for t in tools]
 		samples_x	= [metrics[metric_x]['sample']['Success (%)'][t] for t in tools]
 		samples_y	= [metrics[metric_y]['sample']['Success (%)'][t] for t in tools]
@@ -383,46 +405,46 @@ def generate_box_plots(metrics, tools):
 			plt.legend(tnames, loc=loc, ncol=2, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE*0.75)
 			plt.title(METRICS[metric_y]+' vs '+METRICS[metric_x]+': '+title, loc='center')
 
-		# Mean and Confidence
-		ax = plt.subplot2grid(subplot_layout, (0,m))
-		for x, y, xerr, yerr, c in zip(mean_x, mean_y, conf_x, conf_y, tcolors):
-			plt.errorbar(x=x, y=y, xerr=xerr, yerr=yerr, c=c)
-		plot_details('Mean and Confidence')
+		# # Mean and Confidence
+		# ax = plt.subplot2grid(subplot_layout, (0,m))
+		# for x, y, xerr, yerr, c in zip(mean_x, mean_y, conf_x, conf_y, tcolors):
+		# 	plt.errorbar(x=x, y=y, xerr=xerr, yerr=yerr, c=c)
+		# plot_details('Mean and Confidence')
 
-		# Median and Quartiles
-		ax = plt.subplot2grid(subplot_layout, (1,m))
-		for x, y, xerr_l, xerr_h, yerr_l, yerr_h, c in zip(med_x, med_y, perc_x_l, perc_x_h, perc_y_l, perc_y_h, tcolors):
-			plt.errorbar(x=x, y=y, xerr=[[xerr_l],[xerr_h]], yerr=[[yerr_l],[yerr_h]], c=c)
-		plot_details('Median and Quartiles', loc='upper right')
+		# # Median and Quartiles
+		# ax = plt.subplot2grid(subplot_layout, (1,m))
+		# for x, y, xerr_l, xerr_h, yerr_l, yerr_h, c in zip(med_x, med_y, perc_x_l, perc_x_h, perc_y_l, perc_y_h, tcolors):
+		# 	plt.errorbar(x=x, y=y, xerr=[[xerr_l],[xerr_h]], yerr=[[yerr_l],[yerr_h]], c=c)
+		# plot_details('Median and Quartiles', loc='upper right')
 
 		# Mean Pareto Dominance
-		ax = plt.subplot2grid(subplot_layout, (2,m))
-		for x, y, c, d in zip(mean_x, mean_y, tcolors, mean_dom):
-			plt.plot(x, y, 's', c=c)
+		ax = plt.subplot2grid(subplot_layout, (0,m))
+		for x, y, c, m, d in zip(mean_x, mean_y, tcolors, tmarkers, mean_dom):
+			plt.plot(x, y, linestyle='None', marker=m, c=c)
 			plt.annotate(d, (x,y), xytext=label_offset, textcoords='offset points')
 		plot_details('Mean Pareto Dominance')
 
-		# Median Pareto Dominance
-		ax = plt.subplot2grid(subplot_layout, (3,m))
-		for x, y, c, d in zip(med_x, med_y, tcolors, med_dom):
-			plt.plot(x, y, 'o', c=c)
-			plt.annotate(d, (x,y), xytext=label_offset, textcoords='offset points')
-		plot_details('Median Pareto Dominance')
+		# # Median Pareto Dominance
+		# ax = plt.subplot2grid(subplot_layout, (3,m))
+		# for x, y, c, d in zip(med_x, med_y, tcolors, med_dom):
+		# 	plt.plot(x, y, 'o', c=c)
+		# 	plt.annotate(d, (x,y), xytext=label_offset, textcoords='offset points')
+		# plot_details('Median Pareto Dominance')
 
-		# Mean and Median
-		ax = plt.subplot2grid(subplot_layout, (4,m))
-		for xa, xb, ya, yb, c in zip(mean_x, med_x, mean_y, med_y, tcolors):
-			plt.plot([xa,xb], [ya,yb], '-', c=c)
-		for x, y, c in zip(mean_x, mean_y, tcolors):
-			plt.plot(x, y, '-s', c=c)
-		for x, y, c in zip(med_x, med_y, tcolors):
-			plt.plot(x, y, '-o', c=c)
-		plot_details('Mean and Median')
+		# # Mean and Median
+		# ax = plt.subplot2grid(subplot_layout, (4,m))
+		# for xa, xb, ya, yb, c in zip(mean_x, med_x, mean_y, med_y, tcolors):
+		# 	plt.plot([xa,xb], [ya,yb], '-', c=c)
+		# for x, y, c in zip(mean_x, mean_y, tcolors):
+		# 	plt.plot(x, y, '-s', c=c)
+		# for x, y, c in zip(med_x, med_y, tcolors):
+		# 	plt.plot(x, y, '-o', c=c)
+		# plot_details('Mean and Median')
 
 	plt.tight_layout()
-	fig.subplots_adjust(top=0.95)
+	fig.subplots_adjust(top=0.85)
 	for f in PLOT_FORMATS:
-		plt.savefig(BOX_PLOT_NAME+DOMAIN+'_'+PLANNER+'.'+f, bbox_inches='tight')
+		plt.savefig(BOX_PLOT_NAME+domain+'_'+planner+'.'+f, bbox_inches='tight')
 
 def get_stats(sample):
 	if len(sample) < 2:
@@ -463,13 +485,13 @@ for metric in tqdm(METRICS_AB.keys()):
 	# For each tool
 	for t in TOOLS.keys():
 		if metric == "Planning Results (%)":
-			query_all	= db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',t)])
+			query_all	= db.query([('Domain',domain),('Planner',planner),('Tool',t)])
 			status		= db.select('Planning Results (%)', query_all, as_integer=True)
 			for f in STATUSES:
 				metrics[metric][f][t] = 100.0*len([k for k in status if k == STATUSES[f]['code']])/len(query_all)
 		else:
 			for f in STATUSES:
-				sample = db.select(metric, db.query([('Domain',DOMAIN),('Planner',PLANNER),('Tool',t),('Planning Results (%)',str(STATUSES[f]['code']))]), as_float=True)
+				sample = db.select(metric, db.query([('Domain',domain),('Planner',planner),('Tool',t),('Planning Results (%)',str(STATUSES[f]['code']))]), as_float=True)
 				mean, error = get_stats(sample)
 				metrics[metric]['mean'][f][t]	= mean
 				metrics[metric]['error'][f][t]	= error
@@ -479,19 +501,19 @@ for metric in tqdm(METRICS_AB.keys()):
 # for tools_baseline in TOOLS_BASELINE:
 # 	general_kruskal_table = generate_general_kruskal_table(compute_general_kruskal(metrics, set([tools_baseline]) | set(TOOLS_RP)))
 # 	buf += tools_baseline + '\n' + table_to_string(general_kruskal_table,',')
-# with open(CSV_PREFIX+'kruskal_'+DOMAIN+'_'+PLANNER+'.csv', 'wb') as file:
+# with open(CSV_PREFIX+'kruskal_'+domain+'_'+planner+'.csv', 'wb') as file:
 # 	file.write(buf)
 
 # Pair-wise Kruskal Tables
 # print 'Pair-wise Kruskal Table ...'
 # for f in STATUSES:
-# 	with open(CSV_PREFIX+PAIRWISE+'_'+DOMAIN+'_'+PLANNER+'_'+STATUSES[f]['short'].replace(' ','')+'.csv', 'wb') as file:
+# 	with open(CSV_PREFIX+PAIRWISE+'_'+domain+'_'+planner+'_'+STATUSES[f]['short'].replace(' ','')+'.csv', 'wb') as file:
 # 		pairwise_kruskal_table = generate_pairwise_kruskal_table(compute_pairwise_kruskal(metrics,f))
 # 		file.write(table_to_string(pairwise_kruskal_table,','))
 
 # # Stats Table
 # print 'Stats Table ...'
-# with open(STATS_TABLE+DOMAIN+'_'+PLANNER+'.csv', 'wb') as file:
+# with open(STATS_TABLE+domain+'_'+planner+'.csv', 'wb') as file:
 # 	stats_table = generate_stats_table(metrics)
 # 	print table_to_string(stats_table)
 # 	file.write(table_to_string(stats_table,','))
