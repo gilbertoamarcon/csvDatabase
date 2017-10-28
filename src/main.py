@@ -34,6 +34,8 @@ for opt, arg in opts:
 print 'Domain: %s' % domain
 print 'Planner: %s' % planner
 
+PLOT_LABELS = {('blocks_world','tfddownward'): ('a','b'), ('blocks_world','colin2'): ('c','d'), ('first_response','colin2'): ('e','f')}
+
 # Tool sets
 TOOLS_BASELINE		= ['PA', 'CFP', 'CoalitionSimilarity', 'CoalitionAssistance']
 TOOLS_RP			= ['Object', 'Action', 'ActionObject', 'ObjectTime', 'ActionTime', 'ActionObjectTime']
@@ -369,13 +371,14 @@ def generate_scatter_plots(metrics, tools):
 		plt.savefig(SCATTER_PLOT_NAME+domain+'_'+planner+'.'+f, bbox_inches='tight')
 
 def generate_box_plots(metrics, tools):
-	fig = plt.figure(figsize=(8.0, 3.0))
+	fig = plt.figure(figsize=(8.0, 3.4))
 	subplot_layout = (1,2)
-	label_offset = (6,-6)
-	fig.suptitle(PLANNER_DOM[domain]+' '+PLANNER_DOM[planner], fontsize=12)
+	label_offset = (5,-5)
+	fig.suptitle('Quality and Cost Multi-Objectives in the '+PLANNER_DOM[domain]+' Domain with the '+PLANNER_DOM[planner]+' Planner', fontsize=FONT_SIZE*1.5, ha='center')
 	matplotlib.rcParams.update({'font.size': FONT_SIZE})
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
 	matplotlib.rc('text', usetex=True)
+	titles = ['Quality', 'Cost']
 	for m, (metric_x, metric_y) in enumerate([('Makespan (s)', 'Number of Actions'),('Processing Time (s)', 'Memory Usage (GB)')]):
 
 		# Data
@@ -399,11 +402,11 @@ def generate_box_plots(metrics, tools):
 		mean_dom = [sum([1 for tb in range(len(tools)) if mean_x[ta] < mean_x[tb] and mean_y[ta] < mean_y[tb]]) for ta in range(len(tools))]
 		med_dom = [sum([1 for tb in range(len(tools)) if med_x[ta] < med_x[tb] and med_y[ta] < med_y[tb]]) for ta in range(len(tools))]
 
-		def plot_details(title, loc='lower right'):
+		def plot_details(loc='lower right'):
 			plt.xlabel(metric_x)
 			plt.ylabel(metric_y)
-			plt.legend(tnames, loc=loc, ncol=2, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE*0.75)
-			plt.title(METRICS[metric_y]+' vs '+METRICS[metric_x]+': '+title, loc='center')
+			plt.legend(tnames, loc=loc, ncol=2, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE*0.90)
+			plt.title(PLOT_LABELS[(domain,planner)][m]+') '+titles[m]+' Objectives: Mean '+METRICS[metric_y]+' vs '+METRICS[metric_x], loc='center')
 
 		# # Mean and Confidence
 		# ax = plt.subplot2grid(subplot_layout, (0,m))
@@ -419,10 +422,18 @@ def generate_box_plots(metrics, tools):
 
 		# Mean Pareto Dominance
 		ax = plt.subplot2grid(subplot_layout, (0,m))
-		for x, y, c, m, d in zip(mean_x, mean_y, tcolors, tmarkers, mean_dom):
-			plt.plot(x, y, linestyle='None', marker=m, c=c)
+		limits_x = [min(mean_x), max(mean_x)]
+		limits_y = [min(mean_y), max(mean_y)]
+		margin_x = (limits_x[1] - limits_x[0])*0.1
+		margin_y = (limits_y[1] - limits_y[0])*0.1
+		limits_x= [limits_x[0] - margin_x, limits_x[1] + margin_x]
+		limits_y= [limits_y[0] - margin_y, limits_y[1] + margin_y]
+		for x, y, c, mkr, d in zip(mean_x, mean_y, tcolors, tmarkers, mean_dom):
+			plt.plot(x, y, linestyle='None', marker=mkr, c=c)
 			plt.annotate(d, (x,y), xytext=label_offset, textcoords='offset points')
-		plot_details('Mean Pareto Dominance')
+		ax.set_xlim(limits_x)
+		ax.set_ylim(limits_y)
+		plot_details()
 
 		# # Median Pareto Dominance
 		# ax = plt.subplot2grid(subplot_layout, (3,m))
