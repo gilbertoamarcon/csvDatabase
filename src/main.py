@@ -54,6 +54,19 @@ STATUSES			= OrderedDict([
 							('Memory Fail (%)',		OrderedDict([	('short', 'Mem Fail'),	('code', 134),	('color', (0.929, 0.894, 0.325))	])), # Yellow
 					])
 
+# TOOLS				= OrderedDict([
+# 							('Object',				OrderedDict([	('reg', 'O'),		('tex',r'\textbf{O}'),		('color', (1.000, 0.000, 0.000)), ('marker', (3,0,0))	])), # Red
+# 							('Action',				OrderedDict([	('reg', 'A'),		('tex',r'\textbf{A}'),		('color', (0.000, 0.500, 0.000)), ('marker', (4,0,0))	])), # Green
+# 							('ActionObject',		OrderedDict([	('reg', 'AO'),		('tex',r'\textbf{AO}'),		('color', (0.000, 0.000, 1.000)), ('marker', (5,0,0))	])), # Blue
+# 							('ObjectTime',			OrderedDict([	('reg', 'OT'),		('tex',r'\textbf{OT}'),		('color', (1.000, 0.500, 0.500)), ('marker', (3,0,180))	])), # Pink
+# 							('ActionTime',			OrderedDict([	('reg', 'AT'),		('tex',r'\textbf{AT}'),		('color', (0.500, 1.000, 0.500)), ('marker', (4,0,45))	])), # Light Green
+# 							('ActionObjectTime',	OrderedDict([	('reg', 'AOT'),		('tex',r'\textbf{AOT}'),	('color', (0.000, 0.750, 1.000)), ('marker', (5,0,180))	])), # Light Blue
+# 							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS'),				('color', (0.500, 0.000, 0.500)), ('marker', (6,0,0))	])), # Purple
+# 							('CoalitionAssistance',	OrderedDict([	('reg', 'CA'),		('tex','CA'),				('color', (1.000, 0.500, 1.000)), ('marker', (6,0,30))	])), # Light Purple
+# 							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP'),				('color', (0.000, 0.000, 0.000)), ('marker', (7,0,0))	])), # Black
+# 							('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA'),				('color', (0.500, 0.500, 0.500)), ('marker', (7,0,180))	])), # Grey
+# 					])
+
 TOOLS				= OrderedDict([
 							('Object',				OrderedDict([	('reg', 'O'),		('tex',r'\textbf{O}'),		('color', (1.000, 0.000, 0.000)), ('marker', (3,0,0))	])), # Red
 							('Action',				OrderedDict([	('reg', 'A'),		('tex',r'\textbf{A}'),		('color', (0.000, 0.500, 0.000)), ('marker', (4,0,0))	])), # Green
@@ -70,21 +83,12 @@ TOOLS				= OrderedDict([
 if domain == 'first_response':
 	del TOOLS['PA']
 
-
-METRICS_AB				= OrderedDict([
-							('Planning Results (%)',	'a) Planning results'),
-							('Makespan (s)',			'b) Makespan'),
-							('Number of Actions',		'c) Number of actions'),
-							('Processing Time (s)',		'd) Processing time'),
-							('Memory Usage (GB)',		'e) Memory usage'),
-					])
-
 METRICS				= OrderedDict([
-							('Planning Results (%)',	'Planning results'),
-							('Makespan (s)',			'Makespan'),
-							('Number of Actions',		'Number of actions'),
-							('Processing Time (s)',		'Processing time'),
-							('Memory Usage (GB)',		'Memory usage'),
+							('Planning Results (%)',	{'ab': 'a) Planning results',	'plain': 'Planning results'}),
+							('Makespan (s)',			{'ab': 'b) Makespan',			'plain': 'Makespan'}),
+							('Number of Actions',		{'ab': 'c) Number of actions',	'plain': 'Number of actions'}),
+							('Processing Time (s)',		{'ab': 'd) Processing time',	'plain': 'Processing time'}),
+							('Memory Usage (GB)',		{'ab': 'e) Memory usage',		'plain': 'Memory usage'}),
 					])
 
 PLANNER_DOM			= {'first_response': 'First Response', 'blocks_world': 'Blocks World', 'colin2': 'COLIN', 'tfddownward': 'TFD'}
@@ -110,10 +114,10 @@ SCATTER_PLOT_NAME	= "plots/scatter_"
 BOX_PLOT_NAME		= "plots/box_"
 PDF_PLOT_NAME		= "plots/pdf_plot"
 
-NCOL				= 2
+NCOL				= 4
 
 FIG_SIZE			= (9.0, 5.0)
-LABEL_OSET_RESULTS	= 0.5
+LABEL_OSET_RESULTS	= 0.45
 LABEL_OSET_METRICS	= -0.6
 
 def table_to_string(table, separator=None):
@@ -296,7 +300,7 @@ def generate_stats_plots(metrics):
 			ax = plt.subplot2grid((3,3), (grid_ctr,0))
 			grid_ctr += 1
 
-		plt.title(METRICS_AB[metric]+' for each tool.', loc='left')
+		# plt.title(METRICS[metric]['plain']+' for each tool.', loc='left')
 		ax.xaxis.grid(True, which='major')
 		ax.set_axisbelow(True)
 
@@ -310,7 +314,7 @@ def generate_stats_plots(metrics):
 			for i,f in enumerate(list(reversed(STATUSES.keys()))):
 				bar_handle.append(plt.barh(shift_pos, barl, bar_width, color=STATUSES[f]['color']))
 				barl -= np.array(list(reversed(metrics[metric][f].values())))
-			plt.legend(list(reversed(bar_handle)), label_succ, loc='lower center', bbox_to_anchor=(LABEL_OSET_RESULTS,1.2), ncol=NCOL, fontsize=FONT_SIZE)
+			plt.legend(list(reversed(bar_handle)), label_succ, loc='lower center', bbox_to_anchor=(LABEL_OSET_RESULTS,1.0), ncol=NCOL, fontsize=FONT_SIZE*0.80)
 			plt.xlim([0, 100])
 		else:
 			if metric in set(['Processing Time (s)','Memory Usage (GB)']):
@@ -356,7 +360,7 @@ def generate_scatter_plots(metrics, tools):
 						else:
 							ax = plt.subplot2grid((4,3), (m_a-1,m_b-1))
 						for t in tools:
-							plt.title(METRICS[metric_y]+' vs '+METRICS[metric_x], loc='center')
+							plt.title(METRICS[metric_y]['plain']+' vs '+METRICS[metric_x]['plain'], loc='center')
 							samples_x	= metrics[metric_x]['sample']['Success (%)'][t]
 							samples_y	= metrics[metric_y]['sample']['Success (%)'][t]
 							plt.scatter(samples_x, samples_y, c=TOOLS[t]['color'], marker='.', linewidths=0)
@@ -364,17 +368,17 @@ def generate_scatter_plots(metrics, tools):
 							plt.ylabel(metric_y)
 							ax.set_xlim(left=0, right=None)
 							ax.set_ylim(bottom=0, top=None)
-							plt.legend([TOOLS[t]['tex'] for t in tools], loc='best', ncol=2, scatterpoints=1, fontsize=FONT_SIZE*0.75)
+							plt.legend([TOOLS[t]['tex'] for t in tools], loc='best', ncol=2, scatterpoints=1, fontsize=FONT_SIZE)
 	plt.tight_layout()
 	fig.subplots_adjust(top=0.94)
 	for f in PLOT_FORMATS:
 		plt.savefig(SCATTER_PLOT_NAME+domain+'_'+planner+'.'+f, bbox_inches='tight')
 
 def generate_box_plots(metrics, tools):
-	fig = plt.figure(figsize=(8.0, 3.4))
+	fig = plt.figure(figsize=(6.0, 2.10))
 	subplot_layout = (1,2)
 	label_offset = (5,-5)
-	fig.suptitle('Quality and Cost Multi-Objectives in the '+PLANNER_DOM[domain]+' Domain with the '+PLANNER_DOM[planner]+' Planner', fontsize=FONT_SIZE*1.5, ha='center')
+	# fig.suptitle('Quality and Cost Multi-Objectives in the '+PLANNER_DOM[domain]+' Domain with the '+PLANNER_DOM[planner]+' Planner', fontsize=FONT_SIZE*1.2, ha='center')
 	matplotlib.rcParams.update({'font.size': FONT_SIZE})
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
 	matplotlib.rc('text', usetex=True)
@@ -402,11 +406,12 @@ def generate_box_plots(metrics, tools):
 		mean_dom = [sum([1 for tb in range(len(tools)) if mean_x[ta] < mean_x[tb] and mean_y[ta] < mean_y[tb]]) for ta in range(len(tools))]
 		med_dom = [sum([1 for tb in range(len(tools)) if med_x[ta] < med_x[tb] and med_y[ta] < med_y[tb]]) for ta in range(len(tools))]
 
-		def plot_details(loc='lower right'):
+		def plot_details(loc='best'):
 			plt.xlabel(metric_x)
 			plt.ylabel(metric_y)
-			plt.legend(tnames, loc=loc, ncol=2, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE*0.90)
-			plt.title(PLOT_LABELS[(domain,planner)][m]+') '+titles[m]+' Objectives: Mean '+METRICS[metric_y]+' vs '+METRICS[metric_x], loc='center')
+			plt.legend(tnames, loc=loc, ncol=2, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE*0.75)
+			# plt.title(PLOT_LABELS[(domain,planner)][m]+') '+PLANNER_DOM[domain]+' '+titles[m]+' ('+PLANNER_DOM[planner]+'): '+METRICS[metric_y]['plain'].title()+' vs '+METRICS[metric_x]['plain'].title(), loc='left', fontsize=FONT_SIZE*0.95)
+			plt.title(PLOT_LABELS[(domain,planner)][m]+') '+PLANNER_DOM[domain]+' '+titles[m]+' Objectives ('+PLANNER_DOM[planner]+')', loc='left', fontsize=FONT_SIZE)
 
 		# # Mean and Confidence
 		# ax = plt.subplot2grid(subplot_layout, (0,m))
@@ -482,7 +487,7 @@ db = CsvDatabase(FILTERED_STATS)
 # For each metric
 print 'Processing ...'
 metrics = OrderedDict()
-for metric in tqdm(METRICS_AB.keys()):
+for metric in tqdm(METRICS.keys()):
 	metrics[metric] = OrderedDict()
 	metrics[metric]['mean']				= OrderedDict()
 	metrics[metric]['error']			= OrderedDict()
@@ -530,7 +535,7 @@ for metric in tqdm(METRICS_AB.keys()):
 # 	file.write(table_to_string(stats_table,','))
 # 	# print tabulate(stats_table, headers="firstrow", tablefmt="latex")
 
-# Stats Plots
+# # Stats Plots
 # print 'Stats Plots ...'
 # generate_stats_plots(metrics)
 
