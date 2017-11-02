@@ -408,8 +408,8 @@ def generate_box_plots(metrics, tools):
 		def plot_details():
 			plt.xlabel(metric_x)
 			plt.ylabel(metric_y)
-			if m == 0:
-				plt.legend(tnames, loc='lower center', ncol=10, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE*0.90, bbox_to_anchor=(1.05,1.0))
+			if m == 0 and planner in ['tfddownward']:
+				plt.legend(tnames, loc='lower center', ncol=10, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE*0.915, bbox_to_anchor=(1.07,1.0))
 			ax.text(0.0, -0.35,PLOT_LABELS[(domain,planner)][m]+') '+PLANNER_DOM[domain]+' '+titles[m]+' Objectives ('+PLANNER_DOM[planner]+')', verticalalignment='bottom', horizontalalignment='left', transform=ax.transAxes, fontsize=FONT_SIZE)
 
 		# # Mean and Confidence
