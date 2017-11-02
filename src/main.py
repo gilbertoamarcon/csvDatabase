@@ -49,37 +49,37 @@ INVALID_PAIR		= (float('nan'),float('nan'))
 
 STATUSES			= OrderedDict([
 							('Success (%)',			OrderedDict([	('short', 'Success'),	('code', 0),	('color', (0.000, 0.447, 0.741))	])), # Blue
-							('Nonexecutable (%)',	OrderedDict([	('short', 'Nonexec'),	('code', 1),	('color', (0.850, 0.325, 0.098))	])), # Tomato
-							('Time Fail (%)',		OrderedDict([	('short', 'Time Fail'),	('code', 124),	('color', (0.929, 0.694, 0.125))	])), # Orange
-							('Memory Fail (%)',		OrderedDict([	('short', 'Mem Fail'),	('code', 134),	('color', (0.929, 0.894, 0.325))	])), # Yellow
+							# ('Nonexecutable (%)',	OrderedDict([	('short', 'Nonexec'),	('code', 1),	('color', (0.850, 0.325, 0.098))	])), # Tomato
+							# ('Time Fail (%)',		OrderedDict([	('short', 'Time Fail'),	('code', 124),	('color', (0.929, 0.694, 0.125))	])), # Orange
+							# ('Memory Fail (%)',		OrderedDict([	('short', 'Mem Fail'),	('code', 134),	('color', (0.929, 0.894, 0.325))	])), # Yellow
+					])
+
+TOOLS				= OrderedDict([
+							('Object',				OrderedDict([	('reg', 'O'),		('tex',r'\textbf{O}'),		('color', (1.000, 0.000, 0.000)), ('marker', (3,0,0))	])), # Red
+							('Action',				OrderedDict([	('reg', 'A'),		('tex',r'\textbf{A}'),		('color', (0.000, 0.500, 0.000)), ('marker', (4,0,0))	])), # Green
+							('ActionObject',		OrderedDict([	('reg', 'AO'),		('tex',r'\textbf{AO}'),		('color', (0.000, 0.000, 1.000)), ('marker', (5,0,0))	])), # Blue
+							('ObjectTime',			OrderedDict([	('reg', 'OT'),		('tex',r'\textbf{OT}'),		('color', (1.000, 0.500, 0.500)), ('marker', (3,0,180))	])), # Pink
+							('ActionTime',			OrderedDict([	('reg', 'AT'),		('tex',r'\textbf{AT}'),		('color', (0.500, 1.000, 0.500)), ('marker', (4,0,45))	])), # Light Green
+							('ActionObjectTime',	OrderedDict([	('reg', 'AOT'),		('tex',r'\textbf{AOT}'),	('color', (0.000, 0.750, 1.000)), ('marker', (5,0,180))	])), # Light Blue
+							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS'),				('color', (0.500, 0.000, 0.500)), ('marker', (6,0,0))	])), # Purple
+							('CoalitionAssistance',	OrderedDict([	('reg', 'CA'),		('tex','CA'),				('color', (1.000, 0.500, 1.000)), ('marker', (6,0,30))	])), # Light Purple
+							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP'),				('color', (0.000, 0.000, 0.000)), ('marker', (7,0,0))	])), # Black
+							('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA'),				('color', (0.500, 0.500, 0.500)), ('marker', (7,0,180))	])), # Grey
 					])
 
 # TOOLS				= OrderedDict([
 # 							('Object',				OrderedDict([	('reg', 'O'),		('tex',r'\textbf{O}'),		('color', (1.000, 0.000, 0.000)), ('marker', (3,0,0))	])), # Red
 # 							('Action',				OrderedDict([	('reg', 'A'),		('tex',r'\textbf{A}'),		('color', (0.000, 0.500, 0.000)), ('marker', (4,0,0))	])), # Green
 # 							('ActionObject',		OrderedDict([	('reg', 'AO'),		('tex',r'\textbf{AO}'),		('color', (0.000, 0.000, 1.000)), ('marker', (5,0,0))	])), # Blue
+# 							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS'),				('color', (0.500, 0.000, 0.500)), ('marker', (6,0,0))	])), # Purple
+# 							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP'),				('color', (0.000, 0.000, 0.000)), ('marker', (7,0,0))	])), # Black
+
 # 							('ObjectTime',			OrderedDict([	('reg', 'OT'),		('tex',r'\textbf{OT}'),		('color', (1.000, 0.500, 0.500)), ('marker', (3,0,180))	])), # Pink
 # 							('ActionTime',			OrderedDict([	('reg', 'AT'),		('tex',r'\textbf{AT}'),		('color', (0.500, 1.000, 0.500)), ('marker', (4,0,45))	])), # Light Green
 # 							('ActionObjectTime',	OrderedDict([	('reg', 'AOT'),		('tex',r'\textbf{AOT}'),	('color', (0.000, 0.750, 1.000)), ('marker', (5,0,180))	])), # Light Blue
-# 							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS'),				('color', (0.500, 0.000, 0.500)), ('marker', (6,0,0))	])), # Purple
 # 							('CoalitionAssistance',	OrderedDict([	('reg', 'CA'),		('tex','CA'),				('color', (1.000, 0.500, 1.000)), ('marker', (6,0,30))	])), # Light Purple
-# 							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP'),				('color', (0.000, 0.000, 0.000)), ('marker', (7,0,0))	])), # Black
 # 							('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA'),				('color', (0.500, 0.500, 0.500)), ('marker', (7,0,180))	])), # Grey
 # 					])
-
-TOOLS				= OrderedDict([
-							('Object',				OrderedDict([	('reg', 'O'),		('tex',r'\textbf{O}'),		('color', (1.000, 0.000, 0.000)), ('marker', (3,0,0))	])), # Red
-							('Action',				OrderedDict([	('reg', 'A'),		('tex',r'\textbf{A}'),		('color', (0.000, 0.500, 0.000)), ('marker', (4,0,0))	])), # Green
-							('ActionObject',		OrderedDict([	('reg', 'AO'),		('tex',r'\textbf{AO}'),		('color', (0.000, 0.000, 1.000)), ('marker', (5,0,0))	])), # Blue
-							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS'),				('color', (0.500, 0.000, 0.500)), ('marker', (6,0,0))	])), # Purple
-							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP'),				('color', (0.000, 0.000, 0.000)), ('marker', (7,0,0))	])), # Black
-
-							('ObjectTime',			OrderedDict([	('reg', 'OT'),		('tex',r'\textbf{OT}'),		('color', (1.000, 0.500, 0.500)), ('marker', (3,0,180))	])), # Pink
-							('ActionTime',			OrderedDict([	('reg', 'AT'),		('tex',r'\textbf{AT}'),		('color', (0.500, 1.000, 0.500)), ('marker', (4,0,45))	])), # Light Green
-							('ActionObjectTime',	OrderedDict([	('reg', 'AOT'),		('tex',r'\textbf{AOT}'),	('color', (0.000, 0.750, 1.000)), ('marker', (5,0,180))	])), # Light Blue
-							('CoalitionAssistance',	OrderedDict([	('reg', 'CA'),		('tex','CA'),				('color', (1.000, 0.500, 1.000)), ('marker', (6,0,30))	])), # Light Purple
-							('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA'),				('color', (0.500, 0.500, 0.500)), ('marker', (7,0,180))	])), # Grey
-					])
 if domain == 'first_response':
 	del TOOLS['PA']
 
@@ -375,10 +375,9 @@ def generate_scatter_plots(metrics, tools):
 		plt.savefig(SCATTER_PLOT_NAME+domain+'_'+planner+'.'+f, bbox_inches='tight')
 
 def generate_box_plots(metrics, tools):
-	fig = plt.figure(figsize=(6.0, 2.10))
+	fig = plt.figure(figsize=(6.0, 2.00))
 	subplot_layout = (1,2)
 	label_offset = (5,-5)
-	# fig.suptitle('Quality and Cost Multi-Objectives in the '+PLANNER_DOM[domain]+' Domain with the '+PLANNER_DOM[planner]+' Planner', fontsize=FONT_SIZE*1.2, ha='center')
 	matplotlib.rcParams.update({'font.size': FONT_SIZE})
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
 	matplotlib.rc('text', usetex=True)
@@ -406,12 +405,12 @@ def generate_box_plots(metrics, tools):
 		mean_dom = [sum([1 for tb in range(len(tools)) if mean_x[ta] < mean_x[tb] and mean_y[ta] < mean_y[tb]]) for ta in range(len(tools))]
 		med_dom = [sum([1 for tb in range(len(tools)) if med_x[ta] < med_x[tb] and med_y[ta] < med_y[tb]]) for ta in range(len(tools))]
 
-		def plot_details(loc='best'):
+		def plot_details():
 			plt.xlabel(metric_x)
 			plt.ylabel(metric_y)
-			plt.legend(tnames, loc=loc, ncol=2, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE*0.75)
-			# plt.title(PLOT_LABELS[(domain,planner)][m]+') '+PLANNER_DOM[domain]+' '+titles[m]+' ('+PLANNER_DOM[planner]+'): '+METRICS[metric_y]['plain'].title()+' vs '+METRICS[metric_x]['plain'].title(), loc='left', fontsize=FONT_SIZE*0.95)
-			plt.title(PLOT_LABELS[(domain,planner)][m]+') '+PLANNER_DOM[domain]+' '+titles[m]+' Objectives ('+PLANNER_DOM[planner]+')', loc='left', fontsize=FONT_SIZE)
+			if m == 0:
+				plt.legend(tnames, loc='lower center', ncol=10, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE*0.90, bbox_to_anchor=(1.05,1.0))
+			ax.text(0.0, -0.35,PLOT_LABELS[(domain,planner)][m]+') '+PLANNER_DOM[domain]+' '+titles[m]+' Objectives ('+PLANNER_DOM[planner]+')', verticalalignment='bottom', horizontalalignment='left', transform=ax.transAxes, fontsize=FONT_SIZE)
 
 		# # Mean and Confidence
 		# ax = plt.subplot2grid(subplot_layout, (0,m))
