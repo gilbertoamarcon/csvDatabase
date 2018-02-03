@@ -134,6 +134,7 @@ matplotlib.rcParams.update({'font.family': FONT_FAMILY})
 
 
 # f, axes = plt.subplots(2,5)
+plt.figure(frameon=True)
 f, axes = plt.subplots(2,5, sharex='all', sharey='all', squeeze=True)
 plt.subplots_adjust(hspace=0.20, wspace=-0.3, bottom=0.15, top=0.88, left=0.00, right=1.00)
 plt.gcf().set_size_inches(7,3.2)
@@ -144,7 +145,7 @@ matplotlib.rcParams.update({'ytick.major.width': 0.2})
 
 if domain == 'first_response':
 	labels = [STATUSES[s]['short'] for s in STATUSES]
-	patches = [mpatches.Patch(facecolor=color, label=label, linewidth=1.0) for label,color in zip(code_list,color_list)]
+	patches = [mpatches.Patch(color=color, label=label, linewidth=1.0) for label,color in zip(code_list,color_list)]
 	axes[1,4].axis('off')
 	axes[1,4].legend(patches, labels, loc='center', frameon=False)
 
@@ -166,6 +167,7 @@ for t in buf:
 	# Square Aspect Ratio
 	ax.set_adjustable('box-forced')
 	ax.set_aspect(1)
+
 	
 	# Major tick indexes
 	ax.set_xticks(np.arange(0,10,1.0));
@@ -176,8 +178,8 @@ for t in buf:
 	ax.set_yticklabels(np.arange(1, 11, 1));
 
 	# Minor ticks
-	ax.set_xticks(np.arange(-.42, 10, 1), minor=True);
-	ax.set_yticks(np.arange(-.45, 10, 1), minor=True);
+	ax.set_xticks(np.arange(-.45, 10, 1), minor=True);
+	ax.set_yticks(np.arange(-.43, 10, 1), minor=True);
 
 	# Hidding tick marks
 	ax.xaxis.set_ticks_position('none') 
@@ -189,8 +191,13 @@ for t in buf:
 	if py == 0:
 		ax.set(ylabel='Problem')
 
+	ax.spines['top'].set_visible(False)
+	ax.spines['left'].set_visible(False)
+	ax.spines['right'].set_visible(False)
+	ax.spines['bottom'].set_visible(False)
+
 	# Gridlines based on minor ticks
-	ax.grid(which='minor', color='k', linestyle='-', linewidth=1.0)
+	ax.grid(which='minor', color='w', linestyle='-', linewidth=1.5)
 
 plt.suptitle('%s %s' % (PLANNER_DOM[domain], PLANNER_DOM[planner]), fontsize=12)
 
