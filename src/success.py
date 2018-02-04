@@ -15,12 +15,13 @@ from scipy import stats
 from CsvDatabase import *
 from StatsFilter import *
 
-HELP_MSG = 'main.py -p <planner> -d <domain>\nplanner choices:\n\ttfddownward\n\tcolin2\ndomain choices:\n\tblocks_world\n\tfirst_response'
+HELP_MSG = 'main.py -p <planner> -d <domain> -g <gridcolor>\nplanner choices:\n\ttfddownward\n\tcolin2\ndomain choices:\n\tblocks_world\n\tfirst_response'
 
+grid = 'w'
 domain = 'blocks_world'
 planner = 'tfddownward'
 try:
-	opts, args = getopt.getopt(sys.argv[1:],'hp:d:',['planner=','domain='])
+	opts, args = getopt.getopt(sys.argv[1:],'hp:d:g:',['planner=','domain=','gridcolor='])
 except getopt.GetoptError:
 	print HELP_MSG
 	sys.exit(2)
@@ -32,8 +33,11 @@ for opt, arg in opts:
 		planner = arg
 	elif opt in ('-d', '--domain'):
 		domain = arg
+	elif opt in ('-g', '--gridcolor'):
+		grid = arg
 print 'Domain: %s' % domain
 print 'Planner: %s' % planner
+print 'Grid: %s' % grid
 
 
 STATUSES			= OrderedDict([
@@ -145,7 +149,7 @@ matplotlib.rcParams.update({'ytick.major.width': 0.2})
 
 if domain == 'first_response':
 	labels = [STATUSES[s]['short'] for s in STATUSES]
-	patches = [mpatches.Patch(color=color, label=label, linewidth=1.0) for label,color in zip(code_list,color_list)]
+	patches = [mpatches.Patch(facecolor=color, edgecolor=grid, label=label, linewidth=1.0) for label,color in zip(code_list,color_list)]
 	axes[1,4].axis('off')
 	axes[1,4].legend(patches, labels, loc='center', frameon=False)
 
@@ -191,13 +195,14 @@ for t in buf:
 	if py == 0:
 		ax.set(ylabel='Problem')
 
-	ax.spines['top'].set_visible(False)
-	ax.spines['left'].set_visible(False)
-	ax.spines['right'].set_visible(False)
-	ax.spines['bottom'].set_visible(False)
+	if grid == 'w':
+		ax.spines['top'].set_visible(False)
+		ax.spines['left'].set_visible(False)
+		ax.spines['right'].set_visible(False)
+		ax.spines['bottom'].set_visible(False)
 
 	# Gridlines based on minor ticks
-	ax.grid(which='minor', color='w', linestyle='-', linewidth=1.5)
+	ax.grid(which='minor', color=grid, linestyle='-', linewidth=1.5)
 
 plt.suptitle('%s %s' % (PLANNER_DOM[domain], PLANNER_DOM[planner]), fontsize=12)
 
