@@ -39,20 +39,23 @@ class StatsFilter:
 			# Tool
 			row_buffer.append(re.sub(FILTER_CHAR, '', row[6]))
 
-			# Status
-			row_buffer.append(re.sub(FILTER_CHAR, '', row[11]))
-
-			# Makespan
-			row_buffer.append(re.sub(FILTER_CHAR, '', row[7]))
-
-			# Actions
+			# Fusion Ratio
 			row_buffer.append(re.sub(FILTER_CHAR, '', row[8]))
 
-			# Proc. Time (s)
+			# Status
+			row_buffer.append(re.sub(FILTER_CHAR, '', row[13]))
+
+			# Makespan
 			row_buffer.append(re.sub(FILTER_CHAR, '', row[9]))
 
+			# Actions
+			row_buffer.append(re.sub(FILTER_CHAR, '', row[10]))
+
+			# Proc. Time (s)
+			row_buffer.append(re.sub(FILTER_CHAR, '', row[11]))
+
 			# Memory (GB)
-			mem = float(re.sub(FILTER_CHAR, '', row[10]))/(2**20)
+			mem = float(re.sub(FILTER_CHAR, '', row[12]))/(2**20)
 			row_buffer.append(str(mem))
 
 			ret_val.append(row_buffer)

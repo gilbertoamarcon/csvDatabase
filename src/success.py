@@ -15,13 +15,14 @@ from scipy import stats
 from CsvDatabase import *
 from StatsFilter import *
 
-HELP_MSG = 'main.py -p <planner> -d <domain> -g <gridcolor>\nplanner choices:\n\ttfddownward\n\tcolin2\ndomain choices:\n\tblocks_world\n\tfirst_response'
+HELP_MSG = 'main.py -d <domain> -p <planner> -f <fusion-ratio> -g <gridcolor>\nplanner choices:\n\ttfddownward\n\tcolin2\ndomain choices:\n\tblocks_world\n\tfirst_response'
 
-grid = 'w'
 domain = 'blocks_world'
 planner = 'tfddownward'
+fusion_ratio = '0.50'
+grid = 'w'
 try:
-	opts, args = getopt.getopt(sys.argv[1:],'hp:d:g:',['planner=','domain=','gridcolor='])
+	opts, args = getopt.getopt(sys.argv[1:],'hd:p:f:g:',['domain=','planner=','fusion-ratio=','gridcolor='])
 except getopt.GetoptError:
 	print HELP_MSG
 	sys.exit(2)
@@ -33,10 +34,13 @@ for opt, arg in opts:
 		planner = arg
 	elif opt in ('-d', '--domain'):
 		domain = arg
+	elif opt in ('-f', '--fusion-ratio'):
+		fusion_ratio = arg
 	elif opt in ('-g', '--gridcolor'):
 		grid = arg
 print 'Domain: %s' % domain
 print 'Planner: %s' % planner
+print 'Fusion Ratio: %s' % fusion_ratio
 print 'Grid: %s' % grid
 
 
@@ -60,19 +64,7 @@ TOOLS				= OrderedDict([
 							('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA'),				('color', (0.500, 0.500, 0.500)), ('marker', (7,0,180)),	('plt-loc', (1,4))	])), # Grey
 					])
 
-# TOOLS				= OrderedDict([
-# 							('Object',				OrderedDict([	('reg', 'O'),		('tex',r'\textbf{O}'),		('color', (1.000, 0.000, 0.000)), ('marker', (3,0,0))	])), # Red
-# 							('Action',				OrderedDict([	('reg', 'A'),		('tex',r'\textbf{A}'),		('color', (0.000, 0.500, 0.000)), ('marker', (4,0,0))	])), # Green
-# 							('ActionObject',		OrderedDict([	('reg', 'AO'),		('tex',r'\textbf{AO}'),		('color', (0.000, 0.000, 1.000)), ('marker', (5,0,0))	])), # Blue
-# 							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS'),				('color', (0.500, 0.000, 0.500)), ('marker', (6,0,0))	])), # Purple
-# 							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP'),				('color', (0.000, 0.000, 0.000)), ('marker', (7,0,0))	])), # Black
 
-# 							('ObjectTime',			OrderedDict([	('reg', 'OT'),		('tex',r'\textbf{OT}'),		('color', (1.000, 0.500, 0.500)), ('marker', (3,0,180))	])), # Pink
-# 							('ActionTime',			OrderedDict([	('reg', 'AT'),		('tex',r'\textbf{AT}'),		('color', (0.500, 1.000, 0.500)), ('marker', (4,0,45))	])), # Light Green
-# 							('ActionObjectTime',	OrderedDict([	('reg', 'AOT'),		('tex',r'\textbf{AOT}'),	('color', (0.000, 0.750, 1.000)), ('marker', (5,0,180))	])), # Light Blue
-# 							('CoalitionAssistance',	OrderedDict([	('reg', 'CA'),		('tex','CA'),				('color', (1.000, 0.500, 1.000)), ('marker', (6,0,30))	])), # Light Purple
-# 							('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA'),				('color', (0.500, 0.500, 0.500)), ('marker', (7,0,180))	])), # Grey
-# 					])
 if domain == 'first_response':
 	del TOOLS['PA']
 
@@ -80,7 +72,7 @@ if domain == 'first_response':
 PLANNER_DOM			= {'first_response': 'First Response', 'blocks_world': 'Blocks World', 'colin2': 'COLIN', 'tfddownward': 'TFD'}
 
 # Labels
-file_header			= ['Domain','Problem','CFA','Planner','Tool', 'Planning Results (%)', 'Makespan (s)', 'Number of Actions', 'Processing Time (s)', 'Memory Usage (GB)']
+file_header			= ['Domain','Problem','CFA','Planner','Tool','Fusion Ratio', 'Planning Results (%)', 'Makespan (s)', 'Number of Actions', 'Processing Time (s)', 'Memory Usage (GB)']
 
 BAR_FILL			= 0.60
 FONT_SIZE			= 6
@@ -120,7 +112,7 @@ db = CsvDatabase(FILTERED_STATS)
 print 'Processing ...'
 data = OrderedDict()
 for t in TOOLS.keys():
-	query_all	= db.query([('Domain',domain),('Planner',planner),('Tool',t)])
+	query_all	= db.query([('Domain',domain),('Planner',planner),('Tool',t),('Fusion Ratio',['0.00',fusion_ratio])])
 	problems	= db.select(['Problem','Planning Results (%)'], query_all)
 	data[t]		= OrderedDict(problems)
 
@@ -166,7 +158,10 @@ for t in buf:
 	ax.imshow(buf[t], interpolation='nearest', origin='lower', cmap=cmap, norm=norm, aspect='equal')
 
 	# Plot Title
-	ax.title.set_text(TOOLS[t]['reg'])
+	tool_title = TOOLS[t]['reg']
+	if t not in ['PA','CFP']:
+		tool_title += ' (%s Fusion Ratio)' % fusion_ratio
+	ax.title.set_text(tool_title)
 
 	# Square Aspect Ratio
 	ax.set_adjustable('box-forced')

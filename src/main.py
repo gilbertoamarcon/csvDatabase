@@ -36,65 +36,52 @@ print 'Planner: %s' % planner
 
 PLOT_LABELS = {('blocks_world','tfddownward'): ('a','b'), ('blocks_world','colin2'): ('c','d'), ('first_response','colin2'): ('e','f')}
 
-# Tool sets
-TOOLS_BASELINE		= ['PA', 'CFP', 'CoalitionSimilarity', 'CoalitionAssistance']
-TOOLS_RP			= ['Object', 'Action', 'ActionObject', 'ObjectTime', 'ActionTime', 'ActionObjectTime']
-
 # SPREAD			= 'STDEV'
 SPREAD				= 'CI'
-# PAIRWISE			= 'kw'
-PAIRWISE			= 'mw'
-MIN_P				= 0.01
-INVALID_PAIR		= (float('nan'),float('nan'))
 
 STATUSES			= OrderedDict([
-							('Success (%)',			OrderedDict([	('short', 'Success'),	('code', 0),	('color', (0.000, 0.447, 0.741))	])), # Blue
-							# ('Nonexecutable (%)',	OrderedDict([	('short', 'Nonexec'),	('code', 1),	('color', (0.850, 0.325, 0.098))	])), # Tomato
-							# ('Time Fail (%)',		OrderedDict([	('short', 'Time Fail'),	('code', 124),	('color', (0.929, 0.694, 0.125))	])), # Orange
-							# ('Memory Fail (%)',		OrderedDict([	('short', 'Mem Fail'),	('code', 134),	('color', (0.929, 0.894, 0.325))	])), # Yellow
+							('Success (%)',			OrderedDict([	('short', 'Success'),	('long', 'Success'),		('code', 0),	('color', (0.000, 0.447, 0.741))	])), # Blue
+							('Nonexecutable (%)',	OrderedDict([	('short', 'Nonexec'),	('long', 'Nonexecutable'),	('code', 1),	('color', (0.850, 0.325, 0.098))	])), # Tomato
+							('Time Fail (%)',		OrderedDict([	('short', 'Time Fail'),	('long', 'Time Fail'),		('code', 124),	('color', (0.929, 0.694, 0.125))	])), # Orange
+							('Memory Fail (%)',		OrderedDict([	('short', 'Mem Fail'),	('long', 'Memory Fail'),	('code', 134),	('color', (0.929, 0.894, 0.325))	])), # Yellow
 					])
 
-TOOLS				= OrderedDict([
-							('Object',				OrderedDict([	('reg', 'O'),		('tex',r'\textbf{O}'),		('color', (1.000, 0.000, 0.000)), ('marker', (3,0,0))	])), # Red
-							('Action',				OrderedDict([	('reg', 'A'),		('tex',r'\textbf{A}'),		('color', (0.000, 0.500, 0.000)), ('marker', (4,0,0))	])), # Green
-							('ActionObject',		OrderedDict([	('reg', 'AO'),		('tex',r'\textbf{AO}'),		('color', (0.000, 0.000, 1.000)), ('marker', (5,0,0))	])), # Blue
-							('ObjectTime',			OrderedDict([	('reg', 'OT'),		('tex',r'\textbf{OT}'),		('color', (1.000, 0.500, 0.500)), ('marker', (3,0,180))	])), # Pink
-							('ActionTime',			OrderedDict([	('reg', 'AT'),		('tex',r'\textbf{AT}'),		('color', (0.500, 1.000, 0.500)), ('marker', (4,0,45))	])), # Light Green
-							('ActionObjectTime',	OrderedDict([	('reg', 'AOT'),		('tex',r'\textbf{AOT}'),	('color', (0.000, 0.750, 1.000)), ('marker', (5,0,180))	])), # Light Blue
-							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS'),				('color', (0.500, 0.000, 0.500)), ('marker', (6,0,0))	])), # Purple
-							('CoalitionAssistance',	OrderedDict([	('reg', 'CA'),		('tex','CA'),				('color', (1.000, 0.500, 1.000)), ('marker', (6,0,30))	])), # Light Purple
-							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP'),				('color', (0.000, 0.000, 0.000)), ('marker', (7,0,0))	])), # Black
-							('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA'),				('color', (0.500, 0.500, 0.500)), ('marker', (7,0,180))	])), # Grey
-					])
+TOOLS	= OrderedDict([
+			(('Object',25),					OrderedDict([	('reg', 'O25'),		('tex',r'\textbf{Object (0.25)}'),				('color', (1.000, 0.000, 0.000)), ('marker', (3,0,0))	])), # Red
+			(('Object',50),					OrderedDict([	('reg', 'O50'),		('tex',r'\textbf{Object (0.50)}'),				('color', (1.000, 0.000, 0.000)), ('marker', (3,0,0))	])), # Red
+			(('Action',25),					OrderedDict([	('reg', 'A25'),		('tex',r'\textbf{Action (0.25)}'),				('color', (0.000, 0.500, 0.000)), ('marker', (4,0,0))	])), # Green
+			(('Action',50),					OrderedDict([	('reg', 'A50'),		('tex',r'\textbf{Action (0.50)}'),				('color', (0.000, 0.500, 0.000)), ('marker', (4,0,0))	])), # Green
+			(('ActionObject',25),			OrderedDict([	('reg', 'AO25'),	('tex',r'\textbf{Action Object (0.25)}'),		('color', (0.000, 0.000, 1.000)), ('marker', (5,0,0))	])), # Blue
+			(('ActionObject',50),			OrderedDict([	('reg', 'AO50'),	('tex',r'\textbf{Action Object (0.50)}'),		('color', (0.000, 0.000, 1.000)), ('marker', (5,0,0))	])), # Blue
+			(('ObjectTime',25),				OrderedDict([	('reg', 'OT25'),	('tex',r'\textbf{Object Time (0.25)}'),			('color', (1.000, 0.500, 0.500)), ('marker', (3,0,180))	])), # Pink
+			(('ObjectTime',50),				OrderedDict([	('reg', 'OT50'),	('tex',r'\textbf{Object Time (0.50)}'),			('color', (1.000, 0.500, 0.500)), ('marker', (3,0,180))	])), # Pink
+			(('ActionTime',25),				OrderedDict([	('reg', 'AT25'),	('tex',r'\textbf{Action Time (0.25)}'),			('color', (0.500, 1.000, 0.500)), ('marker', (4,0,45))	])), # Light Green
+			(('ActionTime',50),				OrderedDict([	('reg', 'AT50'),	('tex',r'\textbf{Action Time (0.50)}'),			('color', (0.500, 1.000, 0.500)), ('marker', (4,0,45))	])), # Light Green
+			(('ActionObjectTime',25),		OrderedDict([	('reg', 'AOT25'),	('tex',r'\textbf{Action Object Time (0.25)}'),	('color', (0.000, 0.750, 1.000)), ('marker', (5,0,180))	])), # Light Blue
+			(('ActionObjectTime',50),		OrderedDict([	('reg', 'AOT50'),	('tex',r'\textbf{Action Object Time (0.50)}'),	('color', (0.000, 0.750, 1.000)), ('marker', (5,0,180))	])), # Light Blue
+			(('CoalitionSimilarity',25),	OrderedDict([	('reg', 'CS25'),	('tex','Coalition Similarity (0.25)'),			('color', (0.500, 0.000, 0.500)), ('marker', (6,0,0))	])), # Purple
+			(('CoalitionSimilarity',50),	OrderedDict([	('reg', 'CS50'),	('tex','Coalition Similarity (0.50)'),			('color', (0.500, 0.000, 0.500)), ('marker', (6,0,0))	])), # Purple
+			(('CoalitionAssistance',25),	OrderedDict([	('reg', 'CA25'),	('tex','Coalition Assistance (0.25)'),			('color', (1.000, 0.500, 1.000)), ('marker', (6,0,30))	])), # Light Purple
+			(('CoalitionAssistance',50),	OrderedDict([	('reg', 'CA50'),	('tex','Coalition Assistance (0.50)'),			('color', (1.000, 0.500, 1.000)), ('marker', (6,0,30))	])), # Light Purple
+			(('CFP',0),						OrderedDict([	('reg', 'CFP'),		('tex','Coalition Formation and Planning'),		('color', (0.000, 0.000, 0.000)), ('marker', (7,0,0))	])), # Black
+			(('PA',0),						OrderedDict([	('reg', 'PA'),		('tex','Planning Alone'),						('color', (0.500, 0.500, 0.500)), ('marker', (7,0,180))	])), # Grey
+		])
 
-# TOOLS				= OrderedDict([
-# 							('Object',				OrderedDict([	('reg', 'O'),		('tex',r'\textbf{O}'),		('color', (1.000, 0.000, 0.000)), ('marker', (3,0,0))	])), # Red
-# 							('Action',				OrderedDict([	('reg', 'A'),		('tex',r'\textbf{A}'),		('color', (0.000, 0.500, 0.000)), ('marker', (4,0,0))	])), # Green
-# 							('ActionObject',		OrderedDict([	('reg', 'AO'),		('tex',r'\textbf{AO}'),		('color', (0.000, 0.000, 1.000)), ('marker', (5,0,0))	])), # Blue
-# 							('CoalitionSimilarity',	OrderedDict([	('reg', 'CS'),		('tex','CS'),				('color', (0.500, 0.000, 0.500)), ('marker', (6,0,0))	])), # Purple
-# 							('CFP',					OrderedDict([	('reg', 'CFP'),		('tex','CFP'),				('color', (0.000, 0.000, 0.000)), ('marker', (7,0,0))	])), # Black
-
-# 							('ObjectTime',			OrderedDict([	('reg', 'OT'),		('tex',r'\textbf{OT}'),		('color', (1.000, 0.500, 0.500)), ('marker', (3,0,180))	])), # Pink
-# 							('ActionTime',			OrderedDict([	('reg', 'AT'),		('tex',r'\textbf{AT}'),		('color', (0.500, 1.000, 0.500)), ('marker', (4,0,45))	])), # Light Green
-# 							('ActionObjectTime',	OrderedDict([	('reg', 'AOT'),		('tex',r'\textbf{AOT}'),	('color', (0.000, 0.750, 1.000)), ('marker', (5,0,180))	])), # Light Blue
-# 							('CoalitionAssistance',	OrderedDict([	('reg', 'CA'),		('tex','CA'),				('color', (1.000, 0.500, 1.000)), ('marker', (6,0,30))	])), # Light Purple
-# 							('PA',					OrderedDict([	('reg', 'PA'),		('tex','PA'),				('color', (0.500, 0.500, 0.500)), ('marker', (7,0,180))	])), # Grey
-# 					])
 if domain == 'first_response':
-	del TOOLS['PA']
+	del TOOLS[('PA',0)]
 
 METRICS				= OrderedDict([
-							('Planning Results (%)',	{'ab': 'a) Planning results',	'plain': 'Planning results'}),
-							('Makespan (s)',			{'ab': 'b) Makespan',			'plain': 'Makespan'}),
-							('Number of Actions',		{'ab': 'c) Number of actions',	'plain': 'Number of actions'}),
-							('Processing Time (s)',		{'ab': 'd) Processing time',	'plain': 'Processing time'}),
-							('Memory Usage (GB)',		{'ab': 'e) Memory usage',		'plain': 'Memory usage'}),
+							('Planning Results (%)',	{'ab': 'a) Planning results',	'plain': 'Planning results',	'excl': []}),
+							('Makespan (s)',			{'ab': 'b) Makespan',			'plain': 'Makespan',			'excl': ['Nonexecutable (%)','Time Fail (%)','Memory Fail (%)']}),
+							('Number of Actions',		{'ab': 'c) Number of actions',	'plain': 'Number of actions',	'excl': ['Nonexecutable (%)','Time Fail (%)','Memory Fail (%)']}),
+							('Processing Time (s)',		{'ab': 'd) Processing time',	'plain': 'Processing time',		'excl': ['Time Fail (%)']}),
+							('Memory Usage (GB)',		{'ab': 'e) Memory usage',		'plain': 'Memory usage',		'excl': ['Memory Fail (%)']}),
 					])
 
 PLANNER_DOM			= {'first_response': 'First Response', 'blocks_world': 'Blocks World', 'colin2': 'COLIN', 'tfddownward': 'TFD'}
 
 # Labels
-file_header			= ['Domain','Problem','CFA','Planner','Tool', 'Planning Results (%)', 'Makespan (s)', 'Number of Actions', 'Processing Time (s)', 'Memory Usage (GB)']
+file_header			= ['Domain','Problem','CFA','Planner','Tool','Fusion Ratio', 'Planning Results (%)', 'Makespan (s)', 'Number of Actions', 'Processing Time (s)', 'Memory Usage (GB)']
 
 BAR_FILL			= 0.60
 FONT_SIZE			= 7
@@ -103,181 +90,51 @@ COL_PAD				= 5
 CSPACING			= 1
 
 # File names
-GATHER_DATA_SCRIPT	= "scripts/gather_data.sh"
-RAW_STATS			= "csv/stats.csv"
-FILTERED_STATS		= "csv/stats_filtered.csv"
-STATS_TABLE			= "csv/stats_"
-CSV_PREFIX			= "csv/"
+GATHER_DATA_SCRIPT	= 'scripts/gather_data.sh'
+RAW_STATS			= 'csv/stats.csv'
+FILTERED_STATS		= 'csv/stats_filtered.csv'
+STATS_TABLE			= 'tex/stats_'
 PLOT_FORMATS		= ['pdf', 'eps', 'svg']
-STATS_PLOT_NAME		= "plots/stats_"
-SCATTER_PLOT_NAME	= "plots/scatter_"
-BOX_PLOT_NAME		= "plots/box_"
-PDF_PLOT_NAME		= "plots/pdf_plot"
+STATS_PLOT_NAME		= 'plots/stats_'
+BOX_PLOT_NAME		= 'plots/box_'
 
 NCOL				= 4
 
-FIG_SIZE			= (9.0, 5.0)
-LABEL_OSET_RESULTS	= 0.45
+MARKER_SIZE			= 5
+TICK_SIZE			= 2
+LINE_WIDTH			= 0.50
+FIG_SIZE			= (12.0, 8.0)
+LABEL_OSET_RESULTS	= 0.50
 LABEL_OSET_METRICS	= -0.6
 
-def table_to_string(table, separator=None):
-
-	# Getting column widths
-	if separator is None:
-		col_widths = OrderedDict()
-		for j in range(len(table[0])):
-			col_width = 0
-			for e in table:
-				col_width = max(len(e[j]),col_width)
-			col_widths[j] = col_width+COL_PAD
-
-	# Lists to string
-	ret_var = ""
-	for i in range(len(table)):
-		for j in range(len(table[0])):
-			if separator is None:
-				ret_var += "% *s" % (col_widths[j],table[i][j])
-			else:
-				ret_var += "%s%s" % (table[i][j],separator)
-		ret_var += "\n"
-	return ret_var
-
-def compute_general_kruskal(metrics, tools):
-	ret_var = OrderedDict()
-	for metric in [metric for metric in metrics.keys() if metric != "Planning Results (%)"]:
-		ret_var[metric] = OrderedDict()
-		for status in metrics[metric]['sample']:
-			try:
-				datasets = [metrics[metric]['sample'][status][k] for k in metrics[metric]['sample'][status] if k in tools]
-				if len([e for e in datasets if len(e) < 2]) == 0:
-					ret_var[metric][status] =  stats.kruskal(*datasets)
-				else:
-					raise				
-			except:
-				ret_var[metric][status] = INVALID_PAIR
-	return ret_var
-
-def compute_pairwise_kruskal(metrics, status):
-	ret_var = OrderedDict()
-	for metric in metrics.keys():
-		if metric != "Planning Results (%)":
-			for t1 in metrics[metric]['sample'][status]:
-				for t2 in metrics[metric]['sample'][status]:
-					if t1 != t2:
-						tool_pair = (TOOLS[t1]['reg'], TOOLS[t2]['reg'])
-						if tool_pair not in ret_var:
-							ret_var[tool_pair] = OrderedDict()
-						if set(metrics[metric]['sample'][status][t1]).issubset(metrics[metric]['sample'][status][t2]) or set(metrics[metric]['sample'][status][t2]).issubset(metrics[metric]['sample'][status][t1]):
-							ret_var[tool_pair][metric] = INVALID_PAIR
-						else:
-
-							# Data pair
-							data_set_a = metrics[metric]['sample'][status][t1]
-							data_set_b = metrics[metric]['sample'][status][t2]
-
-							# Method
-							if PAIRWISE == 'kw':
-								ret_var[tool_pair][metric] = stats.kruskal(data_set_a, data_set_b)
-							if PAIRWISE == 'mw':
-								ret_var[tool_pair][metric] = stats.mannwhitneyu(data_set_a, data_set_b)
-
-							# Rounding up zero p-values
-							if ret_var[tool_pair][metric][1] < MIN_P:
-								ret_var[tool_pair][metric] = (ret_var[tool_pair][metric][0], MIN_P)
-
-							# NaN for P >= 0.99
-							if ret_var[tool_pair][metric][1] >= 0.99:
-								ret_var[tool_pair][metric] = INVALID_PAIR
-	return ret_var
-
-def generate_general_kruskal_table(general_kruskal_table):
-
-	# Header
-	ret_var = [['Metric']+[status for status in general_kruskal_table[next(iter(general_kruskal_table))]]]
-
-	# Body
-	for metric in general_kruskal_table:
-		trow = [metric]
-		for status in general_kruskal_table[metric]:
-			trow.append("%0.4f" % general_kruskal_table[metric][status][1])
-		ret_var.append(trow)
-
-	return ret_var
-
-def generate_pairwise_kruskal_table(kruskal_results):
-
-	# Assembling Kruskal table
-	ret_var = []
-
-	# Header 1
-	trow = []
-	trow.append('Pair')
-	trow.append('Pair')
-	for r in kruskal_results:
-		for h in kruskal_results[r]:
-			trow.append("%s" % h)
-			trow.append("%s" % h)
-		break
-	ret_var.append(trow)
-
-	# Header 2
-	trow = []
-	trow.append('Tool A')
-	trow.append('Tool B')
-	for r in kruskal_results:
-		for h in kruskal_results[r]:
-			trow.append("H")
-			trow.append("p")
-		break
-	ret_var.append(trow)
-
-	# Body
-	for i, t1 in enumerate(TOOLS.values()):
-		for j, t2 in enumerate(TOOLS.values()):
-			if i < j:
-				trow = []
-				trow.append('%s' % t1['reg'])
-				trow.append('%s' % t2['reg'])
-				for m in kruskal_results[(t1['reg'],t2['reg'])]:
-					for entry in kruskal_results[(t1['reg'],t2['reg'])][m]:
-						if entry == entry:
-							trow.append("%0.2f" % entry)
-						else:
-							trow.append("N/A")
-				ret_var.append(trow)
-
-	return ret_var
 
 def generate_stats_table(metrics):
-
-	# Assembling stats table
 	ret_var = []
-	trow = []
-
-	# Header
-	for h in ["Metric"] + [k['reg'] for k in TOOLS.values()]:
-		trow.append(h)
-	ret_var.append(trow)
-
-	# Body
 	for metric in metrics:
-		for f in STATUSES:
-			if metric == "Planning Results (%)":
-				trow = ["\"%s\""%f]
-			else:
-				trow = ["\"%s\""%metric]
-			for t in TOOLS.keys():
-				if metric == "Planning Results (%)":
-					trow.append("%.*f"%(CSPACING,metrics[metric][f][t]))
+		buff = [['']+[STATUSES[f]['long'] for f in STATUSES if f not in METRICS[metric]['excl']]]
+		for t in TOOLS.keys():
+			trow = [TOOLS[t]['tex']]
+			for f in [f for f in STATUSES if f not in METRICS[metric]['excl']]:
+				if metric == 'Planning Results (%)':
+					trow.append('%d'%metrics[metric][f][t])
 				else:
-					trow.append("%.*f (%.*f)"%(CSPACING,metrics[metric]['mean'][f][t],CSPACING,metrics[metric]['error'][f][t]))
-			ret_var.append(trow)
-	return ret_var
+					mean	= metrics[metric]['mean'][f][t]
+					error	= metrics[metric]['error'][f][t]
+					trow.append('%.*f (%.*f)'%(CSPACING,mean,CSPACING,error) if mean == mean and error ==  error else 'N/A')
+			buff.append(trow)
+		ret_var.append(tabulate(buff, headers='firstrow', tablefmt='latex_raw'))
+	return '\n'.join(ret_var)
+
 
 def generate_stats_plots(metrics):
 	plt.figure(figsize=FIG_SIZE)
 	matplotlib.rcParams.update({'font.size': FONT_SIZE})
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
+	matplotlib.rcParams.update({'axes.linewidth': LINE_WIDTH})
+	matplotlib.rcParams.update({'xtick.major.width': LINE_WIDTH})
+	matplotlib.rcParams.update({'ytick.major.width': LINE_WIDTH})
+	matplotlib.rcParams.update({'xtick.major.size': TICK_SIZE})
+	matplotlib.rcParams.update({'ytick.major.size': TICK_SIZE})
 	matplotlib.rc('text', usetex=True)
 	gridspec.GridSpec(9,1)
 	numbars = len(TOOLS)
@@ -286,100 +143,76 @@ def generate_stats_plots(metrics):
 	# For each metric
 	grid_ctr = 0
 	for m, metric in enumerate(metrics):
+		if metric == 'Planning Results (%)':
 
-		if metric in set(['Processing Time (s)','Memory Usage (GB)']):
-			bar_width = 0.33*BAR_FILL
-		else:
-			bar_width = BAR_FILL
-
-		if metric in set(['Processing Time (s)']):
-			ax = plt.subplot2grid((3,3), (0,1), rowspan=3)
-		elif metric in set(['Memory Usage (GB)']):
-			ax = plt.subplot2grid((3,3), (0,2), rowspan=3)
-		else:
-			ax = plt.subplot2grid((3,3), (grid_ctr,0))
-			grid_ctr += 1
-
-		# plt.title(METRICS[metric]['plain']+' for each tool.', loc='left')
-		ax.xaxis.grid(True, which='major')
-		ax.set_axisbelow(True)
-
-		shift_pos = bar_origin
-		if metric == "Planning Results (%)":
-			label_succ = []
-			for f in STATUSES:
-				label_succ.append(STATUSES[f]['short'])
-			barl = np.array([100.00]*len(TOOLS))
-			bar_handle = []
-			for i,f in enumerate(list(reversed(STATUSES.keys()))):
-				bar_handle.append(plt.barh(shift_pos, barl, bar_width, color=STATUSES[f]['color']))
-				barl -= np.array(list(reversed(metrics[metric][f].values())))
-			plt.legend(list(reversed(bar_handle)), label_succ, loc='lower center', bbox_to_anchor=(LABEL_OSET_RESULTS,1.0), ncol=NCOL, fontsize=FONT_SIZE*0.80)
-			plt.xlim([0, 100])
-		else:
 			if metric in set(['Processing Time (s)','Memory Usage (GB)']):
-				if metric in set(['Processing Time (s)']):
-					tool_plot = ['Success (%)', 'Nonexecutable (%)', 'Memory Fail (%)']
-				if metric in set(['Memory Usage (GB)']):
-					tool_plot = ['Success (%)', 'Nonexecutable (%)', 'Time Fail (%)']
-				counter = 2
-				for f in tool_plot:
-					means	= list(reversed(metrics[metric]['mean'][f].values()))
-					errors	= list(reversed(metrics[metric]['error'][f].values()))
-					plt.barh(shift_pos+bar_width*counter, means, bar_width, color=STATUSES[f]['color'], xerr=errors, ecolor='k')
-					counter -= 1
+				bar_width = 0.33*BAR_FILL
 			else:
-				means	= list(reversed(metrics[metric]['mean']['Success (%)'].values()))
-				errors	= list(reversed(metrics[metric]['error']['Success (%)'].values()))
-				plt.barh(shift_pos+bar_width*0, means, bar_width, color=STATUSES['Success (%)']['color'], xerr=errors, ecolor='k')
-		ax.set_xlim(left=0, right=None)
+				bar_width = BAR_FILL
 
-		plt.xlabel(metric.replace('%','\%'))
-		plt.yticks(bar_origin+BAR_FILL/2, list(reversed([k['tex'] for k in TOOLS.values()])))
-		plt.ylim([0, numbars]) 
+			if metric in set(['Processing Time (s)']):
+				ax = plt.subplot2grid((3,3), (0,1), rowspan=3)
+			elif metric in set(['Memory Usage (GB)']):
+				ax = plt.subplot2grid((3,3), (0,2), rowspan=3)
+			else:
+				ax = plt.subplot2grid((3,3), (grid_ctr,0))
+				grid_ctr += 1
 
-	# Legend and ticks
-	plt.tight_layout()
-	for f in PLOT_FORMATS:
-		plt.savefig(STATS_PLOT_NAME+domain+'_'+planner+'.'+f, bbox_inches='tight')
+			# plt.title(METRICS[metric]['plain']+' for each tool.', loc='left')
+			ax.xaxis.grid(True, which='major', color='grey', linestyle='-')
+			ax.set_axisbelow(True)
 
-def generate_scatter_plots(metrics, tools):
-	fig = plt.figure(figsize=(8.5, 11.0))
-	fig.suptitle(PLANNER_DOM[domain]+' '+PLANNER_DOM[planner], fontsize=12)
-	matplotlib.rcParams.update({'font.size': FONT_SIZE})
-	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
-	matplotlib.rc('text', usetex=True)
-	grid_ctr = 0
-	for m_a, metric_x in enumerate(metrics):
-		if metric_x not in ['Planning Results (%)']:
-			for m_b, metric_y in enumerate(metrics):
-				if metric_y not in ['Planning Results (%)']:
-					if m_a != m_b:
-						if m_a < m_b:
-							ax = plt.subplot2grid((4,3), (m_a-1,m_b-2))
-						else:
-							ax = plt.subplot2grid((4,3), (m_a-1,m_b-1))
-						for t in tools:
-							plt.title(METRICS[metric_y]['plain']+' vs '+METRICS[metric_x]['plain'], loc='center')
-							samples_x	= metrics[metric_x]['sample']['Success (%)'][t]
-							samples_y	= metrics[metric_y]['sample']['Success (%)'][t]
-							plt.scatter(samples_x, samples_y, c=TOOLS[t]['color'], marker='.', linewidths=0)
-							plt.xlabel(metric_x)
-							plt.ylabel(metric_y)
-							ax.set_xlim(left=0, right=None)
-							ax.set_ylim(bottom=0, top=None)
-							plt.legend([TOOLS[t]['tex'] for t in tools], loc='best', ncol=2, scatterpoints=1, fontsize=FONT_SIZE)
-	plt.tight_layout()
-	fig.subplots_adjust(top=0.94)
-	for f in PLOT_FORMATS:
-		plt.savefig(SCATTER_PLOT_NAME+domain+'_'+planner+'.'+f, bbox_inches='tight')
+			shift_pos = bar_origin
+			if metric == 'Planning Results (%)':
+				label_succ = []
+				for f in STATUSES:
+					label_succ.append(STATUSES[f]['long'])
+				barl = np.array([100.00]*len(TOOLS))
+				bar_handle = []
+				for i,f in enumerate(list(reversed(STATUSES.keys()))):
+					bar_handle.append(plt.barh(shift_pos, barl, bar_width, color=STATUSES[f]['color'], linewidth=LINE_WIDTH))
+					barl -= np.array(list(reversed(metrics[metric][f].values())))
+				legend = plt.legend(list(reversed(bar_handle)), label_succ, loc='lower center', bbox_to_anchor=(LABEL_OSET_RESULTS,1.0), ncol=NCOL, fontsize=FONT_SIZE*0.87)
+				legend.get_frame().set_linewidth(LINE_WIDTH)
+				plt.xlim([0, 100])
+			else:
+				if metric in set(['Processing Time (s)','Memory Usage (GB)']):
+					if metric in set(['Processing Time (s)']):
+						tool_plot = ['Success (%)', 'Nonexecutable (%)', 'Memory Fail (%)']
+					if metric in set(['Memory Usage (GB)']):
+						tool_plot = ['Success (%)', 'Nonexecutable (%)', 'Time Fail (%)']
+					counter = 2
+					for f in tool_plot:
+						means	= list(reversed(metrics[metric]['mean'][f].values()))
+						errors	= list(reversed(metrics[metric]['error'][f].values()))
+						plt.barh(shift_pos+bar_width*counter, means, bar_width, color=STATUSES[f]['color'], linewidth=LINE_WIDTH, xerr=errors, ecolor='k')
+						counter -= 1
+				else:
+					means	= list(reversed(metrics[metric]['mean']['Success (%)'].values()))
+					errors	= list(reversed(metrics[metric]['error']['Success (%)'].values()))
+					plt.barh(shift_pos+bar_width*0, means, bar_width, color=STATUSES['Success (%)']['color'], linewidth=LINE_WIDTH, xerr=errors, ecolor='k')
+			ax.set_xlim(left=0, right=None)
+
+			plt.xlabel(metric.replace('%','\%'))
+			plt.yticks(bar_origin+BAR_FILL/2, list(reversed([k['tex'] for k in TOOLS.values()])))
+			plt.ylim([0, numbars]) 
+
+		# Legend and ticks
+		plt.tight_layout()
+		for f in PLOT_FORMATS:
+			plt.savefig(STATS_PLOT_NAME+domain+'_'+planner+'.'+f, bbox_inches='tight')
 
 def generate_box_plots(metrics, tools):
 	fig = plt.figure(figsize=(6.0, 2.00))
 	subplot_layout = (1,2)
-	label_offset = (5,-5)
+	label_offset = (4,-4)
 	matplotlib.rcParams.update({'font.size': FONT_SIZE})
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
+	matplotlib.rcParams.update({'axes.linewidth': LINE_WIDTH})
+	matplotlib.rcParams.update({'xtick.major.width': LINE_WIDTH})
+	matplotlib.rcParams.update({'ytick.major.width': LINE_WIDTH})
+	matplotlib.rcParams.update({'xtick.major.size': TICK_SIZE})
+	matplotlib.rcParams.update({'ytick.major.size': TICK_SIZE})
 	matplotlib.rc('text', usetex=True)
 	titles = ['Quality', 'Cost']
 	for m, (metric_x, metric_y) in enumerate([('Makespan (s)', 'Number of Actions'),('Processing Time (s)', 'Memory Usage (GB)')]):
@@ -403,26 +236,14 @@ def generate_box_plots(metrics, tools):
 
 		# Computing Pareto Domainance
 		mean_dom = [sum([1 for tb in range(len(tools)) if mean_x[ta] < mean_x[tb] and mean_y[ta] < mean_y[tb]]) for ta in range(len(tools))]
-		med_dom = [sum([1 for tb in range(len(tools)) if med_x[ta] < med_x[tb] and med_y[ta] < med_y[tb]]) for ta in range(len(tools))]
 
 		def plot_details():
 			plt.xlabel(metric_x)
 			plt.ylabel(metric_y)
 			if m == 0 and planner in ['tfddownward']:
-				plt.legend(tnames, loc='lower center', ncol=10, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE*0.915, bbox_to_anchor=(1.07,1.0))
+				legend = plt.legend(tnames, loc='lower center', ncol=10, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE*0.915, bbox_to_anchor=(1.07,1.0))
+				legend.get_frame().set_linewidth(LINE_WIDTH)
 			ax.text(0.0, -0.35,PLOT_LABELS[(domain,planner)][m]+') '+PLANNER_DOM[domain]+' '+titles[m]+' Objectives ('+PLANNER_DOM[planner]+')', verticalalignment='bottom', horizontalalignment='left', transform=ax.transAxes, fontsize=FONT_SIZE)
-
-		# # Mean and Confidence
-		# ax = plt.subplot2grid(subplot_layout, (0,m))
-		# for x, y, xerr, yerr, c in zip(mean_x, mean_y, conf_x, conf_y, tcolors):
-		# 	plt.errorbar(x=x, y=y, xerr=xerr, yerr=yerr, c=c)
-		# plot_details('Mean and Confidence')
-
-		# # Median and Quartiles
-		# ax = plt.subplot2grid(subplot_layout, (1,m))
-		# for x, y, xerr_l, xerr_h, yerr_l, yerr_h, c in zip(med_x, med_y, perc_x_l, perc_x_h, perc_y_l, perc_y_h, tcolors):
-		# 	plt.errorbar(x=x, y=y, xerr=[[xerr_l],[xerr_h]], yerr=[[yerr_l],[yerr_h]], c=c)
-		# plot_details('Median and Quartiles', loc='upper right')
 
 		# Mean Pareto Dominance
 		ax = plt.subplot2grid(subplot_layout, (0,m))
@@ -433,28 +254,12 @@ def generate_box_plots(metrics, tools):
 		limits_x= [limits_x[0] - margin_x, limits_x[1] + margin_x]
 		limits_y= [limits_y[0] - margin_y, limits_y[1] + margin_y]
 		for x, y, c, mkr, d in zip(mean_x, mean_y, tcolors, tmarkers, mean_dom):
-			plt.plot(x, y, linestyle='None', marker=mkr, c=c)
-			plt.annotate(d, (x,y), xytext=label_offset, textcoords='offset points')
+			# plt.annotate(d, (x,y), xytext=label_offset, textcoords='offset points', fontsize=0.75*FONT_SIZE,arrowprops=dict(edgecolor='none',facecolor='grey', width=0.0, headwidth=LINE_WIDTH, shrink=0.50))
+			plt.annotate(d, (x,y), xytext=label_offset, textcoords='offset points', fontsize=FONT_SIZE)
+			plt.plot(x, y, ls='None', marker=mkr, c=c, ms=MARKER_SIZE, mew=0.1*MARKER_SIZE)
 		ax.set_xlim(limits_x)
 		ax.set_ylim(limits_y)
 		plot_details()
-
-		# # Median Pareto Dominance
-		# ax = plt.subplot2grid(subplot_layout, (3,m))
-		# for x, y, c, d in zip(med_x, med_y, tcolors, med_dom):
-		# 	plt.plot(x, y, 'o', c=c)
-		# 	plt.annotate(d, (x,y), xytext=label_offset, textcoords='offset points')
-		# plot_details('Median Pareto Dominance')
-
-		# # Mean and Median
-		# ax = plt.subplot2grid(subplot_layout, (4,m))
-		# for xa, xb, ya, yb, c in zip(mean_x, med_x, mean_y, med_y, tcolors):
-		# 	plt.plot([xa,xb], [ya,yb], '-', c=c)
-		# for x, y, c in zip(mean_x, mean_y, tcolors):
-		# 	plt.plot(x, y, '-s', c=c)
-		# for x, y, c in zip(med_x, med_y, tcolors):
-		# 	plt.plot(x, y, '-o', c=c)
-		# plot_details('Mean and Median')
 
 	plt.tight_layout()
 	fig.subplots_adjust(top=0.85)
@@ -499,49 +304,28 @@ for metric in tqdm(METRICS.keys()):
 
 	# For each tool
 	for t in TOOLS.keys():
-		if metric == "Planning Results (%)":
-			query_all	= db.query([('Domain',domain),('Planner',planner),('Tool',t)])
+		if metric == 'Planning Results (%)':
+			query_all	= db.query([('Domain',domain),('Planner',planner),('Tool',t[0]),('Fusion Ratio','0.%02d'%t[1])])
 			status		= db.select('Planning Results (%)', query_all, as_integer=True)
 			for f in STATUSES:
 				metrics[metric][f][t] = 100.0*len([k for k in status if k == STATUSES[f]['code']])/len(query_all)
 		else:
 			for f in STATUSES:
-				sample = db.select(metric, db.query([('Domain',domain),('Planner',planner),('Tool',t),('Planning Results (%)',str(STATUSES[f]['code']))]), as_float=True)
+				sample = db.select(metric, db.query([('Domain',domain),('Planner',planner),('Tool',t[0]),('Fusion Ratio','0.%02d'%t[1]),('Planning Results (%)',str(STATUSES[f]['code']))]), as_float=True)
 				mean, error = get_stats(sample)
 				metrics[metric]['mean'][f][t]	= mean
 				metrics[metric]['error'][f][t]	= error
 				metrics[metric]['sample'][f][t]	= sample
 
-# buf = ''
-# for tools_baseline in TOOLS_BASELINE:
-# 	general_kruskal_table = generate_general_kruskal_table(compute_general_kruskal(metrics, set([tools_baseline]) | set(TOOLS_RP)))
-# 	buf += tools_baseline + '\n' + table_to_string(general_kruskal_table,',')
-# with open(CSV_PREFIX+'kruskal_'+domain+'_'+planner+'.csv', 'wb') as file:
-# 	file.write(buf)
+# Stats Table
+print 'Stats Table ...'
+with open(STATS_TABLE+domain+'_'+planner+'.tex', 'wb') as file:
+	file.write(generate_stats_table(metrics))
 
-# Pair-wise Kruskal Tables
-# print 'Pair-wise Kruskal Table ...'
-# for f in STATUSES:
-# 	with open(CSV_PREFIX+PAIRWISE+'_'+domain+'_'+planner+'_'+STATUSES[f]['short'].replace(' ','')+'.csv', 'wb') as file:
-# 		pairwise_kruskal_table = generate_pairwise_kruskal_table(compute_pairwise_kruskal(metrics,f))
-# 		file.write(table_to_string(pairwise_kruskal_table,','))
+# Stats Plots
+print 'Stats Plots ...'
+generate_stats_plots(metrics)
 
-# # Stats Table
-# print 'Stats Table ...'
-# with open(STATS_TABLE+domain+'_'+planner+'.csv', 'wb') as file:
-# 	stats_table = generate_stats_table(metrics)
-# 	print table_to_string(stats_table)
-# 	file.write(table_to_string(stats_table,','))
-# 	# print tabulate(stats_table, headers="firstrow", tablefmt="latex")
-
-# # Stats Plots
-# print 'Stats Plots ...'
-# generate_stats_plots(metrics)
-
-# # Scatter Plots
-# print 'Stats Scatter ...'
-# generate_scatter_plots(metrics, TOOLS)
-
-# Box Plots
-print 'Box Plots ...'
-generate_box_plots(metrics, TOOLS)
+# # Box Plots
+# print 'Box Plots ...'
+# generate_box_plots(metrics, TOOLS)
