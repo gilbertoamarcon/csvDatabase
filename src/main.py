@@ -3,6 +3,7 @@ import os
 import sys
 import getopt
 import matplotlib
+import operator
 import matplotlib.pyplot as plt
 import statistics as stat
 import numpy as np
@@ -36,8 +37,8 @@ print 'Planner: %s' % planner
 
 PLOT_LABELS = {('blocks_world','tfddownward'): ('a','b'), ('blocks_world','colin2'): ('c','d'), ('first_response','colin2'): ('e','f')}
 
-# SPREAD			= 'STDEV'
-SPREAD				= 'CI'
+SPREAD			= 'STDEV'
+# SPREAD				= 'CI'
 
 STATUSES			= OrderedDict([
 							('Success (%)',			OrderedDict([	('short', 'Success'),	('long', 'Success'),		('code', 0),	('color', (0.000, 0.447, 0.741))	])), # Blue
@@ -47,24 +48,24 @@ STATUSES			= OrderedDict([
 					])
 
 TOOLS	= OrderedDict([
-			(('Object',25),					OrderedDict([	('reg', 'O25'),		('tex-long',r'\textbf{Object (0.25)}'),				('tex-short',r'\textbf{O (0.25)}'),		('color', (1.000, 0.000, 0.000)), ('marker', (3,0,0)),		('line', 0.00)	])), # Red line
-			(('Object',50),					OrderedDict([	('reg', 'O50'),		('tex-long',r'\textbf{Object (0.50)}'),				('tex-short',r'\textbf{O (0.50)}'),		('color', (1.000, 0.000, 0.000)), ('marker', (3,0,0)),		('line', 0.50)	])), # Red
-			(('Action',25),					OrderedDict([	('reg', 'A25'),		('tex-long',r'\textbf{Action (0.25)}'),				('tex-short',r'\textbf{A (0.25)}'),		('color', (0.000, 0.500, 0.000)), ('marker', (4,0,0)),		('line', 0.00)	])), # Green
-			(('Action',50),					OrderedDict([	('reg', 'A50'),		('tex-long',r'\textbf{Action (0.50)}'),				('tex-short',r'\textbf{A (0.50)}'),		('color', (0.000, 0.500, 0.000)), ('marker', (4,0,0)),		('line', 0.50)	])), # Green
-			(('ActionObject',25),			OrderedDict([	('reg', 'AO25'),	('tex-long',r'\textbf{Action Object (0.25)}'),		('tex-short',r'\textbf{AO (0.25)}'),	('color', (0.000, 0.000, 1.000)), ('marker', (5,0,0)),		('line', 0.00)	])), # Blue 
-			(('ActionObject',50),			OrderedDict([	('reg', 'AO50'),	('tex-long',r'\textbf{Action Object (0.50)}'),		('tex-short',r'\textbf{AO (0.50)}'),	('color', (0.000, 0.000, 1.000)), ('marker', (5,0,0)),		('line', 0.50)	])), # Blue
-			(('ObjectTime',25),				OrderedDict([	('reg', 'OT25'),	('tex-long',r'\textbf{Object Time (0.25)}'),		('tex-short',r'\textbf{OT (0.25)}'),	('color', (1.000, 0.500, 0.500)), ('marker', (3,0,180)),	('line', 0.00)	])), # Pink
-			(('ObjectTime',50),				OrderedDict([	('reg', 'OT50'),	('tex-long',r'\textbf{Object Time (0.50)}'),		('tex-short',r'\textbf{OT (0.50)}'),	('color', (1.000, 0.500, 0.500)), ('marker', (3,0,180)),	('line', 0.50)	])), # Pink
-			(('ActionTime',25),				OrderedDict([	('reg', 'AT25'),	('tex-long',r'\textbf{Action Time (0.25)}'),		('tex-short',r'\textbf{AT (0.25)}'),	('color', (0.500, 1.000, 0.500)), ('marker', (4,0,45)),		('line', 0.00)	])), # Light Green
-			(('ActionTime',50),				OrderedDict([	('reg', 'AT50'),	('tex-long',r'\textbf{Action Time (0.50)}'),		('tex-short',r'\textbf{AT (0.50)}'),	('color', (0.500, 1.000, 0.500)), ('marker', (4,0,45)),		('line', 0.50)	])), # Light Green
-			(('ActionObjectTime',25),		OrderedDict([	('reg', 'AOT25'),	('tex-long',r'\textbf{Action Object Time (0.25)}'),	('tex-short',r'\textbf{AOT (0.25)}'),	('color', (0.000, 0.750, 1.000)), ('marker', (5,0,180)),	('line', 0.00)	])), # Light Blue
-			(('ActionObjectTime',50),		OrderedDict([	('reg', 'AOT50'),	('tex-long',r'\textbf{Action Object Time (0.50)}'),	('tex-short',r'\textbf{AOT (0.50)}'),	('color', (0.000, 0.750, 1.000)), ('marker', (5,0,180)),	('line', 0.50)	])), # Light Blue
-			(('CoalitionSimilarity',25),	OrderedDict([	('reg', 'CS25'),	('tex-long','Coalition Similarity (0.25)'),			('tex-short','CS (0.25)'),				('color', (0.500, 0.000, 0.500)), ('marker', (6,0,0)),		('line', 0.00)	])), # Purple
-			(('CoalitionSimilarity',50),	OrderedDict([	('reg', 'CS50'),	('tex-long','Coalition Similarity (0.50)'),			('tex-short','CS (0.50)'),				('color', (0.500, 0.000, 0.500)), ('marker', (6,0,0)),		('line', 0.50)	])), # Purple
-			(('CoalitionAssistance',25),	OrderedDict([	('reg', 'CA25'),	('tex-long','Coalition Assistance (0.25)'),			('tex-short','CA (0.25)'),				('color', (1.000, 0.500, 1.000)), ('marker', (6,0,30)),		('line', 0.00)	])), # Light Purple
-			(('CoalitionAssistance',50),	OrderedDict([	('reg', 'CA50'),	('tex-long','Coalition Assistance (0.50)'),			('tex-short','CA (0.50)'),				('color', (1.000, 0.500, 1.000)), ('marker', (6,0,30)),		('line', 0.50)	])), # Light Purple
-			(('CFP',0),						OrderedDict([	('reg', 'CFP'),		('tex-long','Coalition Formation and Planning'),	('tex-short','CFP'),					('color', (0.000, 0.000, 0.000)), ('marker', (7,0,0)),		('line', 0.00)	])), # Black
-			(('PA',0),						OrderedDict([	('reg', 'PA'),		('tex-long','Planning Alone'),						('tex-short','PA'),						('color', (0.500, 0.500, 0.500)), ('marker', (7,0,180)),	('line', 0.50)	])), # Grey
+			(('Object',25),					OrderedDict([	('reg', 'O25'),		('tex-long',r'\textbf{Object (0.25)}'),					('tex-short',r'\textbf{O (0.25)}'),		('color', (1.000, 0.000, 0.000)), ('marker', (3,0,0)),		('line', 0.00)	])), # Red line
+			(('Object',50),					OrderedDict([	('reg', 'O50'),		('tex-long',r'\textbf{Object (0.50)}'),					('tex-short',r'\textbf{O (0.50)}'),		('color', (1.000, 0.000, 0.000)), ('marker', (3,0,0)),		('line', 0.50)	])), # Red
+			(('Action',25),					OrderedDict([	('reg', 'A25'),		('tex-long',r'\textbf{Action (0.25)}'),					('tex-short',r'\textbf{A (0.25)}'),		('color', (0.000, 0.500, 0.000)), ('marker', (4,0,0)),		('line', 0.00)	])), # Green
+			(('Action',50),					OrderedDict([	('reg', 'A50'),		('tex-long',r'\textbf{Action (0.50)}'),					('tex-short',r'\textbf{A (0.50)}'),		('color', (0.000, 0.500, 0.000)), ('marker', (4,0,0)),		('line', 0.50)	])), # Green
+			(('ActionObject',25),			OrderedDict([	('reg', 'AO25'),	('tex-long',r'\textbf{Action-Object (0.25)}'),			('tex-short',r'\textbf{AO (0.25)}'),	('color', (0.000, 0.000, 1.000)), ('marker', (5,0,0)),		('line', 0.00)	])), # Blue 
+			(('ActionObject',50),			OrderedDict([	('reg', 'AO50'),	('tex-long',r'\textbf{Action-Object (0.50)}'),			('tex-short',r'\textbf{AO (0.50)}'),	('color', (0.000, 0.000, 1.000)), ('marker', (5,0,0)),		('line', 0.50)	])), # Blue
+			(('ObjectTime',25),				OrderedDict([	('reg', 'OT25'),	('tex-long',r'\textbf{Object-Temporal (0.25)}'),		('tex-short',r'\textbf{OT (0.25)}'),	('color', (1.000, 0.500, 0.500)), ('marker', (3,0,180)),	('line', 0.00)	])), # Pink
+			(('ObjectTime',50),				OrderedDict([	('reg', 'OT50'),	('tex-long',r'\textbf{Object-Temporal (0.50)}'),		('tex-short',r'\textbf{OT (0.50)}'),	('color', (1.000, 0.500, 0.500)), ('marker', (3,0,180)),	('line', 0.50)	])), # Pink
+			(('ActionTime',25),				OrderedDict([	('reg', 'AT25'),	('tex-long',r'\textbf{Action-Temporal (0.25)}'),		('tex-short',r'\textbf{AT (0.25)}'),	('color', (0.500, 1.000, 0.500)), ('marker', (4,0,45)),		('line', 0.00)	])), # Light Green
+			(('ActionTime',50),				OrderedDict([	('reg', 'AT50'),	('tex-long',r'\textbf{Action-Temporal (0.50)}'),		('tex-short',r'\textbf{AT (0.50)}'),	('color', (0.500, 1.000, 0.500)), ('marker', (4,0,45)),		('line', 0.50)	])), # Light Green
+			(('ActionObjectTime',25),		OrderedDict([	('reg', 'AOT25'),	('tex-long',r'\textbf{Action-Object-Temporal (0.25)}'),	('tex-short',r'\textbf{AOT (0.25)}'),	('color', (0.000, 0.750, 1.000)), ('marker', (5,0,180)),	('line', 0.00)	])), # Light Blue
+			(('ActionObjectTime',50),		OrderedDict([	('reg', 'AOT50'),	('tex-long',r'\textbf{Action-Object-Temporal (0.50)}'),	('tex-short',r'\textbf{AOT (0.50)}'),	('color', (0.000, 0.750, 1.000)), ('marker', (5,0,180)),	('line', 0.50)	])), # Light Blue
+			(('CoalitionSimilarity',25),	OrderedDict([	('reg', 'CS25'),	('tex-long','Coalition Similarity (0.25)'),				('tex-short','CS (0.25)'),				('color', (0.500, 0.000, 0.500)), ('marker', (6,0,0)),		('line', 0.00)	])), # Purple
+			(('CoalitionSimilarity',50),	OrderedDict([	('reg', 'CS50'),	('tex-long','Coalition Similarity (0.50)'),				('tex-short','CS (0.50)'),				('color', (0.500, 0.000, 0.500)), ('marker', (6,0,0)),		('line', 0.50)	])), # Purple
+			(('CoalitionAssistance',25),	OrderedDict([	('reg', 'CA25'),	('tex-long','Coalition Assistance (0.25)'),				('tex-short','CA (0.25)'),				('color', (1.000, 0.500, 1.000)), ('marker', (6,0,30)),		('line', 0.00)	])), # Light Purple
+			(('CoalitionAssistance',50),	OrderedDict([	('reg', 'CA50'),	('tex-long','Coalition Assistance (0.50)'),				('tex-short','CA (0.50)'),				('color', (1.000, 0.500, 1.000)), ('marker', (6,0,30)),		('line', 0.50)	])), # Light Purple
+			(('CFP',0),						OrderedDict([	('reg', 'CFP'),		('tex-long','Coalition Formation and Planning'),		('tex-short','CFP'),					('color', (0.000, 0.000, 0.000)), ('marker', (7,0,0)),		('line', 0.00)	])), # Black
+			(('PA',0),						OrderedDict([	('reg', 'PA'),		('tex-long','Planning Alone'),							('tex-short','PA'),						('color', (0.500, 0.500, 0.500)), ('marker', (7,0,180)),	('line', 0.50)	])), # Grey
 		])
 
 if domain == 'first_response':
@@ -89,6 +90,9 @@ FONT_FAMILY			= 'serif'
 COL_PAD				= 5
 CSPACING			= 1
 
+SORT_SUCCESS		= True
+MINUTES				= True
+
 # File names
 GATHER_DATA_SCRIPT	= 'scripts/gather_data.sh'
 RAW_STATS			= 'csv/stats.csv'
@@ -103,7 +107,7 @@ NCOL				= 4
 MARKER_SIZE			= 3
 TICK_SIZE			= 2
 LINE_WIDTH			= 0.50
-FIG_SIZE			= (12.0, 8.0)
+FIG_SIZE			= (10.0, 8.0)
 LABEL_OSET_RESULTS	= 0.50
 LABEL_OSET_METRICS	= -0.6
 
@@ -145,6 +149,15 @@ def generate_stats_plots(metrics):
 	for m, metric in enumerate(metrics):
 		if metric == 'Planning Results (%)':
 
+
+
+			# Sorting for success
+			if SORT_SUCCESS:
+				sorted_keys = list(reversed([k[0] for k in sorted(metrics[metric]['Success (%)'].items(), key=operator.itemgetter(1))]))
+			else:
+				sorted_keys = metrics[metric]['Success (%)'].keys()
+
+
 			if metric in set(['Processing Time (s)','Memory Usage (GB)']):
 				bar_width = 0.33*BAR_FILL
 			else:
@@ -171,7 +184,8 @@ def generate_stats_plots(metrics):
 				bar_handle = []
 				for i,f in enumerate(list(reversed(STATUSES.keys()))):
 					bar_handle.append(plt.barh(shift_pos, barl, bar_width, color=STATUSES[f]['color'], linewidth=LINE_WIDTH))
-					barl -= np.array(list(reversed(metrics[metric][f].values())))
+					# barl -= np.array(list(reversed(metrics[metric][f].values())))
+					barl -= np.array(list(reversed([metrics[metric][f][k] for k in sorted_keys])))
 				legend = plt.legend(list(reversed(bar_handle)), label_succ, loc='lower center', bbox_to_anchor=(LABEL_OSET_RESULTS,1.0), ncol=NCOL, fontsize=FONT_SIZE*0.87)
 				legend.get_frame().set_linewidth(LINE_WIDTH)
 				plt.xlim([0, 100])
@@ -194,7 +208,8 @@ def generate_stats_plots(metrics):
 			ax.set_xlim(left=0, right=None)
 
 			plt.xlabel(metric.replace('%','\%'))
-			plt.yticks(bar_origin+BAR_FILL/2, list(reversed([k['tex-long'] for k in TOOLS.values()])))
+			# plt.yticks(bar_origin+BAR_FILL/2, list(reversed([k['tex-long'] for k in TOOLS.values()])))
+			plt.yticks(bar_origin+BAR_FILL/2, list(reversed([TOOLS[k]['tex-long'] for k in sorted_keys])))
 			plt.ylim([0, numbars]) 
 
 		# Legend and ticks
@@ -203,9 +218,9 @@ def generate_stats_plots(metrics):
 			plt.savefig(STATS_PLOT_NAME+domain+'_'+planner+'.'+f, bbox_inches='tight')
 
 def generate_box_plots(metrics, tools):
-	fig = plt.figure(figsize=(6.0, 2.25))
+	fig = plt.figure(figsize=(6.0, 2.5))
 	subplot_layout = (1,2)
-	label_offset = (10,-10)
+	label_offset = (5,-5)
 	matplotlib.rcParams.update({'font.size': FONT_SIZE})
 	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
 	matplotlib.rcParams.update({'axes.linewidth': LINE_WIDTH})
@@ -239,8 +254,8 @@ def generate_box_plots(metrics, tools):
 		mean_dom = [sum([1 for tb in range(len(tools)) if mean_x[ta] < mean_x[tb] and mean_y[ta] < mean_y[tb]]) for ta in range(len(tools))]
 
 		def plot_details():
-			plt.xlabel(metric_x)
-			plt.ylabel(metric_y)
+			plt.xlabel('Processing Time (m)' if MINUTES and metric_x == 'Processing Time (s)' else metric_x)
+			plt.ylabel('Processing Time (m)' if MINUTES and metric_y == 'Processing Time (s)' else metric_y)
 			if m == 0 and planner in ['tfddownward']:
 				legend = plt.legend(tnames, loc='lower center', ncol=9, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE*0.83, bbox_to_anchor=(1.07,1.05))
 				legend.get_frame().set_linewidth(LINE_WIDTH)
@@ -255,8 +270,8 @@ def generate_box_plots(metrics, tools):
 		limits_x= [limits_x[0] - margin_x, limits_x[1] + margin_x]
 		limits_y= [limits_y[0] - margin_y, limits_y[1] + margin_y]
 		for x, y, c, mkr, mkrl, d in zip(mean_x, mean_y, tcolors, tmarkers, lmarkers, mean_dom):
-			plt.annotate(d, (x,y), xytext=label_offset, textcoords='offset points', fontsize=0.75*FONT_SIZE,arrowprops=dict(edgecolor='none',facecolor='grey', width=0.0, headwidth=LINE_WIDTH, shrink=0.50))
-			# plt.annotate(d, (x,y), xytext=label_offset, textcoords='offset points', fontsize=FONT_SIZE)
+			# plt.annotate(d, (x,y), xytext=label_offset, textcoords='offset points', fontsize=0.75*FONT_SIZE,arrowprops=dict(edgecolor='none',facecolor='grey', width=0.0, headwidth=LINE_WIDTH, shrink=0.50))
+			plt.annotate(d, (x,y), xytext=label_offset, textcoords='offset points', fontsize=0.75*FONT_SIZE)
 			plt.plot(x, y, ls='None', marker=mkr, c=c, ms=MARKER_SIZE, mew=mkrl)
 		ax.set_xlim(limits_x)
 		ax.set_ylim(limits_y)
@@ -313,6 +328,7 @@ for metric in tqdm(METRICS.keys()):
 		else:
 			for f in STATUSES:
 				sample = db.select(metric, db.query([('Domain',domain),('Planner',planner),('Tool',t[0]),('Fusion Ratio','0.%02d'%t[1]),('Planning Results (%)',str(STATUSES[f]['code']))]), as_float=True)
+				sample = [s/60 for s in sample] if MINUTES and metric == 'Processing Time (s)' else sample
 				mean, error = get_stats(sample)
 				metrics[metric]['mean'][f][t]	= mean
 				metrics[metric]['error'][f][t]	= error
