@@ -1,120 +1,120 @@
-\begin{tabular}{lrrrr}
+\begin{tabular}{llrrrr}
 \hline
-                                        &   Success &   Nonexecutable &   Time Fail &   Memory Fail \\
+ \textbf{Tool}                                    & $f_{max}$   &   \textbf{Success} &   \textbf{Nonexecutable} &   \textbf{Time Fail} &   \textbf{Memory Fail} \\
 \hline
- \textbf{Object (0.25)}                 &        53 &              21 &          10 &            16 \\
- \textbf{Object (0.50)}                 &        48 &              16 &          13 &            23 \\
- \textbf{Action (0.25)}                 &        38 &              29 &          17 &            16 \\
- \textbf{Action (0.50)}                 &        41 &              22 &          13 &            24 \\
- \textbf{Action-Object (0.25)}          &        49 &              23 &          12 &            16 \\
- \textbf{Action-Object (0.50)}          &        46 &              19 &          13 &            22 \\
- \textbf{Object-Temporal (0.25)}        &        48 &              24 &          14 &            14 \\
- \textbf{Object-Temporal (0.50)}        &        47 &              16 &          14 &            23 \\
- \textbf{Action-Temporal (0.25)}        &        43 &              22 &          18 &            17 \\
- \textbf{Action-Temporal (0.50)}        &        43 &              16 &          17 &            24 \\
- \textbf{Action-Object-Temporal (0.25)} &        46 &              25 &          13 &            16 \\
- \textbf{Action-Object-Temporal (0.50)} &        45 &              19 &          11 &            25 \\
- Coalition Similarity (0.25)            &        37 &              27 &          17 &            19 \\
- Coalition Similarity (0.50)            &        38 &              21 &          17 &            24 \\
- Coalition Assistance (0.25)            &        44 &              27 &          17 &            12 \\
- Coalition Assistance (0.50)            &        39 &              25 &          20 &            16 \\
- Coalition Formation and Planning       &        38 &              34 &          12 &            16 \\
- Planning Alone                         &        28 &               0 &          42 &            30 \\
-\hline
-\end{tabular}
-\begin{tabular}{ll}
-\hline
-                                        & Success     \\
-\hline
- \textbf{Object (0.25)}                 & 59.1 (30.0) \\
- \textbf{Object (0.50)}                 & 49.5 (18.2) \\
- \textbf{Action (0.25)}                 & 61.3 (33.4) \\
- \textbf{Action (0.50)}                 & 54.3 (21.1) \\
- \textbf{Action-Object (0.25)}          & 60.9 (31.6) \\
- \textbf{Action-Object (0.50)}          & 50.9 (20.1) \\
- \textbf{Object-Temporal (0.25)}        & 57.2 (24.9) \\
- \textbf{Object-Temporal (0.50)}        & 51.3 (18.8) \\
- \textbf{Action-Temporal (0.25)}        & 57.8 (22.3) \\
- \textbf{Action-Temporal (0.50)}        & 55.9 (18.4) \\
- \textbf{Action-Object-Temporal (0.25)} & 59.3 (25.0) \\
- \textbf{Action-Object-Temporal (0.50)} & 54.4 (19.5) \\
- Coalition Similarity (0.25)            & 63.5 (23.8) \\
- Coalition Similarity (0.50)            & 62.2 (23.3) \\
- Coalition Assistance (0.25)            & 58.4 (26.1) \\
- Coalition Assistance (0.50)            & 56.5 (23.9) \\
- Coalition Formation and Planning       & 57.3 (21.7) \\
- Planning Alone                         & 46.8 (16.9) \\
+ \multirow{2}{*}{\textbf{Object}}                 & 0.25        &                 53 &                       21 &                   10 &                     16 \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        &                 48 &                       16 &                   13 &                     23 \\ \hline
+ \multirow{2}{*}{\textbf{Action}}                 & 0.25        &                 38 &                       29 &                   17 &                     16 \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        &                 41 &                       22 &                   13 &                     24 \\ \hline
+ \multirow{2}{*}{\textbf{Action-Object}}          & 0.25        &                 49 &                       23 &                   12 &                     16 \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        &                 46 &                       19 &                   13 &                     22 \\ \hline
+ \multirow{2}{*}{\textbf{Object-Temporal}}        & 0.25        &                 48 &                       24 &                   14 &                     14 \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        &                 47 &                       16 &                   14 &                     23 \\ \hline
+ \multirow{2}{*}{\textbf{Action-Temporal}}        & 0.25        &                 43 &                       22 &                   18 &                     17 \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        &                 43 &                       16 &                   17 &                     24 \\ \hline
+ \multirow{2}{*}{\textbf{Action-Object-Temporal}} & 0.25        &                 46 &                       25 &                   13 &                     16 \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        &                 45 &                       19 &                   11 &                     25 \\ \hline
+ \multirow{2}{*}{Coalition Similarity}            & 0.25        &                 37 &                       27 &                   17 &                     19 \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        &                 38 &                       21 &                   17 &                     24 \\ \hline
+ \multirow{2}{*}{Coalition Assistance}            & 0.25        &                 44 &                       27 &                   17 &                     12 \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        &                 39 &                       25 &                   20 &                     16 \\ \hline
+ Coalition Formation and Planning                 & N/A         &                 38 &                       34 &                   12 &                     16 \\ \Cline{0.5pt}{2-5}
+ Planning Alone                                   & N/A         &                 28 &                        0 &                   42 &                     30 \\ \hline
 \hline
 \end{tabular}
-\begin{tabular}{ll}
+\begin{tabular}{lll}
 \hline
-                                        & Success     \\
+ \textbf{Tool}                                    & $f_{max}$   & \textbf{Success}   \\
 \hline
- \textbf{Object (0.25)}                 & 73.1 (28.5) \\
- \textbf{Object (0.50)}                 & 64.8 (21.6) \\
- \textbf{Action (0.25)}                 & 75.4 (31.6) \\
- \textbf{Action (0.50)}                 & 72.0 (24.3) \\
- \textbf{Action-Object (0.25)}          & 73.9 (29.5) \\
- \textbf{Action-Object (0.50)}          & 66.7 (24.1) \\
- \textbf{Object-Temporal (0.25)}        & 72.2 (26.3) \\
- \textbf{Object-Temporal (0.50)}        & 66.1 (22.1) \\
- \textbf{Action-Temporal (0.25)}        & 74.0 (24.0) \\
- \textbf{Action-Temporal (0.50)}        & 73.0 (22.8) \\
- \textbf{Action-Object-Temporal (0.25)} & 74.6 (26.9) \\
- \textbf{Action-Object-Temporal (0.50)} & 69.8 (22.7) \\
- Coalition Similarity (0.25)            & 77.8 (25.0) \\
- Coalition Similarity (0.50)            & 77.0 (24.5) \\
- Coalition Assistance (0.25)            & 73.9 (26.5) \\
- Coalition Assistance (0.50)            & 72.4 (24.4) \\
- Coalition Formation and Planning       & 72.6 (21.6) \\
- Planning Alone                         & 71.2 (21.6) \\
-\hline
-\end{tabular}
-\begin{tabular}{llll}
-\hline
-                                        & Success     & Nonexecutable   & Memory Fail   \\
-\hline
- \textbf{Object (0.25)}                 & 7.5 (12.9)  & 5.2 (7.0)       & 39.8 (10.8)   \\
- \textbf{Object (0.50)}                 & 5.4 (9.9)   & 5.3 (9.5)       & 42.4 (11.4)   \\
- \textbf{Action (0.25)}                 & 7.9 (13.0)  & 5.4 (8.8)       & 36.9 (9.1)    \\
- \textbf{Action (0.50)}                 & 11.2 (16.6) & 5.7 (10.8)      & 40.9 (12.7)   \\
- \textbf{Action-Object (0.25)}          & 8.4 (13.8)  & 6.3 (8.2)       & 40.3 (11.1)   \\
- \textbf{Action-Object (0.50)}          & 6.9 (12.3)  & 10.0 (15.8)     & 42.4 (11.9)   \\
- \textbf{Object-Temporal (0.25)}        & 6.9 (12.2)  & 4.0 (6.0)       & 42.0 (11.0)   \\
- \textbf{Object-Temporal (0.50)}        & 5.7 (10.2)  & 4.8 (9.9)       & 42.7 (11.4)   \\
- \textbf{Action-Temporal (0.25)}        & 8.1 (13.9)  & 3.5 (7.2)       & 41.7 (8.5)    \\
- \textbf{Action-Temporal (0.50)}        & 10.8 (14.9) & 3.0 (9.4)       & 44.2 (10.2)   \\
- \textbf{Action-Object-Temporal (0.25)} & 8.4 (12.1)  & 5.6 (9.0)       & 39.4 (9.6)    \\
- \textbf{Action-Object-Temporal (0.50)} & 8.7 (13.4)  & 9.0 (16.2)      & 42.2 (11.6)   \\
- Coalition Similarity (0.25)            & 2.5 (5.7)   & 3.4 (6.4)       & 39.9 (10.7)   \\
- Coalition Similarity (0.50)            & 4.5 (7.1)   & 4.6 (7.6)       & 40.4 (11.3)   \\
- Coalition Assistance (0.25)            & 10.2 (14.1) & 8.7 (11.3)      & 40.9 (9.1)    \\
- Coalition Assistance (0.50)            & 9.6 (13.6)  & 7.8 (10.4)      & 40.4 (11.0)   \\
- Coalition Formation and Planning       & 5.7 (11.3)  & 6.9 (12.4)      & 44.3 (7.9)    \\
- Planning Alone                         & 11.0 (12.1) & N/A             & 43.4 (9.6)    \\
+ \multirow{2}{*}{\textbf{Object}}                 & 0.25        & 59.1 (30.0)        \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 49.5 (18.2)        \\ \hline
+ \multirow{2}{*}{\textbf{Action}}                 & 0.25        & 61.3 (33.4)        \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 54.3 (21.1)        \\ \hline
+ \multirow{2}{*}{\textbf{Action-Object}}          & 0.25        & 60.9 (31.6)        \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 50.9 (20.1)        \\ \hline
+ \multirow{2}{*}{\textbf{Object-Temporal}}        & 0.25        & 57.2 (24.9)        \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 51.3 (18.8)        \\ \hline
+ \multirow{2}{*}{\textbf{Action-Temporal}}        & 0.25        & 57.8 (22.3)        \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 55.9 (18.4)        \\ \hline
+ \multirow{2}{*}{\textbf{Action-Object-Temporal}} & 0.25        & 59.3 (25.0)        \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 54.4 (19.5)        \\ \hline
+ \multirow{2}{*}{Coalition Similarity}            & 0.25        & 63.5 (23.8)        \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 62.2 (23.3)        \\ \hline
+ \multirow{2}{*}{Coalition Assistance}            & 0.25        & 58.4 (26.1)        \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 56.5 (23.9)        \\ \hline
+ Coalition Formation and Planning                 & N/A         & 57.3 (21.7)        \\ \Cline{0.5pt}{2-5}
+ Planning Alone                                   & N/A         & 46.8 (16.9)        \\ \hline
 \hline
 \end{tabular}
-\begin{tabular}{llll}
+\begin{tabular}{lll}
 \hline
-                                        & Success     & Nonexecutable   & Time Fail   \\
+ \textbf{Tool}                                    & $f_{max}$   & \textbf{Success}   \\
 \hline
- \textbf{Object (0.25)}                 & 12.9 (22.1) & 8.7 (11.1)      & 83.2 (23.5) \\
- \textbf{Object (0.50)}                 & 11.0 (19.1) & 8.2 (12.2)      & 86.2 (27.4) \\
- \textbf{Action (0.25)}                 & 14.6 (24.9) & 11.7 (23.0)     & 75.0 (25.0) \\
- \textbf{Action (0.50)}                 & 17.7 (25.1) & 8.9 (18.7)      & 74.9 (30.2) \\
- \textbf{Action-Object (0.25)}          & 14.4 (23.5) & 12.2 (20.8)     & 82.9 (23.6) \\
- \textbf{Action-Object (0.50)}          & 13.5 (22.6) & 15.0 (24.0)     & 86.3 (27.4) \\
- \textbf{Object-Temporal (0.25)}        & 12.4 (22.1) & 5.9 (7.7)       & 86.3 (22.5) \\
- \textbf{Object-Temporal (0.50)}        & 11.5 (19.4) & 6.6 (10.3)      & 86.8 (26.9) \\
- \textbf{Action-Temporal (0.25)}        & 13.7 (22.3) & 8.0 (21.0)      & 74.9 (32.1) \\
- \textbf{Action-Temporal (0.50)}        & 18.5 (25.1) & 3.6 (9.7)       & 70.3 (31.3) \\
- \textbf{Action-Object-Temporal (0.25)} & 15.0 (22.8) & 12.0 (23.2)     & 85.5 (29.1) \\
- \textbf{Action-Object-Temporal (0.50)} & 15.2 (22.6) & 13.1 (23.7)     & 74.7 (38.0) \\
- Coalition Similarity (0.25)            & 4.8 (9.8)   & 6.8 (18.2)      & 74.2 (29.8) \\
- Coalition Similarity (0.50)            & 7.9 (12.2)  & 5.7 (8.9)       & 79.8 (28.5) \\
- Coalition Assistance (0.25)            & 17.9 (27.3) & 14.4 (24.0)     & 65.0 (25.5) \\
- Coalition Assistance (0.50)            & 18.0 (27.3) & 14.0 (24.8)     & 68.3 (30.7) \\
- Coalition Formation and Planning       & 11.2 (17.4) & 9.5 (19.8)      & 88.7 (23.3) \\
- Planning Alone                         & 26.2 (29.1) & N/A             & 65.4 (29.5) \\
+ \multirow{2}{*}{\textbf{Object}}                 & 0.25        & 73.1 (28.5)        \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 64.8 (21.6)        \\ \hline
+ \multirow{2}{*}{\textbf{Action}}                 & 0.25        & 75.4 (31.6)        \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 72.0 (24.3)        \\ \hline
+ \multirow{2}{*}{\textbf{Action-Object}}          & 0.25        & 73.9 (29.5)        \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 66.7 (24.1)        \\ \hline
+ \multirow{2}{*}{\textbf{Object-Temporal}}        & 0.25        & 72.2 (26.3)        \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 66.1 (22.1)        \\ \hline
+ \multirow{2}{*}{\textbf{Action-Temporal}}        & 0.25        & 74.0 (24.0)        \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 73.0 (22.8)        \\ \hline
+ \multirow{2}{*}{\textbf{Action-Object-Temporal}} & 0.25        & 74.6 (26.9)        \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 69.8 (22.7)        \\ \hline
+ \multirow{2}{*}{Coalition Similarity}            & 0.25        & 77.8 (25.0)        \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 77.0 (24.5)        \\ \hline
+ \multirow{2}{*}{Coalition Assistance}            & 0.25        & 73.9 (26.5)        \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 72.4 (24.4)        \\ \hline
+ Coalition Formation and Planning                 & N/A         & 72.6 (21.6)        \\ \Cline{0.5pt}{2-5}
+ Planning Alone                                   & N/A         & 71.2 (21.6)        \\ \hline
+\hline
+\end{tabular}
+\begin{tabular}{lllll}
+\hline
+ \textbf{Tool}                                    & $f_{max}$   & \textbf{Success}   & \textbf{Nonexecutable}   & \textbf{Memory Fail}   \\
+\hline
+ \multirow{2}{*}{\textbf{Object}}                 & 0.25        & 7.5 (12.9)         & 5.2 (\hphantom{0}7.0)               & 39.8 (10.8)            \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 5.4 (\hphantom{0}9.9)         & 5.3 (\hphantom{0}9.5)               & 42.4 (11.4)            \\ \hline
+ \multirow{2}{*}{\textbf{Action}}                 & 0.25        & 7.9 (13.0)         & 5.4 (\hphantom{0}8.8)               & 36.9 (\hphantom{0}9.1)            \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 11.2 (16.6)        & 5.7 (10.8)               & 40.9 (12.7)            \\ \hline
+ \multirow{2}{*}{\textbf{Action-Object}}          & 0.25        & 8.4 (13.8)         & 6.3 (\hphantom{0}8.2)               & 40.3 (11.1)            \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 6.9 (12.3)         & 10.0 (15.8)              & 42.4 (11.9)            \\ \hline
+ \multirow{2}{*}{\textbf{Object-Temporal}}        & 0.25        & 6.9 (12.2)         & 4.0 (\hphantom{0}6.0)               & 42.0 (11.0)            \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 5.7 (10.2)         & 4.8 (\hphantom{0}9.9)               & 42.7 (11.4)            \\ \hline
+ \multirow{2}{*}{\textbf{Action-Temporal}}        & 0.25        & 8.1 (13.9)         & 3.5 (\hphantom{0}7.2)               & 41.7 (\hphantom{0}8.5)            \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 10.8 (14.9)        & 3.0 (\hphantom{0}9.4)               & 44.2 (10.2)            \\ \hline
+ \multirow{2}{*}{\textbf{Action-Object-Temporal}} & 0.25        & 8.4 (12.1)         & 5.6 (\hphantom{0}9.0)               & 39.4 (\hphantom{0}9.6)            \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 8.7 (13.4)         & 9.0 (16.2)               & 42.2 (11.6)            \\ \hline
+ \multirow{2}{*}{Coalition Similarity}            & 0.25        & 2.5 (\hphantom{0}5.7)         & 3.4 (\hphantom{0}6.4)               & 39.9 (10.7)            \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 4.5 (\hphantom{0}7.1)         & 4.6 (\hphantom{0}7.6)               & 40.4 (11.3)            \\ \hline
+ \multirow{2}{*}{Coalition Assistance}            & 0.25        & 10.2 (14.1)        & 8.7 (11.3)               & 40.9 (\hphantom{0}9.1)            \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 9.6 (13.6)         & 7.8 (10.4)               & 40.4 (11.0)            \\ \hline
+ Coalition Formation and Planning                 & N/A         & 5.7 (11.3)         & 6.9 (12.4)               & 44.3 (\hphantom{0}7.9)            \\ \Cline{0.5pt}{2-5}
+ Planning Alone                                   & N/A         & 11.0 (12.1)        & N/A                      & 43.4 (\hphantom{0}9.6)            \\ \hline
+\hline
+\end{tabular}
+\begin{tabular}{lllll}
+\hline
+ \textbf{Tool}                                    & $f_{max}$   & \textbf{Success}   & \textbf{Nonexecutable}   & \textbf{Time Fail}   \\
+\hline
+ \multirow{2}{*}{\textbf{Object}}                 & 0.25        & 12.9 (22.1)        & 8.7 (11.1)               & 83.2 (23.5)          \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 11.0 (19.1)        & 8.2 (12.2)               & 86.2 (27.4)          \\ \hline
+ \multirow{2}{*}{\textbf{Action}}                 & 0.25        & 14.6 (24.9)        & 11.7 (23.0)              & 75.0 (25.0)          \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 17.7 (25.1)        & 8.9 (18.7)               & 74.9 (30.2)          \\ \hline
+ \multirow{2}{*}{\textbf{Action-Object}}          & 0.25        & 14.4 (23.5)        & 12.2 (20.8)              & 82.9 (23.6)          \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 13.5 (22.6)        & 15.0 (24.0)              & 86.3 (27.4)          \\ \hline
+ \multirow{2}{*}{\textbf{Object-Temporal}}        & 0.25        & 12.4 (22.1)        & 5.9 (\hphantom{0}7.7)               & 86.3 (22.5)          \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 11.5 (19.4)        & 6.6 (10.3)               & 86.8 (26.9)          \\ \hline
+ \multirow{2}{*}{\textbf{Action-Temporal}}        & 0.25        & 13.7 (22.3)        & 8.0 (21.0)               & 74.9 (32.1)          \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 18.5 (25.1)        & 3.6 (\hphantom{0}9.7)               & 70.3 (31.3)          \\ \hline
+ \multirow{2}{*}{\textbf{Action-Object-Temporal}} & 0.25        & 15.0 (22.8)        & 12.0 (23.2)              & 85.5 (29.1)          \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 15.2 (22.6)        & 13.1 (23.7)              & 74.7 (38.0)          \\ \hline
+ \multirow{2}{*}{Coalition Similarity}            & 0.25        & 4.8 (\hphantom{0}9.8)         & 6.8 (18.2)               & 74.2 (29.8)          \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 7.9 (12.2)         & 5.7 (\hphantom{0}8.9)               & 79.8 (28.5)          \\ \hline
+ \multirow{2}{*}{Coalition Assistance}            & 0.25        & 17.9 (27.3)        & 14.4 (24.0)              & 65.0 (25.5)          \\ \Cline{0.5pt}{2-5}
+                                                  & 0.50        & 18.0 (27.3)        & 14.0 (24.8)              & 68.3 (30.7)          \\ \hline
+ Coalition Formation and Planning                 & N/A         & 11.2 (17.4)        & 9.5 (19.8)               & 88.7 (23.3)          \\ \Cline{0.5pt}{2-5}
+ Planning Alone                                   & N/A         & 26.2 (29.1)        & N/A                      & 65.4 (29.5)          \\ \hline
 \hline
 \end{tabular}

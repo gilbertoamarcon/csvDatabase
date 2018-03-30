@@ -4,6 +4,7 @@ import sys
 import getopt
 import matplotlib
 import operator
+import re
 import matplotlib.pyplot as plt
 import statistics as stat
 import numpy as np
@@ -35,49 +36,59 @@ for opt, arg in opts:
 print 'Domain: %s' % domain
 print 'Planner: %s' % planner
 
-PLOT_LABELS = {('blocks_world','tfddownward'): ('a','b'), ('blocks_world','colin2'): ('c','d'), ('first_response','colin2'): ('e','f')}
+# PLOT_LABELS = {('blocks_world','tfddownward'): ('a','b'), ('blocks_world','colin2'): ('c','d'), ('first_response','colin2'): ('e','f')}
 
 SPREAD			= 'STDEV'
 # SPREAD				= 'CI'
 
-STATUSES			= OrderedDict([
-							('Success (%)',			OrderedDict([	('short', 'Success'),	('long', 'Success'),		('code', 0),	('color', (0.000, 0.447, 0.741))	])), # Blue
-							('Nonexecutable (%)',	OrderedDict([	('short', 'Nonexec'),	('long', 'Nonexecutable'),	('code', 1),	('color', (0.850, 0.325, 0.098))	])), # Tomato
-							('Time Fail (%)',		OrderedDict([	('short', 'Time Fail'),	('long', 'Time Fail'),		('code', 124),	('color', (0.929, 0.694, 0.125))	])), # Orange
-							('Memory Fail (%)',		OrderedDict([	('short', 'Mem Fail'),	('long', 'Memory Fail'),	('code', 134),	('color', (0.929, 0.894, 0.325))	])), # Yellow
-					])
-
-TOOLS	= OrderedDict([
-			(('Object',25),					OrderedDict([	('reg', 'O25'),		('tex-long',r'\textbf{Object (0.25)}'),					('tex-short',r'\textbf{O (0.25)}'),		('color', (1.000, 0.000, 0.000)), ('marker', (3,0,0)),		('line', 0.00)	])), # Red line
-			(('Object',50),					OrderedDict([	('reg', 'O50'),		('tex-long',r'\textbf{Object (0.50)}'),					('tex-short',r'\textbf{O (0.50)}'),		('color', (1.000, 0.000, 0.000)), ('marker', (3,0,0)),		('line', 0.50)	])), # Red
-			(('Action',25),					OrderedDict([	('reg', 'A25'),		('tex-long',r'\textbf{Action (0.25)}'),					('tex-short',r'\textbf{A (0.25)}'),		('color', (0.000, 0.500, 0.000)), ('marker', (4,0,0)),		('line', 0.00)	])), # Green
-			(('Action',50),					OrderedDict([	('reg', 'A50'),		('tex-long',r'\textbf{Action (0.50)}'),					('tex-short',r'\textbf{A (0.50)}'),		('color', (0.000, 0.500, 0.000)), ('marker', (4,0,0)),		('line', 0.50)	])), # Green
-			(('ActionObject',25),			OrderedDict([	('reg', 'AO25'),	('tex-long',r'\textbf{Action-Object (0.25)}'),			('tex-short',r'\textbf{AO (0.25)}'),	('color', (0.000, 0.000, 1.000)), ('marker', (5,0,0)),		('line', 0.00)	])), # Blue 
-			(('ActionObject',50),			OrderedDict([	('reg', 'AO50'),	('tex-long',r'\textbf{Action-Object (0.50)}'),			('tex-short',r'\textbf{AO (0.50)}'),	('color', (0.000, 0.000, 1.000)), ('marker', (5,0,0)),		('line', 0.50)	])), # Blue
-			(('ObjectTime',25),				OrderedDict([	('reg', 'OT25'),	('tex-long',r'\textbf{Object-Temporal (0.25)}'),		('tex-short',r'\textbf{OT (0.25)}'),	('color', (1.000, 0.500, 0.500)), ('marker', (3,0,180)),	('line', 0.00)	])), # Pink
-			(('ObjectTime',50),				OrderedDict([	('reg', 'OT50'),	('tex-long',r'\textbf{Object-Temporal (0.50)}'),		('tex-short',r'\textbf{OT (0.50)}'),	('color', (1.000, 0.500, 0.500)), ('marker', (3,0,180)),	('line', 0.50)	])), # Pink
-			(('ActionTime',25),				OrderedDict([	('reg', 'AT25'),	('tex-long',r'\textbf{Action-Temporal (0.25)}'),		('tex-short',r'\textbf{AT (0.25)}'),	('color', (0.500, 1.000, 0.500)), ('marker', (4,0,45)),		('line', 0.00)	])), # Light Green
-			(('ActionTime',50),				OrderedDict([	('reg', 'AT50'),	('tex-long',r'\textbf{Action-Temporal (0.50)}'),		('tex-short',r'\textbf{AT (0.50)}'),	('color', (0.500, 1.000, 0.500)), ('marker', (4,0,45)),		('line', 0.50)	])), # Light Green
-			(('ActionObjectTime',25),		OrderedDict([	('reg', 'AOT25'),	('tex-long',r'\textbf{Action-Object-Temporal (0.25)}'),	('tex-short',r'\textbf{AOT (0.25)}'),	('color', (0.000, 0.750, 1.000)), ('marker', (5,0,180)),	('line', 0.00)	])), # Light Blue
-			(('ActionObjectTime',50),		OrderedDict([	('reg', 'AOT50'),	('tex-long',r'\textbf{Action-Object-Temporal (0.50)}'),	('tex-short',r'\textbf{AOT (0.50)}'),	('color', (0.000, 0.750, 1.000)), ('marker', (5,0,180)),	('line', 0.50)	])), # Light Blue
-			(('CoalitionSimilarity',25),	OrderedDict([	('reg', 'CS25'),	('tex-long','Coalition Similarity (0.25)'),				('tex-short','CS (0.25)'),				('color', (0.500, 0.000, 0.500)), ('marker', (6,0,0)),		('line', 0.00)	])), # Purple
-			(('CoalitionSimilarity',50),	OrderedDict([	('reg', 'CS50'),	('tex-long','Coalition Similarity (0.50)'),				('tex-short','CS (0.50)'),				('color', (0.500, 0.000, 0.500)), ('marker', (6,0,0)),		('line', 0.50)	])), # Purple
-			(('CoalitionAssistance',25),	OrderedDict([	('reg', 'CA25'),	('tex-long','Coalition Assistance (0.25)'),				('tex-short','CA (0.25)'),				('color', (1.000, 0.500, 1.000)), ('marker', (6,0,30)),		('line', 0.00)	])), # Light Purple
-			(('CoalitionAssistance',50),	OrderedDict([	('reg', 'CA50'),	('tex-long','Coalition Assistance (0.50)'),				('tex-short','CA (0.50)'),				('color', (1.000, 0.500, 1.000)), ('marker', (6,0,30)),		('line', 0.50)	])), # Light Purple
-			(('CFP',0),						OrderedDict([	('reg', 'CFP'),		('tex-long','Coalition Formation and Planning'),		('tex-short','CFP'),					('color', (0.000, 0.000, 0.000)), ('marker', (7,0,0)),		('line', 0.00)	])), # Black
-			(('PA',0),						OrderedDict([	('reg', 'PA'),		('tex-long','Planning Alone'),							('tex-short','PA'),						('color', (0.500, 0.500, 0.500)), ('marker', (7,0,180)),	('line', 0.50)	])), # Grey
+STATUSES	= OrderedDict([
+			('Success (%)',			OrderedDict([	('name', 'Success'),		('acro', 'Success'),	('code',   0),	('color', (0.000, 0.447, 0.741))	])), # Blue
+			('Nonexecutable (%)',	OrderedDict([	('name', 'Nonexecutable'),	('acro', 'Nonexec'),	('code',   1),	('color', (0.850, 0.325, 0.098))	])), # Tomato
+			('Time Fail (%)',		OrderedDict([	('name', 'Time Fail'),		('acro', 'Time Fail'),	('code', 124),	('color', (0.929, 0.694, 0.125))	])), # Orange
+			('Memory Fail (%)',		OrderedDict([	('name', 'Memory Fail'),	('acro', 'Mem Fail'),	('code', 134),	('color', (0.929, 0.894, 0.325))	])), # Yellow
 		])
 
-if domain == 'first_response':
-	del TOOLS[('PA',0)]
+TOOL_FORMAT	= OrderedDict([
+			('Object',				OrderedDict([	('name','Object'),								('acro','O'),	('color', (1.00, 0.00, 0.00)),	('marker', (3,0,  0)),	('bold', True)])),
+			('Action',				OrderedDict([	('name','Action'),								('acro','A'),	('color', (0.00, 0.50, 0.00)),	('marker', (4,0,  0)),	('bold', True)])),
+			('ActionObject',		OrderedDict([	('name','Action-Object'),						('acro','AO'),	('color', (0.00, 0.00, 1.00)),	('marker', (5,0,  0)),	('bold', True)])),
+			('ObjectTime',			OrderedDict([	('name','Object-Temporal'),						('acro','OT'),	('color', (1.00, 0.50, 0.50)),	('marker', (3,0,180)),	('bold', True)])),
+			('ActionTime',			OrderedDict([	('name','Action-Temporal'),						('acro','AT'),	('color', (0.50, 1.00, 0.50)),	('marker', (4,0, 45)),	('bold', True)])),
+			('ActionObjectTime',	OrderedDict([	('name','Action-Object-Temporal'),				('acro','AOT'),	('color', (0.00, 0.75, 1.00)),	('marker', (5,0,180)),	('bold', True)])),
+			('CoalitionSimilarity',	OrderedDict([	('name','Coalition Similarity'),				('acro','CS'),	('color', (0.50, 0.00, 0.50)),	('marker', (6,0,  0)),	('bold', False)])),
+			('CoalitionAssistance',	OrderedDict([	('name','Coalition Assistance'),				('acro','CA'),	('color', (1.00, 0.50, 1.00)),	('marker', (6,0, 30)),	('bold', False)])),
+			('CFP',					OrderedDict([	('name','Coalition Formation and Planning'),	('acro','CFP'),	('color', (0.00, 0.00, 0.00)),	('marker', (7,0,  0)),	('bold', False)])),
+			('PA',					OrderedDict([	('name','Planning Alone'),						('acro','PA'),	('color', (0.50, 0.50, 0.50)),	('marker', (7,0,180)),	('bold', False)])),
+		])
 
-METRICS				= OrderedDict([
-							('Planning Results (%)',	{'ab': 'a) Planning results',	'plain': 'Planning results',	'excl': []}),
-							('Makespan (s)',			{'ab': 'b) Makespan',			'plain': 'Makespan',			'excl': ['Nonexecutable (%)','Time Fail (%)','Memory Fail (%)']}),
-							('Number of Actions',		{'ab': 'c) Number of actions',	'plain': 'Number of actions',	'excl': ['Nonexecutable (%)','Time Fail (%)','Memory Fail (%)']}),
-							('Processing Time (s)',		{'ab': 'd) Processing time',	'plain': 'Processing time',		'excl': ['Time Fail (%)']}),
-							('Memory Usage (GB)',		{'ab': 'e) Memory usage',		'plain': 'Memory usage',		'excl': ['Memory Fail (%)']}),
-					])
+TOOLS	= [
+			('Object',25),
+			('Object',50),
+			('Action',25),
+			('Action',50),
+			('ActionObject',25),
+			('ActionObject',50),
+			('ObjectTime',25),
+			('ObjectTime',50),
+			('ActionTime',25),
+			('ActionTime',50),
+			('ActionObjectTime',25),
+			('ActionObjectTime',50),
+			('CoalitionSimilarity',25),
+			('CoalitionSimilarity',50),
+			('CoalitionAssistance',25),
+			('CoalitionAssistance',50),
+			('CFP',0),
+			('PA',0),
+		]
+
+METRICS	= OrderedDict([
+			('Planning Results (%)',	{'ab': 'a) Planning results',	'plain': 'Planning results',	'excl': []}),
+			('Makespan (s)',			{'ab': 'b) Makespan',			'plain': 'Makespan',			'excl': ['Nonexecutable (%)','Time Fail (%)','Memory Fail (%)']}),
+			('Number of Actions',		{'ab': 'c) Number of actions',	'plain': 'Number of actions',	'excl': ['Nonexecutable (%)','Time Fail (%)','Memory Fail (%)']}),
+			('Processing Time (s)',		{'ab': 'd) Processing time',	'plain': 'Processing time',		'excl': ['Time Fail (%)']}),
+			('Memory Usage (GB)',		{'ab': 'e) Memory usage',		'plain': 'Memory usage',		'excl': ['Memory Fail (%)']}),
+		])
 
 PLANNER_DOM			= {'first_response': 'First Response', 'blocks_world': 'Blocks World', 'colin2': 'COLIN', 'tfddownward': 'TFD'}
 
@@ -88,7 +99,8 @@ BAR_FILL			= 0.60
 FONT_SIZE			= 6
 FONT_FAMILY			= 'serif'
 COL_PAD				= 5
-CSPACING			= 1
+CSPACING			= 4
+DECPRES				= 1
 
 SORT_SUCCESS		= True
 MINUTES				= True
@@ -107,38 +119,79 @@ NCOL				= 4
 MARKER_SIZE			= 3
 TICK_SIZE			= 2
 LINE_WIDTH			= 0.50
-FIG_SIZE			= (10.0, 8.0)
+FIG_SIZE			= (9.0, 8.0)
 LABEL_OSET_RESULTS	= 0.50
 LABEL_OSET_METRICS	= -0.6
 
+if domain == 'first_response':
+	del TOOLS[('PA',0)]
+
+def format_tool_name(type, key):
+
+	# Tool name and acronym
+	name = TOOL_FORMAT[key[0]]['name']
+	acro = TOOL_FORMAT[key[0]]['acro']
+
+	# Bold
+	if TOOL_FORMAT[key[0]]['bold']:
+		name = '\\textbf{%s}'%name
+		acro = '\\textbf{%s}'%acro
+
+	# Format
+	if type == 'fusion-ratio':
+		return 'N/A' if key[1]==0 else '0.%d'%key[1]
+	if type == 'name':
+		return name + ('' if key[1]==0 else r' ($f_{max} = ' + '0.%d'%key[1] + r'$)')
+	if type == 'acro':
+		return acro
+	if type == 'table-name':
+		if key[1]==0:
+			return name
+		if key[1]==25:
+			return '\\multirow{2}{*}{%s}'%name
+		if key[1]==50:
+			return ''
 
 def generate_stats_table(metrics):
 	ret_var = []
 	for metric in metrics:
-		buff = [['']+[STATUSES[f]['long'] for f in STATUSES if f not in METRICS[metric]['excl']]]
-		for t in TOOLS.keys():
-			trow = [TOOLS[t]['tex-long']]
+		buff = [[r'\textbf{Tool}','$f_{max}$']+[r'\textbf{'+STATUSES[f]['name']+'}' for f in STATUSES if f not in METRICS[metric]['excl']]]
+		for t in TOOLS:
+			trow = [format_tool_name('table-name',t), format_tool_name('fusion-ratio',t)]
 			for f in [f for f in STATUSES if f not in METRICS[metric]['excl']]:
 				if metric == 'Planning Results (%)':
 					trow.append('%d'%metrics[metric][f][t])
 				else:
 					mean	= metrics[metric]['mean'][f][t]
 					error	= metrics[metric]['error'][f][t]
-					trow.append('%.*f (%.*f)'%(CSPACING,mean,CSPACING,error) if mean == mean and error ==  error else 'N/A')
+					trow.append('%*.*f (%*.*f)'%(CSPACING,DECPRES,mean,CSPACING,DECPRES,error) if mean == mean and error ==  error else 'N/A')
 			buff.append(trow)
 		ret_var.append(tabulate(buff, headers='firstrow', tablefmt='latex_raw'))
-	return '\n'.join(ret_var)
+
+	ret_var = '\n'.join(ret_var)
+
+	# Horizontal Lines
+	re_key = r'(\\\\)\n(.*\\\\)'
+	reg_sub = r'\1 \\Cline{0.5pt}{2-5}\n\2 \\hline'
+	ret_var = re.sub(re_key,reg_sub,ret_var)
+
+	# Std spacing
+	re_key = r'(\() (\d\.\d\))'
+	reg_sub = r'\1\\hphantom{0}\2'
+	ret_var = re.sub(re_key,reg_sub,ret_var)
+
+	return ret_var
 
 
 def generate_stats_plots(metrics):
 	plt.figure(figsize=FIG_SIZE)
-	matplotlib.rcParams.update({'font.size': FONT_SIZE})
-	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
-	matplotlib.rcParams.update({'axes.linewidth': LINE_WIDTH})
-	matplotlib.rcParams.update({'xtick.major.width': LINE_WIDTH})
-	matplotlib.rcParams.update({'ytick.major.width': LINE_WIDTH})
-	matplotlib.rcParams.update({'xtick.major.size': TICK_SIZE})
-	matplotlib.rcParams.update({'ytick.major.size': TICK_SIZE})
+	matplotlib.rcParams.update({'font.size': 			FONT_SIZE})
+	matplotlib.rcParams.update({'font.family':			FONT_FAMILY})
+	matplotlib.rcParams.update({'axes.linewidth':		LINE_WIDTH})
+	matplotlib.rcParams.update({'xtick.major.width':	LINE_WIDTH})
+	matplotlib.rcParams.update({'ytick.major.width':	LINE_WIDTH})
+	matplotlib.rcParams.update({'xtick.major.size':		TICK_SIZE})
+	matplotlib.rcParams.update({'ytick.major.size':		TICK_SIZE})
 	matplotlib.rc('text', usetex=True)
 	gridspec.GridSpec(9,1)
 	numbars = len(TOOLS)
@@ -179,7 +232,7 @@ def generate_stats_plots(metrics):
 			if metric == 'Planning Results (%)':
 				label_succ = []
 				for f in STATUSES:
-					label_succ.append(STATUSES[f]['long'])
+					label_succ.append(STATUSES[f]['acro'])
 				barl = np.array([100.00]*len(TOOLS))
 				bar_handle = []
 				for i,f in enumerate(list(reversed(STATUSES.keys()))):
@@ -208,8 +261,8 @@ def generate_stats_plots(metrics):
 			ax.set_xlim(left=0, right=None)
 
 			plt.xlabel(metric.replace('%','\%'))
-			# plt.yticks(bar_origin+BAR_FILL/2, list(reversed([k['tex-long'] for k in TOOLS.values()])))
-			plt.yticks(bar_origin+BAR_FILL/2, list(reversed([TOOLS[k]['tex-long'] for k in sorted_keys])))
+			# plt.yticks(bar_origin+BAR_FILL/2, list(reversed([k['name'] for k in TOOLS.values()])))
+			plt.yticks(bar_origin+BAR_FILL/2, list(reversed([format_tool_name('name',k) for k in sorted_keys])))
 			plt.ylim([0, numbars]) 
 
 		# Legend and ticks
@@ -217,65 +270,70 @@ def generate_stats_plots(metrics):
 		for f in PLOT_FORMATS:
 			plt.savefig(STATS_PLOT_NAME+domain+'_'+planner+'.'+f, bbox_inches='tight')
 
-def generate_box_plots(metrics, tools):
-	fig = plt.figure(figsize=(6.0, 2.5))
-	subplot_layout = (1,2)
+def compute_box_limits(metrics, tools, metric_x, metric_y):
+	mean_x		= [stat.mean(metrics[metric_x]['sample']['Success (%)'][t]) for t in tools]
+	mean_y		= [stat.mean(metrics[metric_y]['sample']['Success (%)'][t]) for t in tools]
+	limits_x = [min(mean_x), max(mean_x)]
+	limits_y = [min(mean_y), max(mean_y)]
+	margin_x = (limits_x[1] - limits_x[0])*0.1
+	margin_y = (limits_y[1] - limits_y[0])*0.1
+	limits_x = [limits_x[0] - margin_x, limits_x[1] + margin_x]
+	limits_y = [limits_y[0] - margin_y, limits_y[1] + margin_y]
+	return limits_x,limits_y
+
+def compute_pareto_domainance(metrics, tools, metric_x, metric_y):
+	mean_x		= {t:stat.mean(metrics[metric_x]['sample']['Success (%)'][t]) for t in TOOLS}
+	mean_y		= {t:stat.mean(metrics[metric_y]['sample']['Success (%)'][t]) for t in TOOLS}
+	return [sum([1 for tb in TOOLS if mean_x[ta] < mean_x[tb] and mean_y[ta] < mean_y[tb]]) for ta in tools]
+
+def generate_box_plots(metrics):
+	fig = plt.figure(figsize=(4.5, 5.0))
+	subplot_layout = (2,2)
 	label_offset = (5,-5)
-	matplotlib.rcParams.update({'font.size': FONT_SIZE})
-	matplotlib.rcParams.update({'font.family': FONT_FAMILY})
-	matplotlib.rcParams.update({'axes.linewidth': LINE_WIDTH})
-	matplotlib.rcParams.update({'xtick.major.width': LINE_WIDTH})
-	matplotlib.rcParams.update({'ytick.major.width': LINE_WIDTH})
-	matplotlib.rcParams.update({'xtick.major.size': TICK_SIZE})
-	matplotlib.rcParams.update({'ytick.major.size': TICK_SIZE})
+	matplotlib.rcParams.update({'font.size': 			FONT_SIZE})
+	matplotlib.rcParams.update({'font.family':			FONT_FAMILY})
+	matplotlib.rcParams.update({'axes.linewidth':		LINE_WIDTH})
+	matplotlib.rcParams.update({'xtick.major.width':	LINE_WIDTH})
+	matplotlib.rcParams.update({'ytick.major.width':	LINE_WIDTH})
+	matplotlib.rcParams.update({'xtick.major.size':		TICK_SIZE})
+	matplotlib.rcParams.update({'ytick.major.size':		TICK_SIZE})
 	matplotlib.rc('text', usetex=True)
 	titles = ['Quality', 'Cost']
-	for m, (metric_x, metric_y) in enumerate([('Makespan (s)', 'Number of Actions'),('Processing Time (s)', 'Memory Usage (GB)')]):
+	for tidx,tools in enumerate([[k for k in TOOLS if k[1] in [tx,0]] for tx in [25,50]]):
+		for m, (metric_x, metric_y) in enumerate([('Makespan (s)', 'Number of Actions'),('Processing Time (s)', 'Memory Usage (GB)')]):
 
-		# Data
-		tcolors		= [TOOLS[t]['color'] for t in tools]
-		tmarkers	= [TOOLS[t]['marker'] for t in tools]
-		lmarkers	= [TOOLS[t]['line'] for t in tools]
-		tnames		= [TOOLS[t]['tex-short'] for t in tools]
-		samples_x	= [metrics[metric_x]['sample']['Success (%)'][t] for t in tools]
-		samples_y	= [metrics[metric_y]['sample']['Success (%)'][t] for t in tools]
-		mean_x		= [stat.mean(s) for s in samples_x]
-		mean_y		= [stat.mean(s) for s in samples_y]
-		med_x		= [stat.median(s) for s in samples_x]
-		med_y		= [stat.median(s) for s in samples_y]
-		conf_x		= [1.96*stat.stdev(s)/(len(s)**0.5) for s in samples_x]
-		conf_y		= [1.96*stat.stdev(s)/(len(s)**0.5) for s in samples_y]
-		perc_x_l	= [np.percentile(s,25) for s in samples_x]
-		perc_x_h	= [np.percentile(s,75) for s in samples_x]
-		perc_y_l	= [np.percentile(s,25) for s in samples_y]
-		perc_y_h	= [np.percentile(s,75) for s in samples_y]
+			# Data
+			tcolors	= [TOOL_FORMAT[t[0]]['color'] for t in tools]
+			markers	= [TOOL_FORMAT[t[0]]['marker'] for t in tools]
+			tnames	= [format_tool_name('acro',t) for t in tools]
+			mean_x	= [stat.mean(metrics[metric_x]['sample']['Success (%)'][t]) for t in tools]
+			mean_y	= [stat.mean(metrics[metric_y]['sample']['Success (%)'][t]) for t in tools]
 
-		# Computing Pareto Domainance
-		mean_dom = [sum([1 for tb in range(len(tools)) if mean_x[ta] < mean_x[tb] and mean_y[ta] < mean_y[tb]]) for ta in range(len(tools))]
+			# Computing Pareto Domainance
+			mean_dom = compute_pareto_domainance(metrics, tools, metric_x, metric_y)
 
-		def plot_details():
-			plt.xlabel('Processing Time (m)' if MINUTES and metric_x == 'Processing Time (s)' else metric_x)
-			plt.ylabel('Processing Time (m)' if MINUTES and metric_y == 'Processing Time (s)' else metric_y)
-			if m == 0 and planner in ['tfddownward']:
-				legend = plt.legend(tnames, loc='lower center', ncol=9, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE*0.83, bbox_to_anchor=(1.07,1.05))
+			# Mean Pareto Dominance
+			ax = plt.subplot2grid(subplot_layout, (tidx,m))
+			for x, y, c, mkr, d in zip(mean_x, mean_y, tcolors, markers, mean_dom):
+				plt.annotate(d, (x,y), xytext=label_offset, textcoords='offset points', fontsize=0.75*FONT_SIZE)
+				plt.plot(x, y, ls='None', c=c, marker=mkr, ms=MARKER_SIZE)
+
+			# Plot limits
+			limits_x,limits_y = compute_box_limits(metrics, TOOLS, metric_x, metric_y)
+			ax.set_xlim(limits_x)
+			ax.set_ylim(limits_y)
+
+			# Labels
+			desc_str = chr(ord('a') + m+2*tidx)+') '+PLANNER_DOM[domain]+' '+titles[m]+' ('+PLANNER_DOM[planner]+', $f_{max} = %d$)'%[25,50][tidx]
+			xlabel = 'Processing Time (m)' if MINUTES and metric_x == 'Processing Time (s)' else metric_x
+			ylabel = 'Processing Time (m)' if MINUTES and metric_y == 'Processing Time (s)' else metric_y
+			plt.xlabel(xlabel+'\n'+desc_str,linespacing=2.0)
+			plt.ylabel(ylabel)
+
+			# Legend
+			if m == 0 and tidx == 0:
+				legend = plt.legend(tnames, loc='lower center', ncol=10, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE*0.75, bbox_to_anchor=(1.07,1.05))
 				legend.get_frame().set_linewidth(LINE_WIDTH)
-			ax.text(0.0, -0.35,PLOT_LABELS[(domain,planner)][m]+') '+PLANNER_DOM[domain]+' '+titles[m]+' Objectives ('+PLANNER_DOM[planner]+')', verticalalignment='bottom', horizontalalignment='left', transform=ax.transAxes, fontsize=FONT_SIZE)
-
-		# Mean Pareto Dominance
-		ax = plt.subplot2grid(subplot_layout, (0,m))
-		limits_x = [min(mean_x), max(mean_x)]
-		limits_y = [min(mean_y), max(mean_y)]
-		margin_x = (limits_x[1] - limits_x[0])*0.1
-		margin_y = (limits_y[1] - limits_y[0])*0.1
-		limits_x= [limits_x[0] - margin_x, limits_x[1] + margin_x]
-		limits_y= [limits_y[0] - margin_y, limits_y[1] + margin_y]
-		for x, y, c, mkr, mkrl, d in zip(mean_x, mean_y, tcolors, tmarkers, lmarkers, mean_dom):
-			# plt.annotate(d, (x,y), xytext=label_offset, textcoords='offset points', fontsize=0.75*FONT_SIZE,arrowprops=dict(edgecolor='none',facecolor='grey', width=0.0, headwidth=LINE_WIDTH, shrink=0.50))
-			plt.annotate(d, (x,y), xytext=label_offset, textcoords='offset points', fontsize=0.75*FONT_SIZE)
-			plt.plot(x, y, ls='None', marker=mkr, c=c, ms=MARKER_SIZE, mew=mkrl)
-		ax.set_xlim(limits_x)
-		ax.set_ylim(limits_y)
-		plot_details()
 
 	plt.tight_layout()
 	fig.subplots_adjust(top=0.85)
@@ -319,7 +377,7 @@ for metric in tqdm(METRICS.keys()):
 		metrics[metric]['sample'][f]	= OrderedDict()
 
 	# For each tool
-	for t in TOOLS.keys():
+	for t in TOOLS:
 		if metric == 'Planning Results (%)':
 			query_all	= db.query([('Domain',domain),('Planner',planner),('Tool',t[0]),('Fusion Ratio','0.%02d'%t[1])])
 			status		= db.select('Planning Results (%)', query_all, as_integer=True)
@@ -345,4 +403,4 @@ generate_stats_plots(metrics)
 
 # Box Plots
 print 'Box Plots ...'
-generate_box_plots(metrics, TOOLS)
+generate_box_plots(metrics)
