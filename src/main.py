@@ -61,26 +61,12 @@ TOOL_FORMAT	= OrderedDict([
 			('PA',					OrderedDict([	('name','Planning Alone'),						('acro','PA'),	('color', (0.50, 0.50, 0.50)),	('marker', (7,0,180)),	('bold', False)])),
 		])
 
-TOOLS	= [
-			('Object',25),
-			('Object',50),
-			('Action',25),
-			('Action',50),
-			('ActionObject',25),
-			('ActionObject',50),
-			('ObjectTime',25),
-			('ObjectTime',50),
-			('ActionTime',25),
-			('ActionTime',50),
-			('ActionObjectTime',25),
-			('ActionObjectTime',50),
-			('CoalitionSimilarity',25),
-			('CoalitionSimilarity',50),
-			('CoalitionAssistance',25),
-			('CoalitionAssistance',50),
-			('CFP',0),
-			('PA',0),
-		]
+TF_TOOLS = ['Object','Action','ActionObject','ObjectTime','ActionTime','ActionObjectTime','CoalitionSimilarity','CoalitionAssistance']
+BASES = ['CFP','PA']
+
+FRS = [25,50,75]
+
+TOOLS	= [(t,d) for t in TF_TOOLS for d in FRS] + [(t,0) for t in BASES]
 
 METRICS	= OrderedDict([
 			('Planning Results (%)',	{'ab': 'a) Planning results',	'plain': 'Planning results',	'excl': []}),
@@ -119,12 +105,14 @@ NCOL				= 4
 MARKER_SIZE			= 3
 TICK_SIZE			= 2
 LINE_WIDTH			= 0.50
-FIG_SIZE			= (9.0, 8.0)
+STATS_FIG_SIZE		= (9.0,9.0)
+BOX_FIG_SIZE		= (4.5,7.0)
+BOX_LABEL_OFFSET	= (5,-5)
 LABEL_OSET_RESULTS	= 0.50
 LABEL_OSET_METRICS	= -0.6
 
 if domain == 'first_response':
-	del TOOLS[('PA',0)]
+	TOOLS.remove(('PA',0))
 
 def format_tool_name(type, key):
 
@@ -148,8 +136,10 @@ def format_tool_name(type, key):
 		if key[1]==0:
 			return name
 		if key[1]==25:
-			return '\\multirow{2}{*}{%s}'%name
+			return '\\multirow{%d}{*}{%s}'%(len(FRS),name)
 		if key[1]==50:
+			return ''
+		if key[1]==75:
 			return ''
 
 def generate_stats_table(metrics):
@@ -171,8 +161,8 @@ def generate_stats_table(metrics):
 	ret_var = '\n'.join(ret_var)
 
 	# Horizontal Lines
-	re_key = r'(\\\\)\n(.*\\\\)'
-	reg_sub = r'\1 \\Cline{0.5pt}{2-5}\n\2 \\hline'
+	re_key = r'(\\\\)\n(.*\\\\)\n(.*\\\\)'
+	reg_sub = r'\1 \\Cline{0.5pt}{2-5}\n\2 \\Cline{0.5pt}{2-5}\n\3 \\hline'
 	ret_var = re.sub(re_key,reg_sub,ret_var)
 
 	# Std spacing
@@ -183,8 +173,7 @@ def generate_stats_table(metrics):
 	return ret_var
 
 
-def generate_stats_plots(metrics):
-	plt.figure(figsize=FIG_SIZE)
+def set_fig_text_format():
 	matplotlib.rcParams.update({'font.size': 			FONT_SIZE})
 	matplotlib.rcParams.update({'font.family':			FONT_FAMILY})
 	matplotlib.rcParams.update({'axes.linewidth':		LINE_WIDTH})
@@ -193,6 +182,10 @@ def generate_stats_plots(metrics):
 	matplotlib.rcParams.update({'xtick.major.size':		TICK_SIZE})
 	matplotlib.rcParams.update({'ytick.major.size':		TICK_SIZE})
 	matplotlib.rc('text', usetex=True)
+
+def generate_stats_plots(metrics):
+	plt.figure(figsize=STATS_FIG_SIZE)
+	set_fig_text_format()
 	gridspec.GridSpec(9,1)
 	numbars = len(TOOLS)
 	bar_origin = ((1-BAR_FILL)/2)*np.ones(numbars) + np.asarray(range(numbars))
@@ -201,8 +194,6 @@ def generate_stats_plots(metrics):
 	grid_ctr = 0
 	for m, metric in enumerate(metrics):
 		if metric == 'Planning Results (%)':
-
-
 
 			# Sorting for success
 			if SORT_SUCCESS:
@@ -287,19 +278,12 @@ def compute_pareto_domainance(metrics, tools, metric_x, metric_y):
 	return [sum([1 for tb in TOOLS if mean_x[ta] < mean_x[tb] and mean_y[ta] < mean_y[tb]]) for ta in tools]
 
 def generate_box_plots(metrics):
-	fig = plt.figure(figsize=(4.5, 5.0))
-	subplot_layout = (2,2)
-	label_offset = (5,-5)
-	matplotlib.rcParams.update({'font.size': 			FONT_SIZE})
-	matplotlib.rcParams.update({'font.family':			FONT_FAMILY})
-	matplotlib.rcParams.update({'axes.linewidth':		LINE_WIDTH})
-	matplotlib.rcParams.update({'xtick.major.width':	LINE_WIDTH})
-	matplotlib.rcParams.update({'ytick.major.width':	LINE_WIDTH})
-	matplotlib.rcParams.update({'xtick.major.size':		TICK_SIZE})
-	matplotlib.rcParams.update({'ytick.major.size':		TICK_SIZE})
-	matplotlib.rc('text', usetex=True)
+	fig = plt.figure(figsize=BOX_FIG_SIZE)
+	subplot_layout = (len(FRS),2)
+	label_offset = BOX_LABEL_OFFSET
+	set_fig_text_format()
 	titles = ['Quality', 'Cost']
-	for tidx,tools in enumerate([[k for k in TOOLS if k[1] in [tx,0]] for tx in [25,50]]):
+	for fr,tools in enumerate([[k for k in TOOLS if k[1] in [tx,0]] for tx in FRS]):
 		for m, (metric_x, metric_y) in enumerate([('Makespan (s)', 'Number of Actions'),('Processing Time (s)', 'Memory Usage (GB)')]):
 
 			# Data
@@ -313,7 +297,7 @@ def generate_box_plots(metrics):
 			mean_dom = compute_pareto_domainance(metrics, tools, metric_x, metric_y)
 
 			# Mean Pareto Dominance
-			ax = plt.subplot2grid(subplot_layout, (tidx,m))
+			ax = plt.subplot2grid(subplot_layout, (fr,m))
 			for x, y, c, mkr, d in zip(mean_x, mean_y, tcolors, markers, mean_dom):
 				plt.annotate(d, (x,y), xytext=label_offset, textcoords='offset points', fontsize=0.75*FONT_SIZE)
 				plt.plot(x, y, ls='None', c=c, marker=mkr, ms=MARKER_SIZE)
@@ -324,14 +308,14 @@ def generate_box_plots(metrics):
 			ax.set_ylim(limits_y)
 
 			# Labels
-			desc_str = chr(ord('a') + m+2*tidx)+') '+PLANNER_DOM[domain]+' '+titles[m]+' ('+PLANNER_DOM[planner]+', $f_{max} = %d$)'%[25,50][tidx]
+			desc_str = chr(ord('a') + m+2*fr)+') '+PLANNER_DOM[domain]+' '+titles[m]+' ('+PLANNER_DOM[planner]+', $f_{max} = 0.%d$)'%FRS[fr]
 			xlabel = 'Processing Time (m)' if MINUTES and metric_x == 'Processing Time (s)' else metric_x
 			ylabel = 'Processing Time (m)' if MINUTES and metric_y == 'Processing Time (s)' else metric_y
 			plt.xlabel(xlabel+'\n'+desc_str,linespacing=2.0)
 			plt.ylabel(ylabel)
 
 			# Legend
-			if m == 0 and tidx == 0:
+			if m == 0 and fr == 0:
 				legend = plt.legend(tnames, loc='lower center', ncol=10, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE*0.75, bbox_to_anchor=(1.07,1.05))
 				legend.get_frame().set_linewidth(LINE_WIDTH)
 
