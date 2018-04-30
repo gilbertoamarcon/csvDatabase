@@ -142,21 +142,20 @@ def format_tool_name(type, key):
 		if key[1]==75:
 			return ''
 
-def generate_stats_table(metrics):
+def generate_stats_table(metrics,metric):
 	ret_var = []
-	for metric in metrics:
-		buff = [[r'\textbf{Tool}','$f_{max}$']+[r'\textbf{'+STATUSES[f]['name']+'}' for f in STATUSES if f not in METRICS[metric]['excl']]]
-		for t in TOOLS:
-			trow = [format_tool_name('table-name',t), format_tool_name('fusion-ratio',t)]
-			for f in [f for f in STATUSES if f not in METRICS[metric]['excl']]:
-				if metric == 'Planning Results (%)':
-					trow.append('%d'%metrics[metric][f][t])
-				else:
-					mean	= metrics[metric]['mean'][f][t]
-					error	= metrics[metric]['error'][f][t]
-					trow.append('%*.*f (%*.*f)'%(CSPACING,DECPRES,mean,CSPACING,DECPRES,error) if mean == mean and error ==  error else 'N/A')
-			buff.append(trow)
-		ret_var.append(tabulate(buff, headers='firstrow', tablefmt='latex_raw'))
+	buff = [[r'\textbf{Tool}','$f_{max}$']+[r'\textbf{'+STATUSES[f]['name']+'}' for f in STATUSES if f not in METRICS[metric]['excl']]]
+	for t in TOOLS:
+		trow = [format_tool_name('table-name',t), format_tool_name('fusion-ratio',t)]
+		for f in [f for f in STATUSES if f not in METRICS[metric]['excl']]:
+			if metric == 'Planning Results (%)':
+				trow.append('%d'%metrics[metric][f][t])
+			else:
+				mean	= metrics[metric]['mean'][f][t]
+				error	= metrics[metric]['error'][f][t]
+				trow.append('%*.*f (%*.*f)'%(CSPACING,DECPRES,mean,CSPACING,DECPRES,error) if mean == mean and error ==  error else 'N/A')
+		buff.append(trow)
+	ret_var.append(tabulate(buff, headers='firstrow', tablefmt='latex_raw'))
 
 	ret_var = '\n'.join(ret_var)
 
@@ -168,6 +167,21 @@ def generate_stats_table(metrics):
 	# Std spacing
 	re_key = r'(\() (\d\.\d\))'
 	reg_sub = r'\1\\hphantom{0}\2'
+	ret_var = re.sub(re_key,reg_sub,ret_var)
+
+	# Alignment spacing
+	re_key = r'(\(\d\d\.\d\))'
+	reg_sub = r'           \1'
+	ret_var = re.sub(re_key,reg_sub,ret_var)
+
+	# Cline
+	re_key = r'(\{lllll\})'
+	reg_sub = r'{l|c V{3} r|r|r}'
+	ret_var = re.sub(re_key,reg_sub,ret_var)
+
+	# Cline
+	re_key = r'(\n\\hline)'
+	reg_sub = r' \\Cline{1pt}{1-5}'
 	ret_var = re.sub(re_key,reg_sub,ret_var)
 
 	return ret_var
@@ -378,13 +392,14 @@ for metric in tqdm(METRICS.keys()):
 
 # Stats Table
 print 'Stats Table ...'
-with open(STATS_TABLE+domain+'_'+planner+'.tex', 'wb') as file:
-	file.write(generate_stats_table(metrics))
+for metric in metrics:
+	with open(STATS_TABLE+domain+'_'+planner+'_'+METRICS[metric]['plain'].replace(' ','_')+'.tex', 'wb') as file:
+		file.write(generate_stats_table(metrics,metric))
 
-# Stats Plots
-print 'Stats Plots ...'
-generate_stats_plots(metrics)
+# # Stats Plots
+# print 'Stats Plots ...'
+# generate_stats_plots(metrics)
 
-# Box Plots
-print 'Box Plots ...'
-generate_box_plots(metrics)
+# # Box Plots
+# print 'Box Plots ...'
+# generate_box_plots(metrics)
