@@ -396,10 +396,10 @@ for metric in metrics:
 	with open(STATS_TABLE+domain+'_'+planner+'_'+METRICS[metric]['plain'].replace(' ','_')+'.tex', 'wb') as file:
 		file.write(generate_stats_table(metrics,metric))
 
-# # Stats Plots
-# print 'Stats Plots ...'
-# generate_stats_plots(metrics)
+# Stats Plots
+print 'Stats Plots ...'
+generate_stats_plots(metrics)
 
-# # Box Plots
-# print 'Box Plots ...'
-# generate_box_plots(metrics)
+# Box Plots
+print 'Box Plots ...'
+generate_box_plots(metrics)
