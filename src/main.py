@@ -6,6 +6,7 @@ import matplotlib
 import operator
 import re
 import matplotlib.pyplot as plt
+import pytablewriter as ptw
 import statistics as stat
 import numpy as np
 from tqdm import tqdm
@@ -96,6 +97,7 @@ GATHER_DATA_SCRIPT	= 'scripts/gather_data.sh'
 RAW_STATS			= 'csv/stats.csv'
 FILTERED_STATS		= 'csv/stats_filtered.csv'
 STATS_TABLE			= 'tex/stats_'
+EXCEL_TABLE			= 'xls/stats'
 PLOT_FORMATS		= ['pdf', 'eps', 'svg']
 STATS_PLOT_NAME		= 'plots/stats_'
 BOX_PLOT_NAME		= 'plots/box_'
@@ -141,6 +143,19 @@ def format_tool_name(type, key):
 			return ''
 		if key[1]==75:
 			return ''
+
+def generate_excel(filename,metrics):
+	print 'Storing data to %s ...' % filename
+	writer = ptw.ExcelXlsxTableWriter()
+	writer.open(filename)
+	for metric in metrics:
+		writer.make_worksheet(METRICS[metric]['plain'].replace(' ','_'))
+		header = ['Tool','f_max']+STATUSES.keys()
+		data = [[t[0], format_tool_name('fusion-ratio',t)] + ['%d'%metrics[metric][f][t] if metric == 'Planning Results (%)' else '%*.*f'%(CSPACING,DECPRES,metrics[metric]['mean'][f][t]) for f in STATUSES] for t in TOOLS]
+		writer.header_list = header
+		writer.value_matrix = data
+		writer.write_table()
+	writer.close()
 
 def generate_stats_table(metrics,metric):
 	ret_var = []
@@ -390,10 +405,14 @@ for metric in tqdm(METRICS.keys()):
 				metrics[metric]['error'][f][t]	= error
 				metrics[metric]['sample'][f][t]	= sample
 
+# Excel Spreadsheet
+print 'Excel Spreadsheet ...'
+generate_excel('-'.join([EXCEL_TABLE,domain,planner])+'.xlsx',metrics)
+
 # Stats Table
 print 'Stats Table ...'
 for metric in metrics:
-	with open(STATS_TABLE+domain+'_'+planner+'_'+METRICS[metric]['plain'].replace(' ','_')+'.tex', 'wb') as file:
+	with open(STATS_TABLE+domain+'_'+planner+'_'+'.tex', 'wb') as file:
 		file.write(generate_stats_table(metrics,metric))
 
 # Stats Plots
