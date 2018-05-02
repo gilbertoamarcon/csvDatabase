@@ -4,7 +4,7 @@ import sys
 import getopt
 import matplotlib
 import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
+import matplotlib.patches as pat
 from matplotlib import colors
 import numpy as np
 from tqdm import tqdm
@@ -43,13 +43,13 @@ print 'Planner: %s' % planner
 print 'Fusion Ratio: %s' % fusion_ratio
 print 'Grid: %s' % grid
 
-
-STATUSES			= OrderedDict([
-							('Success (%)',			OrderedDict([	('short', 'Success'),	('code', '0'),	('color', (0.000, 0.447, 0.741))	])), # Blue
-							('Nonexecutable (%)',	OrderedDict([	('short', 'Nonexec'),	('code', '1'),	('color', (0.850, 0.325, 0.098))	])), # Tomato
-							('Time Fail (%)',		OrderedDict([	('short', 'Time Fail'),	('code', '124'),	('color', (0.929, 0.694, 0.125))	])), # Orange
-							('Memory Fail (%)',		OrderedDict([	('short', 'Mem Fail'),	('code', '134'),	('color', (0.929, 0.894, 0.325))	])), # Yellow
+COLORCODE			= OrderedDict([
+							(0,		OrderedDict([	('short', 'Success'),	('code', '0'),		('color', (0.000, 0.447, 0.741))	])), # Blue
+							(1,		OrderedDict([	('short', 'Nonexec'),	('code', '1'),		('color', (0.850, 0.325, 0.098))	])), # Tomato
+							(124,	OrderedDict([	('short', 'Time Fail'),	('code', '124'),	('color', (0.929, 0.694, 0.125))	])), # Orange
+							(134,	OrderedDict([	('short', 'Mem Fail'),	('code', '134'),	('color', (0.929, 0.894, 0.325))	])), # Yellow
 					])
+
 
 TOOLS				= OrderedDict([
 							('Object',				OrderedDict([	('reg', 'O'),		('tex',r'\textbf{O}'),		('color', (1.000, 0.000, 0.000)), ('marker', (3,0,0)),		('plt-loc', (0,0))	])), # Red
@@ -75,6 +75,7 @@ GROUP_TITLES		= {'0.25':'a', '0.50':'b', '0.75':'c'}
 # Labels
 file_header			= ['Domain','Problem','CFA','Planner','Tool','Fusion Ratio', 'Planning Results (%)', 'Makespan (s)', 'Number of Actions', 'Processing Time (s)', 'Memory Usage (GB)']
 
+LINEWIDTH			= 0.1
 BAR_FILL			= 0.60
 FONT_SIZE			= 6
 FONT_FAMILY			= 'serif'
@@ -89,14 +90,6 @@ PROB_PLOT_NAME		= "plots/prob"
 # PLOT_FORMATS		= ['pdf', 'eps', 'svg']
 PLOT_FORMATS		= ['svg']
 PROBL_FORMAT		= 'P%02dC%02d'
-
-
-# Color code
-color_list = [STATUSES[s]['color'] for s in STATUSES]
-code_list = [-1]+[int(STATUSES[s]['code'])+1 for s in STATUSES]
-cmap = colors.ListedColormap(color_list)
-norm = colors.BoundaryNorm(code_list, cmap.N)
-
 
 # Gathering data
 print 'Gathering data ...'
@@ -118,21 +111,11 @@ for t in TOOLS.keys():
 	problems	= db.select(['Problem','Planning Results (%)'], query_all)
 	data[t]		= OrderedDict(problems)
 
-# Building buffer
-buf = OrderedDict()
-for t in data:
-	buf[t] = np.zeros((10,10))
-	for p in range(10):
-		for c in range(10):
-			code = PROBL_FORMAT % (p+1,c+1)
-			buf[t][p,c] = int(data[t][code])
-
-
 
 plt.figure(frameon=True)
 f, axes = plt.subplots(2,5, sharex='all', sharey='all', squeeze=True)
-plt.subplots_adjust(hspace=0.20, wspace=-0.3, bottom=0.15, top=0.9, left=0.00, right=1.00)
-plt.gcf().set_size_inches(7,3.2)
+plt.subplots_adjust(hspace=0.15, wspace=-0.20, bottom=0.15, top=0.88, left=0.00, right=1.00)
+plt.gcf().set_size_inches(4.5,1.8)
 matplotlib.rcParams.update({'font.size':			FONT_SIZE})
 matplotlib.rcParams.update({'font.family':			FONT_FAMILY})
 matplotlib.rcParams.update({'axes.linewidth':		0.2})
@@ -145,11 +128,11 @@ if domain == 'first_response':
 	axes[1,4].axis('off')
 
 if fusion_ratio == '0.25':
-	labels = [STATUSES[s]['short'] for s in STATUSES]
-	patches = [mpatches.Patch(facecolor=color, edgecolor=grid, label=label, linewidth=1.0) for label,color in zip(code_list,color_list)]
-	axes[0,2].legend(patches, labels, loc='center', frameon=False, ncol=4, bbox_to_anchor=(0.5, 1.225))
+	labels = [COLORCODE[k]['short'] for k in COLORCODE]
+	patches = [pat.Patch(facecolor=v['color'], edgecolor=grid, label=k, linewidth=LINEWIDTH) for k,v in COLORCODE.items()]
+	axes[0,2].legend(patches, labels, loc='center', frameon=False, ncol=4, bbox_to_anchor=(0.5, 1.25), fontsize=FONT_SIZE)
 
-for t in buf:
+for t in data:
 
 	# Plot location indexes
 	px = TOOLS[t]['plt-loc'][0]
@@ -159,26 +142,29 @@ for t in buf:
 	ax = axes[px,py]
 
 	# Plot
-	ax.imshow(buf[t], interpolation='nearest', origin='lower', cmap=cmap, norm=norm, aspect='equal')
+	for pidx,p in enumerate(range(10)):
+		for cidx,c in enumerate(range(10)):
+			code = PROBL_FORMAT%(p+1,c+1)
+			error_code = int(data[t][code])
+			ax.add_patch(pat.Rectangle((cidx-0.5,pidx-0.5), 1.0, 1.0, edgecolor=grid, facecolor=COLORCODE[error_code]['color'], linewidth=LINEWIDTH))
 
 	# Plot Title
 	tool_title = TOOLS[t]['tex']
 	# if t not in ['PA','CFP']:
 	# 	tool_title += ' ($f_{max} = %s$)' % fusion_ratio
-	ax.title.set_text(tool_title)
+	ax.set_title(tool_title, fontsize=FONT_SIZE, position=(0.5,0.9))
 
 	# Square Aspect Ratio
 	ax.set_adjustable('box-forced')
 	ax.set_aspect(1)
-
 	
 	# Major tick indexes
-	ax.set_xticks(np.arange(0,10,1.0));
-	ax.set_yticks(np.arange(0,10,1.0));
+	ax.set_xticks(np.arange(0,10,9.0));
+	ax.set_yticks(np.arange(0,10,9.0));
 
 	# Labels for major ticks
-	ax.set_xticklabels(np.arange(1, 11, 1));
-	ax.set_yticklabels(np.arange(1, 11, 1));
+	ax.set_xticklabels(np.arange(1, 11, 9));
+	ax.set_yticklabels(np.arange(1, 11, 9));
 
 	# Minor ticks
 	ax.set_xticks(np.arange(-.45, 10, 1), minor=True);
@@ -193,17 +179,17 @@ for t in buf:
 		ax.set(xlabel='Coalition')
 	if py == 0:
 		ax.set(ylabel='Problem')
+	ax.xaxis.labelpad = -5
+	ax.yaxis.labelpad = -7
 
-	if grid == 'w':
-		ax.spines['top'].set_visible(False)
-		ax.spines['left'].set_visible(False)
-		ax.spines['right'].set_visible(False)
-		ax.spines['bottom'].set_visible(False)
+	for s in ax.spines.values():
+		s.update({
+				'edgecolor': grid,
+				'linewidth': LINEWIDTH,
+			})
 
-	# Gridlines based on minor ticks
-	ax.grid(which='minor', color=grid, linestyle='-', linewidth=1.5)
 
-plt.suptitle('%s) %s with %s problem-wise results for $f_{max} = %s$.' % (GROUP_TITLES[fusion_ratio], PLANNER_DOM[domain], PLANNER_DOM[planner], fusion_ratio), x=0.27, y=0.05, fontsize=1.20*FONT_SIZE)
+plt.suptitle('%s) %s with %s problem-wise results for $f_{max} = %s$.' % (GROUP_TITLES[fusion_ratio], PLANNER_DOM[domain], PLANNER_DOM[planner], fusion_ratio), x=0.30, y=0.05, fontsize=FONT_SIZE)
 
 
 for f in PLOT_FORMATS:
