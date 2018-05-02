@@ -1,16 +1,20 @@
 #!/bin/bash
-grid=k
-fr=0.50
-out_fname=problem$fr
-python src/success.py -p tfddownward	-d blocks_world		-f $fr -g $grid
-python src/success.py -p colin2			-d blocks_world		-f $fr -g $grid
-python src/success.py -p colin2			-d first_response	-f $fr -g $grid
-python src/svg_stack.py --direction=v plots/prob_blocks_world_tfddownward.svg plots/prob_blocks_world_colin2.svg plots/prob_first_response_colin2.svg > plots/$out_fname.svg
-inkscape plots/$out_fname.svg -E plots/$out_fname.eps --export-ignore-filters
-fr=0.25
-out_fname=problem$fr
-python src/success.py -p tfddownward	-d blocks_world		-f $fr -g $grid
-python src/success.py -p colin2			-d blocks_world		-f $fr -g $grid
-python src/success.py -p colin2			-d first_response	-f $fr -g $grid
-python src/svg_stack.py --direction=v plots/prob_blocks_world_tfddownward.svg plots/prob_blocks_world_colin2.svg plots/prob_first_response_colin2.svg > plots/$out_fname.svg
-inkscape plots/$out_fname.svg -E plots/$out_fname.eps --export-ignore-filters
+
+# ./scripts/success.sh ${HOME}/over/14617918kcvdvjvrbpng/
+
+dest=$1
+
+grid=w
+ratios=(0.25 0.50 0.75)
+
+for i in blocks_world,tfddownward blocks_world,colin2 first_response,colin2; do IFS=","; set -- $i;
+	domain=$1
+	planner=$2
+	name=plots/prob-$domain-$planner
+	for fr in ${ratios[*]}; do python src/success.py -p $planner -d $domain -f $fr -g $grid; done
+	echo $(for fr in ${ratios[@]}; do echo $name-$fr.svg; done) | xargs python src/svg_stack.py --direction=v > $name.svg
+	inkscape $name.svg -E $name.eps --export-ignore-filters
+	if ! [ -z "$1" ]; then
+		cp $name.eps $dest/fig/
+	fi
+done

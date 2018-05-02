@@ -70,6 +70,7 @@ if domain == 'first_response':
 
 
 PLANNER_DOM			= {'first_response': 'First Response', 'blocks_world': 'Blocks World', 'colin2': 'COLIN', 'tfddownward': 'TFD'}
+GROUP_TITLES		= {'0.25':'a', '0.50':'b', '0.75':'c'}
 
 # Labels
 file_header			= ['Domain','Problem','CFA','Planner','Tool','Fusion Ratio', 'Planning Results (%)', 'Makespan (s)', 'Number of Actions', 'Processing Time (s)', 'Memory Usage (GB)']
@@ -84,8 +85,9 @@ CSPACING			= 1
 GATHER_DATA_SCRIPT	= "scripts/gather_data.sh"
 RAW_STATS			= "csv/stats.csv"
 FILTERED_STATS		= "csv/stats_filtered.csv"
-PROB_PLOT_NAME		= "plots/prob_"
-PLOT_FORMATS		= ['pdf', 'eps', 'svg']
+PROB_PLOT_NAME		= "plots/prob"
+# PLOT_FORMATS		= ['pdf', 'eps', 'svg']
+PLOT_FORMATS		= ['svg']
 PROBL_FORMAT		= 'P%02dC%02d'
 
 
@@ -125,25 +127,27 @@ for t in data:
 			code = PROBL_FORMAT % (p+1,c+1)
 			buf[t][p,c] = int(data[t][code])
 
-matplotlib.rcParams.update({'font.size': FONT_SIZE})
-matplotlib.rcParams.update({'font.family': FONT_FAMILY})
 
 
-# f, axes = plt.subplots(2,5)
 plt.figure(frameon=True)
 f, axes = plt.subplots(2,5, sharex='all', sharey='all', squeeze=True)
-plt.subplots_adjust(hspace=0.20, wspace=-0.3, bottom=0.15, top=0.88, left=0.00, right=1.00)
+plt.subplots_adjust(hspace=0.20, wspace=-0.3, bottom=0.15, top=0.9, left=0.00, right=1.00)
 plt.gcf().set_size_inches(7,3.2)
-matplotlib.rcParams.update({'font.size': 6})
-matplotlib.rcParams.update({'axes.linewidth': 0.2})
-matplotlib.rcParams.update({'xtick.major.width': 0.2})
-matplotlib.rcParams.update({'ytick.major.width': 0.2})
+matplotlib.rcParams.update({'font.size':			FONT_SIZE})
+matplotlib.rcParams.update({'font.family':			FONT_FAMILY})
+matplotlib.rcParams.update({'axes.linewidth':		0.2})
+matplotlib.rcParams.update({'xtick.major.width':	0.2})
+matplotlib.rcParams.update({'ytick.major.width':	0.2})
+matplotlib.rc('text', usetex=True)
+
 
 if domain == 'first_response':
+	axes[1,4].axis('off')
+
+if fusion_ratio == '0.25':
 	labels = [STATUSES[s]['short'] for s in STATUSES]
 	patches = [mpatches.Patch(facecolor=color, edgecolor=grid, label=label, linewidth=1.0) for label,color in zip(code_list,color_list)]
-	axes[1,4].axis('off')
-	axes[1,4].legend(patches, labels, loc='center', frameon=False)
+	axes[0,2].legend(patches, labels, loc='center', frameon=False, ncol=4, bbox_to_anchor=(0.5, 1.225))
 
 for t in buf:
 
@@ -158,9 +162,9 @@ for t in buf:
 	ax.imshow(buf[t], interpolation='nearest', origin='lower', cmap=cmap, norm=norm, aspect='equal')
 
 	# Plot Title
-	tool_title = TOOLS[t]['reg']
-	if t not in ['PA','CFP']:
-		tool_title += ' (%s Fusion Ratio)' % fusion_ratio
+	tool_title = TOOLS[t]['tex']
+	# if t not in ['PA','CFP']:
+	# 	tool_title += ' ($f_{max} = %s$)' % fusion_ratio
 	ax.title.set_text(tool_title)
 
 	# Square Aspect Ratio
@@ -199,8 +203,8 @@ for t in buf:
 	# Gridlines based on minor ticks
 	ax.grid(which='minor', color=grid, linestyle='-', linewidth=1.5)
 
-plt.suptitle('%s %s' % (PLANNER_DOM[domain], PLANNER_DOM[planner]), fontsize=12)
+plt.suptitle('%s) %s with %s problem-wise results for $f_{max} = %s$.' % (GROUP_TITLES[fusion_ratio], PLANNER_DOM[domain], PLANNER_DOM[planner], fusion_ratio), x=0.27, y=0.05, fontsize=1.20*FONT_SIZE)
 
 
 for f in PLOT_FORMATS:
-	plt.savefig(PROB_PLOT_NAME+domain+'_'+planner+'.'+f)
+	plt.savefig('-'.join([PROB_PLOT_NAME,domain,planner,fusion_ratio])+'.'+f)
