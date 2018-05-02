@@ -13,6 +13,7 @@ for i in blocks_world,tfddownward blocks_world,colin2 first_response,colin2; do 
 	name=plots/prob-$domain-$planner
 	for fr in ${ratios[*]}; do python src/success.py -p $planner -d $domain -f $fr -g $grid; done
 	echo $(for fr in ${ratios[@]}; do echo $name-$fr.svg; done) | xargs python src/svg_stack.py --direction=v > $name.svg
+	python src/remove_svg_frame.py -i $name.svg -o $name.svg
 	inkscape $name.svg -E $name.eps --export-ignore-filters
 	if ! [ -z "$1" ]; then
 		cp $name.eps $dest/fig/
