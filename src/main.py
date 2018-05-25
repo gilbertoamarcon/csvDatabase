@@ -65,16 +65,16 @@ TOOL_FORMAT	= OrderedDict([
 TF_TOOLS = ['Object','Action','ActionObject','ObjectTime','ActionTime','ActionObjectTime','CoalitionSimilarity','CoalitionAssistance']
 BASES = ['CFP','PA']
 
-FRS = [25,50,75]
+FRS = [0.25,0.50,0.75,1.00]
 
 TOOLS	= [(t,d) for t in TF_TOOLS for d in FRS] + [(t,0) for t in BASES]
 
 METRICS	= OrderedDict([
-			('Planning Results (%)',	{'ab': 'a) Planning results',	'plain': 'Planning results',	'excl': []}),
-			('Makespan (s)',			{'ab': 'b) Makespan',			'plain': 'Makespan',			'excl': ['Nonexecutable (%)','Time Fail (%)','Memory Fail (%)']}),
-			('Number of Actions',		{'ab': 'c) Number of actions',	'plain': 'Number of actions',	'excl': ['Nonexecutable (%)','Time Fail (%)','Memory Fail (%)']}),
-			('Processing Time (s)',		{'ab': 'd) Processing time',	'plain': 'Processing time',		'excl': ['Time Fail (%)']}),
-			('Memory Usage (GB)',		{'ab': 'e) Memory usage',		'plain': 'Memory usage',		'excl': ['Memory Fail (%)']}),
+			('Planning Results (%)',	{'ab': 'a) Planning results',	'plain': 'Planning results',	'flat': 'planning_results',		'excl': []}),
+			('Makespan (s)',			{'ab': 'b) Makespan',			'plain': 'Makespan',			'flat': 'makespan',				'excl': ['Nonexecutable (%)','Time Fail (%)','Memory Fail (%)']}),
+			('Number of Actions',		{'ab': 'c) Number of actions',	'plain': 'Number of actions',	'flat': 'number_of_actions',	'excl': ['Nonexecutable (%)','Time Fail (%)','Memory Fail (%)']}),
+			('Processing Time (s)',		{'ab': 'd) Processing time',	'plain': 'Processing time',		'flat': 'processing_time',		'excl': ['Time Fail (%)']}),
+			('Memory Usage (GB)',		{'ab': 'e) Memory usage',		'plain': 'Memory usage',		'flat': 'memory_usage',			'excl': ['Memory Fail (%)']}),
 		])
 
 PLANNER_DOM			= {'first_response': 'First Response', 'blocks_world': 'Blocks World', 'colin2': 'COLIN', 'tfddownward': 'TFD'}
@@ -107,7 +107,7 @@ NCOL				= 4
 MARKER_SIZE			= 3
 TICK_SIZE			= 2
 LINE_WIDTH			= 0.50
-STATS_FIG_SIZE		= (9.0,9.0)
+STATS_FIG_SIZE		= (9.0,11.0)
 BOX_FIG_SIZE		= (4.5,7.0)
 BOX_LABEL_OFFSET	= (5,-5)
 LABEL_OSET_RESULTS	= 0.50
@@ -129,19 +129,21 @@ def format_tool_name(type, key):
 
 	# Format
 	if type == 'fusion-ratio':
-		return 'N/A' if key[1]==0 else '0.%d'%key[1]
+		return 'N/A' if key[1]==0.0 else '$%4.2f$'%key[1]
 	if type == 'name':
-		return name + ('' if key[1]==0 else r' ($f_{max} = ' + '0.%d'%key[1] + r'$)')
+		return name + ('' if key[1]==0.0 else r' ($f_{max} = ' + '%4.2f'%key[1] + r'$)')
 	if type == 'acro':
 		return acro
 	if type == 'table-name':
-		if key[1]==0:
+		if key[1]==0.00:
 			return name
-		if key[1]==25:
+		if key[1]==0.25:
 			return '\\multirow{%d}{*}{%s}'%(len(FRS),name)
-		if key[1]==50:
+		if key[1]==0.50:
 			return ''
-		if key[1]==75:
+		if key[1]==0.75:
+			return ''
+		if key[1]==1.00:
 			return ''
 
 def generate_excel(filename,metrics):
@@ -175,8 +177,8 @@ def generate_stats_table(metrics,metric):
 	ret_var = '\n'.join(ret_var)
 
 	# Horizontal Lines
-	re_key = r'(\\\\)\n(.*\\\\)\n(.*\\\\)'
-	reg_sub = r'\1 \\Cline{0.5pt}{2-5}\n\2 \\Cline{0.5pt}{2-5}\n\3 \\hline'
+	re_key = r'(\\\\)\n(.*\\\\)\n(.*\\\\)\n(.*\\\\)'
+	reg_sub = r'\1 \\Cline{0.5pt}{2-5}\n\2 \\Cline{0.5pt}{2-5}\n\3 \\Cline{0.5pt}{2-5}\n\4 \\hline'
 	ret_var = re.sub(re_key,reg_sub,ret_var)
 
 	# Std spacing
@@ -337,7 +339,7 @@ def generate_box_plots(metrics):
 			ax.set_ylim(limits_y)
 
 			# Labels
-			desc_str = chr(ord('a') + m+2*fr)+') '+PLANNER_DOM[domain]+' '+titles[m]+' ('+PLANNER_DOM[planner]+', $f_{max} = 0.%d$)'%FRS[fr]
+			desc_str = chr(ord('a') + m+2*fr)+') '+PLANNER_DOM[domain]+' '+titles[m]+' ('+PLANNER_DOM[planner]+', $f_{max} = %4.2f$)'%FRS[fr]
 			xlabel = 'Processing Time (m)' if MINUTES and metric_x == 'Processing Time (s)' else metric_x
 			ylabel = 'Processing Time (m)' if MINUTES and metric_y == 'Processing Time (s)' else metric_y
 			plt.xlabel(xlabel+'\n'+desc_str,linespacing=2.0)
@@ -392,13 +394,16 @@ for metric in tqdm(METRICS.keys()):
 	# For each tool
 	for t in TOOLS:
 		if metric == 'Planning Results (%)':
-			query_all	= db.query([('Domain',domain),('Planner',planner),('Tool',t[0]),('Fusion Ratio','0.%02d'%t[1])])
+			query_all	= db.query([('Domain',domain),('Planner',planner),('Tool',t[0]),('Fusion Ratio','%4.2f'%t[1])])
 			status		= db.select('Planning Results (%)', query_all, as_integer=True)
 			for f in STATUSES:
-				metrics[metric][f][t] = 100.0*len([k for k in status if k == STATUSES[f]['code']])/len(query_all)
+				if len(query_all):
+					metrics[metric][f][t] = 100.0*len([k for k in status if k == STATUSES[f]['code']])/len(query_all)
+				else:
+					metrics[metric][f][t] = 0.0
 		else:
 			for f in STATUSES:
-				sample = db.select(metric, db.query([('Domain',domain),('Planner',planner),('Tool',t[0]),('Fusion Ratio','0.%02d'%t[1]),('Planning Results (%)',str(STATUSES[f]['code']))]), as_float=True)
+				sample = db.select(metric, db.query([('Domain',domain),('Planner',planner),('Tool',t[0]),('Fusion Ratio','%4.2f'%t[1]),('Planning Results (%)',str(STATUSES[f]['code']))]), as_float=True)
 				sample = [s/60 for s in sample] if MINUTES and metric == 'Processing Time (s)' else sample
 				mean, error = get_stats(sample)
 				metrics[metric]['mean'][f][t]	= mean
@@ -412,7 +417,7 @@ generate_excel('-'.join([EXCEL_TABLE,domain,planner])+'.xlsx',metrics)
 # Stats Table
 print 'Stats Table ...'
 for metric in metrics:
-	with open(STATS_TABLE+domain+'_'+planner+'_'+'.tex', 'wb') as file:
+	with open(STATS_TABLE+domain+'_'+planner+'_'+METRICS[metric]['flat']+'.tex', 'wb') as file:
 		file.write(generate_stats_table(metrics,metric))
 
 # Stats Plots

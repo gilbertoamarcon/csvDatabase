@@ -76,7 +76,7 @@ if domain == 'first_response':
 
 
 PLANNER_DOM			= {'first_response': 'First Response', 'blocks_world': 'Blocks World', 'colin2': 'COLIN', 'tfddownward': 'TFD'}
-GROUP_TITLES		= {'0.25':'a', '0.50':'b', '0.75':'c'}
+GROUP_TITLES		= {'0.25':'a', '0.50':'b', '0.75':'c', '1.00':'d'}
 
 # Labels
 file_header			= ['Domain','Problem','CFA','Planner','Tool','Fusion Ratio', 'Planning Results (%)', 'Makespan (s)', 'Number of Actions', 'Processing Time (s)', 'Memory Usage (GB)']
@@ -124,13 +124,15 @@ def create_sheet(wb, title, width):
 	ws.merge_cells('A3:A12')
 
 	# Sum over each row (Problem)
-	ws.conditional_formatting.add('M3:M12', CellIsRule(operator='greaterThan', stopIfTrue=True, formula=['9'], font=Font(bold=True)))
+	ws.conditional_formatting.add('M3:M12', CellIsRule(operator='equal', stopIfTrue=True, formula=['10'], font=Font(bold=True)))
+	ws.conditional_formatting.add('M3:M12', CellIsRule(operator='equal', stopIfTrue=True, formula=['0'], font=Font(bold=True)))
 	for row in ws['M3:M12']:
 		for c in row:
 			c.value = '=SUM(C%d:L%d)' % (c.row,c.row)
 
 	# Sum over each column (Coalition)
-	ws.conditional_formatting.add('C13:L13', CellIsRule(operator='greaterThan', stopIfTrue=True, formula=['9'], font=Font(bold=True)))
+	ws.conditional_formatting.add('C13:L13', CellIsRule(operator='equal', stopIfTrue=True, formula=['10'], font=Font(bold=True)))
+	ws.conditional_formatting.add('C13:L13', CellIsRule(operator='equal', stopIfTrue=True, formula=['0'], font=Font(bold=True)))
 	for row in ws['C13:M13']:
 		for c in row:
 			c.value = '=SUM(%s3:%s12)' % (c.column,c.column)
@@ -146,6 +148,7 @@ def generate_excel(data,filename):
 	wb = Workbook()
 	del wb['Sheet']
 
+	heuristics = [t for t in data if t not in ['PA','CFP']]
 
 	# Main data
 	for t in data:
@@ -160,28 +163,28 @@ def generate_excel(data,filename):
 	for r, row in enumerate(reversed(ws['C3:L12'])):
 		for c,cell in enumerate(row):
 			problem = PROBL_FORMAT%(r+1,c+1)
-			cell.value = sum([int(data[t][problem])==0 for t in data])==0
+			cell.value = sum([int(data[t][problem])==0 for t in heuristics])==0
 
 	# All Tools Succeeded
 	ws = create_sheet(wb=wb, title='All Succeeded', width=3.0)
 	for r, row in enumerate(reversed(ws['C3:L12'])):
 		for c,cell in enumerate(row):
 			problem = PROBL_FORMAT%(r+1,c+1)
-			cell.value = sum([int(data[t][problem])>0 for t in data])==0
+			cell.value = sum([int(data[t][problem])>0 for t in heuristics])==0
 
 	# At least some tools failed
 	ws = create_sheet(wb=wb, title='Some Failed', width=3.0)
 	for r, row in enumerate(reversed(ws['C3:L12'])):
 		for c,cell in enumerate(row):
 			problem = PROBL_FORMAT%(r+1,c+1)
-			cell.value = sum([int(data[t][problem])>0 for t in data])>0
+			cell.value = sum([int(data[t][problem])>0 for t in heuristics])>0
 
 	# At least some tools succeeded
 	ws = create_sheet(wb=wb, title='Some Succeeded', width=3.0)
 	for r, row in enumerate(reversed(ws['C3:L12'])):
 		for c,cell in enumerate(row):
 			problem = PROBL_FORMAT%(r+1,c+1)
-			cell.value = sum([int(data[t][problem])==0 for t in data])>0
+			cell.value = sum([int(data[t][problem])==0 for t in heuristics])>0
 
 	wb.save(filename)
 
@@ -189,8 +192,8 @@ def generate_plot(data):
 
 	plt.figure(frameon=True)
 	f, axes = plt.subplots(2,5, sharex='all', sharey='all', squeeze=True)
-	plt.subplots_adjust(hspace=0.15, wspace=-0.20, bottom=0.15, top=0.88, left=0.00, right=1.00)
-	plt.gcf().set_size_inches(4.5,1.8)
+	plt.subplots_adjust(hspace=0.20, wspace=-0.30, bottom=0.15, top=0.88, left=0.00, right=1.00)
+	plt.gcf().set_size_inches(4.5,1.52)
 	matplotlib.rcParams.update({'font.size':			FONT_SIZE})
 	matplotlib.rcParams.update({'font.family':			FONT_FAMILY})
 	matplotlib.rcParams.update({'axes.linewidth':		0.2})
@@ -289,7 +292,7 @@ for t in TOOLS.keys():
 	data[t]		= OrderedDict(problems)
 
 
-# generate_plot(data)
+generate_plot(data)
 
 
 # Excel Spreadsheet
