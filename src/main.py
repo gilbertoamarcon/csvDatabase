@@ -321,7 +321,7 @@ def generate_fmax_plots(metrics):
 		plt.xticks(FRS[::3])
 		extrap = 0.05
 		plt.xlim(min(FRS)-extrap,max(FRS)+extrap)
-		xlabel_name = 'Success (%)'.replace('%','\%')
+		xlabel_name = 'a) Success (%)'.replace('%','\%')
 		ylabel_name = 'Success (%)'.replace('%','\%')
 		if metric != 'Planning Results (%)':
 			xlabel_name = METRICS[metric]['ab']
