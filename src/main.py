@@ -2,6 +2,7 @@
 import os
 import sys
 import getopt
+import pickle
 import matplotlib
 import operator
 import re
@@ -67,14 +68,15 @@ BASES = ['CFP','PA']
 
 FRS = [0.25,0.50,0.75,1.00]
 
-TOOLS	= [(t,d) for t in TF_TOOLS for d in FRS] + [(t,0) for t in BASES]
+TF_TOOLS = [(t,d) for t in TF_TOOLS for d in FRS]
+TOOLS	= TF_TOOLS + [(t,0) for t in BASES]
 
 METRICS	= OrderedDict([
-			('Planning Results (%)',	{'ab': 'a) Planning results',	'plain': 'Planning results',	'flat': 'planning_results',		'excl': []}),
-			('Makespan (s)',			{'ab': 'b) Makespan',			'plain': 'Makespan',			'flat': 'makespan',				'excl': ['Nonexecutable (%)','Time Fail (%)','Memory Fail (%)']}),
-			('Number of Actions',		{'ab': 'c) Number of actions',	'plain': 'Number of actions',	'flat': 'number_of_actions',	'excl': ['Nonexecutable (%)','Time Fail (%)','Memory Fail (%)']}),
-			('Processing Time (s)',		{'ab': 'd) Processing time',	'plain': 'Processing time',		'flat': 'processing_time',		'excl': ['Time Fail (%)']}),
-			('Memory Usage (GB)',		{'ab': 'e) Memory usage',		'plain': 'Memory usage',		'flat': 'memory_usage',			'excl': ['Memory Fail (%)']}),
+			('Planning Results (%)',	{'ac': 'Planning results (\%)',	'ab': 'a) Planning results',	'plain': 'Planning results',	'flat': 'planning_results',		'excl': []}),
+			('Makespan (s)',			{'ac': 'Makespan (s)',			'ab': 'b) Makespan',			'plain': 'Makespan',			'flat': 'makespan',				'excl': ['Nonexecutable (%)','Time Fail (%)','Memory Fail (%)']}),
+			('Number of Actions',		{'ac': 'Number of actions',		'ab': 'c) Number of actions',	'plain': 'Number of actions',	'flat': 'number_of_actions',	'excl': ['Nonexecutable (%)','Time Fail (%)','Memory Fail (%)']}),
+			('Processing Time (s)',		{'ac': 'Processing time (m)',	'ab': 'd) Processing time',		'plain': 'Processing time',		'flat': 'processing_time',		'excl': ['Time Fail (%)']}),
+			('Memory Usage (GB)',		{'ac': 'Memory usage (GB)',		'ab': 'e) Memory usage',		'plain': 'Memory usage',		'flat': 'memory_usage',			'excl': ['Memory Fail (%)']}),
 		])
 
 PLANNER_DOM			= {'first_response': 'First Response', 'blocks_world': 'Blocks World', 'colin2': 'COLIN', 'tfddownward': 'TFD'}
@@ -99,6 +101,7 @@ FILTERED_STATS		= 'csv/stats_filtered.csv'
 STATS_TABLE			= 'tex/stats_'
 EXCEL_TABLE			= 'xls/stats'
 PLOT_FORMATS		= ['pdf', 'eps', 'svg']
+FMAX_PLOTS			= 'plots/fmax_'
 STATS_PLOT_NAME		= 'plots/stats_'
 BOX_PLOT_NAME		= 'plots/box_'
 
@@ -108,6 +111,7 @@ MARKER_SIZE			= 3
 TICK_SIZE			= 2
 LINE_WIDTH			= 0.50
 STATS_FIG_SIZE		= (9.0,11.0)
+FMAX_FIG_SIZE		= (4.5,2.0)
 BOX_FIG_SIZE		= (4.5,7.0)
 BOX_LABEL_OFFSET	= (5,-5)
 LABEL_OSET_RESULTS	= 0.50
@@ -292,6 +296,43 @@ def generate_stats_plots(metrics):
 		for f in PLOT_FORMATS:
 			plt.savefig(STATS_PLOT_NAME+domain+'_'+planner+'.'+f, bbox_inches='tight')
 
+def generate_fmax_plots(metrics):
+	plt.figure(figsize=FMAX_FIG_SIZE)
+	set_fig_text_format()
+	for n,metric in enumerate(metrics):
+
+		tcolors	= [TOOL_FORMAT[t[0]]['color'] for t in TF_TOOLS][::4]
+		markers	= [TOOL_FORMAT[t[0]]['marker'] for t in TF_TOOLS][::4]
+		tnames	= [format_tool_name('acro',t) for t in TF_TOOLS][::4]
+
+		data = OrderedDict([(t[0],[]) for t in TF_TOOLS])
+		for t in TF_TOOLS:
+			data[t[0]].append(metrics[metric]['Success (%)'][t] if metric == 'Planning Results (%)' else metrics[metric]['mean']['Success (%)'][t])
+		lists = [d for d in data.values()]
+
+		ax = plt.subplot2grid((1,len(metrics)), (0,n))
+		for t in range(len(lists)):
+			ax = plt.plot(FRS, lists[t], c=tcolors[t], marker=markers[t], ms=MARKER_SIZE)
+		# ax = plt.plot(FRS,lists, ls='None', c=c, marker=mkr, ms=MARKER_SIZE)
+		# Legend
+		if n == 0:
+			legend = plt.legend(tnames, loc='lower left', ncol=8, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE*0.75, bbox_to_anchor=(1.55,1.05))
+			legend.get_frame().set_linewidth(LINE_WIDTH)
+		plt.xticks(FRS[::3])
+		extrap = 0.05
+		plt.xlim(min(FRS)-extrap,max(FRS)+extrap)
+		xlabel_name = 'Success (%)'.replace('%','\%')
+		ylabel_name = 'Success (%)'.replace('%','\%')
+		if metric != 'Planning Results (%)':
+			xlabel_name = METRICS[metric]['ab']
+			ylabel_name = METRICS[metric]['ac']
+		plt.xlabel('Fusion Ratio ($f_{max}$)\n'+xlabel_name,linespacing=2.0)
+		plt.ylabel(ylabel_name)
+
+	plt.tight_layout()
+	for f in PLOT_FORMATS:
+		plt.savefig(FMAX_PLOTS+domain+'_'+planner+'.'+f, bbox_inches='tight')
+
 def compute_box_limits(metrics, tools, metric_x, metric_y):
 	mean_x		= [stat.mean(metrics[metric_x]['sample']['Success (%)'][t]) for t in tools]
 	mean_y		= [stat.mean(metrics[metric_y]['sample']['Success (%)'][t]) for t in tools]
@@ -365,50 +406,62 @@ def get_stats(sample):
 		error = 1.96*stat.stdev(sample)/len(sample)**0.5
 	return mean, error
 
-# Gathering data
-print 'Gathering data ...'
-os.system(GATHER_DATA_SCRIPT)
+parse = True
+if parse:
+	# Gathering data
+	print 'Gathering data ...'
+	os.system(GATHER_DATA_SCRIPT)
 
-# Filtering CSV file
-print 'Filtering CSV file ...'
-StatsFilter.filter(RAW_STATS,FILTERED_STATS,file_header)
+	# Filtering CSV file
+	print 'Filtering CSV file ...'
+	print RAW_STATS,FILTERED_STATS,file_header
+	StatsFilter.filter(RAW_STATS,FILTERED_STATS,file_header)
 
-# Creating database
-print 'Creating database ...'
-db = CsvDatabase(FILTERED_STATS)
+	# Creating database
+	print 'Creating database ...'
+	db = CsvDatabase(FILTERED_STATS)
 
-# For each metric
-print 'Processing ...'
-metrics = OrderedDict()
-for metric in tqdm(METRICS.keys()):
-	metrics[metric] = OrderedDict()
-	metrics[metric]['mean']				= OrderedDict()
-	metrics[metric]['error']			= OrderedDict()
-	metrics[metric]['sample']			= OrderedDict()
-	for f in STATUSES:
-		metrics[metric][f]				= OrderedDict()
-		metrics[metric]['mean'][f]		= OrderedDict()
-		metrics[metric]['error'][f]		= OrderedDict()
-		metrics[metric]['sample'][f]	= OrderedDict()
+	# For each metric
+	print 'Processing ...'
+	metrics = OrderedDict()
+	for metric in tqdm(METRICS.keys()):
+		metrics[metric] = OrderedDict()
+		metrics[metric]['mean']				= OrderedDict()
+		metrics[metric]['error']			= OrderedDict()
+		metrics[metric]['sample']			= OrderedDict()
+		for f in STATUSES:
+			metrics[metric][f]				= OrderedDict()
+			metrics[metric]['mean'][f]		= OrderedDict()
+			metrics[metric]['error'][f]		= OrderedDict()
+			metrics[metric]['sample'][f]	= OrderedDict()
 
-	# For each tool
-	for t in TOOLS:
-		if metric == 'Planning Results (%)':
-			query_all	= db.query([('Domain',domain),('Planner',planner),('Tool',t[0]),('Fusion Ratio','%4.2f'%t[1])])
-			status		= db.select('Planning Results (%)', query_all, as_integer=True)
-			for f in STATUSES:
-				if len(query_all):
-					metrics[metric][f][t] = 100.0*len([k for k in status if k == STATUSES[f]['code']])/len(query_all)
-				else:
-					metrics[metric][f][t] = 0.0
-		else:
-			for f in STATUSES:
-				sample = db.select(metric, db.query([('Domain',domain),('Planner',planner),('Tool',t[0]),('Fusion Ratio','%4.2f'%t[1]),('Planning Results (%)',str(STATUSES[f]['code']))]), as_float=True)
-				sample = [s/60 for s in sample] if MINUTES and metric == 'Processing Time (s)' else sample
-				mean, error = get_stats(sample)
-				metrics[metric]['mean'][f][t]	= mean
-				metrics[metric]['error'][f][t]	= error
-				metrics[metric]['sample'][f][t]	= sample
+		# For each tool
+		for t in TOOLS:
+			if metric == 'Planning Results (%)':
+				query_all	= db.query([('Domain',domain),('Planner',planner),('Tool',t[0]),('Fusion Ratio','%4.2f'%t[1])])
+				status		= db.select('Planning Results (%)', query_all, as_integer=True)
+				for f in STATUSES:
+					if len(query_all):
+						metrics[metric][f][t] = 100.0*len([k for k in status if k == STATUSES[f]['code']])/len(query_all)
+					else:
+						metrics[metric][f][t] = 0.0
+			else:
+				for f in STATUSES:
+					sample = db.select(metric, db.query([('Domain',domain),('Planner',planner),('Tool',t[0]),('Fusion Ratio','%4.2f'%t[1]),('Planning Results (%)',str(STATUSES[f]['code']))]), as_float=True)
+					sample = [s/60 for s in sample] if MINUTES and metric == 'Processing Time (s)' else sample
+					mean, error = get_stats(sample)
+					metrics[metric]['mean'][f][t]	= mean
+					metrics[metric]['error'][f][t]	= error
+					metrics[metric]['sample'][f][t]	= sample
+	pickle.dump(metrics,open('metrics.p', 'wb'))
+
+else:
+	metrics = pickle.load(open('metrics.p', 'rb'))
+
+
+# Fmax plots
+print 'Fmax plots ...'
+generate_fmax_plots(metrics)
 
 # Excel Spreadsheet
 print 'Excel Spreadsheet ...'
