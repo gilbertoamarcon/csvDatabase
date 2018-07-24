@@ -7,8 +7,8 @@ dest=$1
 grid=w
 ratios=(0.25 0.50 0.75 1.00)
 
-# for i in blocks_world,tfddownward blocks_world,colin2 first_response,colin2; do IFS=","; set -- $i;
-for i in first_response,colin2; do IFS=","; set -- $i;
+for i in blocks_world,tfddownward blocks_world,colin2 first_response,colin2; do IFS=","; set -- $i;
+# for i in first_response,colin2; do IFS=","; set -- $i;
 	domain=$1
 	planner=$2
 	name=plots/prob-$domain-$planner
