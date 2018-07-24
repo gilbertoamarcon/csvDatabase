@@ -4,6 +4,7 @@ import sys
 import getopt
 import pickle
 import matplotlib
+import math
 import operator
 import re
 import matplotlib.pyplot as plt
@@ -63,6 +64,8 @@ TOOL_FORMAT	= OrderedDict([
 			('PA',					OrderedDict([	('name','Planning Alone'),						('acro','PA'),	('color', (0.50, 0.50, 0.50)),	('marker', (7,0,180)),	('bold', False)])),
 		])
 
+TIME_ORDER = ['Object','Action','ActionObject','CoalitionSimilarity','ObjectTime','ActionTime','ActionObjectTime','CoalitionAssistance']
+
 TF_TOOLS = ['Object','Action','ActionObject','ObjectTime','ActionTime','ActionObjectTime','CoalitionSimilarity','CoalitionAssistance']
 BASES = ['CFP','PA']
 
@@ -111,7 +114,7 @@ MARKER_SIZE			= 3
 TICK_SIZE			= 2
 LINE_WIDTH			= 0.50
 STATS_FIG_SIZE		= (9.0,11.0)
-FMAX_FIG_SIZE		= (4.5,2.0)
+FMAX_FIG_SIZE		= (4.5,3.0)
 BOX_FIG_SIZE		= (4.5,7.0)
 BOX_LABEL_OFFSET	= (5,-5)
 LABEL_OSET_RESULTS	= 0.50
@@ -297,28 +300,36 @@ def generate_stats_plots(metrics):
 			plt.savefig(STATS_PLOT_NAME+domain+'_'+planner+'.'+f, bbox_inches='tight')
 
 def generate_fmax_plots(metrics):
+
+	# Time order Sorting
+	time_order = True
+	FMAX_TF_TOOLS = [(t,d) for t in TIME_ORDER for d in FRS] if time_order else TF_TOOLS
+
 	plt.figure(figsize=FMAX_FIG_SIZE)
 	set_fig_text_format()
 	for n,metric in enumerate(metrics):
 
-		tcolors	= [TOOL_FORMAT[t[0]]['color'] for t in TF_TOOLS][::4]
-		markers	= [TOOL_FORMAT[t[0]]['marker'] for t in TF_TOOLS][::4]
-		tnames	= [format_tool_name('acro',t) for t in TF_TOOLS][::4]
+		tcolors	= [TOOL_FORMAT[t[0]]['color'] for t in FMAX_TF_TOOLS][::4]
+		markers	= [TOOL_FORMAT[t[0]]['marker'] for t in FMAX_TF_TOOLS][::4]
+		tnames	= [format_tool_name('acro',t) for t in FMAX_TF_TOOLS][::4]
 
-		data = OrderedDict([(t[0],[]) for t in TF_TOOLS])
-		for t in TF_TOOLS:
+		data = OrderedDict([(t[0],[]) for t in FMAX_TF_TOOLS])
+		for t in FMAX_TF_TOOLS:
 			data[t[0]].append(metrics[metric]['Success (%)'][t] if metric == 'Planning Results (%)' else metrics[metric]['mean']['Success (%)'][t])
 		lists = [d for d in data.values()]
 
-		ax = plt.subplot2grid((1,len(metrics)), (0,n))
+		frame_x = int(math.floor(n/3))
+		frame_y = n%3
+
+		ax = plt.subplot2grid((2,3), (frame_x,frame_y))
 		for t in range(len(lists)):
 			ax = plt.plot(FRS, lists[t], c=tcolors[t], marker=markers[t], ms=MARKER_SIZE)
 		# ax = plt.plot(FRS,lists, ls='None', c=c, marker=mkr, ms=MARKER_SIZE)
 		# Legend
-		if n == 0:
-			legend = plt.legend(tnames, loc='lower left', ncol=8, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE*0.75, bbox_to_anchor=(1.55,1.05))
+		if n == 2:
+			legend = plt.legend(tnames, loc='center', ncol=2, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE, bbox_to_anchor=(0.5,-1.125))
 			legend.get_frame().set_linewidth(LINE_WIDTH)
-		plt.xticks(FRS[::3])
+		plt.xticks(FRS)
 		extrap = 0.05
 		plt.xlim(min(FRS)-extrap,max(FRS)+extrap)
 		xlabel_name = 'a) Success (%)'.replace('%','\%')
