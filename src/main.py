@@ -91,7 +91,7 @@ BAR_FILL			= 0.60
 FONT_SIZE			= 6
 FONT_FAMILY			= 'serif'
 COL_PAD				= 5
-CSPACING			= 4
+CSPACING			= 0
 DECPRES				= 1
 
 SORT_SUCCESS		= True
@@ -114,8 +114,8 @@ MARKER_SIZE			= 3
 TICK_SIZE			= 2
 LINE_WIDTH			= 0.50
 STATS_FIG_SIZE		= (9.0,11.0)
-FMAX_FIG_SIZE		= (4.5,3.0)
-BOX_FIG_SIZE		= (4.5,6.3)
+FMAX_FIG_SIZE		= (4.5,6.0)
+BOX_FIG_SIZE		= (4.5,7.0)
 BOX_LABEL_OFFSET	= (5,-5)
 LABEL_OSET_RESULTS	= 0.50
 LABEL_OSET_METRICS	= -0.6
@@ -188,10 +188,10 @@ def generate_stats_table(metrics,metric):
 	reg_sub = r'\1 \\Cline{0.5pt}{2-5}\n\2 \\Cline{0.5pt}{2-5}\n\3 \\Cline{0.5pt}{2-5}\n\4 \\hline'
 	ret_var = re.sub(re_key,reg_sub,ret_var)
 
-	# Std spacing
-	re_key = r'(\() (\d\.\d\))'
-	reg_sub = r'\1\\hphantom{0}\2'
-	ret_var = re.sub(re_key,reg_sub,ret_var)
+	# # Std spacing
+	# re_key = r'(\() (\d\.\d\))'
+	# reg_sub = r'\1\\hphantom{0}\2'
+	# ret_var = re.sub(re_key,reg_sub,ret_var)
 
 	# Alignment spacing
 	re_key = r'(\(\d\d\.\d\))'
@@ -305,30 +305,32 @@ def generate_fmax_plots(metrics):
 	time_order = True
 	FMAX_TF_TOOLS = [(t,d) for t in TIME_ORDER for d in FRS] if time_order else TF_TOOLS
 
+	tcolors	= [TOOL_FORMAT[t[0]]['color'] for t in FMAX_TF_TOOLS][::4]
+	markers	= [TOOL_FORMAT[t[0]]['marker'] for t in FMAX_TF_TOOLS][::4]
+	tnames	= [format_tool_name('acro',t) for t in FMAX_TF_TOOLS][::4]
+
 	plt.figure(figsize=FMAX_FIG_SIZE)
 	set_fig_text_format()
 	for n,metric in enumerate(metrics):
-
-		tcolors	= [TOOL_FORMAT[t[0]]['color'] for t in FMAX_TF_TOOLS][::4]
-		markers	= [TOOL_FORMAT[t[0]]['marker'] for t in FMAX_TF_TOOLS][::4]
-		tnames	= [format_tool_name('acro',t) for t in FMAX_TF_TOOLS][::4]
 
 		data = OrderedDict([(t[0],[]) for t in FMAX_TF_TOOLS])
 		for t in FMAX_TF_TOOLS:
 			data[t[0]].append(metrics[metric]['Success (%)'][t] if metric == 'Planning Results (%)' else metrics[metric]['mean']['Success (%)'][t])
 		lists = [d for d in data.values()]
 
-		frame_x = int(math.floor(n/3))
-		frame_y = n%3
+		frame_x = int(math.floor((n+1)/2))
+		frame_y = (n+1)%2
 
-		ax = plt.subplot2grid((2,3), (frame_x,frame_y))
+		ax = plt.subplot2grid((3,2), (frame_x,frame_y))
 		for t in range(len(lists)):
 			ax = plt.plot(FRS, lists[t], c=tcolors[t], marker=markers[t], ms=MARKER_SIZE)
-		# ax = plt.plot(FRS,lists, ls='None', c=c, marker=mkr, ms=MARKER_SIZE)
+
 		# Legend
-		if n == 2:
-			legend = plt.legend(tnames, loc='center', ncol=2, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE, bbox_to_anchor=(0.5,-1.125))
+		if n == 0:
+			legend = plt.legend(tnames, loc='center', ncol=2, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE, bbox_to_anchor=(-0.75,0.5))
 			legend.get_frame().set_linewidth(LINE_WIDTH)
+
+		# Labels and ticks
 		plt.xticks(FRS)
 		extrap = 0.05
 		plt.xlim(min(FRS)-extrap,max(FRS)+extrap)
