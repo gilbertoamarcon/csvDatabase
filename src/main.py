@@ -2,21 +2,18 @@
 import os
 import sys
 import getopt
-import pickle
 import matplotlib
 import math
 import operator
 import re
 import matplotlib.pyplot as plt
 import pytablewriter as ptw
-import statistics as stat
 import numpy as np
+import pandas as pd
 from tqdm import tqdm
 from tabulate import tabulate
 from collections import OrderedDict
 import matplotlib.gridspec as gridspec
-from scipy import stats
-from CsvDatabase import *
 from StatsFilter import *
 
 HELP_MSG = 'main.py -p <planner> -d <domain>\nplanner choices:\n\ttfddownward\n\tcolin2\ndomain choices:\n\tblocks_world\n\tfirst_response'
@@ -115,7 +112,7 @@ TICK_SIZE			= 2
 LINE_WIDTH			= 0.50
 STATS_FIG_SIZE		= (9.0,11.0)
 FMAX_FIG_SIZE		= (4.5,6.0)
-BOX_FIG_SIZE		= (4.5,7.0)
+BOX_FIG_SIZE		= (4.5,7.3)
 BOX_LABEL_OFFSET	= (5,-5)
 LABEL_OSET_RESULTS	= 0.50
 LABEL_OSET_METRICS	= -0.6
@@ -347,8 +344,8 @@ def generate_fmax_plots(metrics):
 		plt.savefig(FMAX_PLOTS+domain+'_'+planner+'.'+f, bbox_inches='tight')
 
 def compute_box_limits(metrics, tools, metric_x, metric_y):
-	mean_x		= [stat.mean(metrics[metric_x]['sample']['Success (%)'][t]) for t in tools]
-	mean_y		= [stat.mean(metrics[metric_y]['sample']['Success (%)'][t]) for t in tools]
+	mean_x		= [np.mean(metrics[metric_x]['sample']['Success (%)'][t]) for t in tools]
+	mean_y		= [np.mean(metrics[metric_y]['sample']['Success (%)'][t]) for t in tools]
 	limits_x = [min(mean_x), max(mean_x)]
 	limits_y = [min(mean_y), max(mean_y)]
 	margin_x = (limits_x[1] - limits_x[0])*0.1
@@ -358,8 +355,8 @@ def compute_box_limits(metrics, tools, metric_x, metric_y):
 	return limits_x,limits_y
 
 def compute_pareto_domainance(metrics, tools, metric_x, metric_y):
-	mean_x		= {t:stat.mean(metrics[metric_x]['sample']['Success (%)'][t]) for t in TOOLS}
-	mean_y		= {t:stat.mean(metrics[metric_y]['sample']['Success (%)'][t]) for t in TOOLS}
+	mean_x		= {t:np.mean(metrics[metric_x]['sample']['Success (%)'][t]) for t in TOOLS}
+	mean_y		= {t:np.mean(metrics[metric_y]['sample']['Success (%)'][t]) for t in TOOLS}
 	return [sum([1 for tb in TOOLS if mean_x[ta] < mean_x[tb] and mean_y[ta] < mean_y[tb]]) for ta in tools]
 
 def generate_box_plots(metrics):
@@ -375,8 +372,8 @@ def generate_box_plots(metrics):
 			tcolors	= [TOOL_FORMAT[t[0]]['color'] for t in tools]
 			markers	= [TOOL_FORMAT[t[0]]['marker'] for t in tools]
 			tnames	= [format_tool_name('acro',t) for t in tools]
-			mean_x	= [stat.mean(metrics[metric_x]['sample']['Success (%)'][t]) for t in tools]
-			mean_y	= [stat.mean(metrics[metric_y]['sample']['Success (%)'][t]) for t in tools]
+			mean_x	= [np.mean(metrics[metric_x]['sample']['Success (%)'][t]) for t in tools]
+			mean_y	= [np.mean(metrics[metric_y]['sample']['Success (%)'][t]) for t in tools]
 
 			# Computing Pareto Domainance
 			mean_dom = compute_pareto_domainance(metrics, tools, metric_x, metric_y)
@@ -412,64 +409,68 @@ def generate_box_plots(metrics):
 def get_stats(sample):
 	if len(sample) < 2:
 		return float('nan'), float('nan')
-	mean = stat.mean(sample)
+	mean = np.mean(sample)
 	if SPREAD == 'STDEV':
-		error = stat.stdev(sample)
+		error = np.std(sample)
 	if SPREAD == 'CI':
-		error = 1.96*stat.stdev(sample)/len(sample)**0.5
+		error = 1.96*np.std(sample)/len(sample)**0.5
 	return mean, error
 
-parse = True
-if parse:
-	# Gathering data
-	print 'Gathering data ...'
-	os.system(GATHER_DATA_SCRIPT)
+# Gathering data
+print 'Gathering data ...'
+os.system(GATHER_DATA_SCRIPT)
 
-	# Filtering CSV file
-	print 'Filtering CSV file ...'
-	print RAW_STATS,FILTERED_STATS,file_header
-	StatsFilter.filter(RAW_STATS,FILTERED_STATS,file_header)
+# Filtering CSV file
+print 'Filtering CSV file ...'
+print RAW_STATS,FILTERED_STATS,file_header
+StatsFilter.filter(RAW_STATS,FILTERED_STATS,file_header)
 
-	# Creating database
-	print 'Creating database ...'
-	db = CsvDatabase(FILTERED_STATS)
+# Creating database
+print 'Creating database ...'
+df = pd.read_csv(FILTERED_STATS)
 
-	# For each metric
-	print 'Processing ...'
-	metrics = OrderedDict()
-	for metric in tqdm(METRICS.keys()):
-		metrics[metric] = OrderedDict()
-		metrics[metric]['mean']				= OrderedDict()
-		metrics[metric]['error']			= OrderedDict()
-		metrics[metric]['sample']			= OrderedDict()
-		for f in STATUSES:
-			metrics[metric][f]				= OrderedDict()
-			metrics[metric]['mean'][f]		= OrderedDict()
-			metrics[metric]['error'][f]		= OrderedDict()
-			metrics[metric]['sample'][f]	= OrderedDict()
+# For each metric
+print 'Processing ...'
+metrics = OrderedDict()
+for metric in tqdm(METRICS.keys()):
+	metrics[metric] = OrderedDict()
+	metrics[metric]['mean']				= OrderedDict()
+	metrics[metric]['error']			= OrderedDict()
+	metrics[metric]['sample']			= OrderedDict()
+	for f in STATUSES:
+		metrics[metric][f]				= OrderedDict()
+		metrics[metric]['mean'][f]		= OrderedDict()
+		metrics[metric]['error'][f]		= OrderedDict()
+		metrics[metric]['sample'][f]	= OrderedDict()
 
-		# For each tool
-		for t in TOOLS:
-			if metric == 'Planning Results (%)':
-				query_all	= db.query([('Domain',domain),('Planner',planner),('Tool',t[0]),('Fusion Ratio','%4.2f'%t[1])])
-				status		= db.select('Planning Results (%)', query_all, as_integer=True)
-				for f in STATUSES:
-					if len(query_all):
-						metrics[metric][f][t] = 100.0*len([k for k in status if k == STATUSES[f]['code']])/len(query_all)
-					else:
-						metrics[metric][f][t] = 0.0
-			else:
-				for f in STATUSES:
-					sample = db.select(metric, db.query([('Domain',domain),('Planner',planner),('Tool',t[0]),('Fusion Ratio','%4.2f'%t[1]),('Planning Results (%)',str(STATUSES[f]['code']))]), as_float=True)
-					sample = [s/60 for s in sample] if MINUTES and metric == 'Processing Time (s)' else sample
-					mean, error = get_stats(sample)
-					metrics[metric]['mean'][f][t]	= mean
-					metrics[metric]['error'][f][t]	= error
-					metrics[metric]['sample'][f][t]	= sample
-	pickle.dump(metrics,open('metrics.p', 'wb'))
-
-else:
-	metrics = pickle.load(open('metrics.p', 'rb'))
+	# For each tool
+	for t in TOOLS:
+		if metric == 'Planning Results (%)':
+			status = df.loc[
+							(df['Domain'] == domain) &
+							(df['Planner'] == planner) &
+							(df['Tool'] == t[0]) &
+							(df['Fusion Ratio'] == t[1])
+						]['Planning Results (%)'].values
+			for f in STATUSES:
+				if len(status):
+					metrics[metric][f][t] = 100.0*len([k for k in status if k == STATUSES[f]['code']])/len(status)
+				else:
+					metrics[metric][f][t] = 0.0
+		else:
+			for f in STATUSES:
+				sample = df.loc[
+								(df['Domain'] == domain) &
+								(df['Planner'] == planner) &
+								(df['Tool'] == t[0]) &
+								(df['Fusion Ratio'] == t[1]) &
+								(df['Planning Results (%)'] == STATUSES[f]['code'])
+							][metric].values
+				sample = np.array([s/60.0 for s in sample]) if MINUTES and metric == 'Processing Time (s)' else sample
+				mean, error = get_stats(sample)
+				metrics[metric]['mean'][f][t]	= mean
+				metrics[metric]['error'][f][t]	= error
+				metrics[metric]['sample'][f][t]	= sample
 
 
 # Fmax plots
