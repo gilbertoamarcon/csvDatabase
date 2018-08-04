@@ -142,7 +142,7 @@ def format_tool_name(type, key):
 		if key[1]==0.00:
 			return name
 		if key[1]==0.25:
-			return '\\multirow{%d}{*}{%s}'%(len(FRS),name)
+			return r'\multirow{&}{*}{%s}'%name
 		if key[1]==0.50:
 			return ''
 		if key[1]==0.75:
@@ -166,9 +166,10 @@ def generate_excel(filename,metrics):
 def generate_stats_table(metrics,metric):
 	ret_var = []
 	buff = [[r'\textbf{Tool}','$f_{max}$']+[r'\textbf{'+STATUSES[f]['name']+'}' for f in STATUSES if f not in METRICS[metric]['excl']]]
+	columns = [f for f in STATUSES if f not in METRICS[metric]['excl'] and not np.isnan(metrics[metric]['mean'][f].values()).all()]
 	for t in TOOLS:
 		trow = [format_tool_name('table-name',t), format_tool_name('fusion-ratio',t)]
-		for f in [f for f in STATUSES if f not in METRICS[metric]['excl']]:
+		for f in columns:
 			if metric == 'Planning Results (%)':
 				trow.append('%d'%metrics[metric][f][t])
 			else:
@@ -180,29 +181,37 @@ def generate_stats_table(metrics,metric):
 
 	ret_var = '\n'.join(ret_var)
 
-	# Horizontal Lines
-	re_key = r'(\\\\)\n(.*\\\\)\n(.*\\\\)\n(.*\\\\)'
-	reg_sub = r'\1 \\Cline{0.5pt}{2-5}\n\2 \\Cline{0.5pt}{2-5}\n\3 \\Cline{0.5pt}{2-5}\n\4 \\hline'
+	num_columns = len(columns)
+
+	# Multirows
+	re_key = r'\\multirow{&}'
+	reg_sub = r'\\multirow{%d}'%(num_columns+1)
 	ret_var = re.sub(re_key,reg_sub,ret_var)
 
-	# # Std spacing
-	# re_key = r'(\() (\d\.\d\))'
-	# reg_sub = r'\1\\hphantom{0}\2'
-	# ret_var = re.sub(re_key,reg_sub,ret_var)
-
-	# Alignment spacing
-	re_key = r'(\(\d\d\.\d\))'
-	reg_sub = r'           \1'
+	# Removing horizontal lines
+	re_key = r'\n*\\hline'
+	reg_sub = r''
 	ret_var = re.sub(re_key,reg_sub,ret_var)
 
-	# Cline
-	re_key = r'(\{lllll\})'
-	reg_sub = r'{l|c V{3} r|r|r}'
+	# Long horizontal lines
+	re_key = r'(\\\\)(\n\s*[^&\s]+[^&]*&)'
+	reg_sub = r'\1 \\hline\2'
 	ret_var = re.sub(re_key,reg_sub,ret_var)
 
-	# Cline
-	re_key = r'(\n\\hline)'
-	reg_sub = r' \\Cline{1pt}{1-5}'
+	# Short horizontal lines
+	re_key = r'(\\\\)(\n\s*&)'
+	reg_sub = r'\1 \\Cline{0.5pt}{2-%d}\2' % (num_columns+2)
+	ret_var = re.sub(re_key,reg_sub,ret_var)
+
+	# Thick vline
+	re_key = r'(\{l+\})'
+	rs = r'|'.join(['r']*num_columns)
+	reg_sub = r'{l|c V{3} %s}'%rs
+	ret_var = re.sub(re_key,reg_sub,ret_var)
+
+	# Thick main horizontal line
+	re_key = r'((?!\hline)*)\hline([\S\s]*)'
+	reg_sub = r'\1Cline{1pt}{1-%d}\2' % (num_columns+2)
 	ret_var = re.sub(re_key,reg_sub,ret_var)
 
 	return ret_var
@@ -473,10 +482,6 @@ for metric in tqdm(METRICS.keys()):
 				metrics[metric]['sample'][f][t]	= sample
 
 
-# Fmax plots
-print 'Fmax plots ...'
-generate_fmax_plots(metrics)
-
 # Excel Spreadsheet
 print 'Excel Spreadsheet ...'
 generate_excel('-'.join([EXCEL_TABLE,domain,planner])+'.xlsx',metrics)
@@ -486,6 +491,10 @@ print 'Stats Table ...'
 for metric in metrics:
 	with open(STATS_TABLE+domain+'_'+planner+'_'+METRICS[metric]['flat']+'.tex', 'wb') as file:
 		file.write(generate_stats_table(metrics,metric))
+
+# Fmax plots
+print 'Fmax plots ...'
+generate_fmax_plots(metrics)
 
 # Stats Plots
 print 'Stats Plots ...'
