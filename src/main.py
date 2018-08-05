@@ -116,6 +116,7 @@ BOX_FIG_SIZE		= (4.5,7.3)
 BOX_LABEL_OFFSET	= (5,-5)
 LABEL_OSET_RESULTS	= 0.50
 LABEL_OSET_METRICS	= -0.6
+PAD_INCHES			= 0.025
 
 if domain == 'first_response':
 	TOOLS.remove(('PA',0))
@@ -303,7 +304,7 @@ def generate_stats_plots(metrics):
 		# Legend and ticks
 		plt.tight_layout()
 		for f in PLOT_FORMATS:
-			plt.savefig(STATS_PLOT_NAME+domain+'_'+planner+'.'+f, bbox_inches='tight')
+			plt.savefig(STATS_PLOT_NAME+domain+'_'+planner+'.'+f, bbox_inches='tight', pad_inches=PAD_INCHES)
 
 def generate_fmax_plots(metrics):
 
@@ -350,7 +351,7 @@ def generate_fmax_plots(metrics):
 
 	plt.tight_layout()
 	for f in PLOT_FORMATS:
-		plt.savefig(FMAX_PLOTS+domain+'_'+planner+'.'+f, bbox_inches='tight')
+		plt.savefig(FMAX_PLOTS+domain+'_'+planner+'.'+f, bbox_inches='tight', pad_inches=PAD_INCHES)
 
 def compute_box_limits(metrics, tools, metric_x, metric_y):
 	mean_x		= [np.mean(metrics[metric_x]['sample']['Success (%)'][t]) for t in tools]
@@ -413,7 +414,7 @@ def generate_box_plots(metrics):
 	plt.tight_layout()
 	fig.subplots_adjust(top=0.85)
 	for f in PLOT_FORMATS:
-		plt.savefig(BOX_PLOT_NAME+domain+'_'+planner+'.'+f, bbox_inches='tight')
+		plt.savefig(BOX_PLOT_NAME+domain+'_'+planner+'.'+f, bbox_inches='tight', pad_inches=PAD_INCHES)
 
 def get_stats(sample):
 	if len(sample) < 2:
