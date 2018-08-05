@@ -111,8 +111,17 @@ MARKER_SIZE			= 3
 TICK_SIZE			= 2
 LINE_WIDTH			= 0.50
 STATS_FIG_SIZE		= (9.0,11.0)
-FMAX_FIG_SIZE		= (4.5,6.0)
-BOX_FIG_SIZE		= (4.5,7.3)
+FMAX_FIG_SIZE		= (4.5,3.0)
+BOX_FIG_SIZE		= {
+	'blocks_world': {
+		'tfddownward': (4.5,5.9),
+		'colin2': (4.5,6.2),
+	},
+	'first_response': {
+		'colin2': (4.5,7.3),
+	},
+}
+
 BOX_LABEL_OFFSET	= (5,-5)
 LABEL_OSET_RESULTS	= 0.50
 LABEL_OSET_METRICS	= -0.6
@@ -325,16 +334,17 @@ def generate_fmax_plots(metrics):
 			data[t[0]].append(metrics[metric]['Success (%)'][t] if metric == 'Planning Results (%)' else metrics[metric]['mean']['Success (%)'][t])
 		lists = [d for d in data.values()]
 
-		frame_x = int(math.floor((n+1)/2))
-		frame_y = (n+1)%2
+		frame_x = int(math.floor((n+0)/3))
+		frame_y = (n+0)%3
 
-		ax = plt.subplot2grid((3,2), (frame_x,frame_y))
+		ax = plt.subplot2grid((2,3), (frame_x,frame_y))
 		for t in range(len(lists)):
 			ax = plt.plot(FRS, lists[t], c=tcolors[t], marker=markers[t], ms=MARKER_SIZE)
 
 		# Legend
-		if n == 0:
-			legend = plt.legend(tnames, loc='center', ncol=2, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE, bbox_to_anchor=(-0.75,0.5))
+		if n == 2:
+			# legend = plt.legend(tnames, loc='center', ncol=2, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE, bbox_to_anchor=(-0.75,0.5))
+			legend = plt.legend(tnames, loc='center', ncol=2, scatterpoints=1, numpoints=1, fontsize=FONT_SIZE, bbox_to_anchor=(0.5,-1.0))
 			legend.get_frame().set_linewidth(LINE_WIDTH)
 
 		# Labels and ticks
@@ -370,7 +380,7 @@ def compute_pareto_domainance(metrics, tools, metric_x, metric_y):
 	return [sum([1 for tb in TOOLS if mean_x[ta] < mean_x[tb] and mean_y[ta] < mean_y[tb]]) for ta in tools]
 
 def generate_box_plots(metrics):
-	fig = plt.figure(figsize=BOX_FIG_SIZE)
+	fig = plt.figure(figsize=BOX_FIG_SIZE[domain][planner])
 	subplot_layout = (len(FRS),2)
 	label_offset = BOX_LABEL_OFFSET
 	set_fig_text_format()
@@ -483,23 +493,23 @@ for metric in tqdm(METRICS.keys()):
 				metrics[metric]['sample'][f][t]	= sample
 
 
-# Excel Spreadsheet
-print 'Excel Spreadsheet ...'
-generate_excel('-'.join([EXCEL_TABLE,domain,planner])+'.xlsx',metrics)
+# # Excel Spreadsheet
+# print 'Excel Spreadsheet ...'
+# generate_excel('-'.join([EXCEL_TABLE,domain,planner])+'.xlsx',metrics)
 
-# Stats Table
-print 'Stats Table ...'
-for metric in metrics:
-	with open(STATS_TABLE+domain+'_'+planner+'_'+METRICS[metric]['flat']+'.tex', 'wb') as file:
-		file.write(generate_stats_table(metrics,metric))
+# # Stats Table
+# print 'Stats Table ...'
+# for metric in metrics:
+# 	with open(STATS_TABLE+domain+'_'+planner+'_'+METRICS[metric]['flat']+'.tex', 'wb') as file:
+# 		file.write(generate_stats_table(metrics,metric))
 
-# Fmax plots
-print 'Fmax plots ...'
-generate_fmax_plots(metrics)
+# # Stats Plots
+# print 'Stats Plots ...'
+# generate_stats_plots(metrics)
 
-# Stats Plots
-print 'Stats Plots ...'
-generate_stats_plots(metrics)
+# # Fmax plots
+# print 'Fmax plots ...'
+# generate_fmax_plots(metrics)
 
 # Box Plots
 print 'Box Plots ...'
