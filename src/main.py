@@ -63,12 +63,12 @@ TOOL_FORMAT	= OrderedDict([
 
 TIME_ORDER = ['Object','Action','ActionObject','CoalitionSimilarity','ObjectTime','ActionTime','ActionObjectTime','CoalitionAssistance']
 
-TF_TOOLS = ['Object','Action','ActionObject','ObjectTime','ActionTime','ActionObjectTime','CoalitionSimilarity','CoalitionAssistance']
+TF_TOOLS_RAW = ['Object','Action','ActionObject','ObjectTime','ActionTime','ActionObjectTime','CoalitionSimilarity','CoalitionAssistance']
 BASES = ['CFP','PA']
 
 FRS = [0.25,0.50,0.75,1.00]
 
-TF_TOOLS = [(t,d) for t in TF_TOOLS for d in FRS]
+TF_TOOLS = [(t,d) for t in TF_TOOLS_RAW for d in FRS]
 TOOLS	= TF_TOOLS + [(t,0) for t in BASES]
 
 METRICS	= OrderedDict([
@@ -100,6 +100,7 @@ RAW_STATS			= 'csv/stats.csv'
 FILTERED_STATS		= 'csv/stats_filtered.csv'
 STATS_TABLE			= 'tex/stats_'
 EXCEL_TABLE			= 'xls/stats'
+EXCEL_FMAX			= 'xls/fmax'
 PLOT_FORMATS		= ['pdf', 'eps', 'svg']
 FMAX_PLOTS			= 'plots/fmax_'
 STATS_PLOT_NAME		= 'plots/stats_'
@@ -110,12 +111,20 @@ NCOL				= 4
 MARKER_SIZE			= 3
 TICK_SIZE			= 2
 LINE_WIDTH			= 0.50
-STATS_FIG_SIZE		= (9.0,11.0)
+STATS_FIG_SIZE		= {
+	'blocks_world': {
+		'tfddownward': (9.0,11.6),
+		'colin2': (9.0,12.5),
+	},
+	'first_response': {
+		'colin2': (9.0,11.9),
+	},
+}
 FMAX_FIG_SIZE		= (4.5,3.0)
 BOX_FIG_SIZE		= {
 	'blocks_world': {
-		'tfddownward': (4.5,5.9),
-		'colin2': (4.5,6.2),
+		'tfddownward': (4.5,6.6),
+		'colin2': (4.5,7.2),
 	},
 	'first_response': {
 		'colin2': (4.5,7.3),
@@ -172,6 +181,31 @@ def generate_excel(filename,metrics):
 		writer.value_matrix = data
 		writer.write_table()
 	writer.close()
+
+def generate_excel_fmax(filename,metrics):
+
+	# Building dataframe
+	frames = []
+	for metric in metrics:
+		data = OrderedDict([('%.2f'%t[1],[]) for t in TF_TOOLS])
+		for t in TF_TOOLS:
+			if metric == 'Planning Results (%)':
+				entry = metrics[metric]['Success (%)'][t]
+			else:
+				entry = metrics[metric]['mean']['Success (%)'][t]
+			data['%.2f'%t[1]].append(entry)
+		frames.append(pd.DataFrame(data=data,index=[TOOL_FORMAT[t]['acro'] for t in TF_TOOLS_RAW]))
+	df = pd.concat(frames, keys=metrics, axis=1)
+
+	# To spreadsheet
+	writer = pd.ExcelWriter(filename)
+	df.to_excel(writer,'data')
+	per_format = writer.book.add_format({'num_format': '0.'})
+	num_format = writer.book.add_format({'num_format': '0.0'})
+	writer.sheets['data'].set_column('A:E', 5, per_format)
+	writer.sheets['data'].set_column('F:Z', 5, num_format)
+	writer.save()
+
 
 def generate_stats_table(metrics,metric):
 	ret_var = []
@@ -238,7 +272,7 @@ def set_fig_text_format():
 	matplotlib.rc('text', usetex=True)
 
 def generate_stats_plots(metrics):
-	plt.figure(figsize=STATS_FIG_SIZE)
+	plt.figure(figsize=STATS_FIG_SIZE[domain][planner])
 	set_fig_text_format()
 	gridspec.GridSpec(9,1)
 	numbars = len(TOOLS)
@@ -493,6 +527,10 @@ for metric in tqdm(METRICS.keys()):
 				metrics[metric]['sample'][f][t]	= sample
 
 
+# Excel Spreadsheet
+print 'Excel Spreadsheet ...'
+generate_excel_fmax('-'.join([EXCEL_FMAX,domain,planner])+'.xlsx',metrics)
+
 # # Excel Spreadsheet
 # print 'Excel Spreadsheet ...'
 # generate_excel('-'.join([EXCEL_TABLE,domain,planner])+'.xlsx',metrics)
@@ -511,6 +549,6 @@ for metric in tqdm(METRICS.keys()):
 # print 'Fmax plots ...'
 # generate_fmax_plots(metrics)
 
-# Box Plots
-print 'Box Plots ...'
-generate_box_plots(metrics)
+# # Box Plots
+# print 'Box Plots ...'
+# generate_box_plots(metrics)
