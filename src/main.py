@@ -101,6 +101,7 @@ FILTERED_STATS		= 'csv/stats_filtered.csv'
 STATS_TABLE			= 'tex/stats_'
 EXCEL_TABLE			= 'xls/stats'
 EXCEL_FMAX			= 'xls/fmax'
+EXCEL_BOX			= 'xls/box'
 PLOT_FORMATS		= ['pdf', 'eps', 'svg']
 FMAX_PLOTS			= 'plots/fmax_'
 STATS_PLOT_NAME		= 'plots/stats_'
@@ -123,7 +124,7 @@ STATS_FIG_SIZE		= {
 FMAX_FIG_SIZE		= (4.5,3.0)
 BOX_FIG_SIZE		= {
 	'blocks_world': {
-		'tfddownward': (4.5,6.6),
+		'tfddownward': (4.5,6.3),
 		'colin2': (4.5,7.2),
 	},
 	'first_response': {
@@ -181,6 +182,26 @@ def generate_excel(filename,metrics):
 		writer.value_matrix = data
 		writer.write_table()
 	writer.close()
+
+def generate_excel_box(filename,metrics):
+
+	index = [(TOOL_FORMAT[t[0]]['acro'],'%.2f'%t[1]) for t in TOOLS]
+	tname_acro = [TOOL_FORMAT[t]['acro'] for t in TF_TOOLS_RAW]+BASES
+
+	# Building pareto dataframe
+	pareto = OrderedDict()
+	for (name,metric_x,metric_y) in [('Quality','Makespan (s)', 'Number of Actions'),('Cost','Processing Time (s)', 'Memory Usage (GB)')]:
+		pareto[name] = compute_pareto_domainance(metrics, TOOLS, metric_x, metric_y)
+	pareto = pd.DataFrame(data=pareto,index=pd.MultiIndex.from_tuples(index))
+	unstack = pareto.unstack(level=[1],fill_value='').reindex(tname_acro)
+
+	# To spreadsheet
+	writer = pd.ExcelWriter(filename)
+	unstack.to_excel(writer,'unstack')
+	pareto.to_excel(writer,'pareto')
+	writer.save()
+
+
 
 def generate_excel_fmax(filename,metrics):
 
@@ -527,9 +548,13 @@ for metric in tqdm(METRICS.keys()):
 				metrics[metric]['sample'][f][t]	= sample
 
 
-# Excel Spreadsheet
-print 'Excel Spreadsheet ...'
-generate_excel_fmax('-'.join([EXCEL_FMAX,domain,planner])+'.xlsx',metrics)
+# Excel Box Spreadsheet
+print 'Excel Box Spreadsheet ...'
+generate_excel_box('-'.join([EXCEL_BOX,domain,planner])+'.xlsx',metrics)
+
+# # Excel Fmax Spreadsheet
+# print 'Excel Fmax Spreadsheet ...'
+# generate_excel_fmax('-'.join([EXCEL_FMAX,domain,planner])+'.xlsx',metrics)
 
 # # Excel Spreadsheet
 # print 'Excel Spreadsheet ...'
