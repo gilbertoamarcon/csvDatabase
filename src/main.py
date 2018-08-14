@@ -192,13 +192,14 @@ def generate_excel_box(filename,metrics):
 	pareto = OrderedDict()
 	for (name,metric_x,metric_y) in [('Quality','Makespan (s)', 'Number of Actions'),('Cost','Processing Time (s)', 'Memory Usage (GB)')]:
 		pareto[name] = compute_pareto_domainance(metrics, TOOLS, metric_x, metric_y)
-	pareto = pd.DataFrame(data=pareto,index=pd.MultiIndex.from_tuples(index))
+	pareto = pd.DataFrame(data=pareto,index=pd.MultiIndex.from_tuples(index,names=['Tool','f-max']))
 	unstack = pareto.unstack(level=[1],fill_value='').reindex(tname_acro)
+	pareto = pareto.reset_index()
 
 	# To spreadsheet
 	writer = pd.ExcelWriter(filename)
 	unstack.to_excel(writer,'unstack')
-	pareto.to_excel(writer,'pareto')
+	pareto.to_excel(writer,'pareto',index=False)
 	writer.save()
 
 
