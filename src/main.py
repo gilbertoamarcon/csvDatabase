@@ -41,6 +41,16 @@ print 'Planner: %s' % planner
 SPREAD			= 'STDEV'
 # SPREAD				= 'CI'
 
+
+COLOR_SCHEME = {
+	 0: {'color': (0.000, 1.000, 0.000), 'rank': 'Best'},
+	 1: {'color': (1.000, 1.000, 0.000), 'rank': 'Second Best'},
+	 2: {'color': (1.000, 0.750, 0.000), 'rank': 'Third Best'},
+	 3: {'color': (0.500, 0.500, 0.500), 'rank': 'Fourth Best'},
+	-1: {'color': (1.000, 0.000, 0.000), 'rank': 'Worst'},
+}
+
+
 STATUSES	= OrderedDict([
 			('Success (%)',			OrderedDict([	('name', 'Success'),		('acro', 'Success'),	('code',   0),	('color', (0.000, 0.447, 0.741))	])), # Blue
 			('Nonexecutable (%)',	OrderedDict([	('name', 'Nonexecutable'),	('acro', 'Nonexec'),	('code',   1),	('color', (0.850, 0.325, 0.098))	])), # Tomato
@@ -106,6 +116,7 @@ PLOT_FORMATS		= ['pdf', 'eps', 'svg']
 FMAX_PLOTS			= 'plots/fmax_'
 STATS_PLOT_NAME		= 'plots/stats_'
 BOX_PLOT_NAME		= 'plots/box_'
+BOX_SINGLE_FIG_NAME	= 'plots/box_single_'
 
 NCOL				= 4
 
@@ -122,6 +133,7 @@ STATS_FIG_SIZE		= {
 	},
 }
 FMAX_FIG_SIZE		= (4.5,3.0)
+BOX_SINGLE_FIG_SIZE	= (4.5,4.5)
 BOX_FIG_SIZE		= {
 	'blocks_world': {
 		'tfddownward': (4.5,6.3),
@@ -482,6 +494,84 @@ def generate_box_plots(metrics):
 	for f in PLOT_FORMATS:
 		plt.savefig(BOX_PLOT_NAME+domain+'_'+planner+'.'+f, bbox_inches='tight', pad_inches=PAD_INCHES)
 
+def generate_single_box_plots(metrics):
+	fig = plt.figure(figsize=BOX_FIG_SIZE[domain][planner])
+	subplot_layout = (2,1)
+	label_offset = BOX_LABEL_OFFSET
+	set_fig_text_format()
+	titles = ['Quality', 'Cost']
+	for m, (metric_x, metric_y) in enumerate([('Makespan (s)', 'Number of Actions'),('Processing Time (s)', 'Memory Usage (GB)')]):
+
+		# Computing Pareto Domainance
+		mean_dom = compute_pareto_domainance(metrics, TOOLS, metric_x, metric_y)
+
+		# Setting up ordered plotting dataframe
+		df = pd.DataFrame({
+			'dom':		mean_dom,
+			'tools':	TOOLS,
+			'color':	[(0.000, 0.000, 0.000) for t in TOOLS],
+			'rank':		[None for t in TOOLS],
+		}).sort_values('dom',ascending=False)
+
+		# Setting colors according to Pareto Domainance ranking
+		unique = df['dom'].drop_duplicates().tolist()
+		for k,v in COLOR_SCHEME.items():
+			df.loc[df['dom']==unique[k],'color']	= pd.Series([v['color'] for x in df.index])
+			df.loc[df['dom']==unique[k],'rank']		= pd.Series([v['rank'] for x in df.index])
+
+		# Data
+		mean_x	= [np.mean(metrics[metric_x]['sample']['Success (%)'][t]) for t in df['tools']]
+		mean_y	= [np.mean(metrics[metric_y]['sample']['Success (%)'][t]) for t in df['tools']]
+
+		# Mean Pareto Dominance
+		ax = plt.subplot2grid(subplot_layout, (m,0))
+		for x, y, c, d in zip(mean_x, mean_y, df['color'], df['dom']):
+			plt.annotate(d, (x,y), xytext=label_offset, textcoords='offset points', fontsize=0.75*FONT_SIZE)
+			plt.plot(x, y, ls='None', c=c, marker='o', ms=MARKER_SIZE)
+
+		# Plot limits
+		limits_x,limits_y = compute_box_limits(metrics, df['tools'], metric_x, metric_y)
+		ax.set_xlim(limits_x)
+		ax.set_ylim(limits_y)
+
+		# Labels
+		desc_str = chr(ord('a')+m)+') '+PLANNER_DOM[domain]+' '+titles[m]+' ('+PLANNER_DOM[planner]+')'+' Pareto Strength'
+		xlabel = 'Processing Time (m)' if MINUTES and metric_x == 'Processing Time (s)' else metric_x
+		ylabel = 'Processing Time (m)' if MINUTES and metric_y == 'Processing Time (s)' else metric_y
+		plt.xlabel(xlabel+'\n'+desc_str,linespacing=1.5)
+		plt.ylabel(ylabel)
+
+		# Table contents
+		df = df.loc[df['rank'].notnull()]
+		df[['tools','fmax']] = df['tools'].apply(pd.Series)
+		df['fmax'] = ['%.2f'%f for f in df['fmax']]
+		df['tools'] = [TOOL_FORMAT[t]['acro'] for t in df['tools']]
+
+		colLabels = ['Tool', '$f_{max}$', 'Pareto Strength']
+		colLabels = ['Tool', '$f_{max}$', titles[m]+' Pareto Strength']
+		# colLabels = ['Tool', '$f_{max}$', titles[m]]
+
+		cell_text = df[['tools','fmax','dom']].values.tolist()
+
+		# Add a table at the bottom of the axes
+		table = plt.table(
+							cellText=cell_text,
+							rowColours=df['color'].values,
+							rowLabels=['\\textbf{%s}'%f for f in df['rank'].values],
+							colLabels=['\\textbf{%s}'%f for f in colLabels],
+							colWidths=[0.2,0.2,0.6],
+							cellLoc='center',
+							bbox=[0.3, -0.65, 0.45, 0.4],
+						)
+		for key,cell in table.get_celld().items():
+			cell.set_linewidth(LINE_WIDTH)
+
+
+	plt.tight_layout()
+	fig.subplots_adjust(bottom=0.3,hspace=0.7)
+	for f in PLOT_FORMATS:
+		plt.savefig(BOX_SINGLE_FIG_NAME+domain+'_'+planner+'.'+f, bbox_inches='tight', pad_inches=PAD_INCHES)
+
 def get_stats(sample):
 	if len(sample) < 2:
 		return float('nan'), float('nan')
@@ -549,9 +639,9 @@ for metric in tqdm(METRICS.keys()):
 				metrics[metric]['sample'][f][t]	= sample
 
 
-# Excel Box Spreadsheet
-print 'Excel Box Spreadsheet ...'
-generate_excel_box('-'.join([EXCEL_BOX,domain,planner])+'.xlsx',metrics)
+# # Excel Box Spreadsheet
+# print 'Excel Box Spreadsheet ...'
+# generate_excel_box('-'.join([EXCEL_BOX,domain,planner])+'.xlsx',metrics)
 
 # # Excel Fmax Spreadsheet
 # print 'Excel Fmax Spreadsheet ...'
@@ -578,3 +668,7 @@ generate_excel_box('-'.join([EXCEL_BOX,domain,planner])+'.xlsx',metrics)
 # # Box Plots
 # print 'Box Plots ...'
 # generate_box_plots(metrics)
+
+# Single Box Plots
+print 'Single Box Plots ...'
+generate_single_box_plots(metrics)
