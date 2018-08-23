@@ -46,9 +46,14 @@ COLOR_SCHEME = {
 	 0: {'color': (0.000, 1.000, 0.000), 'rank': 'Best'},
 	 1: {'color': (1.000, 1.000, 0.000), 'rank': 'Second Best'},
 	 2: {'color': (1.000, 0.750, 0.000), 'rank': 'Third Best'},
-	 3: {'color': (0.500, 0.500, 0.500), 'rank': 'Fourth Best'},
+	 3: {'color': (1.000, 1.000, 1.000), 'rank': 'Fourth Best'},
 	-1: {'color': (1.000, 0.000, 0.000), 'rank': 'Worst'},
 }
+
+FOURTH_BEST = [
+	('blocks_world','tfddownward',0),
+	('blocks_world','colin2',1),
+]
 
 
 STATUSES	= OrderedDict([
@@ -136,11 +141,12 @@ FMAX_FIG_SIZE		= (4.5,3.0)
 BOX_SINGLE_FIG_SIZE	= (4.5,4.5)
 BOX_FIG_SIZE		= {
 	'blocks_world': {
-		'tfddownward': (4.5,6.3),
-		'colin2': (4.5,7.2),
+		# 'tfddownward': (4.5,6.3),
+		'tfddownward': (4.5,2.1),
+		'colin2': (4.5,2.3),
 	},
 	'first_response': {
-		'colin2': (4.5,7.3),
+		'colin2': (4.5,2.3),
 	},
 }
 
@@ -495,12 +501,11 @@ def generate_box_plots(metrics):
 		plt.savefig(BOX_PLOT_NAME+domain+'_'+planner+'.'+f, bbox_inches='tight', pad_inches=PAD_INCHES)
 
 def generate_single_box_plots(metrics):
-	fig = plt.figure(figsize=BOX_FIG_SIZE[domain][planner])
-	subplot_layout = (2,1)
 	label_offset = BOX_LABEL_OFFSET
-	set_fig_text_format()
-	titles = ['Quality', 'Cost']
-	for m, (metric_x, metric_y) in enumerate([('Makespan (s)', 'Number of Actions'),('Processing Time (s)', 'Memory Usage (GB)')]):
+	for m,(title,metric_x,metric_y) in enumerate([('Quality','Makespan (s)', 'Number of Actions'),('Cost', 'Processing Time (s)', 'Memory Usage (GB)')]):
+
+		fig = plt.figure(figsize=BOX_FIG_SIZE[domain][planner])
+		set_fig_text_format()
 
 		# Computing Pareto Domainance
 		mean_dom = compute_pareto_domainance(metrics, TOOLS, metric_x, metric_y)
@@ -513,42 +518,44 @@ def generate_single_box_plots(metrics):
 			'rank':		[None for t in TOOLS],
 		}).sort_values('dom',ascending=False)
 
+
 		# Setting colors according to Pareto Domainance ranking
 		unique = df['dom'].drop_duplicates().tolist()
 		for k,v in COLOR_SCHEME.items():
-			df.loc[df['dom']==unique[k],'color']	= pd.Series([v['color'] for x in df.index])
-			df.loc[df['dom']==unique[k],'rank']		= pd.Series([v['rank'] for x in df.index])
+			if k!=3 or sum([(domain==skip[0] and planner==skip[1] and m==skip[2]) for skip in FOURTH_BEST]):
+				df.loc[df['dom']==unique[k],'color']	= pd.Series([v['color'] for x in df.index])
+				df.loc[df['dom']==unique[k],'rank']		= pd.Series([v['rank'] for x in df.index])
 
 		# Data
 		mean_x	= [np.mean(metrics[metric_x]['sample']['Success (%)'][t]) for t in df['tools']]
 		mean_y	= [np.mean(metrics[metric_y]['sample']['Success (%)'][t]) for t in df['tools']]
 
+		# ax = plt.subplot2grid(subplot_layout, (0,0))
+
 		# Mean Pareto Dominance
-		ax = plt.subplot2grid(subplot_layout, (m,0))
 		for x, y, c, d in zip(mean_x, mean_y, df['color'], df['dom']):
-			plt.annotate(d, (x,y), xytext=label_offset, textcoords='offset points', fontsize=0.75*FONT_SIZE)
+			# plt.annotate(d, (x,y), xytext=label_offset, textcoords='offset points', fontsize=0.75*FONT_SIZE)
 			plt.plot(x, y, ls='None', c=c, marker='o', ms=MARKER_SIZE)
 
-		# Plot limits
-		limits_x,limits_y = compute_box_limits(metrics, df['tools'], metric_x, metric_y)
-		ax.set_xlim(limits_x)
-		ax.set_ylim(limits_y)
+		# # Plot limits
+		# limits_x,limits_y = compute_box_limits(metrics, df['tools'], metric_x, metric_y)
+		# ax.set_xlim(limits_x)
+		# ax.set_ylim(limits_y)
 
 		# Labels
-		desc_str = chr(ord('a')+m)+') '+PLANNER_DOM[domain]+' '+titles[m]+' ('+PLANNER_DOM[planner]+')'+' Pareto Strength'
+		desc_str = chr(ord('a')+m)+') '+PLANNER_DOM[domain]+' '+title+' ('+PLANNER_DOM[planner]+')'+' Pareto Strength'
 		xlabel = 'Processing Time (m)' if MINUTES and metric_x == 'Processing Time (s)' else metric_x
 		ylabel = 'Processing Time (m)' if MINUTES and metric_y == 'Processing Time (s)' else metric_y
-		plt.xlabel(xlabel+'\n'+desc_str,linespacing=1.5)
-		plt.ylabel(ylabel)
+		plt.xlabel(xlabel,labelpad=1)
+		plt.ylabel(ylabel,labelpad=1)
 
 		# Table contents
 		df = df.loc[df['rank'].notnull()]
-		df[['tools','fmax']] = df['tools'].apply(pd.Series)
-		df['fmax'] = ['%.2f'%f for f in df['fmax']]
-		df['tools'] = [TOOL_FORMAT[t]['acro'] for t in df['tools']]
+		df['fmax'] = [format_tool_name('fusion-ratio',t) for t in df['tools']]
+		df['tools'] = [format_tool_name('acro',t) for t in df['tools']]
 
 		colLabels = ['Tool', '$f_{max}$', 'Pareto Strength']
-		colLabels = ['Tool', '$f_{max}$', titles[m]+' Pareto Strength']
+		colLabels = ['Tool', '$f_{max}$', title+' Pareto Strength']
 		# colLabels = ['Tool', '$f_{max}$', titles[m]]
 
 		cell_text = df[['tools','fmax','dom']].values.tolist()
@@ -561,16 +568,15 @@ def generate_single_box_plots(metrics):
 							colLabels=['\\textbf{%s}'%f for f in colLabels],
 							colWidths=[0.2,0.2,0.6],
 							cellLoc='center',
-							bbox=[0.3, -0.65, 0.45, 0.4],
+							bbox=[0.3, -0.55, 0.45, 0.4],
 						)
 		for key,cell in table.get_celld().items():
 			cell.set_linewidth(LINE_WIDTH)
 
 
-	plt.tight_layout()
-	fig.subplots_adjust(bottom=0.3,hspace=0.7)
-	for f in PLOT_FORMATS:
-		plt.savefig(BOX_SINGLE_FIG_NAME+domain+'_'+planner+'.'+f, bbox_inches='tight', pad_inches=PAD_INCHES)
+		plt.tight_layout()
+		for f in PLOT_FORMATS:
+			plt.savefig(BOX_SINGLE_FIG_NAME+domain+'_'+planner+'_'+title.lower()+'.'+f, bbox_inches='tight', pad_inches=PAD_INCHES)
 
 def get_stats(sample):
 	if len(sample) < 2:

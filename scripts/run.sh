@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# ./scripts/run.sh ${HOME}/over/14617918kcvdvjvrbpng/
+# ./scripts/run.sh ${HOME}/over/18818311vzjzwvxvfcky/
+
 
 dest=$1
 
