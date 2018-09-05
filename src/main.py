@@ -114,14 +114,16 @@ GATHER_DATA_SCRIPT	= 'scripts/gather_data.sh'
 RAW_STATS			= 'csv/stats.csv'
 FILTERED_STATS		= 'csv/stats_filtered.csv'
 STATS_TABLE			= 'tex/stats_'
+FMAX_TABLE			= 'tex/fmax_'
 EXCEL_TABLE			= 'xls/stats'
 EXCEL_FMAX			= 'xls/fmax'
-EXCEL_BOX			= 'xls/box'
 PLOT_FORMATS		= ['pdf', 'eps', 'svg']
 FMAX_PLOTS			= 'plots/fmax_'
 STATS_PLOT_NAME		= 'plots/stats_'
 BOX_PLOT_NAME		= 'plots/box_'
 BOX_SINGLE_FIG_NAME	= 'plots/box_single_'
+BOX_MARGIN			= 0.2
+BOX_TABLE_ROW_SIZE	= 0.07
 
 NCOL				= 4
 
@@ -142,11 +144,11 @@ BOX_SINGLE_FIG_SIZE	= (4.5,4.5)
 BOX_FIG_SIZE		= {
 	'blocks_world': {
 		# 'tfddownward': (4.5,6.3),
-		'tfddownward': (4.5,2.1),
-		'colin2': (4.5,2.3),
+		'tfddownward': (4.3,2.05),
+		'colin2': (4.3,1.95),
 	},
 	'first_response': {
-		'colin2': (4.5,2.3),
+		'colin2': (4.3,2.05),
 	},
 }
 
@@ -201,25 +203,6 @@ def generate_excel(filename,metrics):
 		writer.write_table()
 	writer.close()
 
-def generate_excel_box(filename,metrics):
-
-	index = [(TOOL_FORMAT[t[0]]['acro'],'%.2f'%t[1]) for t in TOOLS]
-	tname_acro = [TOOL_FORMAT[t]['acro'] for t in TF_TOOLS_RAW]+BASES
-
-	# Building pareto dataframe
-	pareto = OrderedDict()
-	for (name,metric_x,metric_y) in [('Quality','Makespan (s)', 'Number of Actions'),('Cost','Processing Time (s)', 'Memory Usage (GB)')]:
-		pareto[name] = compute_pareto_domainance(metrics, TOOLS, metric_x, metric_y)
-	pareto = pd.DataFrame(data=pareto,index=pd.MultiIndex.from_tuples(index,names=['Tool','f-max']))
-	unstack = pareto.unstack(level=[1],fill_value='').reindex(tname_acro)
-	pareto = pareto.reset_index()
-
-	# To spreadsheet
-	writer = pd.ExcelWriter(filename)
-	unstack.to_excel(writer,'unstack')
-	pareto.to_excel(writer,'pareto',index=False)
-	writer.save()
-
 
 
 def generate_excel_fmax(filename,metrics):
@@ -246,6 +229,51 @@ def generate_excel_fmax(filename,metrics):
 	writer.sheets['data'].set_column('F:Z', 5, num_format)
 	writer.save()
 
+
+def generate_fmax_table(metrics):
+
+	index = [(format_tool_name('acro',t),format_tool_name('fusion-ratio',t)) for t in TF_TOOLS]
+	tname_acro = OrderedDict([(i[0],None) for i in index]).keys()
+
+	# Pareto values
+	pareto = OrderedDict()
+	for (name,metric_x,metric_y) in [('Quality Pareto Strength','Makespan (s)', 'Number of Actions'),('Cost Pareto Strength','Processing Time (s)', 'Memory Usage (GB)')]:
+		pareto[name] = compute_pareto_domainance(metrics, TF_TOOLS, metric_x, metric_y)
+
+	df = pd.DataFrame(data=pareto,index=pd.MultiIndex.from_tuples(index,names=['',r'\textbf{Tool}']))
+	df = df.unstack(level=[1],fill_value='').reindex(tname_acro)
+	num_columns = len(pareto)*len(index)/len(tname_acro)
+	ret_var = df.to_latex(
+			bold_rows			= False,
+			multirow			= True,
+			escape				= False,
+			multicolumn_format	= 'c',
+		)
+
+	# Removing horizontal lines
+	for r in ['bottomrule','toprule']:
+		ret_var = re.sub(r'\n*\\'+r,'',ret_var)
+
+	# Removing empty lines
+	ret_var = re.sub(r'\n[\s\&\\]*\n','\n',ret_var)
+
+	# Short horizontal lines
+	re_key = r'\n*\\midrule'
+	reg_sub = r' \\Cline{1pt}{1-%d}' % (num_columns+1)
+	ret_var = re.sub(re_key,reg_sub,ret_var)
+
+	# Thick vline
+	re_key = r'(\{[lcr]{'+str(num_columns+1)+r'}\})'
+	rs = r'|'.join(['r']*(len(index)/len(tname_acro)))
+	reg_sub = r'{c'+''.join(len(pareto)*[' V{3} %s'%rs])+'}'
+	ret_var = re.sub(re_key,reg_sub,ret_var)
+
+	# Long horizontal lines
+	re_key = r'(\\\\)(\n\s*[^&\s]+[^&]*&)'
+	reg_sub = r'\1 \\hline\2'
+	ret_var = re.sub(re_key,reg_sub,ret_var)
+
+	return ret_var
 
 def generate_stats_table(metrics,metric):
 	ret_var = []
@@ -560,6 +588,8 @@ def generate_single_box_plots(metrics):
 
 		cell_text = df[['tools','fmax','dom']].values.tolist()
 
+		num_rows = 1+len(cell_text)
+
 		# Add a table at the bottom of the axes
 		table = plt.table(
 							cellText=cell_text,
@@ -568,7 +598,8 @@ def generate_single_box_plots(metrics):
 							colLabels=['\\textbf{%s}'%f for f in colLabels],
 							colWidths=[0.2,0.2,0.6],
 							cellLoc='center',
-							bbox=[0.3, -0.55, 0.45, 0.4],
+							fontsize=24,
+							bbox=[0.17, -num_rows*BOX_TABLE_ROW_SIZE-BOX_MARGIN, 0.83, num_rows*BOX_TABLE_ROW_SIZE],
 						)
 		for key,cell in table.get_celld().items():
 			cell.set_linewidth(LINE_WIDTH)
@@ -645,9 +676,11 @@ for metric in tqdm(METRICS.keys()):
 				metrics[metric]['sample'][f][t]	= sample
 
 
-# # Excel Box Spreadsheet
+# # Excel Fmax Table
 # print 'Excel Box Spreadsheet ...'
-# generate_excel_box('-'.join([EXCEL_BOX,domain,planner])+'.xlsx',metrics)
+# with open(FMAX_TABLE+domain+'_'+planner+'.tex', 'wb') as file:
+# 	file.write(generate_fmax_table(metrics))
+
 
 # # Excel Fmax Spreadsheet
 # print 'Excel Fmax Spreadsheet ...'
